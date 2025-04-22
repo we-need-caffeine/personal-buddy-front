@@ -21,14 +21,16 @@ theme.PALLETE = {
 }
 
 theme.FONT_SIZE = {
-    h1: "38px",
-    h2: "30px",
-    h3: "22px",
-    h4: "18px",
-    h5: "16px",
-    h6: "14px",
-    h7: "10px",
-    h8: "7px",
+    h1:"36px",
+    h2:"32px",
+    h3:"28px",
+    h4:"24px",
+    h5:"20px",
+    h6:"18px",
+    h7:"16px",
+    h8:"14px",
+    h9:"12px",
+    h10:"10px"
 }
 
 theme.FONT_WEIGHT = {
