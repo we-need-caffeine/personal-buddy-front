@@ -1,15 +1,20 @@
 import React from 'react';
-import CalenderAll from './calender/CalenderAll';
-import CalenderHeader from './calender/calenderHeader/CalenderHeader';
-import SectionAll from './section/SectionAll';
+import RecommendInformation from './recommend/RecommendInformation';
+import RecommendPlace from './recommend/RecommendPlace';
+import RecommendShopping from './recommend/RecommendShopping';
+import CalendarBody from './calendar/CalendarBody';
+import CalendarHeader from './calendar/calendarHeader/CalendarHeader';
+
 
 
 const MainContainer = () => {
     return (
         <div>          
-            <CalenderHeader />
-            <CalenderAll />
-            <SectionAll />
+            <CalendarHeader />
+            <CalendarBody />
+            <RecommendInformation />
+            <RecommendPlace />
+            <RecommendShopping />
         </div>
     );
 };

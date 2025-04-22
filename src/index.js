@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ThemeProvider } from 'styled-components';
-import theme from './styles/theme';
+
 
 // 리덕스
 import { Provider } from 'react-redux';
 import { legacy_createStore as createStore} from 'redux';
 import rootReducer from './modules';
 import { devToolsEnhancer } from '@redux-devtools/extension';
+import { ThemeProvider } from 'styled-components';
+import theme from './globals/theme';
+
 
 const store = createStore(rootReducer, devToolsEnhancer())
 
