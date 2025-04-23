@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TestBackGround = () => {
+const MyTreeItemBackground = () => {
   return (
     <div>
       배경 컴포넌트
@@ -8,4 +8,4 @@ const TestBackGround = () => {
   );
 };
 
-export default TestBackGround;
+export default MyTreeItemBackground;

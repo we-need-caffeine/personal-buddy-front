@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
-const SurveyMainContainer = () => {
+const EventContainer = () => {
     return (
         <div>
-          설문조사
+          이벤트
           <div>
           </div>
           <div>
             <div>
-              <Link to={"main"}>[설문조사 메인]</Link>
-              <Link to={"/:category"}>[설문조사 카테고리들]</Link>
+              <Link to={""}>이벤트 메인</Link>
+              <Link to={"post"}>이벤트 상세</Link>
             </div>
             <Outlet />
           </div>
@@ -18,4 +18,4 @@ const SurveyMainContainer = () => {
       );
 };
 
-export default SurveyMainContainer;
+export default EventContainer;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TestAll = () => {
+const PointShopItemsAll = () => {
   return (
     <div>
       전체 보여주는 컴포넌트
@@ -8,4 +8,4 @@ const TestAll = () => {
   );
 };
 
-export default TestAll;
+export default PointShopItemsAll;
