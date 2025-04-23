@@ -1,13 +1,11 @@
 import React from 'react';
 
-
-const Header = () => {
+const Faq = () => {
     return (
         <div>
-             헤더
-
+            고객센터
         </div>
     );
 };
 
-export default Header;
+export default Faq;
