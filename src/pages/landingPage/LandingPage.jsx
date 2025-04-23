@@ -3,7 +3,7 @@ import React from 'react';
 const LandingPage = () => {
     return (
         <div>
-            로그인 전 페이지
+            랜딩 페이지
         </div>
     );
 };
