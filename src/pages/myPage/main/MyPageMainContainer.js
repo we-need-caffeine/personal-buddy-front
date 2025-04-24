@@ -5,6 +5,7 @@ const MyPageMainContainer = () => {
     return (
         <div>
             <MyPageMain />
+            
         </div>
     );
 };
