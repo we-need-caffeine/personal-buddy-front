@@ -5,7 +5,6 @@ import BoardPostListContainer from './postList/BoardPostListContainer';
 const BoardContainer = () => {
   return (
     <div>
-      보드 컨테이너!
       <BoardBannerContainer />
       <hr />
       <BoardPostListContainer />
