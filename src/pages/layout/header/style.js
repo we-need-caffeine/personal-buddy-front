@@ -1,7 +1,6 @@
 import theme from "../../../globals/theme";
 
 export const headerContainer = {
-    position: 'fixed',
     backgroundColor: theme.PALLETE.background.white,
     display: "flex",
     justifyContent: "center",

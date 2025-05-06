@@ -30,6 +30,7 @@ const Header = () => {
         <div style={{
             ...headerContainer,
             transform: showHeader ? 'translateY(0)' : 'translateY(-100%)',
+            position: showHeader ? '' : 'fixed',
         }}>
             <div style={headerMainContainer}>
                 <div style={headerLeftContainer}>
@@ -56,7 +57,7 @@ const Header = () => {
                         </div>
                         <div style={headerProfileContainer}>
                             <NavLink to={"/main/mypage"}>
-                                <img style={{marginRight: '25px',cursor: "pointer"}} src={memberProfile} alt="멤버 프로필" />
+                                <img style={{marginRight: '25px',cursor: "pointer", width:'40px', height:'40px', borderRadius:'36px'}} src={memberProfile} alt="멤버 프로필" />
                             </NavLink>
                             <span style={{cursor: "pointer"}}>로그아웃</span>
                         </div>
