@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Step02 = () => {
+const Identify = () => {
   return (
     <div>
-      스탭2
+      스탭1
     </div>
   );
 };
 
-export default Step02;
+export default Identify;

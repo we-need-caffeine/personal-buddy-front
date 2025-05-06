@@ -45,9 +45,6 @@ import FindId from "../pages/member/find/id/FindId";
 import FindIdComplete from "../pages/member/find/id/FindIdComplete";
 import NotFound from "../pages/notFound/NotFound";
 import FindPasswordContainer from "../pages/member/find/password/FindPasswordContainer";
-import Step01 from "../pages/member/find/password/Step01";
-import Step02 from "../pages/member/find/password/Step02";
-import Step03 from "../pages/member/find/password/Step03";
 import MyPageContainer from "../pages/myPage/MyPageContainer";
 import MyPageMainContainer from "../pages/myPage/main/MyPageMainContainer";
 import MyPageAchievementContainer from "../pages/myPage/achievement/MyPageAchievementContainer";
@@ -57,6 +54,9 @@ import MyPageProfileEditContainer from "../pages/myPage/profileEdit/MyPageProfil
 import MyPageMemberEditContainer from "../pages/myPage/memberEdit/MyPageMemberEditContainer";
 import MyPagePointLogContainer from "../pages/myPage/pointLog/MyPagePointLogContainer";
 import MyPageSurveyEditContainer from "../pages/myPage/surveyEdit/MyPageSurveyEditContainer";
+import Identify from "../pages/member/find/password/Identify";
+import Verify from "../pages/member/find/password/Verify";
+import Reset from "../pages/member/find/password/Reset";
 
 const router = createBrowserRouter([
     {
@@ -143,7 +143,8 @@ const router = createBrowserRouter([
                                     },
                                     {
                                         path : "board",
-                                        element : <BoardContainer />,                                     },
+                                        element : <BoardContainer />,                                     
+                                    },
                                 ]
                             },
                             {
@@ -300,28 +301,28 @@ const router = createBrowserRouter([
                 ]
             },
             {
-                path : "find-id",
+                path : "find-id", // 아이디 찾기
                 element : <FindId />
             },
             {
-                path : "find-id-complete",
+                path : "find-id-complete", 
                 element : <FindIdComplete />
             },
             {
-                path : "find-password",
+                path : "find-password", // 비밀번호 찾기
                 element : <FindPasswordContainer />,
                 children : [
                     {
-                        path : "step-01",
-                        element : <Step01 />
+                        path : "identify",
+                        element : <Identify />
                     },
                     {
-                        path : "step-02",
-                        element : <Step02 />
+                        path : "verify",
+                        element : <Verify />
                     },
                     {
-                        path : "step-03",
-                        element : <Step03 />
+                        path : "reset",
+                        element : <Reset />
                     },
                 ]
             }
