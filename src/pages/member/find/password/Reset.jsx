@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Step03 = () => {
+const Reset = () => {
   return (
     <div>
       스탭3 - 완료하고 로그인페이지
@@ -8,4 +8,4 @@ const Step03 = () => {
   );
 };
 
-export default Step03;
+export default Reset;
