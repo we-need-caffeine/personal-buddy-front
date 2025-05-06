@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { headerContainer, headerLeftContainer, headerLinkContainer, headerMainContainer, headerMainIconContainer, headerProfileContainer, headerRightContainer, headerSocialContainer } from './style';
 import alertIcon from './img/alert.png';
@@ -9,12 +9,32 @@ import memberProfile from './img/memberProfile.png';
 
 const Header = () => {
 
+    // 로그인 여부
+    const isLogin = 1;
+
+    // 헤더 상태
+    const [showHeader, setShowHeader] = useState(true);
+
+    useEffect(() => {
+        const handleWheel = (e) => {
+            if (e.deltaY > 0) {
+                setShowHeader(false);
+            } else if (e.deltaY < 0) {
+                setShowHeader(true);
+            }
+        };
+        window.addEventListener("wheel", handleWheel);
+    }, []);
+
     return (
-        <div style={headerContainer}>
+        <div style={{
+            ...headerContainer,
+            transform: showHeader ? 'translateY(0)' : 'translateY(-100%)',
+        }}>
             <div style={headerMainContainer}>
                 <div style={headerLeftContainer}>
                     <div style={headerMainIconContainer}>
-                        <img src={persenalBuddyIcon} alt="퍼스널 버디 아이콘" />
+                        <img style={{cursor: "pointer",}} src={persenalBuddyIcon} alt="퍼스널 버디 아이콘" />
                     </div>
                     <div style={headerLinkContainer}>
                         <NavLink to={"/main"}>일정관리</NavLink>
@@ -24,16 +44,24 @@ const Header = () => {
                         <NavLink to={"/main/faq"}>고객센터</NavLink>
                     </div>
                 </div>
-                <div style={headerRightContainer}>
-                    <div style={headerSocialContainer}>
-                        <img src={messageIcon} alt="메세지 아이콘" />
-                        <img src={alertIcon} alt="알림 아이콘" />
-                    </div>
+                {isLogin == null ? (
                     <div style={headerProfileContainer}>
-                        <img src={memberProfile} alt="멤버 프로필" />
-                        <span>nickName 님</span>
+                        <span>로그인</span>
                     </div>
-                </div>
+                ) : (
+                    <div style={headerRightContainer}>
+                        <div style={headerSocialContainer}>
+                            <img style={{cursor: "pointer"}} src={messageIcon} alt="메세지 아이콘" />
+                            <img style={{cursor: "pointer"}} src={alertIcon} alt="알림 아이콘" />
+                        </div>
+                        <div style={headerProfileContainer}>
+                            <NavLink to={"/main/mypage"}>
+                                <img style={{marginRight: '25px',cursor: "pointer"}} src={memberProfile} alt="멤버 프로필" />
+                            </NavLink>
+                            <span style={{cursor: "pointer"}}>로그아웃</span>
+                        </div>
+                    </div>
+                )}  
             </div>
         </div>
     );

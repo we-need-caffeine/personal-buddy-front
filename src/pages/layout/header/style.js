@@ -1,11 +1,14 @@
 import theme from "../../../globals/theme";
 
 export const headerContainer = {
+    position: 'fixed',
     backgroundColor: theme.PALLETE.background.white,
     display: "flex",
     justifyContent: "center",
     width: "100%",
     height: "90px",
+    transition: "transform 0.3s ease",
+    zIndex: "10000",
     fontSize: theme.FONT_SIZE.h6,
     fontColor: theme.PALLETE.black,
     fontWeight: theme.FONT_WEIGHT.regular,
@@ -36,6 +39,7 @@ export const headerMainIconContainer = {
     width: "70px",
     height: "46px",
 }
+
 export const headerLinkContainer = {
     display: "flex",
     alignItems: "center",
@@ -43,12 +47,15 @@ export const headerLinkContainer = {
     marginLeft: "54px",
     width: "558px",
 }
+
 export const headerSocialContainer = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     width: "80px",
+    marginRight: "20px",
 }
+
 export const headerProfileContainer = {
     display: "flex",
     alignItems: "center",
