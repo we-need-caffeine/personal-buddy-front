@@ -8,6 +8,7 @@ const Layout = () => {
     return (
         <>
             <header><Header /></header>
+            <div style={{width:'100%', height:'90px'}}></div>
             <main>
                 <Outlet />
             </main>
