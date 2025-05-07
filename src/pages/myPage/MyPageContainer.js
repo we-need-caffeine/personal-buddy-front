@@ -1,8 +1,5 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import memberProfile from '../../../public/assets/images/header/memberProfile.png';
-import memberImg from '../../../public/assets/images/mypage/member.png';
-import membersImg from '../../../public/assets/images/mypage/members.png';
 
 const MyPageContainer = () => {
   return (
@@ -10,7 +7,7 @@ const MyPageContainer = () => {
       <div style={{marginTop:'70px', width:"1400px", display:'flex', justifyContent:'space-between'}}>
         <div style={{width:"200px"}}>
           <div style={{width:'200px', height:'200px'}}>
-            <img src={memberProfile} />
+            <img src='/assets/images/header/memberProfile.png' />
           </div>
           <div style={{display:'flex', flexDirection:'column', alignItems:'center', border:'solid 1px #DDDDDD', width:'198px',}}>
             <div style={{fontSize:'18px', marginTop:'30px'}}>
@@ -26,7 +23,7 @@ const MyPageContainer = () => {
           </div>
           <div style={{border:'solid 1px #DDDDDD', width:'198px'}}>
             <div style={{margin:'20px 20px 10px 20px', fontSize:'18px'}}>
-              <img src={memberImg} />
+              <img src='/assets/images/mypage/member.png' />
               <span style={{marginLeft:'5px'}}>마이페이지</span>
               <div style={{fontSize:'14px', display:'flex', flexDirection:'column', margin:'10px 24px'}}>
                 <NavLink to={""}>
@@ -42,7 +39,7 @@ const MyPageContainer = () => {
           </div>
           <div style={{border:'solid 1px #DDDDDD', width:'198px'}}>
             <div style={{margin:'20px 20px 10px 20px', fontSize:'18px'}}>
-              <img src={membersImg} />
+              <img src='/assets/images/mypage/members.png' />
               <span style={{marginLeft:'5px'}}>커뮤니티</span>
               <div style={{fontSize:'14px', display:'flex', flexDirection:'column', margin:'10px 24px'}}>
                 <NavLink to={"achievement"}>
@@ -58,7 +55,7 @@ const MyPageContainer = () => {
           </div>
           <div style={{border:'solid 1px #DDDDDD', width:'198px'}}>
             <div style={{margin:'20px 20px 10px 20px', fontSize:'18px'}}>
-              <img src={memberImg} />
+              <img src='/assets/images/mypage/member.png' />
               <span style={{marginLeft:'5px'}}>내 정보</span>
               <div style={{fontSize:'14px', display:'flex', flexDirection:'column', margin:'10px 24px'}}>
                 <NavLink to={"profile-edit"}>
@@ -83,7 +80,7 @@ const MyPageContainer = () => {
             </div>
           </div>
         </div>
-        <div style={{width:'1160px'}}>
+        <div style={{width:'1160px', height:'3000px'}}>
           <Outlet />
         </div>
       </div>
