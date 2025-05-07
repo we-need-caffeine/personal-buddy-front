@@ -46,18 +46,18 @@ import FindIdComplete from "../pages/member/find/id/FindIdComplete";
 import NotFound from "../pages/notFound/NotFound";
 import FindPasswordContainer from "../pages/member/find/password/FindPasswordContainer";
 import MyPageContainer from "../pages/myPage/MyPageContainer";
-import MyPageMainContainer from "../pages/myPage/main/MyPageMainContainer";
-import MyPageAchievementContainer from "../pages/myPage/achievement/MyPageAchievementContainer";
-import MyPagePostsContainer from "../pages/myPage/posts/MyPagePostsContainer";
-import MyPageCommentsContainer from "../pages/myPage/comments/MyPageCommentsContainer";
-import MyPageProfileEditContainer from "../pages/myPage/profileEdit/MyPageProfileEditContainer";
-import MyPageMemberEditContainer from "../pages/myPage/memberEdit/MyPageMemberEditContainer";
-import MyPagePointLogContainer from "../pages/myPage/pointLog/MyPagePointLogContainer";
-import MyPageSurveyEditContainer from "../pages/myPage/surveyEdit/MyPageSurveyEditContainer";
 import Identify from "../pages/member/find/password/Identify";
 import Verify from "../pages/member/find/password/Verify";
 import Reset from "../pages/member/find/password/Reset";
 import Faq from "../pages/faq/Faq";
+import MyPageMain from "../pages/myPage/main/MyPageMain";
+import MyPageAchievement from "../pages/myPage/achievement/MyPageAchievement";
+import MyPagePosts from "../pages/myPage/posts/MyPagePosts";
+import MyPageComments from "../pages/myPage/comments/MyPageComments";
+import MyPageProfileEdit from "../pages/myPage/profileEdit/MyPageProfileEdit";
+import MyPageMemberEdit from "../pages/myPage/memberEdit/MyPageMemberEdit";
+import MyPagePointLog from "../pages/myPage/pointLog/MyPagePointLog";
+import MyPageSurveyEdit from "../pages/myPage/surveyEdit/MyPageSurveyEdit";
 
 const router = createBrowserRouter([
     {
@@ -186,39 +186,39 @@ const router = createBrowserRouter([
                     },
                     {
                         path : "mypage",
-                        element : <MyPageContainer />,
+                        element : <MyPageContainer />, //마이페이지
                         children : [
                             {
                                 path : "",
-                                element : <MyPageMainContainer />
+                                element : <MyPageMain />
                             },
                             {
                                 path : "achievement",
-                                element : <MyPageAchievementContainer />
+                                element : <MyPageAchievement />
                             },
                             {
                                 path : "posts",
-                                element : <MyPagePostsContainer />
+                                element : <MyPagePosts />
                             },
                             {
                                 path : "comments",
-                                element : <MyPageCommentsContainer />
+                                element : <MyPageComments />
                             },
                             {
                                 path : "profile-edit",
-                                element : <MyPageProfileEditContainer />
+                                element : <MyPageProfileEdit />
                             },
                             {
                                 path : "member-edit",
-                                element : <MyPageMemberEditContainer />
+                                element : <MyPageMemberEdit />
                             },
                             {
                                 path : "point-log",
-                                element : <MyPagePointLogContainer />
+                                element : <MyPagePointLog />
                             },
                             {
                                 path : "survey-edit",
-                                element : <MyPageSurveyEditContainer />
+                                element : <MyPageSurveyEdit />
                             }
                         ]
                     },
