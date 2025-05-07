@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import memberProfile from '../layout/header/img/memberProfile.png';
-import memberImg from './img/member.png';
-import membersImg from './img/members.png';
+import memberProfile from '../../../public/assets/images/header/memberProfile.png';
+import memberImg from '../../../public/assets/images/mypage/member.png';
+import membersImg from '../../../public/assets/images/mypage/members.png';
 
 const MyPageContainer = () => {
   return (
