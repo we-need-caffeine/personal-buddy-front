@@ -45,6 +45,11 @@ const GlobalStyle = createGlobalStyle`
   button {
     cursor: pointer;
   }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `
 
 export default GlobalStyle;
