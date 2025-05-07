@@ -2,11 +2,12 @@ import theme from "../../../globals/theme";
 
 export const headerContainer = {
     backgroundColor: theme.PALLETE.background.white,
+    position:'fixed',
     display: "flex",
     justifyContent: "center",
     width: "100%",
     height: "90px",
-    transition: "transform 0.3s ease",
+    transition: "transform 0.5s ease",
     zIndex: "10000",
     fontSize: theme.FONT_SIZE.h6,
     fontColor: theme.PALLETE.black,

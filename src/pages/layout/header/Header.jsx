@@ -11,24 +11,25 @@ const Header = () => {
     // 헤더 상태
     const [showHeader, setShowHeader] = useState(true);
 
-    // useEffect(() => {
-    //     const handleWheel = (e) => {
-    //         if (e.deltaY > 0) {
-    //             setShowHeader(false);
-    //         } else if (e.deltaY < 0) {
-    //             setShowHeader(true);
-    //         }
-    //     };
-    //     window.addEventListener("wheel", handleWheel);
-    // }, []);
+    useEffect(() => {
+        const handleWheel = (e) => {
+            if (e.deltaY > 0) {
+                setShowHeader(false);
+            } else if (e.deltaY < 0) {
+                setShowHeader(true);
+            }
+        };
+        window.addEventListener("wheel", handleWheel);
+    }, []);
 
     return (
         <div style={{
             ...headerContainer,
             transform: showHeader ? 'translateY(0)' : 'translateY(-100%)',
-            position:'fixed',
         }}>
-            <div style={headerMainContainer}>
+            <div style={{
+                ...headerMainContainer,
+            }}>
                 <div style={headerLeftContainer}>
                     <div style={headerMainIconContainer}>
                         <img style={{cursor: "pointer",}} src='/assets/images/header/persenalBuddyIcon.png' alt="퍼스널 버디 아이콘" />
