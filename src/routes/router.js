@@ -57,6 +57,7 @@ import MyPageSurveyEditContainer from "../pages/myPage/surveyEdit/MyPageSurveyEd
 import Identify from "../pages/member/find/password/Identify";
 import Verify from "../pages/member/find/password/Verify";
 import Reset from "../pages/member/find/password/Reset";
+import Faq from "../pages/faq/Faq";
 
 const router = createBrowserRouter([
     {
@@ -220,6 +221,10 @@ const router = createBrowserRouter([
                                 element : <MyPageSurveyEditContainer />
                             }
                         ]
+                    },
+                    {
+                        path : "faq",
+                        element : <Faq/>,  
                     }
                 ]
             },
