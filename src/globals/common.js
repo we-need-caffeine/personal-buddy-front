@@ -18,3 +18,4 @@ export const h1Bold = css`
   line-height: ${({theme}) => theme.FONT_LINE["h1"]};
   font-weight: 800;
 `
+
