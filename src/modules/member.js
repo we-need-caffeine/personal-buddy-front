@@ -9,7 +9,15 @@ export const setUser = createAction(SET_USER, (curruentUser) => curruentUser);
 export const setUserStatus = createAction(SET_USER_STATUS, (isLogin) => isLogin);
 
 const userInitalValue = {
-    curruentUser : {},
+    curruentUser : {
+        id : 0,
+        memberEmail : "",
+        memberName : "",
+        memberImgName: "",
+        memberImgPath: "",
+        memberNickName : "",
+        memberProvider : "",
+    },
     isLogin : false,
     previousUrl : "",
 };

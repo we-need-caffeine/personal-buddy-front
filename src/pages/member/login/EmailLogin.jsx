@@ -45,9 +45,9 @@ const EmailLogin = () => {
           return res.json()
         })
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           const {jwtToken} = res;
-          navigate("/?jwtToken=" + jwtToken)
+          navigate("/main?jwtToken=" + jwtToken)
         })
         .catch(console.error)
 
