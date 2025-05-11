@@ -1,13 +1,11 @@
 import styled from 'styled-components';
+import { flexCenterColumn, mainGreenColor } from '../../globals/common';
 
 const S = {};
 
 S.Container = styled.div`
+  ${flexCenterColumn}; // common style 적용 - import해서 경로 확인후 사용하십셔
   background-color: #FCF8F3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
 `;
 
@@ -16,29 +14,17 @@ S.Image = styled.img`
   height: auto;
 `;
 
-S.Title = styled.h1`
-  font-size: 40px;
-  color: #ff6f61;
-  margin-bottom: 10px;
-`;
-
-S.Description = styled.p`
-  font-size: 18px;
-  color: #444;
-  margin-bottom: 30px;
-`;
-
 S.BackButton = styled.button`
   background: none;
   border: none;
-  font-size: 30px;
-  font-weight: bold;
-  color: #000;
+  font-size: ${({ theme }) => theme.FONT_SIZE.h2}; // theme font-size 적용
+  font-weight: ${({ theme }) => theme.FONT_WEIGHT.bold}; // theme font-weight 적용
+  color: ${({ theme }) => theme.PALLETE.black}; // theme color 사용
   cursor: pointer;
   transition: color 0.3s;
 
   &:hover {
-    color: #01cd74;
+    ${mainGreenColor};
   }
 `;
 

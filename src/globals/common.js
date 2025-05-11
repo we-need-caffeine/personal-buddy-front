@@ -1,5 +1,8 @@
 import { css } from "styled-components";
 
+// 자주 쓰는 스타일 등록 - 필요한 스타일 등록해주십셔 (or 부팀장에게 말씀해주십셔)
+
+// 정렬
 export const flexCenter = css`
   display: flex;
   justify-content: center;
@@ -13,9 +16,8 @@ export const flexCenterColumn = css`
   align-items: center;
 `
 
-export const h1Bold = css`
-  font-size: ${({theme}) => theme.FONT_SIZE["h1"]};
-  line-height: ${({theme}) => theme.FONT_LINE["h1"]};
-  font-weight: 800;
-`
+// 색상
+export const mainGreenColor = css`
+  color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
+`;
 
