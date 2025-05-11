@@ -9,12 +9,10 @@ export const setUser = createAction(SET_USER, (curruentUser) => curruentUser);
 export const setUserStatus = createAction(SET_USER_STATUS, (isLogin) => isLogin);
 
 const userInitalValue = {
-    curruentUser : {
+    currentUser : {
         id : 0,
         memberEmail : "",
         memberName : "",
-        memberImgName: "",
-        memberImgPath: "",
         memberNickName : "",
         memberProvider : "",
     },
@@ -25,7 +23,7 @@ const userInitalValue = {
 const member = handleActions({
 
     [SET_PREVIOUS_URL] : (state , action) => ({...state, previousUrl: action.payload}),
-    [SET_USER] : (state, action) => ({...state, curruentUser: action.payload}),
+    [SET_USER] : (state, action) => ({...state, currentUser: action.payload}),
     [SET_USER_STATUS] : (state, action) => ({...state, isLogin: action.payload})
 
 }, userInitalValue );
