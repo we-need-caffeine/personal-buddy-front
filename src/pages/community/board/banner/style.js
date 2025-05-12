@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { flexCenter } from '../../../../globals/common';
 
 const S = {};
 
@@ -10,7 +11,7 @@ const S = {};
   `;
 
   S.SubTitle = styled.div`
-    color: #555;
+    color: #424242;
     font-size: 14px;
     padding-bottom: 3px;
   `;
@@ -23,9 +24,7 @@ const S = {};
   `;
 
   S.HotContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    ${flexCenter};
     gap: 40px;
     height: 680px;
     margin-bottom: 60px;
@@ -78,18 +77,6 @@ const S = {};
     text-align: center;
     line-height: 50px;
     border-radius: 20px 0 20px 0;
-  `;
-
-  S.HotTag = styled.span`
-    width: 75px;
-    height: 24px;
-    font-size: 14px;
-    color: #616161;
-    background: #f6f7f8;
-    border-radius: 5px;
-    text-align: center;
-    margin-top: 15px;
-    padding-top: 4px;
   `;
 
   S.HotTitle = styled.span`

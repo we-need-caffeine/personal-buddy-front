@@ -14,43 +14,27 @@ const BoardBannerContainer = () => {
 
         <S.Hot>
           <S.HotSlider>
-            {[1, 2, 3].map((num) => (
+            {[1,2,3,4,5,6,7,8,9,10].map((num) => (
               <S.HotContent key={num}>
                 <S.HotImageBox>
-                  <img
-                    className="img"
-                    alt={`hot${num}`}
-                  />
+                  <img className="img" alt={`hot${num}`}/>
                   <S.NumberBox>{num}</S.NumberBox>
                 </S.HotImageBox>
-                <S.HotTag>자유 게시글</S.HotTag>
-                <S.HotTitle>자바 껌이죠</S.HotTitle>
+                <S.HotTitle>board Title</S.HotTitle>
                 <S.HotUserBox>
-                  <S.UserProfile src="https://placehold.co/24x24" />
-                  <S.UserNickname>따자하오영수</S.UserNickname>
+                  <S.UserProfile src="" />
+                  <S.UserNickname>userID</S.UserNickname>
                 </S.HotUserBox>
-                <S.HotDate>2025.02.01 게시</S.HotDate>
+                <S.HotDate>createDate</S.HotDate>
                 <S.HotMetaBox>
                   <span>
-                    <img
-                      src=""
-                      className="icon"
-                      alt="like"
-                    />600
+                    <img src="" className = "icon" alt="like"/>
                   </span>
                   <span>
-                    <img
-                      src=""
-                      className="icon"
-                      alt="view"
-                    />9999+
+                    <img src=""className="icon"alt="view"/>
                   </span>
                   <span>
-                    <img
-                      src=""
-                      className="icon"
-                      alt="comment"
-                    />78
+                    <img src="" className="icon" alt="comment"/>
                   </span>
                 </S.HotMetaBox>
               </S.HotContent>
