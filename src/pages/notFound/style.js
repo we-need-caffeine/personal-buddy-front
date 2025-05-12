@@ -10,8 +10,11 @@ S.Container = styled.div`
 `;
 
 S.Image = styled.img`
-  width: 600px;
+  width: 80%;
+  max-width: 600px;
+  margin: 0 auto;
   height: auto;
+  object-fit: cover;
 `;
 
 S.BackButton = styled.button`
