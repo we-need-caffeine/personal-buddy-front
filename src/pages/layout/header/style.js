@@ -10,34 +10,34 @@ export const headerContainer = {
     transition: "transform 0.5s ease",
     zIndex: "10000",
     fontSize: theme.FONT_SIZE.h6,
-    fontColor: theme.PALLETE.black,
-    fontWeight: theme.FONT_WEIGHT.regular,
+    color: theme.PALLETE.black,
+    fontWeight: theme.FONT_WEIGHT.regular
 };
 
 export const headerMainContainer = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "1400px",
+    width: "1400px"
 };
 
 export const headerLeftContainer = {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
 };
 
 export const headerRightContainer = {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
 };
 
 export const headerMainIconContainer = {
     display: "flex",
     alignItems: "center",
     width: "70px",
-    height: "46px",
+    height: "46px"
 }
 
 export const headerLinkContainer = {
@@ -45,7 +45,7 @@ export const headerLinkContainer = {
     alignItems: "center",
     justifyContent: "space-between",
     marginLeft: "54px",
-    width: "558px",
+    width: "558px"
 }
 
 export const headerSocialContainer = {
@@ -53,11 +53,19 @@ export const headerSocialContainer = {
     alignItems: "center",
     justifyContent: "space-between",
     width: "80px",
-    marginRight: "20px",
+    marginRight: "20px"
 }
 
 export const headerProfileContainer = {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
+}
+
+export const headerProfileImg = {
+    marginRight: '25px',
+    cursor: "pointer", 
+    width:'40px', 
+    height:'40px', 
+    borderRadius:'36px'
 }

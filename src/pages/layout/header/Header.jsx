@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { headerContainer, headerLeftContainer, headerLinkContainer, headerMainContainer, headerMainIconContainer, headerProfileContainer, headerRightContainer, headerSocialContainer } from './style';
+import { headerContainer, headerLeftContainer, headerLinkContainer, headerMainContainer, headerMainIconContainer, headerProfileContainer, headerProfileImg, headerRightContainer, headerSocialContainer } from './style';
 
 
 const Header = () => {
@@ -27,12 +27,12 @@ const Header = () => {
             ...headerContainer,
             transform: showHeader ? 'translateY(0)' : 'translateY(-100%)',
         }}>
-            <div style={{
-                ...headerMainContainer,
-            }}>
+            <div style={headerMainContainer}>
                 <div style={headerLeftContainer}>
                     <div style={headerMainIconContainer}>
-                        <img style={{cursor: "pointer",}} src='/assets/images/header/persenalBuddyIcon.png' alt="퍼스널 버디 아이콘" />
+                        <NavLink to={"/main"}>
+                            <img src='/assets/images/header/persenalBuddyIcon.png' alt="퍼스널 버디 아이콘" />
+                        </NavLink>
                     </div>
                     <div style={headerLinkContainer}>
                         <NavLink to={"/main"}>일정관리</NavLink>
@@ -54,7 +54,7 @@ const Header = () => {
                         </div>
                         <div style={headerProfileContainer}>
                             <NavLink to={"/main/mypage"}>
-                                <img style={{marginRight: '25px',cursor: "pointer", width:'40px', height:'40px', borderRadius:'36px'}} src='/assets/images/header/memberProfile.png' alt="멤버 프로필" />
+                                <img style={headerProfileImg} src='/assets/images/header/memberProfile.png' alt="멤버 프로필" />
                             </NavLink>
                             <span style={{cursor: "pointer"}}>로그아웃</span>
                         </div>
