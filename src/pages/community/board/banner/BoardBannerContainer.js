@@ -1,52 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import S from './style';
 
 const BoardBannerContainer = () => {
+
+  const [hotPosts, setHotPosts] = useState([]);
+
+  useEffect(()=>{
+    const fetchHotPosts = async () => {
+      try{
+        const response = await fetch("/boards/api/hot")
+        const data = await response.json();
+
+        setHotPosts(data);
+      } catch {
+      console.error("HOT 게시글 조회 실패")
+    }
+  };
+    fetchHotPosts();
+  }, []);
+  
+    
   return (
-    <S.HotWrapper>
-      <S.SubTitle>TOP10</S.SubTitle>
-      <S.MainTitle>버디들의 HOT 🔥</S.MainTitle>
+      <S.HotWrapper>
+        <S.SubTitle>TOP10</S.SubTitle>
+        <S.MainTitle>버디들의 HOT 🔥</S.MainTitle>
 
-      <S.HotContainer>
-        <S.HotBtnLeft>
-          <img alt="left" />
-        </S.HotBtnLeft>
-
-        <S.Hot>
-          <S.HotSlider>
-            {[1,2,3,4,5,6,7,8,9,10].map((num) => (
-              <S.HotContent key={num}>
-                <S.HotImageBox>
-                  <img className="img" alt={`hot${num}`}/>
-                  <S.NumberBox>{num}</S.NumberBox>
-                </S.HotImageBox>
-                <S.HotTitle>board Title</S.HotTitle>
-                <S.HotUserBox>
-                  <S.UserProfile src="" />
-                  <S.UserNickname>userID</S.UserNickname>
-                </S.HotUserBox>
-                <S.HotDate>createDate</S.HotDate>
-                <S.HotMetaBox>
-                  <span>
-                    <img src="" className = "icon" alt="like"/>
-                  </span>
-                  <span>
-                    <img src=""className="icon"alt="view"/>
-                  </span>
-                  <span>
-                    <img src="" className="icon" alt="comment"/>
-                  </span>
-                </S.HotMetaBox>
-              </S.HotContent>
-            ))}
-          </S.HotSlider>
-        </S.Hot>
-
-        <S.HotBtnRight>
-          <img alt="right" />
-        </S.HotBtnRight>
-      </S.HotContainer>
-    </S.HotWrapper>
+        
+      </S.HotWrapper>
   );
 };
 
