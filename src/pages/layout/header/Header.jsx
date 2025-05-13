@@ -18,7 +18,6 @@ const Header = () => {
 
     window.addEventListener("wheel", handleWheel);
     return () => window.removeEventListener("wheel", handleWheel); 
-
     // delta : window wheel event 속성
     // Y : 방향 설정
     // deltaY : 휠 스크롤 시 Y축 방향으로 얼마나 움직였는지
@@ -36,11 +35,11 @@ const Header = () => {
           </S.IconBox>
 
           <S.LinkBox>
-            <NavLink to="/main">일정관리</NavLink>
-            <NavLink to="/main/contents">컨텐츠</NavLink>
-            <NavLink to="/main/community/event">이벤트</NavLink>
-            <NavLink to="/main/community/board">커뮤니티</NavLink>
-            <NavLink to="/main/faq">고객센터</NavLink>
+            <NavLink to="/main" end className={({ isActive }) => isActive ? 'active' : undefined}>일정관리</NavLink>
+            <NavLink to="/main/contents" className={({ isActive }) => isActive ? 'active' : undefined}>컨텐츠</NavLink>
+            <NavLink to="/main/community/event" className={({ isActive }) => isActive ? 'active' : undefined}>이벤트</NavLink>
+            <NavLink to="/main/community/board" className={({ isActive }) => isActive ? 'active' : undefined}>커뮤니티</NavLink>
+            <NavLink to="/main/faq" className={({ isActive }) => isActive ? 'active' : undefined}>고객센터</NavLink>
           </S.LinkBox>
         </S.Left>
 

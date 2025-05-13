@@ -18,7 +18,6 @@ theme.PALLETE = {
         gray4: "#999999",
         gray5: "#777777",
         gray6: "#555555",
-        black: "#000000"
     },
 
     warningRed: "#FF3F3F",
