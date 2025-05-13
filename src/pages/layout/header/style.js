@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { blackColor, fontSizeH6, fontWeightRegular, mainGreenColor } from '../../../globals/common';
+
+const S = {};
 
 // 헤더 전체 wrapper (transform 이동)
 S.Container = styled.div`
@@ -10,9 +13,9 @@ S.Container = styled.div`
     height: 90px;
     transition: transform 0.5s ease;
     z-index: 10000;
-    font-size: ${({ theme }) => theme.FONT_SIZE.h6};
-    color: ${({ theme }) => theme.PALLETE.black};
-    font-weight: ${({ theme }) => theme.FONT_WEIGHT.regular};
+    ${fontSizeH6};
+    ${blackColor};
+    ${fontWeightRegular}
 `;
 
 // 가운데 정렬되는 내부 컨테이너 (전체 max-width 설정)
@@ -55,10 +58,10 @@ S.LinkBox = styled.div`
 
     a {
         text-decoration: none;
-        color: ${({ theme }) => theme.PALLETE.black};
-        font-weight: ${({ theme }) => theme.FONT_WEIGHT.regular};       
+        ${blackColor};
+        ${fontWeightRegular}
         &.active {
-          color: ${({ theme }) => theme.PALLETE.main}; // NavLink 활성화 시 색상 변경
+            ${mainGreenColor}
         }
     }
     `;
@@ -96,69 +99,3 @@ S.ProfileBox = styled.div`
 `;
 
 export default S;
-
-
-
-// import theme from "../../../globals/theme";
-
-// export const headerContainer = {
-//     backgroundColor: theme.PALLETE.background.white,
-//     position:'fixed',
-//     display: "flex",
-//     justifyContent: "center",
-//     width: "100%",
-//     height: "90px",
-//     transition: "transform 0.5s ease",
-//     zIndex: "10000",
-//     fontSize: theme.FONT_SIZE.h6,
-//     fontColor: theme.PALLETE.black,
-//     fontWeight: theme.FONT_WEIGHT.regular,
-// };
-
-// export const headerMainContainer = {
-//     display: "flex",
-//     alignItems: "center",
-//     justifyContent: "space-between",
-//     width: "1400px",
-// };
-
-// export const headerLeftContainer = {
-//     display: "flex",
-//     alignItems: "center",
-//     justifyContent: "space-between",
-// };
-
-// export const headerRightContainer = {
-//     display: "flex",
-//     alignItems: "center",
-//     justifyContent: "space-between",
-// };
-
-// export const headerMainIconContainer = {
-//     display: "flex",
-//     alignItems: "center",
-//     width: "70px",
-//     height: "46px",
-// }
-
-// export const headerLinkContainer = {
-//     display: "flex",
-//     alignItems: "center",
-//     justifyContent: "space-between",
-//     marginLeft: "54px",
-//     width: "558px",
-// }
-
-// export const headerSocialContainer = {
-//     display: "flex",
-//     alignItems: "center",
-//     justifyContent: "space-between",
-//     width: "80px",
-//     marginRight: "20px",
-// }
-
-// export const headerProfileContainer = {
-//     display: "flex",
-//     alignItems: "center",
-//     justifyContent: "space-between",
-// }

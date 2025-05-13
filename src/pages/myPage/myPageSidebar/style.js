@@ -1,69 +1,76 @@
 import styled from 'styled-components';
+import { fontSizeH6, fontSizeH8, fontSizeH9, fontWeightLight, gray5Color, mainGreenColor } from '../../../globals/common';
 
 const S = {};
 
-export const myPageMemberProfile = {
-    width:'200px', 
-    height:'200px'
-}
+S.MyPageMemberProfile = styled.div`
+    width: 200px;
+    height: 200px;
+`
 
-export const myPageMemberInfoContainer = {
-    display:'flex', 
-    flexDirection:'column', 
-    alignItems:'center', 
-    border:'solid 1px #DDDDDD', 
-    width:'198px'
-}
+S.MyPageMemberInfoContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: solid 1px ${({ theme }) => theme.PALLETE.gray.gray2};
+    width: 198px;
+`
 
-export const myPageMemberInfoNickName = {
-    fontSize:'18px', 
-    marginTop:'30px'
-}
+S.MyPageMemberInfoNickName = styled.div`
+    ${fontSizeH6};
+    margin-top: 30px;
+`
 
-export const myPageMemberInfoStatusMessage = {
-    fontSize:'12px', 
-    color:'#777', 
-    marginTop:'10px'
-}
+S.MyPageMemberInfoStatusMessage = styled.div`
+    ${fontSizeH9};
+    ${gray5Color};
+    margin-top: 10px;
+`
 
-export const myPageMemberInfoFollowContainer = {
-    width:'190px', 
-    fontSize:'14px', 
-    color:'#777', 
-    margin:'20px 0', 
-    display:'flex', 
-    justifyContent:'center'
-}
+S.MyPageMemberInfoFollowContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 190px;
+    margin: 20px 0;
+    ${gray5Color};
+    ${fontSizeH8};
+    ${fontWeightLight}
+`
 
-export const myPageMemberInfoFollow = {
-    margin:'0 5px', 
-    display:'flex'
-}
+S.MyPageMemberInfoFollow = styled.div`
+    display: flex;
+    margin: 0 5px;
+`
 
-export const myPageMemberInfoFollowCount = {
-    color:'#01CD74', 
-    marginLeft:'2px'
-}
+S.MyPageMemberInfoFollowCount = styled.div`
+    ${mainGreenColor};
+    margin-left: 2px;
+`
 
-export const myPageTapContainer = {
-    border:'solid 1px #DDDDDD', 
-    width:'198px'
-}
+S.MyPageTapContainer = styled.div`
+    width: 198px;
+    border: solid 1px ${({ theme }) => theme.PALLETE.gray.gray2};
+    border-top: none;
+`
 
-export const myPageTitleContainer = {
-    margin:'20px 20px 10px 20px', 
-    fontSize:'18px'
-}
+S.MyPageTitleContainer = styled.div`
+    padding: 20px 20px 10px 20px;
+    ${fontSizeH6};
+`
 
-export const myPageTitle = {
-    marginLeft:'5px'
-}
+S.MyPageTitleIcon = styled.div`
+    margin-right: 5px;
+`
 
-export const myPageSubTitle = {
-    fontSize:'14px', 
-    display:'flex', 
-    flexDirection:'column', 
-    margin:'10px 24px'
-}
+S.MyPageTitle = styled.div`
+    display: flex;
+    align-items: center;
+`
 
+S.MyPageSubTitle = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 10px 24px;
+    ${fontSizeH8};
+`
 export default S;
