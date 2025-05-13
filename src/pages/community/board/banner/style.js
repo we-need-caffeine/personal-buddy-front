@@ -13,6 +13,7 @@ const S = {};
   S.SubTitle = styled.div`
     color: #424242;
     font-size: 14px;
+    font-weight: 400;
     padding-bottom: 3px;
   `;
 
