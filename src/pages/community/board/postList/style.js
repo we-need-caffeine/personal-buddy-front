@@ -7,7 +7,8 @@ import {
   fontWeightBold,
   fontWeightMedium,
   fontWeightLight,
-  fontSizeH4
+  fontSizeH4,
+  fontWeightRegular
 } from '../../../../globals/common';
 import { Link } from 'react-router-dom';
 
@@ -16,6 +17,22 @@ const S = {};
 S.BoardHeader = styled.div`
     width: 100%;
     margin-bottom: 40px;
+`;
+
+S.TitlesAndWriteBtn = styled.div`
+    display: flex;
+    justify-content: space-between;
+`
+
+S.Titles = styled.div`
+
+`
+
+S.SubTitle = styled.div`
+  ${fontSizeH8}
+  ${fontWeightRegular}
+  color: #555;
+  padding-bottom: 3px;
 `;
 
 S.BoardTitle = styled.h2`

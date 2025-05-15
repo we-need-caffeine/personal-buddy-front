@@ -67,6 +67,7 @@ S.HotSlider = styled.div`
   width: max-content;
   height: 100%;
   transition: transform 0.5s ease;
+
 `;
 
 S.HotContent = styled.div`
