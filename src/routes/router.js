@@ -58,6 +58,10 @@ import MyPageProfileEdit from "../pages/myPage/profileEdit/MyPageProfileEdit";
 import MyPageMemberEdit from "../pages/myPage/memberEdit/MyPageMemberEdit";
 import MyPagePointLog from "../pages/myPage/pointLog/MyPagePointLog";
 import MyPageSurveyEdit from "../pages/myPage/surveyEdit/MyPageSurveyEdit";
+import JoinAgree from "../pages/member/join/JoinAgree";
+import JoinContainer from "../pages/member/join/JoinContainer";
+import JoinInfo from "../pages/member/join/JoinInfo";
+import JoinProfile from "../pages/member/join/JoinProfile";
 
 const router = createBrowserRouter([
     {
@@ -293,8 +297,22 @@ const router = createBrowserRouter([
         children : [
 
             {
-                path : "join"
-                
+                path: "join",
+                element: <JoinContainer />,
+                children: [
+                    { 
+                        path: "", 
+                        element: <JoinAgree /> 
+                    },     
+                    { 
+                        path: "info", 
+                        element: <JoinInfo />
+                    },
+                    { 
+                        path: "profile", 
+                        element: <JoinProfile /> 
+                    },
+                ],
             },
             {
                 path : "login",
