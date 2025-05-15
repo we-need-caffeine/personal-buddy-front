@@ -3,11 +3,21 @@ import CalendarLeft from './calendarLeft/CalendarLeft';
 import CalendarRight from './calnerdarRight/CalendarRight';
 
 const CalendarBody = () => {
+
+    // const cal = 1;
+
     return (
-        <div>
+        <>
             <CalendarLeft />
+            {/* await fetch */}
+            {/* 컴포넌트를 갈아끼운다 */}
             <CalendarRight />
-        </div>
+            {/* {cal == 1 ? 
+            <div></div>
+            :
+            <div></div>
+            } */}
+        </>
     );
 };
 
