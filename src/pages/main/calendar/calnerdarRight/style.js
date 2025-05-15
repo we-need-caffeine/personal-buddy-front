@@ -124,4 +124,9 @@ S.DoneTodoWrapper = styled.div`
   height: 50px;
 `;
 
+export const DeleteIcon = styled.img`
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
+`;
 export default S;
