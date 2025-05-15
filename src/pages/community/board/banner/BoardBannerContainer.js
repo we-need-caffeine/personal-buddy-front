@@ -59,8 +59,8 @@ const BoardBannerContainer = ({ dummyData }) => {
           <img
             src={
               currentIndex === 0
-                ? '/assets/images/community/button-left.png'
-                : '/assets/images/community/button-left.png'
+                ? '/assets/images/board/btn/left-btn.png'
+                : '/assets/images/board/btn/left-btn-hover.png'
             }
             alt="left"
           />
@@ -124,8 +124,8 @@ const BoardBannerContainer = ({ dummyData }) => {
           <img
             src={
               currentIndex >= hotPosts.length - visibleCount
-                ? '/assets/images/community/button-right.png'
-                : '/assets/images/community/button-right.png'
+                ? '/assets/images/board/btn/right-btn.png'
+                : '/assets/images/board/btn/right-btn-hover.png'
             }
             alt="right"
           />
