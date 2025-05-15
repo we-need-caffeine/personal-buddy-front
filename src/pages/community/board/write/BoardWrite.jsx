@@ -30,6 +30,7 @@ const BoardWrite = () => {
       reader.readAsDataURL(file); // 파일을 base64 문자열로 변환
     });
   };
+  
     // 추후 백엔드에 이미지 업로드 연동 시
     // 파일을 FormData로 묶어서 fetch로 보낸다.
     // 서버에서 받은 url 리스트를 previewUrls로 저장한다.
@@ -45,8 +46,6 @@ const BoardWrite = () => {
     // method: 'POST',
     // body: formData 
     // });
-
-
 
   const handleSubmit = async () => {
     if (!title || !content || !category) {
