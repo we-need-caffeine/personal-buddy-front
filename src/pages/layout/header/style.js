@@ -13,6 +13,7 @@ S.Container = styled.div`
     height: 90px;
     transition: transform 0.5s ease;
     z-index: 10000;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
     ${fontSizeH6};
     ${blackColor};
     ${fontWeightRegular}
