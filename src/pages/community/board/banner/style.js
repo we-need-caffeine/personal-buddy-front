@@ -11,6 +11,8 @@ import {
 
 const S = {};
 
+// ---------- 전체 래퍼 & 제목 -----------
+// 전체 HOT 슬라이드 영역을 감싸는 최상위 래퍼
 S.HotWrapper = styled.div`
   width: 1400px;
   margin: auto;
@@ -18,6 +20,7 @@ S.HotWrapper = styled.div`
   flex-direction: column;
 `;
 
+// 작은 제목 (TOP10)
 S.SubTitle = styled.div`
   ${fontSizeH8}
   ${fontWeightRegular}
@@ -25,6 +28,7 @@ S.SubTitle = styled.div`
   padding-bottom: 3px;
 `;
 
+// 메인 제목 (버디들의 HOT)
 S.MainTitle = styled.div`
   ${fontSizeH4}
   ${fontWeightBold}
@@ -34,6 +38,8 @@ S.MainTitle = styled.div`
   padding-bottom: 55px;
 `;
 
+// ---------- 슬라이드 컨테이너 및 버튼 -----------
+// 슬라이드 전체 감싸는 영역 (버튼 + 슬라이드 포함)
 S.HotContainer = styled.div`
   width: 1400px;
   height: 680px;
@@ -44,6 +50,7 @@ S.HotContainer = styled.div`
   margin: 0 0 60px 0;
 `;
 
+// 왼쪽 이동 버튼
 S.HotBtnLeft = styled.div`
   width: 50px;
   height: 50px;
@@ -52,8 +59,11 @@ S.HotBtnLeft = styled.div`
   ${flexCenter}
 `;
 
+// 오른쪽 이동 버튼
 S.HotBtnRight = styled(S.HotBtnLeft)``;
 
+// ---------- 슬라이더 트랙 & 아이템 박스 -----------
+// 실제 슬라이더가 이동되는 트랙
 S.Hot = styled.div`
   overflow: hidden;
   width: 1160px;
@@ -61,6 +71,7 @@ S.Hot = styled.div`
   margin: auto;
 `;
 
+// 슬라이더 내부 요소를 가로로 나열하는 박스
 S.HotSlider = styled.div`
   display: flex;
   gap: 100px;
@@ -70,6 +81,8 @@ S.HotSlider = styled.div`
 
 `;
 
+// ---------- 개별 HOT 콘텐츠 -----------
+// HOT 게시글 1개 (320x670)
 S.HotContent = styled.div`
   flex-shrink: 0;
   width: 320px;
@@ -78,6 +91,8 @@ S.HotContent = styled.div`
   flex-direction: column;
 `;
 
+// ---------- 게시글 이미지 & 순위 박스 -----------
+// 이미지 영역을 감싸는 박스
 S.HotImageBox = styled.div`
   position: relative;
   display: inline-block;
@@ -93,6 +108,7 @@ S.HotImageBox = styled.div`
   }
 `;
 
+// 이미지 왼쪽 상단에 보여지는 순위 번호 박스
 S.NumberBox = styled.div`
   position: absolute;
   top: 0;
@@ -109,6 +125,8 @@ S.NumberBox = styled.div`
   ${flexCenter}
 `;
 
+// ---------- 게시글 정보 ---------- 
+// 해시태그 
 S.HotTag = styled.div`
   ${flexCenter}
   width: 86px;
@@ -122,6 +140,7 @@ S.HotTag = styled.div`
   padding-top: 4px;
 `;
 
+// 게시글 제목
 S.HotTitle = styled.div`
   font-size: 18px;
   font-weight: 700;
@@ -129,6 +148,7 @@ S.HotTitle = styled.div`
   padding: 14px 0 18px 0;
 `;
 
+// 유저 정보(프로필 이미지 + 닉네임)
 S.HotUserBox = styled.div`
   display: flex;
   align-items: center;
@@ -137,6 +157,7 @@ S.HotUserBox = styled.div`
   margin-bottom: 10px;
 `;
 
+// 프로필 이미지
 S.UserProfile = styled.img`
   width: 24px;
   height: 24px;
@@ -144,12 +165,14 @@ S.UserProfile = styled.img`
   object-fit: cover;
 `;
 
+// 닉네임(텍스트)
 S.UserNickname = styled.span`
   font-size: 14px;
   font-weight: 500;
   color: #808080;
 `;
 
+// 게시일
 S.HotDate = styled.div`
   font-size: 12px;
   font-weight: 300;
@@ -157,6 +180,7 @@ S.HotDate = styled.div`
   padding-bottom: 5px;
 `;
 
+// 좋아요, 조회수, 댓글 수 표시 영역
 S.HotMetaBox = styled.div`
   font-size: 12px;
   font-weight: 300;
