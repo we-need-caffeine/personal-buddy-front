@@ -25,7 +25,7 @@ const Header = () => {
 
   return (
     // 전체 헤더 컨테이너 (스크롤 방향에 따라 transform 적용)
-    <S.Container style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}>
+    <S.Container style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-110%)' }}>
       {/* 가운데 정렬된 내부 레이아웃 */}
       <S.Main>
         {/* 왼쪽: 로고 + 메뉴 링크 */}
@@ -35,11 +35,11 @@ const Header = () => {
           </S.IconBox>
 
           <S.LinkBox>
-            <NavLink to="/main" end className={({ isActive }) => isActive ? 'active' : undefined}>일정관리</NavLink>
-            <NavLink to="/main/contents" className={({ isActive }) => isActive ? 'active' : undefined}>컨텐츠</NavLink>
-            <NavLink to="/main/community/event" className={({ isActive }) => isActive ? 'active' : undefined}>이벤트</NavLink>
-            <NavLink to="/main/community/board" className={({ isActive }) => isActive ? 'active' : undefined}>커뮤니티</NavLink>
-            <NavLink to="/main/faq" className={({ isActive }) => isActive ? 'active' : undefined}>고객센터</NavLink>
+            <NavLink to="/main" end>일정관리</NavLink>
+            <NavLink to="/main/contents">컨텐츠</NavLink>
+            <NavLink to="/main/community/event">이벤트</NavLink>
+            <NavLink to="/main/community/board">커뮤니티</NavLink>
+            <NavLink to="/main/faq" >고객센터</NavLink>
           </S.LinkBox>
         </S.Left>
 
