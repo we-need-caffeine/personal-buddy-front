@@ -7,7 +7,7 @@ const BoardWrite = () => {
   const [content, setContent] = useState(''); // 게시글 본문 내용을 저장
   const [files, setFiles] = useState([]); // 사용자가 업로드한 이미지 파일들을 배열 형태로 저장
   const [previewUrls, setPreviewUrls] = useState([]); // 이미지 파일을 base64로 변환한 URL 배열 (브라우저에서 미리보기용으로 사용)
-  const [isSelected, setIsSelected] = useState(false); // 카테고리가 선택되었는지 여부 확인용. 선택 여부에 따라 셀렉트박스 스타일이 바뀜.
+  const [isSelected, setIsSelected] = useState(false); // 카테고리가 선택되었는지 여부 확인용. 선택 여부에 따라 셀렉트박스 스타일이 바뀜
  
   // 사용자가 <input type="file" />에 파일을 올리면 자동으로 실행되는 이벤트 함수
   // 이벤트 객체에는 사용자가 선택한 파일 목록이 들어 있음
@@ -31,7 +31,7 @@ const BoardWrite = () => {
     });
   };
     // 추후 백엔드에 이미지 업로드 연동 시
-    // 파일을 FormData로 묶어서 fetch로 보낸다
+    // 파일을 FormData로 묶어서 fetch로 보낸다.
     // 서버에서 받은 url 리스트를 previewUrls로 저장한다.
 
     // const formData = new FormData();
