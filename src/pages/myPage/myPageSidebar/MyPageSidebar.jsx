@@ -13,10 +13,10 @@ const MyPageSidebar = () => {
                     <S.MyPageMemberProfile>
                         <img src='/assets/images/header/memberProfile.png' alt='멤버 프로필 이미지'/>
                     </S.MyPageMemberProfile>
+                    <S.MyPageMemberInfoContainer>
                         <S.MyPageMemberInfoNickName>
                             <span>nickName</span>
                         </S.MyPageMemberInfoNickName>
-                    <S.MyPageMemberInfoContainer>
                         <S.MyPageMemberInfoStatusMessage>
                             <span>상태 메세지</span>
                         </S.MyPageMemberInfoStatusMessage>
@@ -35,10 +35,14 @@ const MyPageSidebar = () => {
                             </S.MyPageMemberInfoFollow>
                         </S.MyPageMemberInfoFollowContainer>
                     </S.MyPageMemberInfoContainer>
-                    <div style={{width:'200px', height:'40px', display:'flex'}}>
-                        <div style={{width:'100px', height:'40px', backgroundColor:'gray'}}></div>
-                        <div style={{width:'100px', height:'40px', backgroundColor:'green'}}></div>
-                    </div>
+                    <S.MyPageMemberInfoButtonContainer>
+                        <S.MypageMemberInfoFollowButton>
+                            <span>팔로우</span>
+                        </S.MypageMemberInfoFollowButton>
+                        <S.MypageMemberInfoMessageButton>
+                            <span>메세지</span>
+                        </S.MypageMemberInfoMessageButton>
+                    </S.MyPageMemberInfoButtonContainer>
                     <S.MyPageTapContainer>
                         <S.MyPageTitleContainer>
                             <S.MyPageTitle>
@@ -48,7 +52,7 @@ const MyPageSidebar = () => {
                                 <span>마이페이지</span>
                             </S.MyPageTitle>
                             <S.MyPageSubTitle>
-                                <NavLink to={""}>
+                                <NavLink to={""} end>
                                     <span>나의 성장나무</span>
                                 </NavLink>
                             </S.MyPageSubTitle>
@@ -96,7 +100,7 @@ const MyPageSidebar = () => {
                                 <span>마이페이지</span>
                             </S.MyPageTitle>
                             <S.MyPageSubTitle>
-                                <NavLink to={""}>
+                                <NavLink to={""} end>
                                     <span>나의 성장나무</span>
                                 </NavLink>
                             </S.MyPageSubTitle>

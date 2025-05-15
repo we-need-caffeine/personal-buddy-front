@@ -1,19 +1,20 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import MyPageSidebar from './myPageSidebar/MyPageSidebar';
+import S from './style';
 
 const MyPageContainer = () => {
   return (
-    <div style={{width:'100%', display:'flex', justifyContent:'center'}}>
-      <div style={{marginTop:'70px', width:"1400px", display:'flex', justifyContent:'space-between'}}>
-        <div style={{width:"200px"}}>
+    <>
+      <S.MainContainer>
+        <S.SideBarContainer>
           <MyPageSidebar />
-        </div>
-        <div style={{width:'1160px'}}>
+        </S.SideBarContainer>
+        <S.OutletContainer>
           <Outlet />
-        </div>
-      </div>
-    </div>
+        </S.OutletContainer>
+      </S.MainContainer>
+    </>
   );
 };
 
