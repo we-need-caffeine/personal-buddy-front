@@ -35,6 +35,10 @@ const GlobalStyle = createGlobalStyle`
     font-style: 700;
   }
 
+  html {
+    scrollbar-gutter: stable;
+  }
+
   body {
     font-family: 'SpoqaHanSansNeo';
     /* text-shadow: 0 0 2px rgba(0, 0, 0, 0.05); */
