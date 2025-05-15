@@ -130,6 +130,12 @@ S.Thumbnail = styled.img`
     object-fit: cover;
     border-radius: 20px;
     background: ${({ theme }) => theme.PALLETE.gray.gray1};
+
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: scale(1.03);
+    }
 `;
 
 S.Tag = styled.div`
