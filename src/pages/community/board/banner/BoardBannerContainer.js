@@ -35,12 +35,12 @@ const BoardBannerContainer = ({ dummyData }) => {
 
   const visibleCount = 3; // 한 번에 보여줄 게시글 수
 
-  // 왼쪽 화살표 클릭 시 인덱스 감소 (0보다 작아지지 않게 조건 체크)
+  // 왼쪽 화살표 클릭 시 인덱스 감소 (0보다 작아지지 않게 조건)
   const handleLeft = () => {
     if (currentIndex > 0) setCurrentIndex((prev) => prev - 1);
   };
 
-  // 오른쪽 화살표 클릭 시 인덱스 증가 (범위 초과하지 않도록 조건 체크)
+  // 오른쪽 화살표 클릭 시 인덱스 증가 (범위 초과하지 않도록 조건)
   const handleRight = () => {
     if (currentIndex < hotPosts.length - visibleCount)
       setCurrentIndex((prev) => prev + 1);

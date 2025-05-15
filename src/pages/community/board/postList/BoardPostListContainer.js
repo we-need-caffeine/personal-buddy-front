@@ -3,14 +3,38 @@ import S from './style';
 import { Link } from 'react-router-dom';
 
 const BoardPostListContainer = ({setPostLists }) => {
-  const [localPosts, setLocalPosts] = useState([]);  // 현재 컴포넌트에서 보여줄 게시글 리스트
-
+  const [localPosts, setLocalPosts] = useState([]);  // 전체 게시글 원본
   const [selectedTag, setSelectedTag] = useState(null); // 선택된 해시태그 상태 (null이면 전체 보기)
+  const [sortType, setSortType] = useState('latest'); // 정렬 기준 상태
+  const [searchKeyword, setSearchKeyword] = useState('') // 검색어 상태
 
-  // 선택된 해시태그에 따라 게시글을 필터링해서 보여줌
-  const filteredPosts = selectedTag
-  ? localPosts.filter((post) => post.hashtag === selectedTag)
-  : localPosts;
+  // 게시글 데이터 정렬
+  const sortPosts = (posts) => {
+    switch (sortType) {
+      case 'latest':
+        return [...posts].sort((a,b) => new Date(b.createdDate) - new Date(a.createdDate)); // new Date("2025-05-13") > new Date("2025-05-12")
+       
+      case 'likes':
+        return [...posts].sort((a,b) => b.likeCount - a.likeCount);
+
+      case 'view':
+        return [...posts].sort((a,b) => b.viewCount - a.viewCount);
+
+      default :
+        return [...posts].sort((a,b) => new Date(b.createdDate) - new Date(a.createdDate));
+      
+    }
+  }
+  
+
+  // 해시태그 + 검색 + 정렬 
+  const filteredPosts = localPosts.filter((post) => {
+    // console.log("야임마")
+    const matchTag = selectedTag ? post.hashtag === selectedTag : true; 
+    const matchKeyword = searchKeyword === '' || post.title.includes(searchKeyword) || post.nickname.includes(searchKeyword);
+    return matchTag && matchKeyword;
+  })
+  const sortedPosts = sortPosts(filteredPosts)
 
   // 게시글 목록을 백엔드에서 가져오거나, 실패 시 더미 데이터를 사용
   useEffect(() => {
@@ -106,7 +130,6 @@ const BoardPostListContainer = ({setPostLists }) => {
             commentCount: 12,
           },         
         ];
-
         setLocalPosts(dummyData);
         setPostLists(dummyData);
       }
@@ -118,16 +141,20 @@ const BoardPostListContainer = ({setPostLists }) => {
   return (
     <>
     <S.SortBox>
-      <button>최신순</button>
+      <button onClick={()=>setSortType("latest")}>최신순</button>
       <p>|</p>
-      <button>좋아요순</button>
+      <button onClick={()=>setSortType("likes")}>좋아요순</button>
       <p>|</p>
-      <button>조회순</button>
+      <button onClick={()=>setSortType("views")}>조회순</button>
     </S.SortBox>
     
     <S.BoardHeader>
       <S.SearchArea>
-        <S.SearchInput type="text" placeholder="검색어를 입력해주세요." />
+        <S.SearchInput type="text" placeholder="검색어를 입력해주세요." onChange={(e)=>{
+            // console.log(e.target.value)
+              setSearchKeyword(e.target.value)}
+          }
+        />
         <S.TagArea>
           <S.TagButton onClick={() => setSelectedTag(null)}>#전체 일정</S.TagButton>
           <S.TagButton onClick={() => setSelectedTag('#관심 일정')}>#관심 일정</S.TagButton>
@@ -144,7 +171,7 @@ const BoardPostListContainer = ({setPostLists }) => {
       {localPosts.length === 0 ? (
         <div>게시글이 없습니다.</div>
       ) : (
-        filteredPosts.map((post) => ( // 필터링된 게시글만 렌더링
+        sortedPosts.map((post) => ( // 필터링된 게시글만 렌더링
           <Link to={`post/${post.id}`} key={post.id}>
             <S.PostCard>
               <S.Thumbnail
