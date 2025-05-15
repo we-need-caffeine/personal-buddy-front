@@ -1,12 +1,12 @@
 import React, { useState, useRef } from "react";
 import S from "./style";
 
-const CalendarRight = () => {
+const CalendarTodo = () => {
   const [rotated, setRotated] = useState(false);
   const [todos, setTodos] = useState([]);
   const [completedTodos, setCompletedTodos] = useState([]);
   const [todoInput, setTodoInput] = useState("");
-  const [selectedId, setSelectedId] = useState(null); // ✅ 선택된 항목
+  const [selectedId, setSelectedId] = useState(null);
   const nextId = useRef(1);
 
   const handleRotate = () => {
@@ -19,7 +19,7 @@ const CalendarRight = () => {
     setTodoInput("");
   };
 
-  // ✅ 완료 ↔ 미완료 전환
+  // 완료 미완료 전환
   const handleToggleTodo = (todo, isCompleted) => {
     if (isCompleted) {
       setCompletedTodos((prev) => prev.filter((t) => t.id !== todo.id));
@@ -31,7 +31,7 @@ const CalendarRight = () => {
     setSelectedId(null);
   };
 
-  // ✅ 삭제
+  // 삭제
   const handleRemoveTodo = (idToRemove) => {
     setTodos((prev) => prev.filter((todo) => todo.id !== idToRemove));
     setSelectedId(null);
@@ -58,7 +58,8 @@ const CalendarRight = () => {
             onClick={handleAddTodo}
           />
         </S.TodoWrapper>
-
+      </S.TodoContainer>
+      <S.ScrollContainer>
         {/* 할 일 목록 */}
         {todos.map((todo) => (
           <S.TodoWritten
@@ -116,9 +117,9 @@ const CalendarRight = () => {
             ))}
           </S.DoneTodoWrapper>
         )}
-      </S.TodoContainer>
+      </S.ScrollContainer>
     </S.Container>
   );
 };
 
-export default CalendarRight;
+export default CalendarTodo;
