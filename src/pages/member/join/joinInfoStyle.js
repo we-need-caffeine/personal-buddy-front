@@ -1,5 +1,19 @@
-// JoinInfoStyle.js
 import styled from 'styled-components';
+import {
+  fontSizeH8,
+  pointRedColor,
+  gray2Color,
+  gray3Color,
+  gray4Color,
+  gray6Color,
+  whiteColor,
+  subGreenColor,
+  lightGreenColor,
+  mainGreenColor,
+  fontWeightBold,
+  fontSizeH7,
+  fontSizeH9
+} from '../../../globals/common';
 
 export const Container = styled.div`
   padding: 50px;
@@ -9,7 +23,7 @@ export const Container = styled.div`
 `;
 
 export const Form = styled.form`
-  background: white;
+  background: ${({ theme }) => theme.PALLETE.white};
   width: 460px;
   margin-top: 30px;
 `;
@@ -19,7 +33,7 @@ export const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  border: var(--gray2) 1px solid;
+  border: 1px solid ${({ theme }) => theme.PALLETE.gray.gray2};
   margin-bottom: -1px;
 `;
 
@@ -27,10 +41,10 @@ export const Input = styled.input`
   width: 100%;
   height: 60px;
   padding: 10px 50px 10px 10px;
-  color: var(--gray6);
+  ${gray6Color}
   margin: 0px 50px;
   border: none;
-  font-size: var(--h7);
+  ${fontSizeH7}
   box-sizing: border-box;
   outline: none;
 `;
@@ -46,13 +60,14 @@ export const Button = styled.button`
   width: 200px;
   line-height: 30px;
   margin-right: 15px;
-  background-color: var(--white);
-  color: var(--sub-green);
-  border: 1px solid var(--sub-green);
+  ${whiteColor}
+  ${subGreenColor}
+  border: 1px solid ${({ theme }) => theme.PALLETE.primary.subGreen};
   border-radius: 10px;
+
   &:hover {
-    background-color: var(--light-green);
-    font-weight: 700;
+    ${lightGreenColor}
+    ${fontWeightBold}
   }
 `;
 
@@ -75,12 +90,13 @@ export const GenderButton = styled.span`
   height: 30px;
   text-align: center;
   line-height: 30px;
-  border: 1px solid var(--gray3);
-  font-size: var(--h9);
-  color: ${(props) => (props.active ? 'var(--sub-green)' : 'var(--gray4)')};
-  background-color: ${(props) => (props.active ? 'var(--light-green)' : 'var(--white)')};
+  border: 1px solid ${({ theme }) => theme.PALLETE.gray.gray3};
+  ${fontSizeH9}
+  color: ${(props) => (props.active ? props.theme.PALLETE.primary.subGreen : props.theme.PALLETE.gray.gray4)};
+  background-color: ${(props) => (props.active ? props.theme.PALLETE.primary.lightGreen : props.theme.PALLETE.white)};
   font-weight: ${(props) => (props.active ? 500 : 300)};
-  border-radius: ${(props) => (props.children === '남성' ? '10px 0 0 10px' : '0 10px 10px 0')};
+  border-radius: ${(props) =>
+    props.children === '남성' ? '10px 0 0 10px' : '0 10px 10px 0'};
 `;
 
 export const ConfirmCheck = styled.div`
@@ -92,9 +108,9 @@ export const ConfirmCheck = styled.div`
 
 export const FailMessage = styled.span`
   display: block;
-  font-size: var(--h8);
+  ${fontSizeH8}
   font-weight: 300;
-  color: var(--warning-red);
+  ${pointRedColor}
   margin-left: 10px;
   line-height: 30px;
 `;
@@ -103,9 +119,9 @@ export const SubmitButton = styled.button`
   width: 460px;
   height: 50px;
   padding: 10px;
-  background-color: #a5adb8;
+  background-color: ${({ theme }) => theme.PALLETE.gray.gray4}; /* 비활성화 색상 */
   border: none;
-  color: white;
+  color: ${({ theme }) => theme.PALLETE.white};
   font-size: 20px;
   font-weight: 500;
   border-radius: 5px;
@@ -114,7 +130,7 @@ export const SubmitButton = styled.button`
   transition: all 0.3s ease-in-out;
 
   &.active {
-    background-color: var(--main-green);
+    ${mainGreenColor}
     cursor: pointer;
   }
 

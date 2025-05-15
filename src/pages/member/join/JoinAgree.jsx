@@ -4,6 +4,8 @@ import {
   Wrapper,
   NextButton
 } from './joinAgreeStyle';
+import { Navigate } from 'react-router-dom';
+import { useJoin } from './JoinContext';
 
 const JoinAgree = () => {
   const [agreements, setAgreements] = useState({
@@ -12,6 +14,14 @@ const JoinAgree = () => {
     information: false,
     location: false
   });
+
+  const { setJoinData } = useJoin();
+
+  const handleNext = () => {
+    setJoinData(prev => ({ ...prev, agree: { agreeService: true, agreePrivacy: true } }));
+    Navigate("/member/join/info");
+  };
+
 
   const toggle = (key) => {
     if (key === 'all') {
@@ -40,7 +50,7 @@ const JoinAgree = () => {
 
   return (
     <Container>
-      <form>
+      <form onSubmit={handleNext}>
         <Wrapper>
           <input type="hidden" name="agreeAll" value={agreements.all ? 1 : 0} />
           <img

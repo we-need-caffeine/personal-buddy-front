@@ -1,5 +1,6 @@
 // loginStyle.js
 import styled from 'styled-components';
+import { blackColor, fontSizeH8 } from '../../../globals/common';
 
 export const InputGroup = styled.div`
   /* margin-bottom: 20px; */
@@ -15,7 +16,7 @@ export const InputWrapper = styled.div`
 export const ErrorMessage = styled.p`
   height: 18px;
   margin: 5px 20px;
-  font-size: 14px;
+  ${fontSizeH8}
   color: ${({ show }) => (show ? 'red' : 'transparent')};
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
 `;
@@ -83,7 +84,8 @@ export const RememberMe = styled.div`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-size: 14px;
+  ${fontSizeH8}
+  ${blackColor}
   margin-bottom: 20px;
   font-weight: 300;
 `;
