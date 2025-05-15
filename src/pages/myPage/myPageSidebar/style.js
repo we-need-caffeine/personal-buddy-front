@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { fontSizeH6, fontSizeH8, fontSizeH9, fontWeightLight, gray5Color, mainGreenColor } from '../../../globals/common';
+import { blackColor, fontSizeH6, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, gray5Color, mainGreenColor, whiteColor } from '../../../globals/common';
 
 const S = {};
 
@@ -47,10 +47,45 @@ S.MyPageMemberInfoFollowCount = styled.div`
     margin-left: 2px;
 `
 
+S.MyPageMemberInfoButtonContainer = styled.div`
+    width: 200px;
+    height: 40px;
+    display: flex;
+    ${fontSizeH8};
+    ${fontWeightBold};
+    ${whiteColor};
+`
+
+S.MypageMemberInfoFollowButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100%;
+    background-color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
+    `
+
+S.MypageMemberInfoMessageButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100%;
+    background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
+`
+
 S.MyPageTapContainer = styled.div`
     width: 198px;
     border: solid 1px ${({ theme }) => theme.PALLETE.gray.gray2};
     border-top: none;
+    a {
+        text-decoration: none;
+        ${blackColor};
+        ${fontWeightLight};
+        &.active {
+            ${mainGreenColor};
+        }
+    }
 `
 
 S.MyPageTitleContainer = styled.div`
