@@ -32,39 +32,45 @@ const EmailLogin = () => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[!@#])[\da-zA-Z!@#]{8,}$/;
 
-  const onSubmit = async ({ memberEmail, memberPassword }) => {
-    const MemberVO = { memberEmail, memberPassword };
-
-    try {
-      const res = await fetch('http://localhost:10000/members/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(MemberVO),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        alert(data.message);
-        return;
-      }
-
-      const { jwtToken } = data;
-
-      if (rememberMe) {
-        localStorage.setItem('jwtToken', jwtToken);
-      } else {
-        sessionStorage.setItem('jwtToken', jwtToken);
-      }
-
-      navigate('/main');
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(async (data) => {
+      const { memberEmail, memberPassword } = data;
+      const MemberVO = {
+        memberEmail : memberEmail,
+        memberPassword : memberPassword
+      };
+    
+      await fetch("http://localhost:10000/members/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(MemberVO)
+      })
+        .then((res) => {
+          if (!res.ok) {
+            return res.json().then((res) => {
+              alert(res.message);
+            });
+          }
+          return res.json();
+        })
+        .then((res) => {
+          console.log(res);
+          const { jwtToken } = res;
+    
+          if (rememberMe) {
+            localStorage.setItem('jwtToken', jwtToken);
+          } else {
+            sessionStorage.setItem('jwtToken', jwtToken);
+          }
+    
+          navigate("/main/?jwtToken=" + jwtToken);
+        })
+        .catch(console.error);
+    })}>
       {/* 이메일 입력 */}
       <InputGroup>
         <InputWrapper>

@@ -291,6 +291,11 @@ const router = createBrowserRouter([
         path: "/member", 
         element: <MemberLayout />,
         children : [
+
+            {
+                path : "join"
+                
+            },
             {
                 path : "login",
                 element : <LoginContainer />,
