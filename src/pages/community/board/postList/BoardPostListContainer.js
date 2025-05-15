@@ -163,8 +163,13 @@ const BoardPostListContainer = ({setPostLists }) => {
         </S.TagArea>
       </S.SearchArea>
 
-      <S.BoardTitle>버디들의 자유 게시판 ✨</S.BoardTitle>
+      <S.TitlesAndWriteBtn>
+        <S.Titles>
+          <S.SubTitle>어디에도 풀지 못했던 은밀한 TMI</S.SubTitle>
+          <S.BoardTitle>버디들의 자유 게시판 ✨</S.BoardTitle>
+        </S.Titles>
         <S.WriteBtn to="/main/community/board/write">글쓰기</S.WriteBtn>
+      </S.TitlesAndWriteBtn>
     </S.BoardHeader>
 
     <S.PostGrid>
