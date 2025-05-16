@@ -99,4 +99,11 @@ S.ProfileBox = styled.div`
     }
 `;
 
+S.AlertModalContainer = styled.div`
+    position: absolute;
+    top: 80px;
+    right: 240px;
+    z-index: 9999;
+`
+
 export default S;
