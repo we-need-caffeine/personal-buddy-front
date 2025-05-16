@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import S from './style';
+import Select from 'react-select';
 
 const BoardWrite = () => {
   const [title, setTitle] = useState('');// 게시글 제목을 저장하는 상태. 사용자가 제목 입력창에 글을 입력하면 이 값이 바뀜
-  const [category, setCategory] = useState(''); // 게시글 분류를 저장하는 상태. 
   const [content, setContent] = useState(''); // 게시글 본문 내용을 저장
   const [files, setFiles] = useState([]); // 사용자가 업로드한 이미지 파일들을 배열 형태로 저장
   const [previewUrls, setPreviewUrls] = useState([]); // 이미지 파일을 base64로 변환한 URL 배열 (브라우저에서 미리보기용으로 사용)
-  const [isSelected, setIsSelected] = useState(false); // 카테고리가 선택되었는지 여부 확인용. 선택 여부에 따라 셀렉트박스 스타일이 바뀜
+  const [category, setCategory] = useState(null); // react-select는 object 형태
+
+    const categoryOptions = [
+    { label: '자유 게시글', value: '자유' },
+    { label: '관심 일정', value: '관심' },
+    { label: '공유 일정', value: '공유' }
+  ];
+
  
   // 사용자가 <input type="file" />에 파일을 올리면 자동으로 실행되는 이벤트 함수
   // 이벤트 객체에는 사용자가 선택한 파일 목록이 들어 있음
@@ -18,7 +25,7 @@ const BoardWrite = () => {
     const fileReaders = []; // 파일을 읽는 도구인 FileReader 객체들을 저장할 배열
     const previews = []; // 실제로 브라우저에 띄워줄 이미지 주소를 담는 배열
 
-    selectedFiles.forEach((file, index) => {
+    selectedFiles.forEach((file, i) => {
       const reader = new FileReader(); // FileReader: 파일을 base64로 읽기 위한 브라우저 내장 객체
       fileReaders.push(reader);
       reader.onloadend = () => { // 읽기가 끝났을 때 실행될 함수
@@ -60,21 +67,27 @@ const BoardWrite = () => {
         body: JSON.stringify({
           boardTitle: title, // 제목 입력값
           boardContent: content, // 내용 입력값
-          boardHashtag: category, // 선택된 카테고리 (해시태그)
-          memberId: 1  // 임시 고정값 — 나중에 로그인 정보에서 가져오기
+          boardHashtag: category.value, // 선택된 카테고리 (해시태그) 
+          memberId: 1  // 임시 고정값 — 나중에 로그인 정보에서 가져오기. react-select는 object라서 value만 추출
         })
       });
 
+  
       if (res.ok) {
-        alert('등록되었습니다!');
-        window.location.href = '/main/community/board';
+        const confirmResult = window.confirm("등록하시겠습니까?");
+        if(confirmResult){
+          alert('등록되었습니다!');
+          window.location.href = '/main/community/board';
+        } else {
+          alert('취소되었습니다.')
+        }
       } else {
         const errorText = await res.text();
         alert('등록 실패하였습니다ㅠㅠ: ' + errorText);
       }
     } catch {
       console.error();
-      alert('에러 발생하였습니다!.!');
+      alert('에러가 발생하였습니다!.!');
     }
   };
 
@@ -87,11 +100,6 @@ const BoardWrite = () => {
     setPreviewUrls(newPreviews);
   };
 
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-    setIsSelected(!!e.target.value);  // 셀렉트 UI에 스타일 다르게 주려고
-  };
-
   // 바이트(byte)를 메가바이트(MB)로 변환해주는 함수
   const formatFileSize = (size) => {
     return (size / (1024 * 1024)).toFixed(2); 
@@ -99,6 +107,11 @@ const BoardWrite = () => {
 
   // 업로드된 모든 파일들의 총 용량 계산. 총합이 30MB 넘으면 업로드 막기 위해 
   const totalFileSize = files.reduce((acc, file) => acc + file.size, 0);
+
+  const isTitleValid = title !== '';
+  const isCategoryValid = category !== null;
+  const isContentValid = content !== '';
+  const isFormValid = isTitleValid && isCategoryValid && isContentValid;
 
   return (
     <>
@@ -110,28 +123,65 @@ const BoardWrite = () => {
       <S.Container>
         <S.Hr />
 
-        <S.Label>제목</S.Label>
+        <S.Label>제목
+          <span style={{ color: !isTitleValid ? 'red' : 'transparent' }}>*</span>
+        </S.Label>
         <S.Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="제목을 입력하세요" />
 
-        <S.Label>카테고리</S.Label>
-        <S.Select
-          value={category}
-          onChange={handleCategoryChange}
-          className={category ? 'selected' : 'placeholder'}
-        >
-          <option value="">카테고리를 선택하세요</option>
-          <option value="자유">자유 게시글</option>
-          <option value="관심">관심 일정</option>
-          <option value="공유">공유 일정</option>
-        </S.Select>
+        <S.Label>카테고리
+          <span style={{ color: !isCategoryValid ? 'red' : 'transparent' }}>*</span>
+        </S.Label>
+        <div style={{ width: '1000px' }}>
+          <div>
+            {/* <Select
+                options  = {categoryOptions}
+                defaultValue = {selectedOption}
+                onChange = {setCategory}
+                placeholder = "카테고리를 선택하세요."
+            /> */}
+            <Select
+              options={categoryOptions}
+              value={category}
+              onChange={setCategory}
+              placeholder="카테고리를 선택하세요"
+              styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    height: '40px',
+                    borderRadius: '10px',
+                    borderColor: state.isFocused ? '#999' : '#ccc',
+              
+                    boxShadow: 'none',
+                    fontSize: '14px',
+                  
+              }),
+                option: (base, state) => ({
+                    ...base,
+                    backgroundColor: state.isFocused ? '#E6F7FF' : 'white',
+                    color: 'black',
+                    cursor: 'pointer',
+                
+              }),
+                placeholder: (base) => ({
+                    ...base,
+                    color: '#999',
+                
+              }),
+            }}
+              isSearchable={false}
+            />
+          </div>
+        </div>
 
-        <S.Label>내용</S.Label>
+        <S.Label>내용
+          <span style={{ color: !isContentValid ? 'red' : 'transparent' }}>*</span>
+        </S.Label>
         <S.TextArea
           value={content}
           onChange={(e) => setContent(e.target.value)}
           maxLength={3000}
           placeholder="내용을 입력해주세요 (3000자 제한)"
-        />
+          />
 
         {previewUrls.length > 0 && (
           <S.PreviewWrapper>
@@ -162,7 +212,13 @@ const BoardWrite = () => {
           <S.FileInput type="file" multiple onChange={handleFileChange} />
         </S.FileInputWrapper>
 
-        <S.SubmitButton onClick={handleSubmit}>등록하기</S.SubmitButton>
+        <S.SubmitButton 
+          onClick={handleSubmit} 
+          disabled={!isFormValid}
+          $active={isFormValid}
+          >
+          등록하기
+        </S.SubmitButton>
       </S.Container>
     </>
   );
