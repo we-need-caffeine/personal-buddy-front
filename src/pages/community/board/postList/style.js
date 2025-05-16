@@ -82,16 +82,18 @@ S.TagButton = styled.button`
     padding: 8px 16px;
     font-size: 14px;
     font-weight: 500;
-    color: #424242;
-    background-color: #f1f1f1;
     border: none;
     border-radius: 30px;
     cursor: pointer;
-    transition: background-color 0.2s;  
+    transition: background-color 0.2s;
+    background-color: ${({ theme, $active }) =>
+        $active ? theme.PALLETE.primary.mainGreen : '#f1f1f1'};
+
     &:hover {
-      background-color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
+        background-color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
     }
 `;
+
 
 // ---------- 정렬 버튼 영역 (최신순, 좋아요순 등) -----------
 // 정렬 버튼 영역
@@ -101,18 +103,6 @@ S.SortBox = styled.div`
     justify-content: right;
     gap: 12px;
 
-    button {
-        border: none;
-        background: none;
-        cursor: pointer;
-        ${fontSizeH8}
-        ${fontWeightMedium}
-        color: ${({ theme }) => theme.PALLETE.gray.gray5};
-
-        &:hover {
-        color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
-    }
-    }
     p {
         border: none;
         background: none;
@@ -123,6 +113,22 @@ S.SortBox = styled.div`
     }
     
 `;
+
+S.SortButton = styled.button`
+    border: none;
+    background: none;
+    cursor: pointer;
+    ${fontSizeH8}
+    ${fontWeightMedium}
+    color: ${({ theme, $active }) =>
+        $active ? theme.PALLETE.primary.mainGreen : theme.PALLETE.gray.gray5};
+
+    &:hover {
+        color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
+    }
+`;
+
+
 
 // ---------- 글쓰기 버튼 -----------
 S.WriteBtn = styled(Link)`

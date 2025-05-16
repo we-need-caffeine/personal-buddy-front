@@ -207,17 +207,18 @@ S.SubmitButton = styled.button`
     font-size: 24px;
     font-weight: bold;
     color: white;
-    background-color: #ccc; 
+    background-color: ${({ $active }) => ($active ? '#00AEEF' : '#ccc')};
     border: none;
     border-radius: 25px;
     margin-top: 50px;
-    cursor: pointer;
-    transition: all 0.2s;
+    cursor: ${({ $active }) => ($active ? 'pointer' : 'not-allowed')};
+    pointer-events: ${({ $active }) => ($active ? 'auto' : 'none')};    
 
-    &:hover {
-      background-color: #00AEEF; 
-    }
+    /* &:hover {
+      background-color: ${({ $active }) => ($active ? '#00AEEF' : '#ccc')};
+    } */
 `;
+
 
 // 여러 개 이미지 미리보기 래퍼
 S.PreviewWrapper = styled.div`

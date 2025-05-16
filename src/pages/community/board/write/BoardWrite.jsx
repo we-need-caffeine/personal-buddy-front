@@ -74,8 +74,13 @@ const BoardWrite = () => {
 
   
       if (res.ok) {
-        alert('등록되었습니다!');
-        window.location.href = '/main/community/board';
+        const confirmResult = window.confirm("등록하시겠습니까?");
+        if(confirmResult){
+          alert('등록되었습니다!');
+          window.location.href = '/main/community/board';
+        } else {
+          alert('취소되었습니다.')
+        }
       } else {
         const errorText = await res.text();
         alert('등록 실패하였습니다ㅠㅠ: ' + errorText);
@@ -103,6 +108,11 @@ const BoardWrite = () => {
   // 업로드된 모든 파일들의 총 용량 계산. 총합이 30MB 넘으면 업로드 막기 위해 
   const totalFileSize = files.reduce((acc, file) => acc + file.size, 0);
 
+  const isTitleValid = title !== '';
+  const isCategoryValid = category !== null;
+  const isContentValid = content !== '';
+  const isFormValid = isTitleValid && isCategoryValid && isContentValid;
+
   return (
     <>
       <S.Titles>
@@ -113,10 +123,14 @@ const BoardWrite = () => {
       <S.Container>
         <S.Hr />
 
-        <S.Label>제목</S.Label>
+        <S.Label>제목
+          <span style={{ color: !isTitleValid ? 'red' : 'transparent' }}>*</span>
+        </S.Label>
         <S.Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="제목을 입력하세요" />
 
-        <S.Label>카테고리</S.Label>
+        <S.Label>카테고리
+          <span style={{ color: !isCategoryValid ? 'red' : 'transparent' }}>*</span>
+        </S.Label>
         <div style={{ width: '1000px' }}>
           <div>
             {/* <Select
@@ -159,7 +173,9 @@ const BoardWrite = () => {
           </div>
         </div>
 
-        <S.Label>내용</S.Label>
+        <S.Label>내용
+          <span style={{ color: !isContentValid ? 'red' : 'transparent' }}>*</span>
+        </S.Label>
         <S.TextArea
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -196,7 +212,13 @@ const BoardWrite = () => {
           <S.FileInput type="file" multiple onChange={handleFileChange} />
         </S.FileInputWrapper>
 
-        <S.SubmitButton onClick={handleSubmit}>등록하기</S.SubmitButton>
+        <S.SubmitButton 
+          onClick={handleSubmit} 
+          disabled={!isFormValid}
+          $active={isFormValid}
+          >
+          등록하기
+        </S.SubmitButton>
       </S.Container>
     </>
   );
