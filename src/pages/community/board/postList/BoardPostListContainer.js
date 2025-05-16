@@ -134,8 +134,8 @@ const BoardPostListContainer = ({setPostLists }) => {
         setPostLists(dummyData);
       }
     };
-
     fetchBoardLists();
+
   }, [setPostLists]); // setPostLists가 변경될 때만 실행
 
   return (

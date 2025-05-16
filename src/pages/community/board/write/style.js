@@ -72,20 +72,24 @@ S.Select = styled.select`
     cursor: pointer;
     transition: background-color 0.2s ease;
 
-    &.placeholder {
-      background-color: white;
-      color: #999;
+    &.pAlaceholder {
+        background-color: white;
+        color: #999;
     }
 
     &.selected {
-      background-color: #E6F7FF;
-      color: #000;
-      border-color: gray;
+        appearance: none; // 브라우저 기본 스타일 제거
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: #E6F7FF;
+        color: #000;
+        border-color: gray;
     }
 
     &:focus {
-      outline: none;
-      border-color: gray;
+        outline: none;
+        border-color: gray;
+        background-color: transparent;
     }
 `;
 
@@ -122,6 +126,7 @@ S.ImageBox = styled.div`
     gap: 12px;
 `;
 
+
 // 삭제 버튼
 S.RemoveImageBtn = styled.button`
     background: none;
@@ -133,6 +138,8 @@ S.RemoveImageBtn = styled.button`
       color: #ff4d4f;
     }
 `;
+
+
 
 // 파일 관련 안내 문구
 S.FileNotice = styled.div`
@@ -154,6 +161,44 @@ S.FileInputWrapper = styled.div`
 S.FileInput = styled.input`
     font-size: 14px;
 `;
+
+
+S.CustomSelectWrapper = styled.div`
+    position: relative;
+    width: 1000px;
+`;
+
+S.CustomSelect = styled.div`
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: ${({ $hasValue }) => ($hasValue ? '#E6F7FF' : 'white')};
+  color: ${({ $hasValue }) => ($hasValue ? '#000' : '#999')};
+  cursor: pointer;
+`;
+
+S.OptionList = styled.ul`
+  position: absolute;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  z-index: 999;
+  max-height: 200px;
+  overflow-y: auto;
+`;
+
+S.OptionItem = styled.li`
+  padding: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: #E6F7FF;
+  }
+`;
+
 
 // 등록 버튼
 S.SubmitButton = styled.button`
