@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const CalendarCreate = () => {
+const ScheduleView = () => {
 
     return (
         <div>
@@ -9,4 +9,4 @@ const CalendarCreate = () => {
     );
 };
 
-export default CalendarCreate;
+export default ScheduleView;

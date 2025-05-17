@@ -1,14 +1,13 @@
 import React from 'react';
-import CalendarBody from './CalendarBody';
+import CalendarBody from './calendarBody/CalendarBody';
 import { Outlet } from 'react-router-dom';
 
-const calendarContainer = () => {
+const CalendarContainer = () => {
     return (
         <div>
             <CalendarBody/>
-            <Outlet/>
         </div>
     );
 };
 
-export default calendarContainer;
+export default CalendarContainer;

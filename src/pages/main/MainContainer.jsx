@@ -1,10 +1,10 @@
 import React from 'react';
 
-import CalendarBody from './calendar/CalendarBody';
 import CalendarHeader from './calendar/calendarHeader/CalendarHeader';
 import RecommendInformation from './recommend/information/RecommendInformation';
 import RecommendPlace from './recommend/place/RecommendPlace';
 import RecommendShopping from './recommend/shopping/RecommendShopping';
+import CalendarContainer from './calendar/CalendarContainer';
 
 
 
@@ -13,7 +13,7 @@ const MainContainer = () => {
         <div>          
             메인 컨테이너
             <CalendarHeader />
-            <CalendarBody />
+            <CalendarContainer />
             <RecommendInformation />
             <RecommendPlace />
             <RecommendShopping />
