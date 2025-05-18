@@ -20,6 +20,7 @@ const BoardWrite = () => {
   // 이벤트 객체에는 사용자가 선택한 파일 목록이 들어 있음
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files); // FileList라는 특수 객체라서 Array.from()을 써서 일반 배열로 바꿔준다.
+    // console.log('이미지 업로드', selectedFiles.map(f => f.name));
     setFiles(selectedFiles); // files 상태에 저장
 
     const fileReaders = []; // 파일을 읽는 도구인 FileReader 객체들을 저장할 배열
@@ -32,6 +33,7 @@ const BoardWrite = () => {
         previews.push(reader.result); // 변환된 base64 URL을 previews에 추가
         if (previews.length === selectedFiles.length) { 
           setPreviewUrls(previews); // 모든 파일이 다 변환되면 미리보기 상태 저장
+          // console.log('미리보기 생성 완료', previews);
         }
       };
       reader.readAsDataURL(file); // 파일을 base64 문자열로 변환
@@ -80,6 +82,7 @@ const BoardWrite = () => {
   const handleRemoveImage = (index) => {
     const newFiles = [...files];
     const newPreviews = [...previewUrls];
+    // console.log('이미지 삭제', files[index].name);
     newFiles.splice(index, 1); // 해당 인덱스에서 1개만 제거
     newPreviews.splice(index, 1);
     setFiles(newFiles);
@@ -93,6 +96,7 @@ const BoardWrite = () => {
 
   // 업로드된 모든 파일들의 총 용량 계산. 총합이 30MB 넘으면 업로드 막기 위해 
   const totalFileSize = files.reduce((acc, file) => acc + file.size, 0);
+  // console.log('총 파일 용량', `${formatFileSize(totalFileSize)}MB`);
 
   // 게시글 작성 폼 유효성 검사
   const isTitleValid = title !== '';

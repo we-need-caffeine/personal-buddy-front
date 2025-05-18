@@ -9,6 +9,7 @@ const BoardContainer = () => {
   return (
     <>
       <BoardBannerContainer dummyData={postLists} />
+      <hr />
       <BoardPostListContainer setPostLists={setPostLists} />
       <ScrollToTop />
     </>

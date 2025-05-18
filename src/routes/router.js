@@ -63,6 +63,7 @@ import JoinContainer from "../pages/member/join/JoinContainer";
 import JoinInfo from "../pages/member/join/JoinInfo";
 import JoinProfile from "../pages/member/join/JoinProfile";
 import PrivacyPolicy from "../pages/privacy/PrivacyPolicy";
+import BoardPost from "../pages/community/board/post/BoardPost";
 
 const router = createBrowserRouter([
     {
@@ -169,7 +170,7 @@ const router = createBrowserRouter([
                                 children : [
                                      {
                                          path : ":id",
-                                         element : <EventPost />
+                                         element : <BoardPost />
                                      }
                                 ]
                             },

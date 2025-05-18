@@ -8,15 +8,18 @@ const BoardBannerContainer = ({ dummyData }) => {
 
   // 컴포넌트가 마운트되거나 dummyData가 변경될 때 실행
   useEffect(() => {
+    // console.log('useEffect 실행', dummyData?.length);
     if (!dummyData || dummyData.length === 0) return;  // 더미데이터 없으면 종료
 
     const fetchHotPosts = async () => {
       try {
+        // console.log('HOT 게시글 불러오기');
         // 백단에서 HOT 게시글 목록 가져오기
         const response = await fetch('/boards/api/hot');
         const data = await response.json();
 
         if (data?.length > 0) {
+          // console.log('응답 성공')
           setHotPosts(data); //받아왔으면 저장
         } else {
           throw new Error('HOT 비었음'); // 데이터 없을 경우 에러 강제 발생
