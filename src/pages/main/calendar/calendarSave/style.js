@@ -2,196 +2,138 @@ import styled from "styled-components";
 
 const S = {};
 
-// 전체 캘린더 저장 화면 컨테이너
+
 S.Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 560px;
-  height: 780px;
-  background-color: pink;
-  border: 1px solid black;
-`;
-
-// 제목 입력 영역
-S.TitleInputContainer = styled.div`
-  display: flex;
   width: 100%;
-  height: 67px;
-  background-color: white;
-`;
-
-S.TitleInput = styled.input`
-  outline: none;
-  border: none;
-  margin-left: 5px;
-  width: 100%;
+  max-width: 600px;
+  height: 100%;
+  min-height: 780px;
+  background: white;
+  border: 1px solid #eee;
+  margin: 0 auto;
+  padding: 40px;
   box-sizing: border-box;
 `;
 
-// 날짜 입력 영역
-S.DateContainer = styled.div`
+S.Title = styled.h2`
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 32px;
+`;
+
+S.Row = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 176px;
-  background-color: orange;
+  align-items: flex-start;
+  margin-bottom: 32px;
 `;
 
-S.DateSectionGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  width: 476px;
-  height: 90px;
-  background-color: yellow;
+S.Label = styled.div`
+  width: 120px;
+  font-size: 16px;
+  font-weight: bold;
 `;
 
-S.DateSection = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 37px;
-  background-color: red;
-`;
-
-S.DateInputWrapper = styled.div`
-  display: flex;
-  width: 320px;
-  height: 37px;
-  gap: 40px;
-  background-color: beige;
-`;
-
-S.DateInput = styled.input`
-  height: 100%;
-  width: 200px;
-  background-color: blue;
-  box-sizing: border-box;
-`;
-
-S.DateInputTime = styled.input`
-  height: 100%;
-  width: 80px;
-  background-color: blue;
-  box-sizing: border-box;
-`;
-
-// 내용 작성 영역
-S.ContentContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 538px;
-  background-color: purple;
-`;
-
-S.ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: end;
-  gap: 17px;
-  width: 476px;
-  height: 488px;
-  background-color: yellow;
-`;
-
-S.ContentFormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 17px;
-  width: 476px;
-  height: 413px;
-  background-color: pink;
-`;
-
-S.ContentRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 37px;
-  background-color: red;
-`;
-
-S.ContentRowInput = styled.input`
-  height: 100%;
-  width: 320px;
-  background-color: blue;
-  box-sizing: border-box;
-`;
-
-S.ContentRowTextInput = styled.input`
-  height: 100%;
-  width: 320px;
-  background-color: blue;
-  box-sizing: border-box;
-`;
-
-S.ContentCategoryWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  height: 100%;
-  width: 320px;
-  gap: 10px;
-`;
-
-S.Select = styled.select`
-  width: 150px;
-  height: 100%;
-  padding: 5px;
-  box-sizing: border-box;
-  background-color: white;
-  border: 1px solid #ccc;
-  font-size: 14px;
-`;
-
-S.ContentRowTextArea = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 143px;
-  background-color: red;
-`;
-
-S.ContentTextAreaWrapper = styled.div`
-  display: flex;
-  width: 477px;
-  height: 143px;
-  background-color: green;
-`;
-
-S.Select = styled.select`
-  width: 320px;
-  height: 100%;
-  padding: 5px;
-  box-sizing: border-box;
-  background-color: white;
-  border: 1px solid #ccc;
-  font-size: 14px;
-`;
-
-S.ButtonGroup = styled.div`
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  width: 222px;
-  height: 37px;
-  background-color: white;
-`;
-
-S.Button = styled.button`
-  width: 102px;
-  height: 32px;
-  background-color: aquamarine;
+S.Input = styled.input`
+  flex: 1;
+  height: 48px;
+  padding: 12px;
   border-radius: 10px;
+  border: 1px solid #eee;
+  background-color: #fafafa;
+`;
+
+S.InviteSection = styled.div`
+  flex: 1;
+  position: relative;
+`;
+
+S.SearchBox = styled.input`
+  width: 100%;
+  height: 48px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  background-color: #fafafa;
+`;
+
+S.Dropdown = styled.div`
+  margin-top: 10px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  max-height: 250px;
+  overflow-y: auto;
+`;
+
+S.DropdownItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  cursor: pointer;
+  &:hover {
+    background: #f9f9f9;
+  }
+`;
+
+S.ProfileIcon = styled.div`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  margin-right: 12px;
+`;
+
+S.DropdownName = styled.div`
+  flex: 1;
+`;
+
+S.InviteButton = styled.div`
+  color: #00c851;
+  font-weight: 500;
+`;
+
+S.MemberList = styled.div`
+  margin-top: 24px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 8px;
+`;
+
+S.MemberListTitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 16px;
+`;
+
+S.MemberItem = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+`;
+
+S.MemberName = styled.div`
+  margin-left: 12px;
+  flex: 1;
+`;
+
+S.HostBadge = styled.div`
+  color: #ff6b00;
+  font-weight: bold;
+`;
+
+S.DeleteButton = styled.button`
+  margin-top: 32px;
+  width: 120px;
+  height: 48px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: center;
 `;
 
 export default S;
+
+
+

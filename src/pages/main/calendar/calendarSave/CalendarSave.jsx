@@ -1,142 +1,72 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import S from "./style";
-import BasicButton from "../../../../components/button/BasicButton"; // 실제 경로에 맞게 조정
 
 const CalendarSave = () => {
-  const [mainCategory, setMainCategory] = useState("");
-  const [subCategory, setSubCategory] = useState("");
-  const [color, setColor] = useState("");
-  const [member, setMember] = useState("");
-  const [repeat, setRepeat] = useState("");
+  const [calendarName, setCalendarName] = useState("WeNeedCaffeine");
+  const [allMembers] = useState(["김동건", "서민아", "박세현", "이덕준", "홍길동", "이순신"]);
+  const [invitedMembers, setInvitedMembers] = useState(["장재영", "양진영", "함지현", "김영수", "강감찬", "홍길동"]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const mainCategories = ["개인", "업무", "취미"];
-  const subCategories = {
-    개인: ["운동", "독서", "명상"],
-    업무: ["회의", "보고", "개발"],
-    취미: ["게임", "음악", "여행"],
+  const toggleInvite = (name) => {
+    if (!invitedMembers.includes(name)) {
+      setInvitedMembers((prev) => [...prev, name]);
+    }
   };
 
-  const colors = ["green", "yellow", "pink", "red", "blue"];
-  const members = ["김코딩", "이자바", "박리액트"]; // DB 연동 전 예시
-  const repeatOptions = ["없음", "매일", "매주", "선택한 날짜의 요일"];
+  // 외부 클릭 시 드롭다운 닫기
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <S.Container>
-      <S.TitleInputContainer>
-        <S.TitleInput placeholder="제목을 입력하세요" />
-      </S.TitleInputContainer>
+      <S.Title>캘린더 설정</S.Title>
 
-      <S.DateContainer>
-        <S.DateSectionGroup>
-          <S.DateSection>
-            시작
-            <S.DateInputWrapper>
-              <S.DateInput />
-              <S.DateInputTime />
-            </S.DateInputWrapper>
-          </S.DateSection>
-          <S.DateSection>
-            종료
-            <S.DateInputWrapper>
-              <S.DateInput />
-              <S.DateInputTime />
-            </S.DateInputWrapper>
-          </S.DateSection>
-        </S.DateSectionGroup>
-      </S.DateContainer>
+      <S.Row>
+        <S.Label>캘린더 이름</S.Label>
+        <S.Input value={calendarName} onChange={(e) => setCalendarName(e.target.value)} />
+      </S.Row>
 
-      <S.ContentContainer>
-        <S.ContentWrapper>
-          <S.ContentFormGroup>
-            <S.ContentRow>
-              색
-              <S.Select value={color} onChange={(e) => setColor(e.target.value)}>
-                <option value="">선택</option>
-                {colors.map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </S.Select>
-            </S.ContentRow>
+      <S.Row>
+        <S.Label>초대</S.Label>
+        <S.InviteSection ref={dropdownRef}>
+          <S.SearchBox
+            placeholder="검색"
+            onFocus={() => setIsDropdownOpen(true)}
+          />
+          {isDropdownOpen && (
+            <S.Dropdown>
+              {allMembers.map((member) => (
+                <S.DropdownItem key={member} onClick={() => toggleInvite(member)}>
+                  <S.ProfileIcon />
+                  <S.DropdownName>{member}</S.DropdownName>
+                  <S.InviteButton>초대</S.InviteButton>
+                </S.DropdownItem>
+              ))}
+            </S.Dropdown>
+          )}
+        </S.InviteSection>
+      </S.Row>
 
-            <S.ContentRow>
-              멤버
-              <S.Select value={member} onChange={(e) => setMember(e.target.value)}>
-                <option value="">선택</option>
-                {members.map((m) => (
-                  <option key={m} value={m}>{m}</option>
-                ))}
-              </S.Select>
-            </S.ContentRow>
+      <S.MemberList>
+        <S.MemberListTitle>멤버 리스트({invitedMembers.length}/8)</S.MemberListTitle>
+        {invitedMembers.map((m) => (
+          <S.MemberItem key={m}>
+            <S.ProfileIcon />
+            <S.MemberName>{m}</S.MemberName>
+            {m === "강감찬" && <S.HostBadge></S.HostBadge>}
+          </S.MemberItem>
+        ))}
+      </S.MemberList>
 
-            <S.ContentRow>
-              카테고리
-              <S.ContentCategoryWrapper>
-                <S.Select
-                  value={mainCategory}
-                  onChange={(e) => setMainCategory(e.target.value)}
-                >
-                  <option value="">상위 선택</option>
-                  {mainCategories.map((item) => (
-                    <option key={item} value={item}>{item}</option>
-                  ))}
-                </S.Select>
-
-                <S.Select
-                  value={subCategory}
-                  onChange={(e) => setSubCategory(e.target.value)}
-                  disabled={!mainCategory}
-                >
-                  <option value="">하위 선택</option>
-                  {mainCategory &&
-                    subCategories[mainCategory].map((item) => (
-                      <option key={item} value={item}>{item}</option>
-                    ))}
-                </S.Select>
-              </S.ContentCategoryWrapper>
-            </S.ContentRow>
-
-            <S.ContentRow>
-              장소
-              <S.ContentRowInput />
-            </S.ContentRow>
-
-            <S.ContentRow>
-              반복
-              <S.Select value={repeat} onChange={(e) => setRepeat(e.target.value)}>
-                {repeatOptions.map((r) => (
-                  <option key={r} value={r}>{r}</option>
-                ))}
-              </S.Select>
-            </S.ContentRow>
-
-            <S.ContentRowTextArea>
-              내용
-              <S.ContentRowTextInput />
-            </S.ContentRowTextArea>
-          </S.ContentFormGroup>
-
-          <S.ButtonGroup>
-            <BasicButton
-              variant="main"
-              font="h1"
-              color="white"
-              size="meduim"
-              shape="small"
-            >
-              저장
-            </BasicButton>
-            <BasicButton
-              variant="white"
-              font="h1"
-              color="black"
-              size="meduim"
-              shape="small"
-            >
-              취소
-            </BasicButton>
-          </S.ButtonGroup>
-        </S.ContentWrapper>
-      </S.ContentContainer>
+      <S.DeleteButton>삭제</S.DeleteButton>
     </S.Container>
   );
 };
