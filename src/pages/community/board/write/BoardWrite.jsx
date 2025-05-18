@@ -20,6 +20,7 @@ const BoardWrite = () => {
   // 이벤트 객체에는 사용자가 선택한 파일 목록이 들어 있음
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files); // FileList라는 특수 객체라서 Array.from()을 써서 일반 배열로 바꿔준다.
+    // console.log('이미지 업로드', selectedFiles.map(f => f.name));
     setFiles(selectedFiles); // files 상태에 저장
 
     const fileReaders = []; // 파일을 읽는 도구인 FileReader 객체들을 저장할 배열
@@ -32,6 +33,7 @@ const BoardWrite = () => {
         previews.push(reader.result); // 변환된 base64 URL을 previews에 추가
         if (previews.length === selectedFiles.length) { 
           setPreviewUrls(previews); // 모든 파일이 다 변환되면 미리보기 상태 저장
+          // console.log('미리보기 생성 완료', previews);
         }
       };
       reader.readAsDataURL(file); // 파일을 base64 문자열로 변환
@@ -40,19 +42,6 @@ const BoardWrite = () => {
   
     // 추후 백엔드에 이미지 업로드 연동 시
     // 파일을 FormData로 묶어서 fetch로 보낸다.
-    // 서버에서 받은 url 리스트를 previewUrls로 저장한다.
-
-    // const formData = new FormData();
-    // formData.append('boardVO.boardTitle', title);
-    // formData.append('boardVO.boardContent', content);
-    // formData.append('boardVO.boardHashtag', category);
-    // formData.append('boardVO.memberId', 1);
-    // files.forEach(file => formData.append('images', file));
-
-    // await fetch('/boards/api/image-with-write', {
-    // method: 'POST',
-    // body: formData 
-    // });
 
   const handleSubmit = async () => {
     if (!title || !content || !category) {
@@ -71,7 +60,6 @@ const BoardWrite = () => {
           memberId: 1  // 임시 고정값 — 나중에 로그인 정보에서 가져오기. react-select는 object라서 value만 추출
         })
       });
-
   
       if (res.ok) {
         const confirmResult = window.confirm("등록하시겠습니까?");
@@ -94,6 +82,7 @@ const BoardWrite = () => {
   const handleRemoveImage = (index) => {
     const newFiles = [...files];
     const newPreviews = [...previewUrls];
+    // console.log('이미지 삭제', files[index].name);
     newFiles.splice(index, 1); // 해당 인덱스에서 1개만 제거
     newPreviews.splice(index, 1);
     setFiles(newFiles);
@@ -107,10 +96,13 @@ const BoardWrite = () => {
 
   // 업로드된 모든 파일들의 총 용량 계산. 총합이 30MB 넘으면 업로드 막기 위해 
   const totalFileSize = files.reduce((acc, file) => acc + file.size, 0);
+  // console.log('총 파일 용량', `${formatFileSize(totalFileSize)}MB`);
 
+  // 게시글 작성 폼 유효성 검사
   const isTitleValid = title !== '';
   const isCategoryValid = category !== null;
   const isContentValid = content !== '';
+  // 제목/카테고리/내용 모두 입력되었을 때만 등록 버튼이 활성화
   const isFormValid = isTitleValid && isCategoryValid && isContentValid;
 
   return (
@@ -139,14 +131,16 @@ const BoardWrite = () => {
                 onChange = {setCategory}
                 placeholder = "카테고리를 선택하세요."
             /> */}
+
+            {/* 기본 select에 스타일을 커스터마이징 하기 위해 react-select 설치 후 사용. yarn add react-select */}
             <Select
               options={categoryOptions}
               value={category}
               onChange={setCategory}
               placeholder="카테고리를 선택하세요"
-              styles={{
-                  control: (base, state) => ({
-                    ...base,
+              styles={{ // 각 부분별로 스타일 오버라이딩
+                  control: (baseStyles, state) => ({ // 셀렉트 박스 전체 영역 스타일
+                    ...baseStyles,
                     height: '40px',
                     borderRadius: '10px',
                     borderColor: state.isFocused ? '#999' : '#ccc',
@@ -155,15 +149,15 @@ const BoardWrite = () => {
                     fontSize: '14px',
                   
               }),
-                option: (base, state) => ({
-                    ...base,
+                option: (baseStyles, state) => ({ // 드롭다운에 펼쳐지는 각 항목 스타일
+                    ...baseStyles,
                     backgroundColor: state.isFocused ? '#E6F7FF' : 'white',
                     color: 'black',
                     cursor: 'pointer',
                 
               }),
-                placeholder: (base) => ({
-                    ...base,
+                placeholder: (baseStyles) => ({ // 선택 안 했을 때 뜨는 카테고리를 선택하세요 색
+                    ...baseStyles,
                     color: '#999',
                 
               }),
