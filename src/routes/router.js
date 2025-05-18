@@ -62,6 +62,7 @@ import JoinAgree from "../pages/member/join/JoinAgree";
 import JoinContainer from "../pages/member/join/JoinContainer";
 import JoinInfo from "../pages/member/join/JoinInfo";
 import JoinProfile from "../pages/member/join/JoinProfile";
+import PrivacyPolicy from "../pages/privacy/PrivacyPolicy";
 
 const router = createBrowserRouter([
     {
@@ -355,6 +356,10 @@ const router = createBrowserRouter([
                 ]
             }
         ]
+    },
+    {
+        path: "/privacy-policy",
+        element: <PrivacyPolicy />
     },
     {
         path : "*",
