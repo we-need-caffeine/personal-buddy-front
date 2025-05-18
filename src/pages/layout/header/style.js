@@ -65,7 +65,7 @@ S.LinkBox = styled.div`
             ${mainGreenColor}
         }
     }
-    `;
+`;
 
 // 알림 아이콘 영역 (message, alert)
 S.SocialBox = styled.div`
@@ -82,6 +82,7 @@ S.SocialBox = styled.div`
 
 // 프로필 영역 (사진 + 로그아웃)
 S.ProfileBox = styled.div`
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -99,11 +100,25 @@ S.ProfileBox = styled.div`
     }
 `;
 
+// 드롭다운 카드 (자식)
+S.ProfileCardDropdown = styled.div`
+  position: absolute;
+  top: 50px;   // 프로필 이미지 하단에 맞게 조정
+  left: 0;     // 필요시 right: 0 등으로 위치 조절
+  z-index: 1001;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  padding: 0;
+`;
+
+
 S.AlertModalContainer = styled.div`
     position: absolute;
     top: 80px;
     right: 240px;
     z-index: 9999;
 `
+
 
 export default S;

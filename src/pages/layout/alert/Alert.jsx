@@ -1,7 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import S from './style';
 
-const Alert = ({ alertInfo, onCancel, onDelete, onDeleteAll, fetchMore }) => {
+const Alert = ({ alertInfo, onCancel, onDelete, onDeleteAll, onChangeType }) => {
+    
+    const formatDate = (time) => {
+        const date = new Date(time);
+        const offsetDate = new Date(date.getTime() + (9 * 60 * 60 * 1000));
+        const yyyy = offsetDate.getFullYear();
+        const mm = String(offsetDate.getMonth() + 1).padStart(2, '0');
+        const dd = String(offsetDate.getDate()).padStart(2, '0');
+        return `${yyyy}.${mm}.${dd}`;
+    };
 
     useEffect(() => {
         if (alertInfo) {
@@ -22,32 +31,35 @@ const Alert = ({ alertInfo, onCancel, onDelete, onDeleteAll, fetchMore }) => {
                 </S.TitleContainer>
                 {/* 알림 필터 / 전체 삭제 */}
                 <S.TopContainer>  
-                    <S.SelectBox>
-                        <option>전체</option>
-                        <option>포인트</option>
-                        <option>이벤트</option>
-                        <option>댓글</option>
-                        <option>좋아요</option> 
-                        <option>캘린더</option>
-                        <option>팔로우</option>
+                    <S.SelectBox onChange={(e) => onChangeType(e.target.value)}>
+                        <option value="">전체</option>
+                        <option value="point">포인트</option>
+                        <option value="event">이벤트</option>
+                        <option value="borad">커뮤니티</option>
+                        <option value="calender">캘린더</option>
+                        <option value="follow">팔로우</option>
                     </S.SelectBox>
                     <S.DeleteAllButton onClick={onDeleteAll}>알림 전체 삭제</S.DeleteAllButton>
                 </S.TopContainer>
                 {/* 알림 리스트 */}
                 <S.ListContainer>
-                    {alertInfo.map((info, i) => (
-                    <S.ListItem key={info.id || i}>
-                        <S.ProfileImg src={info.profileImg} alt="profile" />
-                        <S.Content>
-                            <S.Nickname>{info.nickname}</S.Nickname>
-                            <S.Message>{info.message}</S.Message>
-                        </S.Content>
-                        <S.Meta>
-                            <S.Time>{info.time}</S.Time>
-                            <S.Delete onClick={() => onDelete(info.id)}>삭제</S.Delete>
-                        </S.Meta>
-                    </S.ListItem>
-                    ))}
+                    {alertInfo && alertInfo.length > 0 ? (
+                        alertInfo.map((info) => (
+                            <S.ListItem key={info.id}>
+                                <S.ProfileImg src={info.memberImgPath} alt="profile" />
+                                <S.Content>
+                                    <S.Nickname>{info.memberNickname}</S.Nickname>
+                                    <S.Message>{info.alertMessage}</S.Message>
+                                </S.Content>
+                                <S.Meta>
+                                    <S.Time>{formatDate(info.alertCreateTime)}</S.Time>
+                                    <S.Delete onClick={() => onDelete(info.id)}>삭제</S.Delete>
+                                </S.Meta>
+                            </S.ListItem>
+                        ))
+                    ) : (
+                        <></>
+                    )}
                 </S.ListContainer>
             </S.AlartContainer>
         </>

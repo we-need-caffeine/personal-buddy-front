@@ -1,37 +1,91 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Alert from '../alert/Alert'; // 경로에 맞게 수정해줘!
 import S from './style';
+import ProfileCard from '../profile/ProfileCard';
 
 const Header = () => {
   // 로그인 상태
-  const isLogin = 1;
+  const isLogin = true;
+  // 로그인된 멤버 정보
+  const memberId = 1;
   // 헤더 이벤트 상태
   const [showHeader, setShowHeader] = useState(true);
   // 알림창 상태
   const [showAlertModal, setShowAlertModal] = useState(false);
-  // 알림 DOM 요소에 직접 참조하거나 조작할 수 있게 해주는 훅함수
-  const alertRef = useRef();
-  // 알림 더미 데이터
-  const alertInfo = [
-    { id: 1, nickname: '나무조하', profileImg: '/assets/images/header/memberProfile.png', message: '님이 댓글을 달았습니다.', time: '오후 9:20' },
-    { id: 2, nickname: 'Stella', profileImg: '/assets/images/header/memberProfile.png', message: '님이 좋아요를 눌렀습니다.', time: '오전 11:20' },
-    { id: 3, nickname: 'Stella', profileImg: '/assets/images/header/memberProfile.png', message: '님이 좋아요를 눌렀습니다.', time: '오전 11:20' },
-    { id: 4, nickname: 'Stella', profileImg: '/assets/images/header/memberProfile.png', message: '님이 좋아요를 눌렀습니다.', time: '오전 11:20' },
-    { id: 5, nickname: 'Stella', profileImg: '/assets/images/header/memberProfile.png', message: '님이 좋아요를 눌렀습니다.', time: '오전 11:20' },
-    { id: 6, nickname: 'Stella', profileImg: '/assets/images/header/memberProfile.png', message: '님이 좋아요를 눌렀습니다.', time: '오전 11:20' },
-    { id: 7, nickname: 'Stella', profileImg: '/assets/images/header/memberProfile.png', message: '님이 좋아요를 눌렀습니다.', time: '오전 11:20' },
-    { id: 8, nickname: 'Stella', profileImg: '/assets/images/header/memberProfile.png', message: '님이 좋아요를 눌렀습니다.', time: '오전 11:20' },
-  ];
+  // 알림 정보
+  const [alertInfo, setAlertInfo] = useState([]);
+  // 알림 타입 정보
+  const [alertType, setAlertType] = useState("");
+  // const alertRef = useRef();
+  // 프로필 카드 상태
+  const [profileCardInfo, setProfileCardInfo] = useState(null);
+  const [showProfileCard, setShowProfileCard] = useState(false);
+  const profileImgRef = useRef();
+
+  // 프로필 카드 정보를 조회하는 함수
+  const handleProfileClick = async () => {
+    // 실제로는 로그인 멤버의 id와 "프로필카드 주인 id"를 구해서 요청
+    // 여기선 예시로 memberId와 상대방 id(여기선 내 id로 대체)
+    const profileCardMemberId = memberId; // 본인 마이페이지면 본인, 타인이면 타인 id
+
+    const response = await fetch(`http://localhost:10000/follows/api/profile-card/${memberId}?profileCardMemberId=${profileCardMemberId}`, {
+      method : "GET"
+    });
+    const data = await response.json();
+    
+    setProfileCardInfo(data);
+    setShowProfileCard(true);
+  };
+
+  const handleCloseProfileCard = () => {
+    setShowProfileCard(false);
+    setProfileCardInfo(null);
+  }
+
+  // 알림을 조회하는 함수
+  const getAlerts = async() => {
+    let url = "";
+    if (alertType === null || alertType === "") {
+      url = `http://localhost:10000/alerts/api/alert/list/${memberId}`
+    } else {
+      url = `http://localhost:10000/alerts/api/alert/list/${memberId}?alertType=${alertType}`
+    }
+    const response = await fetch(url);
+    const alerts = await response.json();
+    setAlertInfo(alerts.data);
+  };
 
   // 알림을 단일 삭제하는 함수
-  const handleDelete = (id) => {
-    console.log('삭제:', id);
+  const handleDelete = async(id) => {
+    await fetch(`http://localhost:10000/alerts/api/alert/delete/${id}`, {
+      method : "DELETE",
+    })
+    .then((res) => {
+      if (res.ok) {
+        alert("알림 삭제 성공!")
+        getAlerts();
+      } else {
+        alert("알림 삭제를 실패하였습니다.")
+      }
+    })
+    .catch(console.error)
   };
 
   // 알림을 전체 삭제하는 함수
-  const handleDeleteAll = () => {
-    console.log('전체 삭제');
+  const handleDeleteAll = async() => {
+    await fetch(`http://localhost:10000/alerts/api/alert/delete-all/${memberId}`, {
+      method : "DELETE",
+    })
+    .then((res) => {
+      if (res.ok) {
+        alert("알림 삭제 성공!")
+        getAlerts();
+      } else {
+        alert("알림 삭제를 실패하였습니다.")
+      }
+    })
+    .catch(console.error)
   };
 
   // 알림을 닫는 함수
@@ -39,30 +93,41 @@ const Header = () => {
     setShowAlertModal(false);
   }
   
-  // 외부 클릭 시 알림창 닫기
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (alertRef.current && !alertRef.current.contains(e.target)) {
-        setShowAlertModal(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   // 헤더의 업 다운 이벤트
   useEffect(() => {
-    const handleWheel = (e) => {
-      if (e.deltaY > 0) {
-        setShowHeader(false);
-      } else if (e.deltaY < 0) {
-        setShowHeader(true);
-      };
-    };
+    // const handleWheel = (e) => {
+    //   if (e.deltaY > 0) {
+    //     setShowHeader(false);
+    //   } else if (e.deltaY < 0) {
+    //     setShowHeader(true);
+    //   };
+    // };
     // window.addEventListener("wheel", handleWheel);
     // return () => window.removeEventListener("wheel", handleWheel);
   }, []);
-  
+
+  useEffect(() => {
+    getAlerts();
+  }, [alertType]);
+
+  useEffect(() => {
+    if (!showProfileCard) return;
+
+    const handleClickOutside = (e) => {
+      // 드롭다운 내부/프로필 이미지가 아닌 곳 클릭 시
+      if (
+        profileImgRef.current &&
+        !profileImgRef.current.contains(e.target)
+      ) {
+        setShowProfileCard(false);
+        setProfileCardInfo(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showProfileCard]);
+
   return (
     <S.Container style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-110%)' }}>
       <S.Main>
@@ -92,12 +157,21 @@ const Header = () => {
                 onClick={() => setShowAlertModal((prev) => !prev)}
               />
             </S.SocialBox>
-
-            <S.ProfileBox>
-              <NavLink to="/main/mypage">
-                <img src="/assets/images/header/memberProfile.png" alt="멤버 프로필" />
-              </NavLink>
+            {/* 멤버 프로필 카드 */}
+            <S.ProfileBox ref={profileImgRef}>
+              <img
+                src="/assets/images/header/memberProfile.png"
+                alt="멤버 프로필"
+                onClick={handleProfileClick}
+                ref={profileImgRef}
+              />
               <span>로그아웃</span>
+
+              {showProfileCard && profileCardInfo && (
+                <S.ProfileCardDropdown>
+                  <ProfileCard profile={profileCardInfo} onClose={handleCloseProfileCard} />
+                </S.ProfileCardDropdown>
+              )}
             </S.ProfileBox>
           </S.Right>
         )}
@@ -105,15 +179,17 @@ const Header = () => {
 
       {/* 알림창 */}
       {showAlertModal && (
-        <S.AlertModalContainer ref={alertRef}>
+        <S.AlertModalContainer>
           <Alert
             alertInfo={alertInfo}
             onCancel={handleCancel}
             onDelete={handleDelete}
             onDeleteAll={handleDeleteAll}
+            onChangeType={setAlertType}
           />
         </S.AlertModalContainer>
       )}
+
     </S.Container>
   );
 };
