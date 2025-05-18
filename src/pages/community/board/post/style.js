@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { flexCenter, fontSizeH8, gray3Color, gray4Color, mainGreenColor, subBlueColor } from '../../../../globals/common';
+import { flexCenter, fontSizeH8, gray3Color, gray4Color, subBlueColor } from '../../../../globals/common';
 
 const S = {};
 
