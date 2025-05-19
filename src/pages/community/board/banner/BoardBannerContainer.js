@@ -23,7 +23,7 @@ const BoardBannerContainer = ({ hot }) => {
   const translateX = -(currentIndex * (320 + 100));
 
   const hotSlider = useEffect(()=>{
-    if( hot?.length) {
+    if( hot?.length) { // hot이 존재하면 그 길이를 가져와라
       setHotPosts(hot);
     }
   }, [hot]);

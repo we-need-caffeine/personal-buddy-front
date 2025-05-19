@@ -100,7 +100,7 @@ const BoardPostListContainer = ({
         {filteredPosts.length === 0 ? (
           <div>게시글이 없습니다.</div>
         ) : (
-          filteredPosts.map((post) => (
+          filteredPosts.map((post) => (         
             <Link to={`post/${post.boardId}`} key={post.boardId}>
               <S.PostCard>
                 <S.Thumbnail
@@ -129,7 +129,7 @@ const BoardPostListContainer = ({
                       e.stopPropagation();
                       console.log(`닉네임 ${post.memberNickname}의 프로필 클릭`);
                     }}
-                  />
+                    />
                   <S.Nickname>{post.memberNickname}</S.Nickname>
                 </S.UserInfo>
                 <S.Date>{post.boardContentCreateDate}</S.Date>
@@ -155,5 +155,6 @@ const BoardPostListContainer = ({
     </>
   );
 };
+
 
 export default BoardPostListContainer;
