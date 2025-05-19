@@ -12,7 +12,6 @@ const BoardContainer = () => {
   const [boardHashtag, setBoardHashtag] = useState("")
   const [searchKeyword, setSearchKeyword] = useState("")
 
-  // 게시글 목록을 백엔드에서 가져오거나, 실패 시 더미 데이터를 사용
   useEffect(() => {
     const fetchBoards = async () => {
       try {
