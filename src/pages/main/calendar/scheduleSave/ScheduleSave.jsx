@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import S from "./style";
 
 const ScheduleSave = () => {
@@ -11,6 +11,11 @@ const ScheduleSave = () => {
   const [repeat, setRepeat] = useState("");
   const [memberDropdownOpen, setMemberDropdownOpen] = useState(false);
   const [colorDropdownOpen, setColorDropdownOpen] = useState(false);
+
+  const colorRef = useRef(null);
+  const memberRef = useRef(null);
+  const mainRef = useRef(null);
+  const subRef = useRef(null);
 
   const mainCategories = ["개인", "업무", "취미"];
   const subCategories = {
@@ -28,7 +33,69 @@ const ScheduleSave = () => {
       prev.includes(name) ? prev.filter((m) => m !== name) : [...prev, name]
     );
   };
+  const [startDate, setStartDate] = useState("2025-06-01");
+  const [startTime, setStartTime] = useState("09:00");
+  const [openStartTime, setOpenStartTime] = useState(false);
+  const [endDate, setEndDate] = useState("2025-06-01");
+  const [endTime, setEndTime] = useState("10:00");
+  const [openEndTime, setOpenEndTime] = useState(false);
+  const endTimeRef = useRef(null);
+  const timeRef = useRef(null);
 
+  const timeOptions = [
+    "00:00",
+    "01:00",
+    "02:00",
+    "03:00",
+    "04:00",
+    "05:00",
+    "06:00",
+    "07:00",
+    "08:00",
+    "09:00",
+    "10:00",
+    "11:00",
+    "12:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00",
+    "19:00",
+    "20:00",
+    "21:00",
+    "22:00",
+    "23:00",
+  ];
+
+  // 외부 클릭 감지 추가
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (colorRef.current && !colorRef.current.contains(e.target)) {
+        setColorDropdownOpen(false);
+      }
+      if (memberRef.current && !memberRef.current.contains(e.target)) {
+        setMemberDropdownOpen(false);
+      }
+      if (mainRef.current && !mainRef.current.contains(e.target)) {
+        setMainOpen(false);
+      }
+      if (subRef.current && !subRef.current.contains(e.target)) {
+        setSubOpen(false);
+      }
+      if (timeRef.current && !timeRef.current.contains(e.target)) {
+        setOpenStartTime(false);
+      }
+      if (endTimeRef.current && !endTimeRef.current.contains(e.target)) {
+        setOpenEndTime(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <S.Container>
       <S.TitleInputContainer>
@@ -40,15 +107,67 @@ const ScheduleSave = () => {
           <S.DateSection>
             <S.DateTextLabel>시작</S.DateTextLabel>
             <S.DateInputWrapper>
-              <S.DateInput />
-              <S.DateInputTime />
+              {/* 날짜 선택 */}
+              <S.DateInput
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+
+              {/* 시간 선택 드롭다운 */}
+              <S.TimeDropdownContainer ref={timeRef}>
+                <S.TimeBox onClick={() => setOpenStartTime((prev) => !prev)}>
+                  {startTime}
+                </S.TimeBox>
+                {openStartTime && (
+                  <S.TimeList>
+                    {timeOptions.map((time) => (
+                      <S.TimeItem
+                        key={time}
+                        onClick={() => {
+                          setStartTime(time);
+                          setOpenStartTime(false);
+                        }}
+                      >
+                        {time}
+                      </S.TimeItem>
+                    ))}
+                  </S.TimeList>
+                )}
+              </S.TimeDropdownContainer>
             </S.DateInputWrapper>
           </S.DateSection>
           <S.DateSection>
-            종료
+            <S.DateTextLabel>종료</S.DateTextLabel>
             <S.DateInputWrapper>
-              <S.DateInput />
-              <S.DateInputTime />
+              {/* 날짜 선택 */}
+              <S.DateInput
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+
+              {/* 시간 선택 드롭다운 */}
+              <S.TimeDropdownContainer ref={endTimeRef}>
+                <S.TimeBox onClick={() => setOpenEndTime((prev) => !prev)}>
+                  {endTime}
+                </S.TimeBox>
+                {openEndTime && (
+                  <S.TimeList>
+                    {timeOptions.map((time) => (
+                      <S.TimeItem
+                        key={time}
+                        onClick={() => {
+                          setEndTime(time);
+                          setOpenEndTime(false);
+                        }}
+                      >
+                        {time}
+                      </S.TimeItem>
+                    ))}
+                  </S.TimeList>
+                )}
+              </S.TimeDropdownContainer>
             </S.DateInputWrapper>
           </S.DateSection>
         </S.DateSectionGroup>
@@ -60,7 +179,7 @@ const ScheduleSave = () => {
             {/* 색상 드롭다운 */}
             <S.ContentRow>
               색
-              <S.MemberDropdownContainer>
+              <S.MemberDropdownContainer ref={colorRef}>
                 <S.MemberSelectBox
                   onClick={() => setColorDropdownOpen((prev) => !prev)}
                 >
@@ -89,7 +208,7 @@ const ScheduleSave = () => {
             {/* 멤버 드롭다운 */}
             <S.ContentRow>
               멤버
-              <S.MemberDropdownContainer>
+              <S.MemberDropdownContainer ref={memberRef}>
                 <S.MemberSelectBox
                   onClick={() => setMemberDropdownOpen(!memberDropdownOpen)}
                 >
@@ -109,12 +228,11 @@ const ScheduleSave = () => {
               </S.MemberDropdownContainer>
             </S.ContentRow>
 
-            {/* ✅ 커스텀 드롭다운 카테고리 */}
+            {/* 카테고리 드롭다운 */}
             <S.ContentRow>
               카테고리
               <S.ContentCategoryWrapper>
-                {/* 상위 카테고리 */}
-                <S.CustomDropdownContainer>
+                <S.CustomDropdownContainer ref={mainRef}>
                   <S.CustomDropdownSelectBox
                     onClick={() => setMainOpen((prev) => !prev)}
                   >
@@ -138,8 +256,7 @@ const ScheduleSave = () => {
                   )}
                 </S.CustomDropdownContainer>
 
-                {/* 하위 카테고리 */}
-                <S.CustomDropdownContainer>
+                <S.CustomDropdownContainer ref={subRef}>
                   <S.CustomDropdownSelectBox
                     onClick={() => {
                       if (mainCategory) setSubOpen((prev) => !prev);

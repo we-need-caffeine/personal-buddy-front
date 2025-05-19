@@ -7,25 +7,27 @@ import {
   gray4Color,
 } from '../../../globals/common';
 
+const S = {};
+
 // 기본 레이아웃
-export const Container = styled.div`
+S.Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 
-export const Form = styled.form`
+S.Form = styled.form`
   background: white;
   width: 460px;
   margin-top: 30px;
 `;
 
-export const HiddenRadio = styled.input`
+S.HiddenRadio = styled.input`
   display: none;
 `;
 
-export const InputWrapper = styled.div`
+S.InputWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -41,7 +43,7 @@ export const InputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
-export const EmailInputWrapper = styled.div`
+S.EmailInputWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -58,7 +60,7 @@ export const EmailInputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
-export const NameInputWrapper = styled.div`
+S.NameInputWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -73,7 +75,7 @@ export const NameInputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
-export const BirthInputWrapper = styled.div`
+S.BirthInputWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -88,7 +90,7 @@ export const BirthInputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
-export const PhoneInputWrapper = styled.div`
+S.PhoneInputWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -103,7 +105,7 @@ export const PhoneInputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
-export const EmailVerifyCodeInputWrapper = styled.div`
+S.EmailVerifyCodeInputWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -119,7 +121,7 @@ export const EmailVerifyCodeInputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
-export const PhoneVerifyCodeInputWrapper = styled.div`
+S.PhoneVerifyCodeInputWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -139,12 +141,12 @@ export const PhoneVerifyCodeInputWrapper = styled.div`
 
 
 // 인증번호 전용 래퍼
-export const AuthInputWrapper = styled(InputWrapper)`
+S.AuthInputWrapper = styled(S.InputWrapper)`
   justify-content: space-between;
 `;
 
 // 입력 필드
-export const Input = styled.input`
+S.Input = styled.input`
   width: 100%;
   height: 60px;
   padding: 10px 50px 10px 10px;
@@ -157,7 +159,7 @@ export const Input = styled.input`
 `;
 
 // 아이콘
-export const Icon = styled.img`
+S.Icon = styled.img`
   position: absolute;
   left: 15px;
   width: 20px;
@@ -165,7 +167,7 @@ export const Icon = styled.img`
 `;
 
 // 상태 기반 버튼
-export const StatusButton = styled.button`
+S.StatusButton = styled.button`
   width: 200px;
   line-height: 30px;
   margin-right: 15px;
@@ -196,7 +198,7 @@ export const StatusButton = styled.button`
 `;
 
 // 비밀번호 토글 아이콘
-export const TogglePassword = styled.img`
+S.TogglePassword = styled.img`
   position: absolute;
   right: 15px;
   width: 20px;
@@ -205,12 +207,12 @@ export const TogglePassword = styled.img`
 `;
 
 // 성별 선택
-export const GenderSelect = styled.div`
+S.GenderSelect = styled.div`
   display: flex;
   margin: 0px 15px 0px -15px;
 `;
 
-export const GenderButton = styled.span`
+S.GenderButton = styled.span`
   display: inline-block;
   width: 100px;
   height: 30px;
@@ -232,14 +234,14 @@ export const GenderButton = styled.span`
 `;
 
 // 인증 타이머
-export const TimerText = styled.span`
+S.TimerText = styled.span`
   margin-right: 10px;
   ${fontSizeH9}
   color: ${({ theme }) => theme.PALLETE.gray.gray5};
 `;
 
 // 인증 상태 메시지
-export const StatusMessage = styled.span`
+S.StatusMessage = styled.span`
   display: block;
   ${fontSizeH8}
   font-weight: 300;
@@ -250,7 +252,7 @@ export const StatusMessage = styled.span`
 `;
 
 // 기본 실패 메시지
-export const FailMessage = styled.span`
+S.FailMessage = styled.span`
   display: block;
   ${fontSizeH8}
   font-weight: 300;
@@ -260,7 +262,7 @@ export const FailMessage = styled.span`
 `;
 
 // 가입 버튼
-export const SubmitButton = styled.button`
+S.SubmitButton = styled.button`
   width: 460px;
   height: 50px;
   padding: 10px;
@@ -279,3 +281,5 @@ export const SubmitButton = styled.button`
     cursor: pointer;
   }
 `;
+
+export default S;

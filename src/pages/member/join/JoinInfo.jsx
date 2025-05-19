@@ -1,26 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_green.css';
-import {
-  Container,
-  Form,
-  InputWrapper,
-  EmailInputWrapper,
-  NameInputWrapper,
-  BirthInputWrapper,
-  EmailVerifyCodeInputWrapper,
-  Input,
-  Icon,
-  StatusButton, 
-  TogglePassword,
-  GenderSelect,
-  GenderButton,
-  PhoneVerifyCodeInputWrapper,
-  PhoneInputWrapper,
-  FailMessage,
-  SubmitButton,
-  HiddenRadio
-} from './joinInfoStyle';
+import S from './joinInfoStyle';
 
 const JoinInfo = () => {
   const [email, setEmail] = useState('');
@@ -163,6 +144,8 @@ const JoinInfo = () => {
     
       if (data.exists) {
         alert(data.message || "이미 등록된 번호입니다.");
+        setPhoneValidation(false);
+        setPhoneMessage("※ 이미 등록된 전화번호입니다.");
         return;
       }
     
@@ -173,6 +156,8 @@ const JoinInfo = () => {
       });
       const sendData = await sendRes.json();
       alert(sendData.message);
+      setPhoneValidation(true); // ✅ 성공이면 true
+      setPhoneMessage("※ 인증번호가 발송되었습니다.");
       setAuthTimer(180);
     };
 
@@ -193,6 +178,30 @@ const JoinInfo = () => {
       }
     };
 
+    const handleChangePhone = (e) => {
+      const value = e.target.value;
+    
+      // 숫자만 허용
+      const onlyNumbers = /^[0-9]*$/;
+    
+      if (!onlyNumbers.test(value)) {
+        setPhoneValidation(false);
+        setPhoneMessage('※ 숫자만 입력 가능합니다.');
+        return;
+      }
+    
+      // 숫자만 입력한 경우
+      setPhone(value);
+    
+      if (value.length >= 10) {
+        setPhoneValidation(true);
+        setPhoneMessage('※ 올바른 번호 형식입니다.');
+      } else {
+        setPhoneValidation(null); // gray로 유지
+        setPhoneMessage('');
+      }
+    };
+
     const formatTimer = (seconds) => {
         const m = String(Math.floor(seconds / 60)).padStart(2, '0');
         const s = String(seconds % 60).padStart(2, '0');
@@ -209,12 +218,21 @@ const JoinInfo = () => {
       phoneValidation === true &&
       phoneAuthCodeValid === true;
 
+      console.log("이메일 유효:", isEmailValid);
+      console.log("이메일 인증코드 확인:", emailAuthCodeValid);
+      console.log("비밀번호 유효:", isPasswordValid);
+      console.log("이름 유효:", isNameValid);
+      console.log("성별 유효:", isGenderValid);
+      console.log("생일 입력됨:", birth);
+      console.log("전화번호 유효성:", phoneValidation);
+      console.log("전화 인증코드 확인:", phoneAuthCodeValid);
+      console.log("최종 상태:", isFormValid);
   return (
-    <Container>
-      <Form onSubmit={handleSubmit}>
-        <EmailInputWrapper isValid={isEmailValid}>
-          <Icon src="/assets/images/member/message-icon.png" />
-          <Input
+    <S.Container>
+      <S.Form onSubmit={handleSubmit}>
+        <S.EmailInputWrapper isValid={isEmailValid}>
+          <S.Icon src="/assets/images/member/message-icon.png" />
+          <S.Input
             type="email"
             placeholder="아이디 (이메일 주소)"
             value={email}
@@ -233,18 +251,18 @@ const JoinInfo = () => {
             ref={emailRef}
             required
         />
-          <StatusButton type="button" onClick={handleSendEmailAuth}>인증메일 발송</StatusButton>
-        </EmailInputWrapper>
+          <S.StatusButton type="button" onClick={handleSendEmailAuth}>인증메일 발송</S.StatusButton>
+        </S.EmailInputWrapper>
         {emailMessage && (
-        <FailMessage style={{ color: isEmailValid ? '#01CD74' : 'FF3F3F' }}>
+        <S.FailMessage style={{ color: isEmailValid ? '#01CD74' : 'FF3F3F' }}>
             {emailMessage}
-        </FailMessage>
+        </S.FailMessage>
         )}
 
         {showAuthInput && (
-            <EmailVerifyCodeInputWrapper isValid={emailAuthCodeValid}>
-            <Icon src="/assets/images/member/send-mail.png" />
-            <Input
+            <S.EmailVerifyCodeInputWrapper isValid={emailAuthCodeValid}>
+            <S.Icon src="/assets/images/member/send-mail.png" />
+            <S.Input
             type="text"
             placeholder="인증번호 6자리 입력"
             value={mailAuthCode}
@@ -255,17 +273,17 @@ const JoinInfo = () => {
                 {formatTimer(authTimer)}
             </span>
             )}
-            <StatusButton type="button" onClick={handleCheckEmailCode}>확인</StatusButton>
-        </EmailVerifyCodeInputWrapper>
+            <S.StatusButton type="button" onClick={handleCheckEmailCode}>확인</S.StatusButton>
+        </S.EmailVerifyCodeInputWrapper>
         )}
 
         {emailVerifyMessage && (
-          <FailMessage style={{ color: emailVerified ? '#01CD74' : 'FF3F3F' }}>{emailVerifyMessage}</FailMessage>
+          <S.FailMessage style={{ color: emailVerified ? '#01CD74' : 'FF3F3F' }}>{emailVerifyMessage}</S.FailMessage>
         )}
 
-        <InputWrapper isValid={isPasswordValid}>
-        <Icon src="/assets/images/member/lock-icon.png" />
-        <Input
+        <S.InputWrapper isValid={isPasswordValid}>
+        <S.Icon src="/assets/images/member/lock-icon.png" />
+        <S.Input
             type={showPassword ? 'text' : 'password'}
             placeholder="비밀번호"
             value={password}
@@ -286,21 +304,21 @@ const JoinInfo = () => {
             }}
             required
         />
-        <TogglePassword
+        <S.TogglePassword
             src={`/assets/images/member/see-password-icon-${showPassword ? 'true' : 'false'}.png`}
             onClick={togglePassword}
         />
-        </InputWrapper>
+        </S.InputWrapper>
 
         {passwordMessage && (
-        <FailMessage style={{ color: isPasswordValid ? '#01CD74' : 'FF3F3F' }}>
+        <S.FailMessage style={{ color: isPasswordValid ? '#01CD74' : 'FF3F3F' }}>
             {passwordMessage}
-        </FailMessage>
+        </S.FailMessage>
         )}
 
-        <NameInputWrapper isValid={isNameValid && isGenderValid}>
-          <Icon src="/assets/images/member/smile.png" />
-          <Input
+        <S.NameInputWrapper isValid={isNameValid && isGenderValid}>
+          <S.Icon src="/assets/images/member/smile.png" />
+          <S.Input
             type="text"
             placeholder="이름"
             value={name}
@@ -311,9 +329,9 @@ const JoinInfo = () => {
             }}
             required
           />
-          <GenderSelect>
+          <S.GenderSelect>
             <label>
-              <HiddenRadio
+              <S.HiddenRadio
                 type="radio"
                 name="gender"
                 value="남성"
@@ -323,10 +341,10 @@ const JoinInfo = () => {
                   setIsGenderValid(true);
                 }}
               />
-              <GenderButton active={gender === '남성'}>남성</GenderButton>
+              <S.GenderButton active={gender === '남성'}>남성</S.GenderButton>
             </label>
             <label>
-              <HiddenRadio
+              <S.HiddenRadio
                 type="radio"
                 name="gender"
                 value="여성"
@@ -336,24 +354,24 @@ const JoinInfo = () => {
                   setIsGenderValid(true);
                 }}
               />
-              <GenderButton active={gender === '여성'}>여성</GenderButton>
+              <S.GenderButton active={gender === '여성'}>여성</S.GenderButton>
             </label>
-          </GenderSelect>
-        </NameInputWrapper>
+          </S.GenderSelect>
+        </S.NameInputWrapper>
 
         {(isNameValid !== null || isGenderValid !== null) && (
-          <FailMessage
+          <S.FailMessage
             style={{
               color:
                 isNameValid && isGenderValid ? '#01CD74' : '#FF3F3F'
             }}
           >
             {getNameGenderMessage()}
-          </FailMessage>
+          </S.FailMessage>
         )}
 
-        <BirthInputWrapper validationState={birthValidation}>
-          <Icon src="/assets/images/member/calendar-icon.png" />
+        <S.BirthInputWrapper validationState={birthValidation}>
+          <S.Icon src="/assets/images/member/calendar-icon.png" />
           <Flatpickr
             options={{ dateFormat: 'Y-m-d' }}
             value={birth}
@@ -366,45 +384,47 @@ const JoinInfo = () => {
               setBirthValidation(date ? true : false);
             }}
             render={({ defaultValue, value, ...props }, ref) => (
-              <Input {...props} ref={ref} placeholder="생년월일 선택" required />
+              <S.Input {...props} ref={ref} placeholder="생년월일 선택" required />
             )}
           />
-        </BirthInputWrapper>
+        </S.BirthInputWrapper>
 
         {birthValidation !== null && (
           birthValidation === false ? (
-            <FailMessage style={{ color: '#FF3F3F' }}>
+            <S.FailMessage style={{ color: '#FF3F3F' }}>
               ※ 생년월일은 필수 정보입니다.
-            </FailMessage>
+            </S.FailMessage>
           ) : (
-            <FailMessage style={{ color: '#01CD74' }}>
+            <S.FailMessage style={{ color: '#01CD74' }}>
               ※ 입력 완료
-            </FailMessage>
+            </S.FailMessage>
           )
         )}
 
-        <PhoneInputWrapper isValid={phoneValidation}>
-          <Icon src="/assets/images/member/phone-icon.png" />
-          <Input
+        <S.PhoneInputWrapper isValid={phoneValidation}>
+          <S.Icon src="/assets/images/member/phone-icon.png" />
+          <S.Input
             type="tel"
             placeholder="휴대전화번호"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={handleChangePhone}
             required
           />
-          <StatusButton type="button" onClick={handleSendPhoneAuth}>인증번호 발송</StatusButton>
-        </PhoneInputWrapper>
+          <S.StatusButton type="button" onClick={handleSendPhoneAuth}>
+            인증번호 발송
+          </S.StatusButton>
+        </S.PhoneInputWrapper>
 
         {phoneMessage && (
-          <FailMessage style={{ color: phoneValidation ? '#01CD74' : '#FF3F3F' }}>
+          <S.FailMessage style={{ color: phoneValidation ? '#01CD74' : '#FF3F3F' }}>
             {phoneMessage}
-          </FailMessage>
+          </S.FailMessage>
         )}
 
         {showAuthInput && (
-            <PhoneVerifyCodeInputWrapper isValid={phoneAuthCodeValid}>
-            <Icon src="/assets/images/member/lock-icon.png" />
-            <Input
+            <S.PhoneVerifyCodeInputWrapper isValid={phoneAuthCodeValid}>
+            <S.Icon src="/assets/images/member/lock-icon.png" />
+            <S.Input
             type="text"
             placeholder="인증번호 6자리 입력"
             value={phoneAuthCode}
@@ -415,13 +435,13 @@ const JoinInfo = () => {
                 {formatTimer(authTimer)}
             </span>
             )}
-            <StatusButton type="button" onClick={handleCheckPhoneCode}>확인</StatusButton>
-        </PhoneVerifyCodeInputWrapper>
+            <S.StatusButton type="button" onClick={handleCheckPhoneCode}>확인</S.StatusButton>
+        </S.PhoneVerifyCodeInputWrapper>
         )}
 
-        <SubmitButton type="submit" disabled={!isFormValid}>가입하기</SubmitButton>
-      </Form>
-    </Container>
+        <S.SubmitButton type="submit" disabled={!isFormValid} className={isFormValid ? 'active' : ''}>가입하기</S.SubmitButton>
+      </S.Form>
+    </S.Container>
   );
 };
 
