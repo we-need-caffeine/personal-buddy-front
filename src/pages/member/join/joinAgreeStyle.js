@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { fontSizeH7 } from '../../../globals/common';
 
 export const Container = styled.div`
   padding: 50px;
@@ -26,6 +27,8 @@ export const Wrapper = styled.div`
   img {
     width: 32px;
     height: 32px;
+    cursor: pointer;
+    margin-right: 0.5rem;
   }
 
   .text-essential {
@@ -37,7 +40,7 @@ export const Wrapper = styled.div`
   }
 
   p {
-    font-size: var(--h7);
+    ${fontSizeH7}
     font-weight: 300;
     margin: 0px 18px 0px 32px;
     width: 395px;
@@ -72,4 +75,19 @@ export const NextButton = styled.button`
   &.active:hover {
     background-color: #218838;
   }
+`;
+
+export const HiddenInput = styled.input.attrs({ type: 'hidden' })``;
+
+export const CheckboxImg = styled.img`
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+`;
+
+export const TermText = styled.span`
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
 `;

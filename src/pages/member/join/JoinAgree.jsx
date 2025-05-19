@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Wrapper,
-  NextButton
+  NextButton,
+  CheckboxImg,
+  TermText,
+  HiddenInput
 } from './joinAgreeStyle';
-import { Navigate } from 'react-router-dom';
 import { useJoin } from './JoinContext';
 
 const JoinAgree = () => {
@@ -12,16 +15,20 @@ const JoinAgree = () => {
     all: false,
     service: false,
     information: false,
-    location: false
+    location: false,
   });
 
   const { setJoinData } = useJoin();
+  const navigate = useNavigate();
 
-  const handleNext = () => {
-    setJoinData(prev => ({ ...prev, agree: { agreeService: true, agreePrivacy: true } }));
-    Navigate("/member/join/info");
+  const handleNext = (e) => {
+    e.preventDefault();
+    setJoinData(prev => ({
+      ...prev,
+      agree: { agreeService: true, agreePrivacy: true },
+    }));
+    navigate("/member/join/info");
   };
-
 
   const toggle = (key) => {
     if (key === 'all') {
@@ -52,25 +59,15 @@ const JoinAgree = () => {
     <Container>
       <form onSubmit={handleNext}>
         <Wrapper>
-          <input type="hidden" name="agreeAll" value={agreements.all ? 1 : 0} />
-          <img
-            src={getSrc(agreements.all)}
-            alt="전체 동의"
-            onClick={() => toggle('all')}
-            style={{ width: '20px', height: '20px', cursor: 'pointer', marginRight: '0.5rem' }}
-          />
-          <span onClick={() => toggle('all')}>전체 동의</span>
+          <HiddenInput name="agreeAll" value={agreements.all ? 1 : 0} />
+          <CheckboxImg src={getSrc(agreements.all)} alt="전체 동의" onClick={() => toggle('all')} />
+          <TermText onClick={() => toggle('all')}>전체 동의</TermText>
         </Wrapper>
 
         <Wrapper>
-          <input type="hidden" name="agreeService" value={agreements.service ? 1 : 0} required />
-          <img
-            src={getSrc(agreements.service)}
-            alt="이용약관"
-            onClick={() => toggle('service')}
-            style={{ width: '20px', height: '20px', cursor: 'pointer', marginRight: '0.5rem' }}
-          />
-          <span>[필수] 퍼스널 버디 이용약관</span>
+          <HiddenInput name="agreeService" value={agreements.service ? 1 : 0} required />
+          <CheckboxImg src={getSrc(agreements.service)} alt="이용약관" onClick={() => toggle('service')} />
+          <TermText>[필수] 퍼스널 버디 이용약관</TermText>
           <p>여러분을 환영합니다.퍼스널 버디 서비스 및 제품(이하 ‘서비스’)을 이용해 주셔서 감사합니다.
                 	본 약관은 다양한 퍼스널 버디 서비스의 이용과 관련하여 퍼스널 버디 서비스를 제공하는 퍼스널 버디(이하 '회사')와 이용자(이하 '회원') 간의 권리,
                 	의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.<br /><br />
@@ -124,14 +121,9 @@ const JoinAgree = () => {
         </Wrapper>
 
         <Wrapper>
-          <input type="hidden" name="agreeInformation" value={agreements.information ? 1 : 0} required />
-          <img
-            src={getSrc(agreements.information)}
-            alt="개인정보 수집"
-            onClick={() => toggle('information')}
-            style={{ width: '20px', height: '20px', cursor: 'pointer', marginRight: '0.5rem' }}
-          />
-          <span>[필수] 개인정보 수집 및 이용</span>
+          <HiddenInput name="agreeInformation" value={agreements.information ? 1 : 0} required />
+          <CheckboxImg src={getSrc(agreements.information)} alt="개인정보 수집" onClick={() => toggle('information')} />
+          <TermText>[필수] 개인정보 수집 및 이용</TermText>
           <p>본 약관에서 정하지 않은 사항은 관련 법령 및 회사가 정한 운영 정책에 따릅니다.<br /><br />
                 	본 약관과 관련하여 발생하는 분쟁에 대해 회사와 회원은 성실히 협의하여 해결하며, 
                 	협의가 이루어지지 않는 경우 관할 법원에 의해 해결됩니다.<br /><br />
@@ -155,14 +147,9 @@ const JoinAgree = () => {
         </Wrapper>
 
         <Wrapper>
-          <input type="hidden" name="agreeLocation" value={agreements.location ? 1 : 0} required />
-          <img
-            src={getSrc(agreements.location)}
-            alt="위치기반 서비스"
-            onClick={() => toggle('location')}
-            style={{ width: '20px', height: '20px', cursor: 'pointer', marginRight: '0.5rem' }}
-          />
-          <span>[필수] 위치기반 서비스 이용약관</span>
+          <HiddenInput name="agreeLocation" value={agreements.location ? 1 : 0} required />
+          <CheckboxImg src={getSrc(agreements.location)} alt="위치기반 서비스" onClick={() => toggle('location')} />
+          <TermText>[필수] 위치기반 서비스 이용약관</TermText>
           <p>위치기반서비스 이용 동의<br /><br />
                 	위치기반서비스 이용약관에 동의하시면, 
                 	위치를 활용한 광고 정보 수신 등을 포함하는 퍼스널 버디 위치기반 서비스를 이용할 수 있습니다.<br /><br />
@@ -180,11 +167,7 @@ const JoinAgree = () => {
                 	단, 위치기반 맞춤형 서비스 및 광고 수신이 제한될 수 있습니다.<br /><br /></p>
         </Wrapper>
 
-        <NextButton
-          type="submit"
-          className={isValid ? 'active' : ''}
-          disabled={!isValid}
-        >
+        <NextButton type="submit" className={isValid ? 'active' : ''} disabled={!isValid}>
           다음
         </NextButton>
       </form>

@@ -7,8 +7,6 @@ import { setUser, setUserStatus } from '../../modules/member';
 const isLogin = true; // true면 로그인 상태(main으로 이동), false면 로그아웃 상태(member/login으로 이동)
 
 const LoginLayout = () => {
-
-  console.log(1)
   
   // 리덕스
   const { currentUser, isLogin } = useSelector((state) => state.member)
