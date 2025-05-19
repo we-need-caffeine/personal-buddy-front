@@ -2,19 +2,27 @@ import React, { useEffect, useRef, useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_green.css';
 import S from './joinInfoStyle';
+import { useNavigate } from 'react-router-dom';
 
 const JoinInfo = () => {
   const [email, setEmail] = useState('');
   const [mailAuthCode, setMailAuthCode] = useState('');
   const [phoneAuthCode, setPhoneAuthCode] = useState('');
   const [emailVerified, setEmailVerified] = useState(false);
+  const [phoneVerified, setPhoneVerified] = useState(false);
   const [emailAuthCodeValid, setEmailAuthCodeValid] = useState(null);
   const [phoneAuthCodeValid, setPhoneAuthCodeValid] = useState(null);
   const [isNameValid, setIsNameValid] = useState(null);
   const [isGenderValid, setIsGenderValid] = useState(null);
   const [emailVerifyMessage, setEmailVerifyMessage] = useState('');
-  const [showAuthInput, setShowAuthInput] = useState(true);
-  const [authTimer, setAuthTimer] = useState(0);
+  const [phoneVerifyMessage, setPhoneVerifyMessage] = useState('');
+  const [showAuthInput, setShowAuthInput] = useState(false);
+  const [showPhoneAuthInput, setPhoneShowAuthInput] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isConfirmValid, setIsConfirmValid] = useState(null);
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [emailAuthTimer, setEmailAuthTimer] = useState(0);
+  const [passwordAuthTimer, setPasswordAuthTimer] = useState(0);
   const [password, setPassword] = useState('');
   const [phoneValidation, setPhoneValidation] = useState(null);
   const [phoneMessage, setPhoneMessage] = useState('');
@@ -24,6 +32,7 @@ const JoinInfo = () => {
   const [birthValidation, setBirthValidation] = useState(null);
   const [phone, setPhone] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   const emailRef = useRef(null);
   const timerRef = useRef(null);
@@ -38,11 +47,16 @@ const JoinInfo = () => {
   const [isPasswordValid, setIsPasswordValid] = useState(null);
 
   const togglePassword = () => setShowPassword(!showPassword);
+  const togglePasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({ email, password, name, gender, birth, phone });
+    navigate('/member/join/profile');
   };
+
 
   const getNameGenderMessage = () => {
     if (isNameValid === false && isGenderValid === false) {
@@ -90,11 +104,11 @@ const JoinInfo = () => {
 
         alert(data.message || "이메일 인증번호가 전송되었습니다.");
         setShowAuthInput(true);
-        setAuthTimer(180);
+        setEmailAuthTimer(180);
 
         if (timerRef.current) clearInterval(timerRef.current);
         timerRef.current = setInterval(() => {
-            setAuthTimer((prev) => {
+          setEmailAuthTimer((prev) => {
             if (prev <= 1) {
                 clearInterval(timerRef.current);
                 return 0;
@@ -110,7 +124,7 @@ const JoinInfo = () => {
 
   const handleCheckEmailCode = async () => {
         try {
-        const response = await fetch("http://localhost:10000/sms/api/verifyCode", {
+        const response = await fetch("http://localhost:10000/sms/api/email/verifyCode", {
             method: "POST",
             headers: {
             "Content-Type": "application/json"
@@ -138,42 +152,70 @@ const JoinInfo = () => {
     };
 
     const handleSendPhoneAuth = async () => {
-      const checkUrl = `http://localhost:10000/members/api/phone/check?phone=${encodeURIComponent(phone)}`;
-      const res = await fetch(checkUrl);
-      const data = await res.json();
+      // const checkUrl = `http://localhost:10000/members/api/phone/check?phone=${encodeURIComponent(phone)}`;
+      // const res = await fetch(checkUrl);
+      // const data = await res.json();
     
-      if (data.exists) {
-        alert(data.message || "이미 등록된 번호입니다.");
-        setPhoneValidation(false);
-        setPhoneMessage("※ 이미 등록된 전화번호입니다.");
-        return;
-      }
+      // if (data.exists) {
+      //   alert(data.message || "이미 등록된 번호입니다.");
+      //   setPhoneValidation(false);
+      //   setPhoneMessage("※ 이미 등록된 전화번호입니다.");
+      //   return;
+      // }
     
-      const sendRes = await fetch("http://localhost:10000/sms/api/sendSms", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(phone)
-      });
-      const sendData = await sendRes.json();
-      alert(sendData.message);
-      setPhoneValidation(true); // ✅ 성공이면 true
-      setPhoneMessage("※ 인증번호가 발송되었습니다.");
-      setAuthTimer(180);
+      // const sendRes = await fetch("http://localhost:10000/sms/api/sendSms", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(phone)
+      // });
+      // const sendData = await sendRes.json();
+      // alert(sendData.message);
+      // setPhoneValidation(true);
+      // setPhoneMessage("※ 인증번호가 발송되었습니다.");
+      // showPhoneAuthInput(true)
+      // setPasswordAuthTimer(180);
+
+      // 프론트 테스트용 처리
+      alert("※ 인증번호 [000000] (테스트용)이 발송되었습니다.");
+      setPhoneValidation(true);
+      setPhoneMessage("※ 인증번호가 발송되었습니다. (000000)");
+      setPhoneShowAuthInput(true);
+      setPasswordAuthTimer(180);
     };
 
     const handleCheckPhoneCode = async () => {
-      const res = await fetch("http://localhost:10000/sms/api/verifyCode", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(phoneAuthCode)
-      });
-      const data = await res.json();
-      if (data.isFlag) {
+      // const res = await fetch("http://localhost:10000/sms/api/phone/verifyCode", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(phoneAuthCode)
+      // });
+      // const data = await res.json();
+      // if (data.isFlag) {
+      //   setPhoneAuthCodeValid(true);
+      //   setPhoneVerified(true);
+      //   setPhoneVerifyMessage(data.message || "※ 휴대전화번호 인증 완료");
+      //   alert("인증 완료!");
+      //   clearInterval(timerRef.current);
+      // } else {
+      //   setPhoneAuthCodeValid(false);
+      //   setPhoneVerified(false);
+      //   setPhoneVerifyMessage(data.message || "※ 휴대전화번호 인증 실패");
+      //   alert("인증 실패!");
+      // }
+
+      // 프론트 테스트 로직
+      const isCorrect = phoneAuthCode === "000000";
+
+      if (isCorrect) {
         setPhoneAuthCodeValid(true);
+        setPhoneVerified(true);
+        setPhoneVerifyMessage("※ 휴대전화번호 인증 완료");
         alert("인증 완료!");
         clearInterval(timerRef.current);
       } else {
         setPhoneAuthCodeValid(false);
+        setPhoneVerified(false);
+        setPhoneVerifyMessage("※ 인증번호 인증 실패");
         alert("인증 실패!");
       }
     };
@@ -216,17 +258,18 @@ const JoinInfo = () => {
       isGenderValid === true &&
       birth !== '' &&
       phoneValidation === true &&
-      phoneAuthCodeValid === true;
+      phoneAuthCodeValid === true &&
+      isConfirmValid === true;
 
-      console.log("이메일 유효:", isEmailValid);
-      console.log("이메일 인증코드 확인:", emailAuthCodeValid);
-      console.log("비밀번호 유효:", isPasswordValid);
-      console.log("이름 유효:", isNameValid);
-      console.log("성별 유효:", isGenderValid);
-      console.log("생일 입력됨:", birth);
-      console.log("전화번호 유효성:", phoneValidation);
-      console.log("전화 인증코드 확인:", phoneAuthCodeValid);
-      console.log("최종 상태:", isFormValid);
+      // console.log("이메일 유효:", isEmailValid);
+      // console.log("이메일 인증코드 확인:", emailAuthCodeValid);
+      // console.log("비밀번호 유효:", isPasswordValid);
+      // console.log("이름 유효:", isNameValid);
+      // console.log("성별 유효:", isGenderValid);
+      // console.log("생일 입력됨:", birth);
+      // console.log("전화번호 유효성:", phoneValidation);
+      // console.log("전화 인증코드 확인:", phoneAuthCodeValid);
+      // console.log("최종 상태:", isFormValid);
   return (
     <S.Container>
       <S.Form onSubmit={handleSubmit}>
@@ -254,7 +297,7 @@ const JoinInfo = () => {
           <S.StatusButton type="button" onClick={handleSendEmailAuth}>인증메일 발송</S.StatusButton>
         </S.EmailInputWrapper>
         {emailMessage && (
-        <S.FailMessage style={{ color: isEmailValid ? '#01CD74' : 'FF3F3F' }}>
+        <S.FailMessage style={{ color: isEmailValid ? '#01CD74' : '#FF3F3F' }}>
             {emailMessage}
         </S.FailMessage>
         )}
@@ -268,9 +311,9 @@ const JoinInfo = () => {
             value={mailAuthCode}
             onChange={(e) => setMailAuthCode(e.target.value)}
             />
-            {authTimer > 0 && (
+            {emailAuthTimer > 0 && (
             <span style={{ marginRight: '10px', fontSize: '14px', color: '#555' }}>
-                {formatTimer(authTimer)}
+                {formatTimer(emailAuthTimer)}
             </span>
             )}
             <S.StatusButton type="button" onClick={handleCheckEmailCode}>확인</S.StatusButton>
@@ -278,7 +321,7 @@ const JoinInfo = () => {
         )}
 
         {emailVerifyMessage && (
-          <S.FailMessage style={{ color: emailVerified ? '#01CD74' : 'FF3F3F' }}>{emailVerifyMessage}</S.FailMessage>
+          <S.FailMessage style={{ color: emailVerified ? '#01CD74' : '#FF3F3F' }}>{emailVerifyMessage}</S.FailMessage>
         )}
 
         <S.InputWrapper isValid={isPasswordValid}>
@@ -314,6 +357,41 @@ const JoinInfo = () => {
         <S.FailMessage style={{ color: isPasswordValid ? '#01CD74' : 'FF3F3F' }}>
             {passwordMessage}
         </S.FailMessage>
+        )}
+
+        <S.InputWrapper isValid={isConfirmValid}>
+          <S.Icon src="/assets/images/member/lock-icon.png" />
+          <S.Input
+            type={showPasswordConfirm ? 'text' : 'password'}
+            placeholder="비밀번호 재확인"
+            value={confirmPassword}
+            onChange={(e) => {
+              const value = e.target.value;
+              setConfirmPassword(value);
+
+              if (value === '') {
+                setIsConfirmValid(null);
+                setConfirmMessage('');
+              } else if (value !== password) {
+                setIsConfirmValid(false);
+                setConfirmMessage('※ 비밀번호가 일치하지 않습니다.');
+              } else {
+                setIsConfirmValid(true);
+                setConfirmMessage('※ 비밀번호가 일치합니다.');
+              }
+            }}
+            required
+          />
+          <S.TogglePasswordConfirm
+            src={`/assets/images/member/see-password-icon-${showPasswordConfirm ? 'true' : 'false'}.png`}
+            onClick={togglePasswordConfirm}
+          />
+        </S.InputWrapper>
+
+        {confirmMessage && (
+          <S.FailMessage style={{ color: isConfirmValid ? '#01CD74' : '#FF3F3F' }}>
+            {confirmMessage}
+          </S.FailMessage>
         )}
 
         <S.NameInputWrapper isValid={isNameValid && isGenderValid}>
@@ -421,7 +499,7 @@ const JoinInfo = () => {
           </S.FailMessage>
         )}
 
-        {showAuthInput && (
+        {showPhoneAuthInput && (
             <S.PhoneVerifyCodeInputWrapper isValid={phoneAuthCodeValid}>
             <S.Icon src="/assets/images/member/lock-icon.png" />
             <S.Input
@@ -430,13 +508,19 @@ const JoinInfo = () => {
             value={phoneAuthCode}
             onChange={(e) => setPhoneAuthCode(e.target.value)}
             />
-            {authTimer > 0 && (
+            {passwordAuthTimer > 0 && (
             <span style={{ marginRight: '10px', fontSize: '14px', color: '#555' }}>
-                {formatTimer(authTimer)}
+                {formatTimer(passwordAuthTimer)}
             </span>
             )}
             <S.StatusButton type="button" onClick={handleCheckPhoneCode}>확인</S.StatusButton>
         </S.PhoneVerifyCodeInputWrapper>
+        )}
+
+        {phoneVerifyMessage && (
+          <S.FailMessage style={{ color: phoneVerified ? '#01CD74' : '#FF3F3F' }}>
+            {phoneVerifyMessage}
+          </S.FailMessage>
         )}
 
         <S.SubmitButton type="submit" disabled={!isFormValid} className={isFormValid ? 'active' : ''}>가입하기</S.SubmitButton>
