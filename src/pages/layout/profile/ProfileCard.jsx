@@ -1,19 +1,43 @@
-import React from 'react';
-import S from './style'; // 프로필카드용 스타일(아래 예시 있음)
+import React, { useEffect, useState } from 'react';
+import S from './style';
 import { NavLink } from 'react-router-dom';
 
-const ProfileCard = ({ profile, onClose }) => {
+const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
+  
+  const [myId, setMyId] = useState(memberId);
+  const [friendId, setFriendId] = useState(profileCardMemberId);
+  const [profile, setProfile] = useState({})
 
-  const memberId = 1;
+  // 조회하려는 유저 : memberId
+  // 내 아이디 follow
+  
+  // fetch 해당 유저
+  // 상대방 아이디 profileCardMemberId
 
-  if (!profile) return null;
+  useEffect(() => {
+    const getProfile = async () => {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/follows/api/profile-card?memberId=${myId}&profileCardMemberId=${friendId}`)
+      const datas = await response.json()
+      setProfile(datas)
+    }
+
+    getProfile()
+  }, [memberId, profileCardMemberId])
+
+  console.log(profile)
 
   return (
     <S.CardContainer>
       {/* 프로필, 멤버 정보, 팔로잉 정보 */}
       <S.TopContainer>
         <S.MemberInfoContainer>
-          <S.MemberProfile src={'/assets/images/header/memberProfile.png'} alt="프로필" />
+          <S.MemberProfile
+            src={profile.memberImgPath || "/assets/images/header/default-member-img.png"}
+            alt="멤버 프로필 이미지" 
+            onError={e => {
+                e.target.src = "/assets/images/header/default-member-img.png";
+            }}
+          />
           <S.MemberInfoTextContainer>
             <S.MemberNickName>{profile.memberNickname}</S.MemberNickName>
             <S.MemberStatusMessage>{profile.memberStatusMessage || '상태메세지 없음'}</S.MemberStatusMessage>
@@ -62,13 +86,15 @@ const ProfileCard = ({ profile, onClose }) => {
         </S.FollowCount>
       </S.FollowCountContainer>
       <S.AcheivementContainer>
-        <S.AcheivementItems src='/assets/images/header/memberProfile.png' alt='업적'/>
-        <S.AcheivementItems src='/assets/images/header/memberProfile.png' alt='업적'/>
-        <S.AcheivementItems src='/assets/images/header/memberProfile.png' alt='업적'/>
+        <S.AcheivementItems src='/assets/images/header/default-achivement-img.png' alt='업적'/>
+        <S.AcheivementItems src='/assets/images/header/default-achivement-img.png' alt='업적'/>
+        <S.AcheivementItems src='/assets/images/header/default-achivement-img.png' alt='업적'/>
       </S.AcheivementContainer>
       <S.SocialButtonContainer>
-        <S.MyPageButton>
-          <NavLink to={`main/mypage/${profile.id}`}>
+        <S.MyPageButton onClick={() => { handleProfileCard(false)}}>
+          <NavLink
+            to={`/main/mypage/${profile.id}`}
+          >
             마이페이지
           </NavLink>
         </S.MyPageButton>

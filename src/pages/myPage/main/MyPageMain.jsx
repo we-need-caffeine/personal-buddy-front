@@ -1,24 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import S from './style';
 import { NavLink, useParams } from 'react-router-dom';
 import ConfirmModal from '../../layout/modal/ConfirmModal';
+import { useSelector } from 'react-redux';
+import GuestItem from './GuestItem';
 
 const MyPageMain = () => {
+    // 로그인된 유저정보
+    const {currentUser} = useSelector((state) => state.member)
+    // 로그인된 유저의 아이디
+    const memberId = currentUser.id;
     // 텍스트에리어값
     const [guestBookText, setGuestBookText] = useState("");
+    // 프로필 카드의 정보
+    const [profileCardInfo, setProfileCardInfo] = useState(null);
+    // 프로필 카드의 외부 요소를 감지하는 훅함수
+    const profileImgRef = useRef();
     // 게스트북 리스트
     const [guestBooks, setGuestBooks] = useState([]);
     // 게스트북 카운터
     const [guestBookCount, setGuestBookCount] = useState(0);
     // 모달 상태값
     const [modalOpen, setModalOpen] = useState(false);
-    // 게스트북의 주인의 아이디
+    // 마이페이지 파람에서 id값을 가져오는 훅함수
     const { id } = useParams();
+    // 게스트북 오너 아이디를 저장
     const ownerMemberId = id;
-    // 방명록을 작성할 사람의 아이디
-    const writerMemberId = 2;
-    // 현재 유저
-    const memberId = 2;
     // 페이지
     const page = 1;
 
@@ -29,20 +36,26 @@ const MyPageMain = () => {
 
     // 비동기로 방명록을 백엔드에 요청하는 함수
     const getGuestBook = async () => {
-        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/list/page/${ownerMemberId}/${page}`);
+        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/list/page/${ownerMemberId}/${page}`, {
+            method: "GET"
+        });
         const guestBooks = await response.json()
         setGuestBooks(guestBooks);
     }
 
     // 해당 유저에게 달린 모든 방명록을 카운트하는 함수
     const getGuestBookCount = async () => {
-        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/list/${ownerMemberId}`);
+        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/list/${ownerMemberId}`, {
+            method: "GET"
+        });
         const guestBooks = await response.json();
         setGuestBookCount(guestBooks.length);
     }
 
     // 방명록을 작성할 때, 비동기로 방명록을 작성하고, 백엔드에서 방명록 리스트를 다시 가져오고, 인풋값을 초기화하는 함수
     const handleRegister = async() => {
+        // 방명록을 작성할 사람의 아이디
+        const writerMemberId = memberId;
         await fetch("http://localhost:10000/guestbooks/api/guestbook/write", {
             method : "POST",
             headers : {
@@ -83,7 +96,7 @@ const MyPageMain = () => {
         }
     };
         
-    //방명록 리스트를 가져오는 함수
+    //최초로 방명록 리스트와 카운팅을 가져오는 함수
     useEffect(() => {
         getGuestBook()
         getGuestBookCount()
@@ -165,29 +178,16 @@ const MyPageMain = () => {
                     </S.GuestBookInputBottomContainer>
                 </S.GuestBookInputContainer>
                 <S.GuestBookListContainer>
-                    {guestBooks.map((item) => 
-                        <S.GuestBookItemContainer key={item.id}>
-                            <S.GuestBookMemberInfoContainer>
-                                <S.GuestBookMemberInfo>
-                                    <S.GuestBookMemberProfileImg src="/assets/images/header/memberProfile.png" alt='멤버 프로필 이미지' />
-                                    <span>{item.writerName}</span>
-                                </S.GuestBookMemberInfo>
-                                {item.writerMemberId === memberId || item.ownerMemberId === memberId ? 
-                                (
-                                    <S.GuestBookDeleteButton onClick={() => handleDelete(item.id)}>
-                                        <span>삭제</span>
-                                    </S.GuestBookDeleteButton>
-                                ) : (
-                                    <></>
-                                )}
-                            </S.GuestBookMemberInfoContainer>
-                            <S.GuestBookContent>
-                                <span>{item.guestbookContent}</span>
-                            </S.GuestBookContent>
-                            <S.GuestBookCreateTime>
-                                <span>{formatDate(item.guestbookCreateTime)}</span>
-                            </S.GuestBookCreateTime>
-                        </S.GuestBookItemContainer>
+                    {guestBooks.map((item, i) => (
+                        <GuestItem 
+                            key={i}
+                            i={i}
+                            item={item} 
+                            memberId={memberId}
+                            handleDelete={handleDelete}
+                            formatDate={formatDate}
+                        />
+                        )
                     )}
                 </S.GuestBookListContainer>
                 {/* 페이지네이션 영역 */}

@@ -1,17 +1,31 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import S from './style';
+import { useSelector } from 'react-redux';
 
 const MyPageSidebar = () => {
 
-    const isLogin = 1;
+    // 게스트북의 주인의 아이디
+    const { id } = useParams();
+
+    // 로그인된 유저정보
+    const {currentUser} = useSelector((state) => state.member)
+    
+    // 로그인된 유저의 아이디
+    const memberId = currentUser.id;
+    const memberIdStr = memberId.toString();
 
     return (
         <div>
-            {isLogin == null ? (
+            {id !== memberIdStr ? (
                 <div>
                     <S.MyPageMemberProfile>
-                        <img src='/assets/images/header/memberProfile.png' alt='멤버 프로필 이미지'/>
+                        <img 
+                            src={currentUser.memberImgPath || "/assets/images/header/default-member-img.png"}
+                            alt='멤버 프로필 이미지'
+                            onError={e => {
+                                e.target.src = "/assets/images/header/default-member-img.png";
+                            }}
+                        />
                     </S.MyPageMemberProfile>
                     <S.MyPageMemberInfoContainer>
                         <S.MyPageMemberInfoNickName>
@@ -35,14 +49,14 @@ const MyPageSidebar = () => {
                             </S.MyPageMemberInfoFollow>
                         </S.MyPageMemberInfoFollowContainer>
                     </S.MyPageMemberInfoContainer>
-                    <S.MyPageMemberInfoButtonContainer>
-                        <S.MypageMemberInfoFollowButton>
-                            <span>팔로우</span>
-                        </S.MypageMemberInfoFollowButton>
-                        <S.MypageMemberInfoMessageButton>
-                            <span>메세지</span>
-                        </S.MypageMemberInfoMessageButton>
-                    </S.MyPageMemberInfoButtonContainer>
+                    <S.MyPageButtonContainer>
+                        <S.FollowBtn>
+                            팔로우
+                        </S.FollowBtn>
+                        <S.MessageBtn>
+                            메세지
+                        </S.MessageBtn>
+                    </S.MyPageButtonContainer>
                     <S.MyPageTapContainer>
                         <S.MyPageTitleContainer>
                             <S.MyPageTitle>
@@ -67,7 +81,13 @@ const MyPageSidebar = () => {
             ) : (
                 <div>
                     <S.MyPageMemberProfile>
-                        <img src='/assets/images/header/memberProfile.png' alt='멤버 프로필 이미지'/>
+                        <img 
+                            src={currentUser.memberImgPath || "/assets/images/header/default-member-img.png"}
+                            alt='멤버 프로필 이미지'
+                            onError={e => {
+                                e.target.src = "/assets/images/header/default-member-img.png";
+                            }}
+                        />
                     </S.MyPageMemberProfile>
                     <S.MyPageMemberInfoContainer>
                         <S.MyPageMemberInfoNickName>

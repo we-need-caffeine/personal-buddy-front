@@ -137,6 +137,7 @@ S.GuestBookMemberInfo = styled.div`
     justify-content: center;
     align-items: center;
     ${fontSizeH8}
+    position: relative;
 `
 
 S.GuestBookMemberProfileImg = styled.img`
@@ -144,6 +145,7 @@ S.GuestBookMemberProfileImg = styled.img`
     height: 24px;
     border-radius: 36px;
     margin-right: 10px;
+    cursor: pointer;
 `
 
 S.GuestBookDeleteButton = styled.button`
@@ -163,6 +165,26 @@ S.GuestBookCreateTime = styled.div`
     padding: 20px 30px 20px 30px;
     ${gray4Color}
     ${fontSizeH9}
+`
+
+S.ProfileCardDropdown = styled.div`
+    position: absolute;
+    top: 10px;
+    left: -150px;
+    z-index: 9998;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+    padding: 0;
+`;
+
+S.CardBG = styled.div`
+  position: fixed;
+  left: 0;
+  top : 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9000;
 `
 
 export default S;
