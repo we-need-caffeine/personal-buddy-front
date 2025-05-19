@@ -108,4 +108,28 @@ S.MyPageSubTitle = styled.div`
     margin: 10px 24px;
     ${fontSizeH8};
 `
+
+S.MyPageButtonContainer = styled.div`
+    width: 200px;
+    height: 40px;
+`
+
+S.FollowBtn = styled.button`
+    width: 50%;
+    height: 100%;
+    border: none;
+    background-color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
+    ${whiteColor}
+    ${fontSizeH8}
+`
+
+S.MessageBtn = styled.button`
+    width: 50%;
+    height: 100%;
+    border: none;
+    background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
+    ${whiteColor}
+    ${fontSizeH8}
+`
+
 export default S;
