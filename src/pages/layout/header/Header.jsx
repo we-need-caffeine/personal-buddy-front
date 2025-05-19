@@ -1,34 +1,136 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import S from './style'; 
+import Alert from '../alert/Alert'; // 경로에 맞게 수정해줘!
+import S from './style';
+import ProfileCard from '../profile/ProfileCard';
 
 const Header = () => {
-  // 로그인 여부
-  const isLogin = 1;
-
-  // 헤더 상태
+  // 로그인 상태
+  const isLogin = true;
+  // 로그인된 멤버 정보
+  const memberId = 1;
+  // 헤더 이벤트 상태
   const [showHeader, setShowHeader] = useState(true);
+  // 알림창 상태
+  const [showAlertModal, setShowAlertModal] = useState(false);
+  // 알림 정보
+  const [alertInfo, setAlertInfo] = useState([]);
+  // 알림 타입 정보
+  const [alertType, setAlertType] = useState("");
+  // const alertRef = useRef();
+  // 프로필 카드 상태
+  const [profileCardInfo, setProfileCardInfo] = useState(null);
+  const [showProfileCard, setShowProfileCard] = useState(false);
+  const profileImgRef = useRef();
 
+  // 프로필 카드 정보를 조회하는 함수
+  const handleProfileClick = async () => {
+    // 실제로는 로그인 멤버의 id와 "프로필카드 주인 id"를 구해서 요청
+    // 여기선 예시로 memberId와 상대방 id(여기선 내 id로 대체)
+    const profileCardMemberId = memberId; // 본인 마이페이지면 본인, 타인이면 타인 id
+
+    const response = await fetch(`http://localhost:10000/follows/api/profile-card/${memberId}?profileCardMemberId=${profileCardMemberId}`, {
+      method : "GET"
+    });
+    const data = await response.json();
+    
+    setProfileCardInfo(data);
+    setShowProfileCard(true);
+  };
+
+  const handleCloseProfileCard = () => {
+    setShowProfileCard(false);
+    setProfileCardInfo(null);
+  }
+
+  // 알림을 조회하는 함수
+  const getAlerts = async() => {
+    let url = "";
+    if (alertType === null || alertType === "") {
+      url = `http://localhost:10000/alerts/api/alert/list/${memberId}`
+    } else {
+      url = `http://localhost:10000/alerts/api/alert/list/${memberId}?alertType=${alertType}`
+    }
+    const response = await fetch(url);
+    const alerts = await response.json();
+    setAlertInfo(alerts.data);
+  };
+
+  // 알림을 단일 삭제하는 함수
+  const handleDelete = async(id) => {
+    await fetch(`http://localhost:10000/alerts/api/alert/delete/${id}`, {
+      method : "DELETE",
+    })
+    .then((res) => {
+      if (res.ok) {
+        alert("알림 삭제 성공!")
+        getAlerts();
+      } else {
+        alert("알림 삭제를 실패하였습니다.")
+      }
+    })
+    .catch(console.error)
+  };
+
+  // 알림을 전체 삭제하는 함수
+  const handleDeleteAll = async() => {
+    await fetch(`http://localhost:10000/alerts/api/alert/delete-all/${memberId}`, {
+      method : "DELETE",
+    })
+    .then((res) => {
+      if (res.ok) {
+        alert("알림 삭제 성공!")
+        getAlerts();
+      } else {
+        alert("알림 삭제를 실패하였습니다.")
+      }
+    })
+    .catch(console.error)
+  };
+
+  // 알림을 닫는 함수
+  const handleCancel = () => {
+    setShowAlertModal(false);
+  }
+  
+  // 헤더의 업 다운 이벤트
   useEffect(() => {
-    // 마우스 휠 이벤트로 헤더 보임/숨김 처리
-    const handleWheel = (e) => {
-      if (e.deltaY > 0) setShowHeader(false); // 아래로 스크롤하면 숨김 
-      else if (e.deltaY < 0) setShowHeader(true); // 위로 스크롤하면 보임
-    };
-
-    window.addEventListener("wheel", handleWheel);
-    return () => window.removeEventListener("wheel", handleWheel); 
-    // delta : window wheel event 속성
-    // Y : 방향 설정
-    // deltaY : 휠 스크롤 시 Y축 방향으로 얼마나 움직였는지
+    // const handleWheel = (e) => {
+    //   if (e.deltaY > 0) {
+    //     setShowHeader(false);
+    //   } else if (e.deltaY < 0) {
+    //     setShowHeader(true);
+    //   };
+    // };
+    // window.addEventListener("wheel", handleWheel);
+    // return () => window.removeEventListener("wheel", handleWheel);
   }, []);
 
+  useEffect(() => {
+    getAlerts();
+  }, [alertType]);
+
+  useEffect(() => {
+    if (!showProfileCard) return;
+
+    const handleClickOutside = (e) => {
+      // 드롭다운 내부/프로필 이미지가 아닌 곳 클릭 시
+      if (
+        profileImgRef.current &&
+        !profileImgRef.current.contains(e.target)
+      ) {
+        setShowProfileCard(false);
+        setProfileCardInfo(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showProfileCard]);
+
   return (
-    // 전체 헤더 컨테이너 (스크롤 방향에 따라 transform 적용)
     <S.Container style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-110%)' }}>
-      {/* 가운데 정렬된 내부 레이아웃 */}
       <S.Main>
-        {/* 왼쪽: 로고 + 메뉴 링크 */}
         <S.Left>
           <S.IconBox>
             <img src="/assets/images/header/persenalBuddyIcon.png" alt="퍼스널 버디 아이콘" />
@@ -43,106 +145,52 @@ const Header = () => {
           </S.LinkBox>
         </S.Left>
 
-        {/* 오른쪽: 로그인 상태에 따라 다르게 렌더링 */}
         {isLogin == null ? (
-          // 로그인 안 했을 때: 로그인 버튼
-          <S.ProfileBox>
-            <span>로그인</span>
-          </S.ProfileBox>
+          <S.ProfileBox><span>로그인</span></S.ProfileBox>
         ) : (
-          // 로그인 했을 때: 메시지 + 알림 + 프로필 + 로그아웃
           <S.Right>
             <S.SocialBox>
               <img src="/assets/images/header/message.png" alt="메세지 아이콘" />
-              <img src="/assets/images/header/alert.png" alt="알림 아이콘" />
+              <img
+                src="/assets/images/header/alert.png"
+                alt="알림 아이콘"
+                onClick={() => setShowAlertModal((prev) => !prev)}
+              />
             </S.SocialBox>
-
-            <S.ProfileBox>
-              <NavLink to="/main/mypage">
-                <img src="/assets/images/header/memberProfile.png" alt="멤버 프로필" />
-              </NavLink>
+            {/* 멤버 프로필 카드 */}
+            <S.ProfileBox ref={profileImgRef}>
+              <S.MemberProfile
+                src="/assets/images/header/memberProfile.png"
+                alt="멤버 프로필"
+                onClick={handleProfileClick}
+              />
               <span>로그아웃</span>
+
+              {showProfileCard && profileCardInfo && (
+                <S.ProfileCardDropdown>
+                  <ProfileCard profile={profileCardInfo} onClose={handleCloseProfileCard} />
+                </S.ProfileCardDropdown>
+              )}
             </S.ProfileBox>
           </S.Right>
         )}
       </S.Main>
+
+      {/* 알림창 */}
+      {showAlertModal && (
+        <S.AlertModalContainer>
+          <Alert
+            alertInfo={alertInfo}
+            onCancel={handleCancel}
+            onDelete={handleDelete}
+            onDeleteAll={handleDeleteAll}
+            onChangeType={setAlertType}
+          />
+        </S.AlertModalContainer>
+      )}
+
     </S.Container>
   );
 };
 
 export default Header;
-
-
-
-
-
-
-
-// import React, { useEffect, useState } from 'react';
-// import { NavLink } from 'react-router-dom';
-// import { headerContainer, headerLeftContainer, headerLinkContainer, headerMainContainer, headerMainIconContainer, headerProfileContainer, headerRightContainer, headerSocialContainer } from './style';
-
-
-// const Header = () => {
-
-//     // 로그인 여부
-//     const isLogin = 1;
-
-//     // 헤더 상태
-//     const [showHeader, setShowHeader] = useState(true);
-
-//     useEffect(() => {
-//         const handleWheel = (e) => {
-//             if (e.deltaY > 0) {
-//                 setShowHeader(false);
-//             } else if (e.deltaY < 0) {
-//                 setShowHeader(true);
-//             }
-//         };
-//         window.addEventListener("wheel", handleWheel);
-//     }, []);
-
-//     return (
-//         <div style={{
-//             ...headerContainer,
-//             transform: showHeader ? 'translateY(0)' : 'translateY(-100%)',
-//         }}>
-//             <div style={{
-//                 ...headerMainContainer,
-//             }}>
-//                 <div style={headerLeftContainer}>
-//                     <div style={headerMainIconContainer}>
-//                         <img style={{cursor: "pointer",}} src='/assets/images/header/persenalBuddyIcon.png' alt="퍼스널 버디 아이콘" />
-//                     </div>
-//                     <div style={headerLinkContainer}>
-//                         <NavLink to={"/main"}>일정관리</NavLink>
-//                         <NavLink to={"/main/contents"}>컨텐츠</NavLink>
-//                         <NavLink to={"/main/community/event"}>이벤트</NavLink>
-//                         <NavLink to={"/main/community/board"}>커뮤니티</NavLink>
-//                         <NavLink to={"/main/faq"}>고객센터</NavLink>
-//                     </div>
-//                 </div>
-//                 {isLogin == null ? (
-//                     <div style={headerProfileContainer}>
-//                         <span>로그인</span>
-//                     </div>
-//                 ) : (
-//                     <div style={headerRightContainer}>
-//                         <div style={headerSocialContainer}>
-//                             <img style={{cursor: "pointer"}} src='/assets/images/header/message.png' alt="메세지 아이콘" />
-//                             <img style={{cursor: "pointer"}} src='/assets/images/header/alert.png' alt="알림 아이콘" />
-//                         </div>
-//                         <div style={headerProfileContainer}>
-//                             <NavLink to={"/main/mypage"}>
-//                                 <img style={{marginRight: '25px',cursor: "pointer", width:'40px', height:'40px', borderRadius:'36px'}} src='/assets/images/header/memberProfile.png' alt="멤버 프로필" />
-//                             </NavLink>
-//                             <span style={{cursor: "pointer"}}>로그아웃</span>
-//                         </div>
-//                     </div>
-//                 )}  
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default Header;

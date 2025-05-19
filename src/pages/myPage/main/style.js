@@ -100,9 +100,14 @@ S.GuestBookInputButton = styled.button`
     ${whiteColor}
     ${fontSizeH7}
     ${fontWeightBold}
-    background-color: ${({ isActive, theme }) => 
-        isActive ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
-    cursor: ${({ isActive }) => isActive ? 'pointer' : 'default'};
+    background-color: ${({ $isActive, theme }) => 
+        $isActive ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
+        
+    cursor: ${({ $isActive }) => $isActive ? 'pointer' : 'default'};
+
+    &:disabled {
+        cursor: not-allowed;
+    }
 `
 
 S.GuestBookInputCount = styled.div`

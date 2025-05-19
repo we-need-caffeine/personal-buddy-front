@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import S from './style';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
+import ConfirmModal from '../../layout/modal/ConfirmModal';
 
 const MyPageMain = () => {
     // 텍스트에리어값
@@ -9,85 +10,83 @@ const MyPageMain = () => {
     const [guestBooks, setGuestBooks] = useState([]);
     // 게스트북 카운터
     const [guestBookCount, setGuestBookCount] = useState(0);
-    // 전체 페이지
-    // const totalPage = Math.ceil(guestBookCount / 4);
-    // 페이지네이션
-    // const [currentPage, setCurrentPage] = useState(0);
+    // 모달 상태값
+    const [modalOpen, setModalOpen] = useState(false);
+    // 게스트북의 주인의 아이디
+    const { id } = useParams();
+    const ownerMemberId = id;
+    // 방명록을 작성할 사람의 아이디
+    const writerMemberId = 2;
+    // 현재 유저
+    const memberId = 2;
+    // 페이지
+    const page = 1;
 
     // 텍스트에리어에서 값을 입력할 때 마다 잡아서 상태변경
     const handleTextareaChange = (e) => {
         setGuestBookText(e.target.value);
     };
 
-    // 게스트북의 주인의 아이디
-    const ownerMemberId = 1;
-    // 방명록을 작성할 사람의 아이디
-    const writerMemberId = 3;
-
-    const page = 4;
-
     // 비동기로 방명록을 백엔드에 요청하는 함수
     const getGuestBook = async () => {
         const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/list/page/${ownerMemberId}/${page}`);
         const guestBooks = await response.json()
-        return guestBooks;
+        setGuestBooks(guestBooks);
     }
 
+    // 해당 유저에게 달린 모든 방명록을 카운트하는 함수
     const getGuestBookCount = async () => {
         const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/list/${ownerMemberId}`);
-        const guestBooks = await response.json()
-        return guestBooks.length;
+        const guestBooks = await response.json();
+        setGuestBookCount(guestBooks.length);
     }
 
     // 방명록을 작성할 때, 비동기로 방명록을 작성하고, 백엔드에서 방명록 리스트를 다시 가져오고, 인풋값을 초기화하는 함수
-    const handleRegister = () => {
-        const writeGuestBook = async () => {
-            await fetch("http://localhost:10000/guestbooks/api/guestbook/write", {
-                method : "POST",
-                headers : {
-                    "Content-Type" : "application/json"
-                },
-                body : JSON.stringify({
-                    guestbookContent: guestBookText,
-                    ownerMemberId: ownerMemberId,
-                    writerMemberId: writerMemberId
-                })
+    const handleRegister = async() => {
+        await fetch("http://localhost:10000/guestbooks/api/guestbook/write", {
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body : JSON.stringify({
+                guestbookContent: guestBookText,
+                ownerMemberId: ownerMemberId,
+                writerMemberId: writerMemberId
             })
-            .then((res) => {
-                if (res.ok) {
-                    setGuestBookText("");
-                    alert("방명록 작성 완료!");
-                    getGuestBook()
-                        .then((data) => {
-                            setGuestBooks(data);
-                        })
-                        .catch(console.error);
-                    getGuestBookCount()
-                        .then((data) => {
-                            setGuestBookCount(data);
-                        })
-                        .catch(console.error);
-                } else {
-                    alert("방명록 작성을 실패했습니다.")
-                }
-            })
-            .catch(console.error)
-        }
-        writeGuestBook();
-    };
+        })
+        .then((res) => {
+            if (res.ok) {
+                setGuestBookText("");
+                setModalOpen(false);
+                getGuestBook()
+                getGuestBookCount()
+            } else {
+                alert("방명록 작성을 실패했습니다.")
+            }
+        })
+        .catch(console.error)
+    }
 
+    
+    // 방명록을 삭제하는 함수
+    const handleDelete = async (id) => {
+        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/delete/${id}`, {
+            method: "DELETE"
+        });
+
+        if (response.ok) {  
+            alert("방명록 삭제 성공!");
+            getGuestBook();
+            getGuestBookCount();
+        } else {
+            alert("방명록 삭제 실패");
+        }
+    };
+        
     //방명록 리스트를 가져오는 함수
     useEffect(() => {
         getGuestBook()
-            .then((data) => {
-                setGuestBooks(data);
-            })
-            .catch(console.error);
         getGuestBookCount()
-            .then((data) => {
-                setGuestBookCount(data);
-            })
-            .catch(console.error);
     }, [])
 
     // 시간값 변환 함수
@@ -100,24 +99,6 @@ const MyPageMain = () => {
         const hh = String(offsetDate.getHours()).padStart(2, '0');
         const min = String(offsetDate.getMinutes()).padStart(2, '0');
         return `${yyyy}.${mm}.${dd} ${hh}:${min}`;
-    };
-
-    const handleDelete = async (id) => {
-        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/delete/${id}`, {
-            method: "DELETE"
-        });
-
-        if (response.ok) {  
-            getGuestBook()
-                .then((data) => {
-                    setGuestBooks(data);
-                })
-                .catch(console.error);
-
-            alert("방명록 삭제 성공!")
-        } else {
-            alert("방명록 삭제 실패");
-        }
     };
 
     return (
@@ -161,7 +142,6 @@ const MyPageMain = () => {
                         onChange={handleTextareaChange}
                         value={guestBookText}
                     >
-
                     </S.GuestBookInput>
                     <S.GuestBookInputBottomContainer>
                         <S.GuestBookInputCount>
@@ -169,24 +149,37 @@ const MyPageMain = () => {
                         </S.GuestBookInputCount>
                         <span>/ 500</span>
                         <S.GuestBookInputButton 
-                            isActive={guestBookText.length > 0}
-                            onClick={handleRegister}
+                            $isActive={guestBookText.length > 0}
+                            $disabled={guestBookText.length === 0}
+                            onClick={() => setModalOpen(true)}
                         >
                             <span>등록</span>
                         </S.GuestBookInputButton>
+                        <ConfirmModal
+                            isOpen={modalOpen}
+                            title="방명록 등록"
+                            message="방명록을 등록 하시겠습니까?"
+                            onConfirm={handleRegister}
+                            onCancel={() => setModalOpen(false)}
+                        />
                     </S.GuestBookInputBottomContainer>
                 </S.GuestBookInputContainer>
                 <S.GuestBookListContainer>
                     {guestBooks.map((item) => 
-                        <S.GuestBookItemContainer>
+                        <S.GuestBookItemContainer key={item.id}>
                             <S.GuestBookMemberInfoContainer>
                                 <S.GuestBookMemberInfo>
                                     <S.GuestBookMemberProfileImg src="/assets/images/header/memberProfile.png" alt='멤버 프로필 이미지' />
                                     <span>{item.writerName}</span>
                                 </S.GuestBookMemberInfo>
-                                <S.GuestBookDeleteButton onClick={() => handleDelete(item.id)}>
-                                    <span>삭제</span>
-                                </S.GuestBookDeleteButton>
+                                {item.writerMemberId === memberId || item.ownerMemberId === memberId ? 
+                                (
+                                    <S.GuestBookDeleteButton onClick={() => handleDelete(item.id)}>
+                                        <span>삭제</span>
+                                    </S.GuestBookDeleteButton>
+                                ) : (
+                                    <></>
+                                )}
                             </S.GuestBookMemberInfoContainer>
                             <S.GuestBookContent>
                                 <span>{item.guestbookContent}</span>
