@@ -159,11 +159,10 @@ const Header = () => {
             </S.SocialBox>
             {/* 멤버 프로필 카드 */}
             <S.ProfileBox ref={profileImgRef}>
-              <img
+              <S.MemberProfile
                 src="/assets/images/header/memberProfile.png"
                 alt="멤버 프로필"
                 onClick={handleProfileClick}
-                ref={profileImgRef}
               />
               <span>로그아웃</span>
 

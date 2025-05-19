@@ -189,7 +189,7 @@ const router = createBrowserRouter([
                         ]
                     },
                     {
-                        path : "mypage",
+                        path : "mypage/:id",
                         element : <MyPageContainer />, //마이페이지
                         children : [
                             {

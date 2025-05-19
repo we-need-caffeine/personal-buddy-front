@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import S from './style';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import ConfirmModal from '../../layout/modal/ConfirmModal';
 
 const MyPageMain = () => {
@@ -13,7 +13,8 @@ const MyPageMain = () => {
     // 모달 상태값
     const [modalOpen, setModalOpen] = useState(false);
     // 게스트북의 주인의 아이디
-    const ownerMemberId = 1;
+    const { id } = useParams();
+    const ownerMemberId = id;
     // 방명록을 작성할 사람의 아이디
     const writerMemberId = 2;
     // 현재 유저
