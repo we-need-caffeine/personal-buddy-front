@@ -1,13 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const CalendarHeader = () => {
-
-    const [mode, setMode] = useState("todo");
-    return (
-        <div>
-            캘린더헤더
-        </div>
-    );
+  return <div>캘린더헤더</div>;
 };
 
 export default CalendarHeader;
