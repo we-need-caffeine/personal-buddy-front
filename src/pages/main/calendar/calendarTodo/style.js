@@ -7,6 +7,7 @@ S.Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 8px;
     width: 560px;
     height: 780px;
     background-color: #EEFFF8;
@@ -17,6 +18,16 @@ S.Container = styled.div`
 // `;
 
 S.TodoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 518px;
+
+  height: 50px;
+
+`;
+
+S.ScrollContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -38,7 +49,7 @@ S.TodoContainer = styled.div`
   &::-webkit-scrollbar-track {
     background-color: transparent;
   }
-`;
+`
 
 S.TodoInput = styled.input`
     outline: none;
@@ -124,4 +135,10 @@ S.DoneTodoWrapper = styled.div`
   height: 50px;
 `;
 
+S.DeleteIcon = styled.img`
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  right: 13px;
+`;
 export default S;

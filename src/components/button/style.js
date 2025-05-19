@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { h1Bold } from '../../styles/common'
+import { fontSizeH1 } from '../../globals/common'
 
 const variantCSS = {
   main : css`
@@ -14,7 +14,7 @@ const variantCSS = {
 }
 
 const fontCSS = {
-  h1 : h1Bold
+  h1 : fontSizeH1
 }
 
 const colorCSS = {

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-const CalendarHeader = () => {
+const ScheduleView = () => {
 
-    const [mode, setMode] = useState("todo");
     return (
         <div>
             캘린더헤더
@@ -10,4 +9,4 @@ const CalendarHeader = () => {
     );
 };
 
-export default CalendarHeader;
+export default ScheduleView;

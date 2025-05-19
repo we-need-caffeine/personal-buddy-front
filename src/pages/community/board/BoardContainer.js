@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BoardBannerContainer from './banner/BoardBannerContainer';
 import BoardPostListContainer from './postList/BoardPostListContainer';
+import ScrollToTop from '../../../hooks/scrollToTop/ScrollToTop';
 
 const BoardContainer = () => {
   const [postLists, setPostLists] = useState([]);
@@ -8,7 +9,9 @@ const BoardContainer = () => {
   return (
     <>
       <BoardBannerContainer dummyData={postLists} />
+      <hr />
       <BoardPostListContainer setPostLists={setPostLists} />
+      <ScrollToTop />
     </>
   );
 };

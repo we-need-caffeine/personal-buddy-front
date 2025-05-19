@@ -6,7 +6,7 @@ S.Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: end;
     gap: 8px;
     width: 1440px;
     height: 812px;

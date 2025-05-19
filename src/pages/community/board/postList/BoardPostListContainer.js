@@ -99,9 +99,9 @@ const BoardPostListContainer = ({setPostLists }) => {
             nickname: '내손을JAVA',
             profileImgUrl: '/assets/images/board/default/default-img.png',
             createdDate: '2025.05.12 10:30',
-            likeCount: 45,
+            likeCount: 545,
             viewCount: 302,
-            commentCount: 12,
+            commentCount: 312,
           },
           {
             id: 5,
@@ -113,8 +113,8 @@ const BoardPostListContainer = ({setPostLists }) => {
             profileImgUrl: '/assets/images/board/default/default-img.png',
             createdDate: '2025.05.12 22:25',
             likeCount: 88,
-            viewCount: 302,
-            commentCount: 12,
+            viewCount: 992,
+            commentCount: 32,
           },
           {
             id: 6,
@@ -134,18 +134,18 @@ const BoardPostListContainer = ({setPostLists }) => {
         setPostLists(dummyData);
       }
     };
-
     fetchBoardLists();
+
   }, [setPostLists]); // setPostLists가 변경될 때만 실행
 
   return (
     <>
     <S.SortBox>
-      <button onClick={()=>setSortType("latest")}>최신순</button>
+      <S.SortButton onClick={()=>setSortType("latest")} $active={sortType === "latest"}>최신순</S.SortButton>
       <p>|</p>
-      <button onClick={()=>setSortType("likes")}>좋아요순</button>
+      <S.SortButton onClick={()=>setSortType("likes")} $active={sortType === "likes"}>좋아요순</S.SortButton>
       <p>|</p>
-      <button onClick={()=>setSortType("views")}>조회순</button>
+      <S.SortButton onClick={()=>setSortType("views")} $active={sortType === "views"}>조회순</S.SortButton>
     </S.SortBox>
     
     <S.BoardHeader>
@@ -156,10 +156,10 @@ const BoardPostListContainer = ({setPostLists }) => {
           }
         />
         <S.TagArea>
-          <S.TagButton onClick={() => setSelectedTag(null)}>#전체 일정</S.TagButton>
-          <S.TagButton onClick={() => setSelectedTag('#관심 일정')}>#관심 일정</S.TagButton>
-          <S.TagButton onClick={() => setSelectedTag('#자유 게시글')}>#자유 게시글</S.TagButton>
-          <S.TagButton onClick={() => setSelectedTag('#공유 일정')}>#공유 일정</S.TagButton>
+          <S.TagButton onClick={() => setSelectedTag(null)} $active={selectedTag === null}>#전체 일정</S.TagButton>
+          <S.TagButton onClick={() => setSelectedTag('#관심 일정')} $active={selectedTag === '#관심 일정'}>#관심 일정</S.TagButton>
+          <S.TagButton onClick={() => setSelectedTag('#자유 게시글')} $active={selectedTag === '#자유 게시글'}>#자유 게시글</S.TagButton>
+          <S.TagButton onClick={() => setSelectedTag('#공유 일정')} $active={selectedTag === '#공유 일정'}>#공유 일정</S.TagButton>
         </S.TagArea>
       </S.SearchArea>
 
