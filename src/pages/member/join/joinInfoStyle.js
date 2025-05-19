@@ -70,8 +70,6 @@ export const NameInputWrapper = styled.div`
       if (isValid === false) return '#FF3F3F';
       return '#C5CCD2';
     }};
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
   transition: border 0.3s ease-in-out;
 `;
 
@@ -82,13 +80,26 @@ export const BirthInputWrapper = styled.div`
   width: 100%;
   margin-bottom: -1px;
   border: 1px solid
-  ${({ isValid }) => {
-      if (isValid === true) return '#01CD74';
-      if (isValid === false) return '#FF3F3F';
+  ${({ validationState  }) => {
+      if (validationState  === true) return '#01CD74';
+      if (validationState  === false) return '#FF3F3F';
       return '#C5CCD2';
     }};
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  transition: border 0.3s ease-in-out;
+`;
+
+export const PhoneInputWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: -1px;
+  border: 1px solid
+  ${({ isValid  }) => {
+      if (isValid  === true) return '#01CD74';
+      if (isValid  === false) return '#FF3F3F';
+      return '#C5CCD2';
+    }};
   transition: border 0.3s ease-in-out;
 `;
 
@@ -266,9 +277,5 @@ export const SubmitButton = styled.button`
   &.active {
     background-color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
     cursor: pointer;
-  }
-
-  &.active:hover {
-    background-color: #218838;
   }
 `;
