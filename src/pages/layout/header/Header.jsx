@@ -27,17 +27,9 @@ const Header = () => {
 
   const dispatch = useDispatch();
 
-  // 프로필 카드 정보를 조회하는 함수
-  const handleProfileClick = async () => {
-
-    const response = await fetch(`http://localhost:10000/follows/api/profile-card/${memberId}?profileCardMemberId=${memberId}`, {
-      method : "GET"
-    });
-    const data = await response.json();
-    
-    setProfileCardInfo(data);
-    setShowProfileCard(true);
-  };
+  const handleProfileCard = (state) => {
+    setShowProfileCard(state)
+  }
 
   // 알림을 조회하는 함수
   const getAlerts = async() => {
@@ -106,20 +98,6 @@ const Header = () => {
     getAlerts();
   }, [alertType, memberId]);
 
-  // 프로필카드 영역 밖을 클릭하면 프로필카드를 닫는 함수
-  useEffect(() => {
-    if (!showProfileCard) return;
-    
-    const handleClickOutside = (e) => {
-      if (profileImgRef.current && !profileImgRef.current.contains(e.target)) {
-        setShowProfileCard(false);
-        setProfileCardInfo(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [showProfileCard]);
 
   const handleLogout = () => {
     localStorage.clear()
@@ -185,22 +163,23 @@ const Header = () => {
             <S.ProfileBox ref={profileImgRef}>
               <S.MemberProfile
                 src={currentUser.memberImgPath || "/assets/images/header/default-member-img.png"}
-                alt="멤버 프로필"
-                onClick={handleProfileClick}
-                onError={e => {
-                  e.target.src = "/assets/images/header/default-member-img.png";
-                }}
+                onClick={() => {handleProfileCard(true)}}
               />
               <span onClick={handleLogout}>로그아웃</span>
 
-              {showProfileCard && profileCardInfo && (
+              {showProfileCard && (
                 <S.ProfileCardDropdown>
-                  <ProfileCard 
-                    profile={profileCardInfo}
+                  <ProfileCard
                     memberId={memberId}
-                    onCancel={() => setShowProfileCard(false)}
+                    profileCardMemberId={memberId}
+                    handleProfileCard={handleProfileCard}
                   />
                 </S.ProfileCardDropdown>
+              )}
+              { showProfileCard && (
+                <S.CardBG 
+                  onClick={() => {handleProfileCard(false)}}
+                />
               )}
             </S.ProfileBox>
           </S.Right>
