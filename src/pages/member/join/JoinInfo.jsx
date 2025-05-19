@@ -39,8 +39,6 @@ const JoinInfo = () => {
 
   const togglePassword = () => setShowPassword(!showPassword);
 
-  
-
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({ email, password, name, gender, birth, phone });
