@@ -95,6 +95,11 @@ S.Nickname = styled.div`
 S.Message = styled.div`
   font-size: 13px;
   color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  display: block;
 `;
 
 S.Meta = styled.div`
