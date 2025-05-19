@@ -30,7 +30,7 @@ const BoardContainer = () => {
     };
     fetchBoards();
 
-  }, [isUpdate, boardHashtag, order]);
+  }, [isUpdate, boardHashtag, order, searchKeyword]);
   
   return (
     <>
