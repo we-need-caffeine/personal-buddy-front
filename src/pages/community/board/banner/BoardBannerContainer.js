@@ -1,40 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import S from './style';
 import { Link } from 'react-router-dom';
 
-const BoardBannerContainer = ({ dummyData }) => {
+const BoardBannerContainer = ({ hot }) => {
   const [hotPosts, setHotPosts] = useState([]); // Hot 게시글 리스트 상태
   const [currentIndex, setCurrentIndex] = useState(0); // 현재 슬라이더의 첫 번째 인덱스
-
-  // 컴포넌트가 마운트되거나 dummyData가 변경될 때 실행
-  useEffect(() => {
-    // console.log('useEffect 실행', dummyData?.length);
-    if (!dummyData || dummyData.length === 0) return;  // 더미데이터 없으면 종료
-
-    const fetchHotPosts = async () => {
-      try {
-        // console.log('HOT 게시글 불러오기');
-        // 백단에서 HOT 게시글 목록 가져오기
-        const response = await fetch('/boards/api/hot');
-        const data = await response.json();
-
-        if (data?.length > 0) {
-          // console.log('응답 성공')
-          setHotPosts(data); //받아왔으면 저장
-        } else {
-          throw new Error('HOT 비었음'); // 데이터 없을 경우 에러 강제 발생
-        }
-      } catch {
-        // 백 요청 실패 시,
-        // dummyData를 좋아요 수 기준으로 정렬 후 상위 10개만 사용
-        console.error('HOT 게시글 조회 실패, 더미 데이터 사용');
-        const sorted = [...dummyData].sort((a, b) => b.likeCount - a.likeCount);
-        setHotPosts(sorted.slice(0, 10)); // 좋아요 순으로 top10 정렬
-      }
-    };
-
-    fetchHotPosts();
-  }, [dummyData]); // dummyData가 바뀔 때마다 재실행
 
   const visibleCount = 3; // 한 번에 보여줄 게시글 수
 
@@ -71,26 +41,41 @@ const BoardBannerContainer = ({ dummyData }) => {
 
         <S.Hot>
           <S.HotSlider style={{ transform: `translateX(${translateX}px)` }}> {/* 슬라이더 내부 컨텐츠들을 감싸고, transform으로 이동 처리 */}
-            {hotPosts.map((post, index) => (
-              <S.HotContent key={post.id}>
-                <Link to={`post/${post.id}`}>
+            {hot.map(({
+              boardCommentCount,
+              boardContent,
+              boardContentCreateDate,
+              boardContentUpdateDate,
+              boardContentViews,
+              boardHashtag,
+              boardLikeCount,
+              boardTitle,
+              id,
+              memberEmail,
+              memberId,
+              memberImgName,
+              memberImgPath,
+              memberNickname,
+            }, index) => (
+              <S.HotContent key={id}>
+                <Link to={`post/${id}`}>
                   <S.HotImageBox>
                     <img
                       className="img"
                       src={
-                        post.thumbnailUrl || '/assets/images/board/default/default-img.png'
+                        memberImgPath + '/' + memberImgName || '/assets/images/board/default/default-img.png'
                       }
                       alt={`hot-${index}`}
                     />
                     <S.NumberBox>{index + 1}</S.NumberBox> {/* 순위 번호 */}
                   </S.HotImageBox>
-                  <S.HotTag>{post.hashtag}</S.HotTag>
-                  <S.HotTitle>{post.title}</S.HotTitle>
+                  <S.HotTag>{boardHashtag}</S.HotTag>
+                  <S.HotTitle>{boardTitle}</S.HotTitle>
                   <S.HotUserBox>
-                    <S.UserProfile src={post.profileImgUrl} />
-                    <S.UserNickname>{post.nickname}</S.UserNickname>
+                    <S.UserProfile src={memberImgPath + "/" + memberImgName} />
+                    <S.UserNickname>{memberNickname}</S.UserNickname>
                   </S.HotUserBox>
-                  <S.HotDate>{post.createdDate}</S.HotDate>
+                  <S.HotDate>{boardContentCreateDate}</S.HotDate>
                   <S.HotMetaBox>
                     <span>
                       <img
@@ -98,7 +83,7 @@ const BoardBannerContainer = ({ dummyData }) => {
                         className="icon"
                         alt="like"
                       />
-                      {post.likeCount}
+                      {boardLikeCount}
                     </span>
                     <span>
                       <img
@@ -106,7 +91,7 @@ const BoardBannerContainer = ({ dummyData }) => {
                         className="icon"
                         alt="view"
                       />
-                      {post.viewCount}
+                      {boardContentViews}
                     </span>
                     <span>
                       <img
@@ -114,7 +99,7 @@ const BoardBannerContainer = ({ dummyData }) => {
                         className="icon"
                         alt="chat"
                       />
-                      {post.commentCount}
+                      {boardCommentCount}
                     </span>
                   </S.HotMetaBox>
                 </Link>
