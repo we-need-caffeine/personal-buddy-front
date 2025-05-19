@@ -3,7 +3,7 @@ import S from './style';
 import { NavLink, useParams } from 'react-router-dom';
 import ConfirmModal from '../../layout/modal/ConfirmModal';
 import { useSelector } from 'react-redux';
-import ProfileCard from '../../layout/profile/ProfileCard';
+import GuestItem from './GuestItem';
 
 const MyPageMain = () => {
     // 로그인된 유저정보
@@ -12,8 +12,6 @@ const MyPageMain = () => {
     const memberId = currentUser.id;
     // 텍스트에리어값
     const [guestBookText, setGuestBookText] = useState("");
-    // 프로필 카드 활성화 상태
-    const [showProfileCard, setShowProfileCard] = useState(null);
     // 프로필 카드의 정보
     const [profileCardInfo, setProfileCardInfo] = useState(null);
     // 프로필 카드의 외부 요소를 감지하는 훅함수
@@ -35,31 +33,6 @@ const MyPageMain = () => {
     const handleTextareaChange = (e) => {
         setGuestBookText(e.target.value);
     };
-
-    // 프로필 카드 정보를 조회하는 함수
-    const handleProfileClick = async (writerMemberId) => {
-        const response = await fetch(`http://localhost:10000/follows/api/profile-card/${memberId}?profileCardMemberId=${writerMemberId}`,{
-            method: "GET"
-        });
-        const data = await response.json();
-        setProfileCardInfo(data);
-        setShowProfileCard(writerMemberId);
-    };
-
-    // 프로필카드 영역 밖을 클릭하면 프로필카드를 닫는 함수
-    useEffect(() => {
-        if (showProfileCard === null) return;
-        
-        const handleClickOutside = (e) => {
-            if (profileImgRef.current && !profileImgRef.current.contains(e.target)) {
-                setShowProfileCard(null);
-                setProfileCardInfo(null);
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [showProfileCard]);
 
     // 비동기로 방명록을 백엔드에 요청하는 함수
     const getGuestBook = async () => {
@@ -205,44 +178,16 @@ const MyPageMain = () => {
                     </S.GuestBookInputBottomContainer>
                 </S.GuestBookInputContainer>
                 <S.GuestBookListContainer>
-                    {guestBooks.map((item) => 
-                        <S.GuestBookItemContainer key={item.id}>
-                            <S.GuestBookMemberInfoContainer>
-                                <S.GuestBookMemberInfo ref={profileImgRef}>
-                                    <S.GuestBookMemberProfileImg 
-                                        src={item.memberImgPath || "/assets/images/header/default-member-img.png"}
-                                        alt='멤버 프로필 이미지'
-                                        onClick={() => handleProfileClick(item.writerMemberId)}
-                                        onError={e => {
-                                            e.target.src = "/assets/images/header/default-member-img.png";
-                                        }}
-                                    />
-                                    {showProfileCard === item.writerMemberId && profileCardInfo && (
-                                        <S.ProfileCardDropdown>
-                                            <ProfileCard
-                                                profile={profileCardInfo}
-                                                onCancel={() => setShowProfileCard(null)}
-                                            />
-                                        </S.ProfileCardDropdown>
-                                    )}
-                                    <span>{item.writerName}</span>
-                                </S.GuestBookMemberInfo>
-                                {item.writerMemberId === memberId || item.ownerMemberId === memberId ? 
-                                (
-                                    <S.GuestBookDeleteButton onClick={() => handleDelete(item.id)}>
-                                        <span>삭제</span>
-                                    </S.GuestBookDeleteButton>
-                                ) : (
-                                    <></>
-                                )}
-                            </S.GuestBookMemberInfoContainer>
-                            <S.GuestBookContent>
-                                <span>{item.guestbookContent}</span>
-                            </S.GuestBookContent>
-                            <S.GuestBookCreateTime>
-                                <span>{formatDate(item.guestbookCreateTime)}</span>
-                            </S.GuestBookCreateTime>
-                        </S.GuestBookItemContainer>
+                    {guestBooks.map((item, i) => (
+                        <GuestItem 
+                            key={i}
+                            i={i}
+                            item={item} 
+                            memberId={memberId}
+                            handleDelete={handleDelete}
+                            formatDate={formatDate}
+                        />
+                        )
                     )}
                 </S.GuestBookListContainer>
                 {/* 페이지네이션 영역 */}
