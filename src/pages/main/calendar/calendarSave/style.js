@@ -1,78 +1,118 @@
 import styled from "styled-components";
-
+import {
+  fontSizeH4,
+  fontSizeH8,
+  fontWeightRegular,
+  fontWeightLight,
+} from "../../../../globals/common";
 const S = {};
 
-
 S.Container = styled.div`
-  width: 100%;
-  max-width: 600px;
-  height: 100%;
-  min-height: 780px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 560px;
+  height: 780px;
   background: white;
-  border: 1px solid #eee;
-  margin: 0 auto;
-  padding: 40px;
+  border: 1px solid #fafafa;
   box-sizing: border-box;
 `;
 
-S.Title = styled.h2`
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 32px;
+S.ContentContainer = styled.div`
+  width: 476px;
+  height: 484px;
+`;
+
+S.TitleContainer = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 476px;
+  height: 73px;
+`;
+
+S.Title = styled.div`
+  ${fontSizeH4};
+`;
+
+S.RowContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 560px;
+  height: 73px;
+  border: ${({ noBorder }) => (noBorder ? "none" : "1px solid #fafafa")};
+  border-top: 1px solid #fafafa;
+  border-left: 1px solid #fafafa;
+  border-right: 1px solid #fafafa;
 `;
 
 S.Row = styled.div`
+  box-sizing: border-box;
+  width: 476px;
+  height: 67px;
   display: flex;
-  align-items: flex-start;
-  margin-bottom: 32px;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 S.Label = styled.div`
-  width: 120px;
   font-size: 16px;
   font-weight: bold;
 `;
 
 S.Input = styled.input`
-  flex: 1;
-  height: 48px;
-  padding: 12px;
+  width: 191px;
+  height: 37px;
   border-radius: 10px;
+  padding-left: 9px;
   border: 1px solid #eee;
   background-color: #fafafa;
 `;
 
 S.InviteSection = styled.div`
-  flex: 1;
   position: relative;
 `;
 
 S.SearchBox = styled.input`
-  width: 100%;
-  height: 48px;
-  padding: 12px;
+  width: 191px;
+  height: 37px;
+  padding-left: 9px;
   border-radius: 10px;
   border: 1px solid #eee;
   background-color: #fafafa;
 `;
 
 S.Dropdown = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
   margin-top: 10px;
   background: white;
   border: 1px solid #ccc;
   border-radius: 12px;
   max-height: 250px;
-  overflow-y: auto;
+  z-index: 10;
 `;
 
 S.DropdownItem = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 10px 12px;
   cursor: pointer;
   &:hover {
     background: #f9f9f9;
   }
+`;
+S.Left = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+S.DropdownName = styled.div`
+  margin-left: 8px;
 `;
 
 S.ProfileIcon = styled.div`
@@ -83,9 +123,7 @@ S.ProfileIcon = styled.div`
   margin-right: 12px;
 `;
 
-S.DropdownName = styled.div`
-  flex: 1;
-`;
+S.DropdownName = styled.div``;
 
 S.InviteButton = styled.div`
   color: #00c851;
@@ -93,26 +131,26 @@ S.InviteButton = styled.div`
 `;
 
 S.MemberList = styled.div`
-  margin-top: 24px;
-  max-height: 240px;
-  overflow-y: auto;
-  padding-right: 8px;
+  width: 100%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  gap: 20px;
 `;
 
 S.MemberListTitle = styled.div`
-  font-weight: bold;
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: center;
 `;
 
 S.MemberItem = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
 `;
 
 S.MemberName = styled.div`
   margin-left: 12px;
-  flex: 1;
 `;
 
 S.HostBadge = styled.div`
@@ -120,20 +158,25 @@ S.HostBadge = styled.div`
   font-weight: bold;
 `;
 
+S.DeleteButtonContainer = styled.div`
+  width: 476px;
+  flex-grow: 1;
+`;
+
+S.DeleteButtonWrapper = styled.div`
+  display: flex;
+  justify-content: end;
+  width: 100%;
+`;
+
 S.DeleteButton = styled.button`
-  margin-top: 32px;
-  width: 120px;
-  height: 48px;
+  width: 102px;
+  height: 37px;
   background-color: #e74c3c;
   color: white;
   border: none;
   border-radius: 12px;
   font-weight: bold;
-  cursor: pointer;
-  align-self: center;
 `;
 
 export default S;
-
-
-

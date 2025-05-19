@@ -3,7 +3,7 @@ import {
   fontSizeH4,
   fontSizeH8,
   fontWeightRegular,
-  fontWeightLight
+  fontWeightLight,
 } from "../../../../globals/common";
 
 const S = {};
@@ -81,7 +81,7 @@ S.DateSection = styled.div`
   align-items: center;
   width: 100%;
   height: 37px;
-  
+
   ${fontSizeH8};
   ${fontWeightLight}
 `;
@@ -98,7 +98,7 @@ S.DateInput = styled.input`
   width: 200px;
   border: none;
   outline: none;
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   border-radius: 10px;
   box-sizing: border-box;
 `;
@@ -109,7 +109,7 @@ S.DateInputTime = styled.input`
   border: none;
   outline: none;
   border-radius: 10px;
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   box-sizing: border-box;
 `;
 
@@ -194,7 +194,7 @@ S.Select = styled.select`
   border: none;
   outline: none;
   border-radius: 10px;
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   font-size: 14px;
   ${fontSizeH8};
   appearance: none;
@@ -296,7 +296,7 @@ S.CheckIcon = styled.div`
   height: 20px;
   border-radius: 4px;
   background-color: ${({ checked }) => (checked ? "#00C851" : "transparent")};
-  border: 2px solid #00C851;
+  border: 2px solid #00c851;
 `;
 
 // ✅ 커스텀 드롭다운
@@ -340,6 +340,46 @@ S.CustomDropdownItem = styled.li`
 
   &:hover {
     background-color: #f9f9f9;
+  }
+`;
+
+S.TimeDropdownContainer = styled.div`
+  position: relative;
+  width: 100px;
+`;
+
+S.TimeBox = styled.div`
+  height: 37px;
+  background-color: #fafafa;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  cursor: pointer;
+`;
+
+S.TimeList = styled.div`
+  position: absolute;
+  top: 42px;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  z-index: 10;
+`;
+
+S.TimeItem = styled.div`
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
   }
 `;
 
