@@ -1,10 +1,24 @@
-import React from 'react';
-import S from './style'; // 프로필카드용 스타일(아래 예시 있음)
+import React, { useEffect } from 'react';
+import S from './style';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const ProfileCard = ({ profile, onClose }) => {
+const ProfileCard = ({ profile, onCancel }) => {
 
-  const memberId = 1;
+  // 로그인된 유저정보
+  const {currentUser} = useSelector((state) => state.member)
+  // 로그인된 유저의 아이디
+  const memberId = currentUser.id;
+
+  // 프로필카드가 활성화 될때, 컴포넌트 밖의 요소의 스크롤을 막는 함수
+  useEffect(() => {
+      if (profile) {
+          document.body.style.overflow = 'hidden';
+      }
+      return () => {
+          document.body.style.overflow = 'auto';
+      };
+  }, [profile]);
 
   if (!profile) return null;
 
@@ -13,7 +27,13 @@ const ProfileCard = ({ profile, onClose }) => {
       {/* 프로필, 멤버 정보, 팔로잉 정보 */}
       <S.TopContainer>
         <S.MemberInfoContainer>
-          <S.MemberProfile src={'/assets/images/header/memberProfile.png'} alt="프로필" />
+          <S.MemberProfile
+            src={profile.memberImgPath || "/assets/images/header/default-member-img.png"}
+            alt="멤버 프로필 이미지" 
+            onError={e => {
+                e.target.src = "/assets/images/header/default-member-img.png";
+            }}
+          />
           <S.MemberInfoTextContainer>
             <S.MemberNickName>{profile.memberNickname}</S.MemberNickName>
             <S.MemberStatusMessage>{profile.memberStatusMessage || '상태메세지 없음'}</S.MemberStatusMessage>
@@ -62,13 +82,16 @@ const ProfileCard = ({ profile, onClose }) => {
         </S.FollowCount>
       </S.FollowCountContainer>
       <S.AcheivementContainer>
-        <S.AcheivementItems src='/assets/images/header/memberProfile.png' alt='업적'/>
-        <S.AcheivementItems src='/assets/images/header/memberProfile.png' alt='업적'/>
-        <S.AcheivementItems src='/assets/images/header/memberProfile.png' alt='업적'/>
+        <S.AcheivementItems src='/assets/images/header/default-achivement-img.png' alt='업적'/>
+        <S.AcheivementItems src='/assets/images/header/default-achivement-img.png' alt='업적'/>
+        <S.AcheivementItems src='/assets/images/header/default-achivement-img.png' alt='업적'/>
       </S.AcheivementContainer>
       <S.SocialButtonContainer>
         <S.MyPageButton>
-          <NavLink to={`main/mypage/${profile.id}`}>
+          <NavLink
+            to={`/main/mypage/${profile.id}`}
+            onClick={() => onCancel}
+          >
             마이페이지
           </NavLink>
         </S.MyPageButton>

@@ -3,12 +3,14 @@ import { NavLink } from 'react-router-dom';
 import Alert from '../alert/Alert'; // 경로에 맞게 수정해줘!
 import S from './style';
 import ProfileCard from '../profile/ProfileCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser, setUserStatus } from '../../../modules/member';
 
 const Header = () => {
-  // 로그인 상태
-  const isLogin = true;
-  // 로그인된 멤버 정보
-  const memberId = 1;
+  // 로그인된 유저정보
+    const {currentUser, isLogin} = useSelector((state) => state.member)
+  // 로그인된 유저의 아이디
+  const memberId = currentUser.id;
   // 헤더 이벤트 상태
   const [showHeader, setShowHeader] = useState(true);
   // 알림창 상태
@@ -19,17 +21,16 @@ const Header = () => {
   const [alertType, setAlertType] = useState("");
   // const alertRef = useRef();
   // 프로필 카드 상태
-  const [profileCardInfo, setProfileCardInfo] = useState(null);
+  const [profileCardInfo, setProfileCardInfo] = useState([]);
   const [showProfileCard, setShowProfileCard] = useState(false);
   const profileImgRef = useRef();
 
+  const dispatch = useDispatch();
+
   // 프로필 카드 정보를 조회하는 함수
   const handleProfileClick = async () => {
-    // 실제로는 로그인 멤버의 id와 "프로필카드 주인 id"를 구해서 요청
-    // 여기선 예시로 memberId와 상대방 id(여기선 내 id로 대체)
-    const profileCardMemberId = memberId; // 본인 마이페이지면 본인, 타인이면 타인 id
 
-    const response = await fetch(`http://localhost:10000/follows/api/profile-card/${memberId}?profileCardMemberId=${profileCardMemberId}`, {
+    const response = await fetch(`http://localhost:10000/follows/api/profile-card/${memberId}?profileCardMemberId=${memberId}`, {
       method : "GET"
     });
     const data = await response.json();
@@ -37,11 +38,6 @@ const Header = () => {
     setProfileCardInfo(data);
     setShowProfileCard(true);
   };
-
-  const handleCloseProfileCard = () => {
-    setShowProfileCard(false);
-    setProfileCardInfo(null);
-  }
 
   // 알림을 조회하는 함수
   const getAlerts = async() => {
@@ -90,35 +86,32 @@ const Header = () => {
 
   // 알림을 닫는 함수
   const handleCancel = () => {
-    setShowAlertModal(false);
+    setShowAlertModal(null);
   }
   
   // 헤더의 업 다운 이벤트
   useEffect(() => {
-    // const handleWheel = (e) => {
-    //   if (e.deltaY > 0) {
-    //     setShowHeader(false);
-    //   } else if (e.deltaY < 0) {
-    //     setShowHeader(true);
-    //   };
-    // };
-    // window.addEventListener("wheel", handleWheel);
-    // return () => window.removeEventListener("wheel", handleWheel);
+    const handleWheel = (e) => {
+      if (e.deltaY > 0) {
+        setShowHeader(false);
+      } else if (e.deltaY < 0) {
+        setShowHeader(true);
+      };
+    };
+    window.addEventListener("wheel", handleWheel);
   }, []);
 
+  // 알림을 최초 조회하는 함수
   useEffect(() => {
     getAlerts();
-  }, [alertType]);
+  }, [alertType, memberId]);
 
+  // 프로필카드 영역 밖을 클릭하면 프로필카드를 닫는 함수
   useEffect(() => {
     if (!showProfileCard) return;
-
+    
     const handleClickOutside = (e) => {
-      // 드롭다운 내부/프로필 이미지가 아닌 곳 클릭 시
-      if (
-        profileImgRef.current &&
-        !profileImgRef.current.contains(e.target)
-      ) {
+      if (profileImgRef.current && !profileImgRef.current.contains(e.target)) {
         setShowProfileCard(false);
         setProfileCardInfo(null);
       }
@@ -127,6 +120,33 @@ const Header = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showProfileCard]);
+
+  const handleLogout = () => {
+    localStorage.clear()
+    dispatch(setUser({
+      id : 0,
+        memberEmail : "",
+        memberPassword : "",
+        memberName : "",
+        memberBirth : "",
+        memberGender : "",
+        memberPhone : "",
+        memberNickName : "",
+        memberStatusMessage : "",
+        memberImgName : "",
+        memberImgPath : "",
+        memberPoint : 0,
+        memberAdmin : 0,
+        memberCreateDate : "",
+        memberTermServiceAgree : 0,
+        memberTermInformationAgree : 0,
+        memberTermLocationAgree : 0,
+        memberTermPromotionAgree : 0,
+        memberProvider : "",
+    }))
+    dispatch(setUserStatus(false))
+    // window.location.href = "http://localhost:10000/logout";
+  }
 
   return (
     <S.Container style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-110%)' }}>
@@ -145,8 +165,12 @@ const Header = () => {
           </S.LinkBox>
         </S.Left>
 
-        {isLogin == null ? (
-          <S.ProfileBox><span>로그인</span></S.ProfileBox>
+        {!isLogin ? (
+          <S.ProfileBox>
+            <NavLink to={"/member/login"}>
+              <span>로그인</span>
+            </NavLink>
+          </S.ProfileBox>
         ) : (
           <S.Right>
             <S.SocialBox>
@@ -160,15 +184,22 @@ const Header = () => {
             {/* 멤버 프로필 카드 */}
             <S.ProfileBox ref={profileImgRef}>
               <S.MemberProfile
-                src="/assets/images/header/memberProfile.png"
+                src={currentUser.memberImgPath || "/assets/images/header/default-member-img.png"}
                 alt="멤버 프로필"
                 onClick={handleProfileClick}
+                onError={e => {
+                  e.target.src = "/assets/images/header/default-member-img.png";
+                }}
               />
-              <span>로그아웃</span>
+              <span onClick={handleLogout}>로그아웃</span>
 
               {showProfileCard && profileCardInfo && (
                 <S.ProfileCardDropdown>
-                  <ProfileCard profile={profileCardInfo} onClose={handleCloseProfileCard} />
+                  <ProfileCard 
+                    profile={profileCardInfo}
+                    memberId={memberId}
+                    onCancel={() => setShowProfileCard(false)}
+                  />
                 </S.ProfileCardDropdown>
               )}
             </S.ProfileBox>
