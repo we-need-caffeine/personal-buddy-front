@@ -7,38 +7,38 @@ const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'SpoqaHanSansNeo';
     src: url(${process.env.PUBLIC_URL}/assets/fonts/SpoqaHanSansNeo-Thin.otf) format('opentype');
-    font-weight: normal;
-    font-style: 100;
+    font-weight: 100;
+    font-style: normal;
   }
   @font-face {
     font-family: 'SpoqaHanSansNeo';
     src: url(${process.env.PUBLIC_URL}/assets/fonts/SpoqaHanSansNeo-Light.otf) format('opentype');
-    font-weight: normal;
-    font-style: 300;
+    font-weight: 300;
+    font-style: normal;
   } 
   @font-face {
     font-family: 'SpoqaHanSansNeo';
     src: url(${process.env.PUBLIC_URL}/assets/fonts/SpoqaHanSansNeo-Regular.otf) format('opentype');
-    font-weight: normal;
-    font-style: 400;
+    font-weight: 400;
+    font-style: normal;
   }
   @font-face {
     font-family: 'SpoqaHanSansNeo';
     src: url(${process.env.PUBLIC_URL}/assets/fonts/SpoqaHanSansNeo-Medium.otf) format('opentype');
-    font-weight: normal;
-    font-style: 500;
+    font-weight: 500;
+    font-style: normal;
   }
   @font-face {
     font-family: 'SpoqaHanSansNeo';
     src: url(${process.env.PUBLIC_URL}/assets/fonts/SpoqaHanSansNeo-Bold.otf) format('opentype');
-    font-weight: normal;
-    font-style: 700;
+    font-weight: 700;
+    font-style: normal;
   }
 
   html {
     scrollbar-gutter: stable;
   }
-
+y
   body {
     font-family: 'SpoqaHanSansNeo';
     /* text-shadow: 0 0 2px rgba(0, 0, 0, 0.05); */
