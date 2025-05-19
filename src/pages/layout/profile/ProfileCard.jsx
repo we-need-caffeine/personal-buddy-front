@@ -1,26 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import S from './style';
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
-const ProfileCard = ({ profile, onCancel }) => {
+const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
+  
+  const [myId, setMyId] = useState(memberId);
+  const [friendId, setFriendId] = useState(profileCardMemberId);
+  const [profile, setProfile] = useState({})
 
-  // 로그인된 유저정보
-  const {currentUser} = useSelector((state) => state.member)
-  // 로그인된 유저의 아이디
-  const memberId = currentUser.id;
+  // 조회하려는 유저 : memberId
+  // 내 아이디 follow
+  
+  // fetch 해당 유저
+  // 상대방 아이디 profileCardMemberId
 
-  // 프로필카드가 활성화 될때, 컴포넌트 밖의 요소의 스크롤을 막는 함수
   useEffect(() => {
-      if (profile) {
-          document.body.style.overflow = 'hidden';
-      }
-      return () => {
-          document.body.style.overflow = 'auto';
-      };
-  }, [profile]);
+    const getProfile = async () => {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/follows/api/profile-card?memberId=${myId}&profileCardMemberId=${friendId}`)
+      const datas = await response.json()
+      setProfile(datas)
+    }
 
-  if (!profile) return null;
+    getProfile()
+  }, [memberId, profileCardMemberId])
+
+  console.log(profile)
 
   return (
     <S.CardContainer>
@@ -87,10 +91,9 @@ const ProfileCard = ({ profile, onCancel }) => {
         <S.AcheivementItems src='/assets/images/header/default-achivement-img.png' alt='업적'/>
       </S.AcheivementContainer>
       <S.SocialButtonContainer>
-        <S.MyPageButton>
+        <S.MyPageButton onClick={() => { handleProfileCard(false)}}>
           <NavLink
             to={`/main/mypage/${profile.id}`}
-            onClick={() => onCancel}
           >
             마이페이지
           </NavLink>

@@ -119,5 +119,13 @@ S.AlertModalContainer = styled.div`
   z-index: 9999;
 `
 
+S.CardBG = styled.div`
+  position: fixed;
+  left: 0;
+  top : 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9000;
+`
 
 export default S;
