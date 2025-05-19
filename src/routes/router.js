@@ -62,8 +62,13 @@ import JoinAgree from "../pages/member/join/JoinAgree";
 import JoinContainer from "../pages/member/join/JoinContainer";
 import JoinInfo from "../pages/member/join/JoinInfo";
 import JoinProfile from "../pages/member/join/JoinProfile";
+import CalendarTodo from "../pages/main/calendar/calendarTodo/CalendarTodo";
+import CalendarSave from "../pages/main/calendar/calendarSave/CalendarSave";
+import ScheduleSave from "../pages/main/calendar/scheduleSave/ScheduleSave";
+import ScheduleView from "../pages/main/calendar/scheduleView/ScheduleView";
 import PrivacyPolicy from "../pages/privacy/PrivacyPolicy";
 import BoardPost from "../pages/community/board/post/BoardPost";
+
 
 const router = createBrowserRouter([
     {
@@ -83,7 +88,26 @@ const router = createBrowserRouter([
                         children : [
                             {
                                 path : "",
-                                element : <MainContainer /> // 메인 페이지 /main
+                                element : <MainContainer />, // 메인 페이지 /main
+                                children : [
+                                    {
+                                        path : "todo-list",
+                                        element : <CalendarTodo/>
+                                    },
+                                    {
+                                        path : "calendar-save",
+                                        element : <CalendarSave/>
+                                    },
+                                    {
+                                        path : "schedule-save",
+                                        element : <ScheduleSave/>
+                                    },
+                                     {
+                                        path : "schedule-view",
+                                        element : <ScheduleView/>
+                                    }
+
+                                ]
                             },
                             {
                                 path : "contents",
