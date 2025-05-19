@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import S from './style';
 import { Link } from 'react-router-dom';
 
@@ -10,18 +10,24 @@ const BoardBannerContainer = ({ hot }) => {
 
   // 왼쪽 화살표 클릭 시 인덱스 감소 (0보다 작아지지 않게 조건)
   const handleLeft = () => {
-    if (currentIndex > 0) setCurrentIndex((prev) => prev - 1);
+    if (currentIndex > 0) setCurrentIndex((move) => move - 1);
   };
 
   // 오른쪽 화살표 클릭 시 인덱스 증가 (범위 초과하지 않도록 조건)
   const handleRight = () => {
     if (currentIndex < hotPosts.length - visibleCount)
-      setCurrentIndex((prev) => prev + 1);
+      setCurrentIndex((move) => move + 1);
   };
 
   // 현재 인덱스를 기준으로 슬라이더의 X축 이동값 계산 (320px 너비 + 100px 간격)
   const translateX = -(currentIndex * (320 + 100));
 
+  const hotSlider = useEffect(()=>{
+    if( hot?.length) {
+      setHotPosts(hot);
+    }
+  }, [hot]);
+  
   return (
     <S.HotWrapper>
       <S.SubTitle>TOP10</S.SubTitle>
@@ -65,6 +71,10 @@ const BoardBannerContainer = ({ hot }) => {
                       src={
                         memberImgPath + '/' + memberImgName || '/assets/images/board/default/default-img.png'
                       }
+                      onError={(e) => {
+                      e.target.onerror = null; // 무한 루프 방지
+                      e.target.src = '/assets/images/board/default/default-img.png'; // 디폴트 이미지 강제 세팅
+                    }}
                       alt={`hot-${index}`}
                     />
                     <S.NumberBox>{index + 1}</S.NumberBox> {/* 순위 번호 */}
@@ -72,7 +82,13 @@ const BoardBannerContainer = ({ hot }) => {
                   <S.HotTag>{boardHashtag}</S.HotTag>
                   <S.HotTitle>{boardTitle}</S.HotTitle>
                   <S.HotUserBox>
-                    <S.UserProfile src={memberImgPath + "/" + memberImgName} />
+                    <S.UserProfile 
+                    src={memberImgPath + "/" + memberImgName || '/assets/images/member/profile-default.pn' }
+                    onError={(e) => {
+                      e.target.onerror = null; // 무한 루프 방지
+                      e.target.src = '/assets/images/member/profile-default.png'; // 디폴트 이미지 강제 세팅
+                    }}  
+                    />
                     <S.UserNickname>{memberNickname}</S.UserNickname>
                   </S.HotUserBox>
                   <S.HotDate>{boardContentCreateDate}</S.HotDate>
