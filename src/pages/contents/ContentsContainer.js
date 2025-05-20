@@ -6,7 +6,6 @@ const ContentsContainer = () => {
   const location = useLocation();
   const pathName = location.pathname;
 
-  console.log(pathName)
   const getTransformValue = (pathName) => {
     if(pathName == "/main/contents") {
       return 'translateX(0)'
