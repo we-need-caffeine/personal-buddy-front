@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { blackColor, fontSizeH6, fontSizeH7, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightRegular, fontWeightThin, gray2Color, gray4Color, gray6Color, mainGreenColor, pointRedColor, subBlueColor, whiteColor } from "../../../globals/common";
+import { blackColor, fontSizeH6, fontSizeH7, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, fontWeightMedium, fontWeightRegular, gray2Color, gray4Color, gray6Color, mainGreenColor, pointRedColor, subBlueColor, whiteColor } from "../../../globals/common";
 
 const S = {};
 
@@ -11,7 +11,7 @@ S.TitleContainer = styled.div`
     width: 100%;
     border-bottom: 1px solid ${({ theme }) => theme.PALLETE.black};
     ${fontSizeH8}
-    ${fontWeightThin}
+    ${fontWeightLight}
 `
 
 S.TitleTopContainer = styled.div`
@@ -26,16 +26,16 @@ S.TitleBottomContainer = styled.div`
     margin-top: 15px;
     ${fontSizeH6}
     ${blackColor}
+    ${fontWeightRegular}
 `
 
 S.TitleTopLinkText = styled.div`
+    ${fontWeightRegular}
     ${gray6Color}
     ${fontSizeH8}
-
     &:hover {
         ${mainGreenColor}
     }
-    
 `
 
 S.TreeContainer = styled.div`
@@ -50,11 +50,13 @@ S.GuestBookTitleContainer = styled.div`
     margin-top: 80px;
     padding-bottom: 20px;
     border-bottom: 1px solid ${({ theme }) => theme.PALLETE.black};
+    ${fontWeightBold}
 `
 
 S.GuestBookTitle = styled.div`
     padding-right: 10px;
     border-right: 2px solid ${({ theme }) => theme.PALLETE.black};
+    ${blackColor}
 `
 
 S.GuestBookWriteCount = styled.div`
@@ -63,9 +65,11 @@ S.GuestBookWriteCount = styled.div`
 `
 
 S.GuestBookInputContainer = styled.div`
+    ${fontWeightBold}
 `
 
 S.GuestBookInputTitle = styled.div`
+    ${fontSizeH6}
     padding: 30px 30px 10px 30px;
 `
 
@@ -88,6 +92,7 @@ S.GuestBookInputBottomContainer = styled.div`
     padding-top: 15px;
     ${fontSizeH6}
     ${gray2Color}
+    ${fontWeightBold}
 `
 
 S.GuestBookInputButton = styled.button`
@@ -99,7 +104,6 @@ S.GuestBookInputButton = styled.button`
     margin-left: 10px;
     ${whiteColor}
     ${fontSizeH7}
-    ${fontWeightBold}
     background-color: ${({ $isActive, theme }) => 
         $isActive ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
         
@@ -137,6 +141,8 @@ S.GuestBookMemberInfo = styled.div`
     justify-content: center;
     align-items: center;
     ${fontSizeH8}
+    ${fontWeightBold}
+    /* 멤버 프로필 카드 고정용 */
     position: relative;
 `
 
@@ -157,6 +163,8 @@ S.GuestBookDeleteButton = styled.button`
 `
 
 S.GuestBookContent = styled.div`
+    ${fontWeightMedium}
+    ${fontSizeH7}
     padding-left: 30px;
     max-width: 800px;
 `
@@ -172,19 +180,15 @@ S.ProfileCardDropdown = styled.div`
     top: 10px;
     left: -150px;
     z-index: 9998;
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
-    padding: 0;
 `;
 
 S.CardBG = styled.div`
-  position: fixed;
-  left: 0;
-  top : 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9000;
+    position: fixed;
+    left: 0;
+    top : 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
 `
 
 export default S;

@@ -3,28 +3,54 @@ import S from './style';
 import { NavLink } from 'react-router-dom';
 
 const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
-  
-  const [myId, setMyId] = useState(memberId);
-  const [friendId, setFriendId] = useState(profileCardMemberId);
+  // 프로필 정보를 담는 상태
   const [profile, setProfile] = useState({})
 
-  // 조회하려는 유저 : memberId
-  // 내 아이디 follow
+  // 팔로우 / 언팔로우
+  const handleFollow = async () => {
+      if (profile.isFollow === 1) {
+          const response = await fetch(`http://localhost:10000/follows/api/follow/delete?followerMemberId=${profileCardMemberId}&followingMemberId=${memberId}`, {
+              method: "DELETE"
+          })
+          if (response.ok) {
+              alert("팔로우 취소")
+              getProfile()
+          } else {
+          }
+      } else {
+          const response = await fetch(`http://localhost:10000/follows/api/follow/${profileCardMemberId}?followingMemberId=${memberId}`, {
+              method: "POST"
+          })
+          
+          if (response.ok) {
+              alert("팔로우 성공")
+              getProfile()
+          } else {
+          }
+      }
+  }
   
-  // fetch 해당 유저
-  // 상대방 아이디 profileCardMemberId
+  // 프로필 정보를 가져오는 함수
+  const getProfile = async () => {
+    const response = await fetch(`http://localhost:10000/follows/api/profile-card?memberId=${memberId}&profileCardMemberId=${profileCardMemberId}`)
+    const datas = await response.json()
+    setProfile(datas)
+  }
 
+  // 최초로 프로필 정보를 받는 함수
   useEffect(() => {
-    const getProfile = async () => {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/follows/api/profile-card?memberId=${myId}&profileCardMemberId=${friendId}`)
-      const datas = await response.json()
-      setProfile(datas)
-    }
-
     getProfile()
   }, [memberId, profileCardMemberId])
 
-  console.log(profile)
+  // 외부요소의 스크롤을 막는 함수
+  useEffect(() => {
+    if (handleProfileCard) {
+        document.body.style.overflow = 'hidden';
+    }
+    return () => {
+        document.body.style.overflow = 'auto';
+    };
+  }, [handleProfileCard]);
 
   return (
     <S.CardContainer>
@@ -55,7 +81,10 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
                   )
                 ) : null}
 
-                <S.FollowBtn isFollow={profile.isFollow}>
+                <S.FollowBtn
+                  onClick={() => handleFollow()} 
+                  isFollow={profile.isFollow}
+                >
                   {profile.isFollow === 1 ? (
                     <span>팔로잉</span>
                   ) : (
@@ -91,13 +120,11 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
         <S.AcheivementItems src='/assets/images/header/default-achivement-img.png' alt='업적'/>
       </S.AcheivementContainer>
       <S.SocialButtonContainer>
-        <S.MyPageButton onClick={() => { handleProfileCard(false)}}>
-          <NavLink
-            to={`/main/mypage/${profile.id}`}
-          >
-            마이페이지
-          </NavLink>
-        </S.MyPageButton>
+        <NavLink to={`/main/mypage/${profile.id}`}>
+          <S.MyPageButton onClick={() => {handleProfileCard(false)}}>
+              마이페이지
+          </S.MyPageButton>
+        </NavLink>
         <S.MessageButton>메세지</S.MessageButton>
       </S.SocialButtonContainer>
     </S.CardContainer>
