@@ -140,6 +140,7 @@ const BoardPost = () => {
                     e.target.src = '/assets/images/header/default-member-img.png';
                   }}
                   alt="댓글 작성자 프로필"
+                  
                 />
                 <S.Nickname>{c.memberNickname}</S.Nickname>
               </S.CommentUser>
