@@ -18,6 +18,9 @@ const EventBannerContainer = ( {play} ) => {
       <img src=''></img>
       <img src=''></img>
       <img src=''></img>
+
+      
+
     </S.EventWrapper>
   );
 };
