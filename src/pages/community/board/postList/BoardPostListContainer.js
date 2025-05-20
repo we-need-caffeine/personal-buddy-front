@@ -51,6 +51,7 @@ const BoardPostListContainer = ({
           <S.BoardTitle>버디들의 자유 게시판 ✨</S.BoardTitle>
         </S.Titles>
         <S.WriteBtn to="/main/community/board/write">글쓰기</S.WriteBtn>
+        
       </S.TitlesAndWriteBtn>
     </S.BoardHeader>
 
