@@ -5,7 +5,6 @@ import { Outlet } from "react-router-dom";
 const CalendarBody = () => {
   return (
     <S.Container>
- 
       <Outlet />
     </S.Container>
   );
