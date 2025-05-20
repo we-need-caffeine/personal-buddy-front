@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { flexCenter, fontSizeH4, fontSizeH6, fontSizeH8, fontWeightBold, fontWeightRegular, pointRedColor, subGreenColor } from '../../../globals/common';
+import { flexBaseTop, flexCenter, fontSizeH4, fontSizeH6, fontSizeH8, fontWeightBold, fontWeightRegular, pointRedColor, subGreenColor } from '../../../globals/common';
 
 const S = {};
 
@@ -77,6 +77,33 @@ S.DescriptionGetPoint = styled.span`
     ${fontSizeH8}
     ${fontWeightBold}
     ${pointRedColor}
+`;
+
+S.AchievementListBox = styled.div`
+    width: 1160px;
+    background-color: ${({ theme }) => theme.PALLETE.primary.lightGreen};
+    ${flexBaseTop}
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 0 120px;
+`;
+
+S.AchievementCard = styled.div`
+    ${flexCenter}
+    position: relative;
+    flex-direction: column;
+    width: 200px;
+    height: 230px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    border: solid 1px #01CD74;
+    vertical-align: baseline;
+    margin-top: 140px;
+`;
+
+S.AchievementIcon = styled.img`
+    position: absolute;
+    top: -40px;
 `;
 
 
