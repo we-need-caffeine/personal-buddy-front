@@ -4,7 +4,7 @@ const ScheduleView = () => {
 
     return (
         <div>
-            캘린더헤더
+            ScheduleView
         </div>
     );
 };
