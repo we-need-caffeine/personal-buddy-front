@@ -1,20 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useLocation, useOutletContext, useParams } from 'react-router-dom';
 import S from './style';
 
 const BoardPost = () => {
   // Outlet을 통해 상위에서 전달된 postLists 가져온다.
   const { postLists } = useOutletContext() || {};
+  // console.log("postLists", postLists)
   // 게시글 id
-  const { id } = useParams();
-
+  
   const [commentText, setCommentText] = useState(''); // 댓글 입력창의 텍스트 상태
   const [comments, setComments] = useState([]); // 댓글 목록 상태 (배열)
   const [likeCount, setLikeCount] = useState(0); // 게시글 좋아요 수 상태
   const [isLiked, setIsLiked] = useState(false); // 내가 좋아요 눌렀는지 여부
-
+  
+  const { id } = useParams(); // 문자열 sting
   // 현재 게시글 객체 찾기
+
   const post = postLists?.find((p) => String(p.id) === id); // 전체 게시글 배열이 있으면 find실행 없으면 undefined
+  // const post = postLists?.find((p) => p.id === id);
+
+  // 게시글이 존재할 때 좋아요 수 초기값 
+  //  선택한 게시글의 좋아요 수를 초기값으로 설정함
+  useEffect(() => {
+    if (post) setLikeCount(post.likeCount);
+  }, [post]);
+  
+  if (!postLists || postLists.length === 0) {
+    return <div>로딩 중입니다...</div>;
+  }
+  if (!post) {
+    return <div>해당 게시글을 찾을 수 없습니다.</div>;
+  }
 
   // 게시글 좋아요 버튼 클릭 시 
   const handleLike = () => {
@@ -31,55 +47,6 @@ const BoardPost = () => {
     }
   };
 
-  // useEffect(() => {
-  //   // 댓글 더미
-  //   const dummyComments = [
-  //       { 
-  //           id: 1, 
-  //           writer: '플랜A', 
-  //           content: '와우 저와 같은 일정이 있으시군요!', 
-  //           createdDate: '2025.02.13 10:30', 
-  //           like: 43 
-  //       },
-  //       { 
-  //           id: 2, 
-  //           writer: '장타치', 
-  //           content: '로그인 어렵다 엉엉', 
-  //           createdDate: '2025.05.17 23:00', 
-  //           like: 117 
-  //       },
-  //       { 
-  //           id: 3, 
-  //           writer: '김엄수', 
-  //           content: '엄 엄엄엄 엄엄엄엄엄 엄엄엄엄엄엄엄엄 엄엄엄엄엄엄엄엄엄엄엄엄ㅇ멍멍멍멍멍멍멍멍', 
-  //           createdDate: '2025.03.08 01:20', 
-  //           like: 85 
-  //       },
-  //       { 
-  //           id: 4, 
-  //           writer: '갓제이슨', 
-  //           content: '즐겁다 즐거워', 
-  //           createdDate: '2025.05.18 17:35', 
-  //           like: 120 
-  //       },
-  //       { 
-  //           id: 5, 
-  //           writer: '양꼬치', 
-  //           content: '냠냠뇸뇸 양꼬치 칭따오 소주 노노 고량주', 
-  //           createdDate: '2025.04.08 19:27', 
-  //           like: 520 
-  //       },
-  //   ];
-  //   setComments(dummyComments);
-  // }, []);
-
-   // 게시글이 존재할 때 좋아요 수 초기값 
-   // 선택한 게시글의 좋아요 수를 초기값으로 설정함
-  useEffect(() => {
-    if (post) setLikeCount(post.likeCount);
-  }, [post]);
-
-
   // 댓글 등록 버튼 클릭 
   const handleCommentSubmit = () => {
     if (commentText) {
@@ -95,9 +62,6 @@ const BoardPost = () => {
       // console.log('댓글 등록', newComment);
     }
   };
-
-  if (!postLists) return <div>로딩 중입니다...</div>;
-  if (!post) return <div>해당 게시글을 찾을 수 없습니다.</div>;
 
   // 베스트 댓글 3개
   // comments는 useState로 만든 상태값이므로 직접 sort할 수 없다.(원본이 파괴됨)

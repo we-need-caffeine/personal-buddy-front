@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import S from './style';
 import Select from 'react-select';
+import { useSelector } from 'react-redux';
 
 const BoardWrite = () => {
   const [title, setTitle] = useState('');// 게시글 제목을 저장하는 상태. 사용자가 제목 입력창에 글을 입력하면 이 값이 바뀜
@@ -79,6 +80,11 @@ const BoardWrite = () => {
 
     // 게시글 등록 
     const memberId = localStorage.getItem('memberId');
+
+    // 로그인된 유저정보
+      // const {currentUser} = useSelector((state) => state.member)
+    // 로그인된 유저의 아이디
+    // const memberId = currentUser.id;
 
     const postRes = await fetch( `${process.env.REACT_APP_BACKEND_URL}/boards/api/write`, {
       method: 'POST',
