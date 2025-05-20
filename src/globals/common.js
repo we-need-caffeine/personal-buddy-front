@@ -9,6 +9,12 @@ export const flexCenter = css`
   align-items: center;
 `
 
+export const flexBaseTop = css`
+  display: flex;
+  justify-content: baseline;
+  align-items: baseline;
+`
+
 export const flexCenterColumn = css`
   display: flex;
   flex-direction: column;
