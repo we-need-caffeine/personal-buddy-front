@@ -44,6 +44,22 @@ S.InputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
+S.PasswordInputWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: -1px;
+  border: 1px solid
+  ${({ isValid }) => {
+      if (isValid === true) return '#01CD74';
+      if (isValid === false) return '#FF3F3F';
+      return '#C5CCD2';
+    }};
+  /* border-radius: 10px; */
+  transition: border 0.3s ease-in-out;
+`;
+
 S.EmailInputWrapper = styled.div`
   position: relative;
   display: flex;
@@ -200,6 +216,14 @@ S.StatusButton = styled.button`
 
 // 비밀번호 토글 아이콘
 S.TogglePassword = styled.img`
+  position: absolute;
+  right: 15px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+`;
+
+S.TogglePasswordConfirm = styled.img`
   position: absolute;
   right: 15px;
   width: 20px;
