@@ -159,12 +159,12 @@ const BoardWrite = () => {
 
   return (
     <>
-      <S.Titles>
-        <S.SubTitle>커뮤니티</S.SubTitle>
-        <S.BoardWriteTitle>글쓰기</S.BoardWriteTitle>
-      </S.Titles>
 
       <S.Container>
+        <S.Titles>
+          <S.SubTitle>커뮤니티</S.SubTitle>
+          <S.BoardWriteTitle>글쓰기</S.BoardWriteTitle>
+        </S.Titles>
         <S.Hr />
 
         <S.Label>제목
