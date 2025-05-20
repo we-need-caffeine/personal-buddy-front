@@ -133,6 +133,7 @@ S.CharCount = styled.div`
 `;
 
 S.SubmitButton = styled.button`
+    ${flexCenter};
     padding: 8px 16px;
     border: none;
     background-color: ${({ active }) => (active ? subBlueColor.color : '#ddd')};
