@@ -1,6 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Layout from "../pages/layout/Layout";
-import Banner from "../pages/layout/banner/Banner";
 import MainContainer from "../pages/main/MainContainer";
 import LandingPageContainer from "../pages/landingPage/LandingPageContainer";
 import LoginLayout from "../pages/layout/LoginLayout";
@@ -68,6 +67,10 @@ import ScheduleSave from "../pages/main/calendar/scheduleSave/ScheduleSave";
 import ScheduleView from "../pages/main/calendar/scheduleView/ScheduleView";
 import PrivacyPolicy from "../pages/privacy/PrivacyPolicy";
 import BoardPost from "../pages/community/board/post/BoardPost";
+import CalendarContainer from "../pages/main/calendar/CalendarContainer";
+import CalendarDayContainer from "../pages/main/calendar/calendarDay/CalendarDayContainer";
+import CalendarMonthContainer from "../pages/main/calendar/calendarMonth/CalendarMonthContainer";
+import CalendarWeekContainer from "../pages/main/calendar/calendarWeek/CalendarWeekContainer";
 
 const router = createBrowserRouter([
   {
@@ -83,37 +86,44 @@ const router = createBrowserRouter([
         element: <LoginLayout />, // 로그인 확인 /main
         children: [
           {
-            index: true,
-            element: <Navigate to="/main/1" replace />,
-          },
-          {
-            element: <Banner />,
+            path : "",
+            element: <MainContainer />,
             children: [
               {
-                path: "1", // calendarId
-                element: <MainContainer />,
-                children: [
+                path : ":memberId/:calendarId",
+                element : <CalendarContainer />,
+                children : [
                   {
-                    index: true,
-                    element: <CalendarTodo />,
+                    path: "",
+                    element : <CalendarDayContainer />,
+                    children : [
+                      {
+                        path : "",
+                        element : <CalendarTodo />
+                      },
+                      {
+                        path : "schedule-view",
+                        element : <ScheduleView />
+                      },
+                      {
+                        path : "schedule-save",
+                        element : <ScheduleSave />
+                      },
+                      {
+                        path : "calendar-save",
+                        element : <CalendarSave />
+                      },
+                    ]
                   },
                   {
-                    path: "todo-list",
-                    element: <CalendarTodo />,
+                    path : "month",
+                    element : <CalendarMonthContainer />
                   },
                   {
-                    path: "calendar-save",
-                    element: <CalendarSave />,
-                  },
-                  {
-                    path: "schedule-save",
-                    element: <ScheduleSave />,
-                  },
-                  {
-                    path: "schedule-view",
-                    element: <ScheduleView />,
-                  },
-                ],
+                    path : "week",
+                    element : <CalendarWeekContainer />
+                  }
+                ]
               },
               {
                 path: "contents",

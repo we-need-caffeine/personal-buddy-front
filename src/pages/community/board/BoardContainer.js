@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BoardBannerContainer from './banner/BoardBannerContainer';
 import BoardPostListContainer from './postList/BoardPostListContainer';
 import ScrollToTop from '../../../hooks/scrollToTop/ScrollToTop';
+import { Outlet } from 'react-router-dom';
 
 const BoardContainer = () => {
 
@@ -42,6 +43,7 @@ const BoardContainer = () => {
         setBoardHashtag={setBoardHashtag} setSearchKeyword={setSearchKeyword}
       />
       <ScrollToTop />
+
     </>
   );
 };
