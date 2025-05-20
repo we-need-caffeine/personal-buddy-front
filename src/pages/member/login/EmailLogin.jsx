@@ -59,7 +59,7 @@ const EmailLogin = () => {
         })
         .then((res) => {
           console.log(res);
-          const { jwtToken } = res;
+          const { jwtToken, memberId } = res;
     
           if (rememberMe) {
             localStorage.setItem('jwtToken', jwtToken);
@@ -67,7 +67,8 @@ const EmailLogin = () => {
             sessionStorage.setItem('jwtToken', jwtToken);
           }
     
-          navigate("/main/?jwtToken=" + jwtToken);
+          // navigate(`/main/${memberId}?jwtToken=${jwtToken}`);
+          navigate(`/main?jwtToken=${jwtToken}`);
         })
         .catch(console.error);
     })}>
