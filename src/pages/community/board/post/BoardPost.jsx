@@ -31,47 +31,47 @@ const BoardPost = () => {
     }
   };
 
-  useEffect(() => {
-    // 댓글 더미
-    const dummyComments = [
-        { 
-            id: 1, 
-            writer: '플랜A', 
-            content: '와우 저와 같은 일정이 있으시군요!', 
-            createdDate: '2025.02.13 10:30', 
-            like: 43 
-        },
-        { 
-            id: 2, 
-            writer: '장타치', 
-            content: '로그인 어렵다 엉엉', 
-            createdDate: '2025.05.17 23:00', 
-            like: 117 
-        },
-        { 
-            id: 3, 
-            writer: '김엄수', 
-            content: '엄 엄엄엄 엄엄엄엄엄 엄엄엄엄엄엄엄엄 엄엄엄엄엄엄엄엄엄엄엄엄ㅇ멍멍멍멍멍멍멍멍', 
-            createdDate: '2025.03.08 01:20', 
-            like: 85 
-        },
-        { 
-            id: 4, 
-            writer: '갓제이슨', 
-            content: '즐겁다 즐거워', 
-            createdDate: '2025.05.18 17:35', 
-            like: 120 
-        },
-        { 
-            id: 5, 
-            writer: '양꼬치', 
-            content: '냠냠뇸뇸 양꼬치 칭따오 소주 노노 고량주', 
-            createdDate: '2025.04.08 19:27', 
-            like: 520 
-        },
-    ];
-    setComments(dummyComments);
-  }, []);
+  // useEffect(() => {
+  //   // 댓글 더미
+  //   const dummyComments = [
+  //       { 
+  //           id: 1, 
+  //           writer: '플랜A', 
+  //           content: '와우 저와 같은 일정이 있으시군요!', 
+  //           createdDate: '2025.02.13 10:30', 
+  //           like: 43 
+  //       },
+  //       { 
+  //           id: 2, 
+  //           writer: '장타치', 
+  //           content: '로그인 어렵다 엉엉', 
+  //           createdDate: '2025.05.17 23:00', 
+  //           like: 117 
+  //       },
+  //       { 
+  //           id: 3, 
+  //           writer: '김엄수', 
+  //           content: '엄 엄엄엄 엄엄엄엄엄 엄엄엄엄엄엄엄엄 엄엄엄엄엄엄엄엄엄엄엄엄ㅇ멍멍멍멍멍멍멍멍', 
+  //           createdDate: '2025.03.08 01:20', 
+  //           like: 85 
+  //       },
+  //       { 
+  //           id: 4, 
+  //           writer: '갓제이슨', 
+  //           content: '즐겁다 즐거워', 
+  //           createdDate: '2025.05.18 17:35', 
+  //           like: 120 
+  //       },
+  //       { 
+  //           id: 5, 
+  //           writer: '양꼬치', 
+  //           content: '냠냠뇸뇸 양꼬치 칭따오 소주 노노 고량주', 
+  //           createdDate: '2025.04.08 19:27', 
+  //           like: 520 
+  //       },
+  //   ];
+  //   setComments(dummyComments);
+  // }, []);
 
    // 게시글이 존재할 때 좋아요 수 초기값 
    // 선택한 게시글의 좋아요 수를 초기값으로 설정함
@@ -111,7 +111,7 @@ const BoardPost = () => {
 
   return (
     <S.Container>
-      <S.Title>{post.title}</S.Title>
+      <S.Title>{post.boardTitle}</S.Title>
       <hr />
       <S.TopInfoBox>
         <S.Left>
