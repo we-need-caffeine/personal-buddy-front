@@ -1,25 +1,59 @@
-import React, { useState, useRef } from "react";
+import React, { useContext, useState } from "react";
 import S from "./style";
+import { useParams } from "react-router-dom";
+import { CalendarContext } from "../../../../context/CalendarContext";
 
 const CalendarTodo = () => {
+  
+  const { memberId, calendarId } = useParams();
+  const {state, actions} = useContext(CalendarContext);
+
   const [rotated, setRotated] = useState(false);
   const [todos, setTodos] = useState([]);
   const [completedTodos, setCompletedTodos] = useState([]);
   const [todoInput, setTodoInput] = useState("");
   const [selectedId, setSelectedId] = useState(null);
-  const nextId = useRef(1);
 
   const handleRotate = () => {
     setRotated((prev) => !prev);
   };
 
-  const handleAddTodo = () => {
+  const handleAddTodo = async () => {
     if (todoInput.trim() === "") return;
-    setTodos((prev) => [...prev, { id: nextId.current++, text: todoInput }]);
-    setTodoInput("");
+
+    try {
+      const response = await fetch(
+        "http://localhost:10000/todo-lists/api/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            todoListContent: todoInput,
+            calendarId : calendarId
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("할 일 등록 실패");
+      }
+
+      const data = await response.json();
+
+      const savedTodo = {
+        id: data.id ,
+        text: todoInput,
+      };
+
+      setTodos((prev) => [...prev, savedTodo]);
+      setTodoInput("");
+    } catch (error) {
+      console.error("할 일 등록 에러:", error);
+    }
   };
 
-  // 완료 미완료 전환
   const handleToggleTodo = (todo, isCompleted) => {
     if (isCompleted) {
       setCompletedTodos((prev) => prev.filter((t) => t.id !== todo.id));
@@ -31,7 +65,6 @@ const CalendarTodo = () => {
     setSelectedId(null);
   };
 
-  // 삭제
   const handleRemoveTodo = (idToRemove) => {
     setTodos((prev) => prev.filter((todo) => todo.id !== idToRemove));
     setSelectedId(null);
@@ -59,6 +92,7 @@ const CalendarTodo = () => {
           />
         </S.TodoWrapper>
       </S.TodoContainer>
+
       <S.ScrollContainer>
         {/* 할 일 목록 */}
         {todos.map((todo) => (

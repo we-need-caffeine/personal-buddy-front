@@ -195,7 +195,7 @@ S.Tag = styled.div`
 S.Title = styled.span`
     ${fontSizeH5}
     ${fontWeightBold}
-    color: ${({ theme }) => theme.PALLETE.gray.gray6};
+    color: #000;
     padding: 14px 0 18px 0;
 `;
 

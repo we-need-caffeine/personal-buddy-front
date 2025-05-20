@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import S from './style';
 import Select from 'react-select';
+import { useSelector } from 'react-redux';
 
 const BoardWrite = () => {
   const [title, setTitle] = useState('');// 게시글 제목을 저장하는 상태. 사용자가 제목 입력창에 글을 입력하면 이 값이 바뀜
@@ -15,69 +16,120 @@ const BoardWrite = () => {
     { label: '공유 일정', value: '공유' }
   ];
 
+
+//   1. 화면단에서 파일 업로드가 잘 되는지 부터 확인 
+// ( 
+//    1.1 file-upload 요청 시점 확인 
+//    1.2 file-upload 요청이 잘 왔는지 확인
+//    1.3 파일이 저장 되었는지 확인할 것
+//       -> 파일 저장 경로랑 파일 이름이 어떻게 되는지
+//       (코드 보면 알 수 있는데, 너가 확인해서 모르겠으면 내가 찾아줄게)
+//    1.4 파일이 저장된 경로를 잘 응답하였는지
+// )
+// 2. 게시글 + 이미지 등록 요청이 잘 처리 되었는지 확인 (DB에 데이터가 잘 들어갔는지 볼 것)
+
  
-  // 사용자가 <input type="file" />에 파일을 올리면 자동으로 실행되는 이벤트 함수
-  // 이벤트 객체에는 사용자가 선택한 파일 목록이 들어 있음
+   // 파일 선택 시 미리보기 생성
   const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files); // FileList라는 특수 객체라서 Array.from()을 써서 일반 배열로 바꿔준다.
-    // console.log('이미지 업로드', selectedFiles.map(f => f.name));
-    setFiles(selectedFiles); // files 상태에 저장
+    const selectedFiles = Array.from(e.target.files);
+    setFiles(selectedFiles); 
 
-    const fileReaders = []; // 파일을 읽는 도구인 FileReader 객체들을 저장할 배열
-    const previews = []; // 실제로 브라우저에 띄워줄 이미지 주소를 담는 배열
-
-    selectedFiles.forEach((file, i) => {
-      const reader = new FileReader(); // FileReader: 파일을 base64로 읽기 위한 브라우저 내장 객체
-      fileReaders.push(reader);
-      reader.onloadend = () => { // 읽기가 끝났을 때 실행될 함수
-        previews.push(reader.result); // 변환된 base64 URL을 previews에 추가
-        if (previews.length === selectedFiles.length) { 
-          setPreviewUrls(previews); // 모든 파일이 다 변환되면 미리보기 상태 저장
-          // console.log('미리보기 생성 완료', previews);
+    const previews = [];
+    selectedFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        previews.push(reader.result);
+        if (previews.length === selectedFiles.length) {
+          setPreviewUrls(previews);
         }
       };
-      reader.readAsDataURL(file); // 파일을 base64 문자열로 변환
+      reader.readAsDataURL(file);
     });
   };
   
-    // 추후 백엔드에 이미지 업로드 연동 시
     // 파일을 FormData로 묶어서 fetch로 보낸다.
+    const uploadImages = async () => {
+    const formData = new FormData();
+    files.forEach((file) => formData.append('imgFiles', file));
+    formData.append('dataType', 'board');
+
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/files/api/files-upload`, {
+      method: 'POST',
+      body: formData
+    });
+    return await res.json(); // { filePath, fileNames }
+  };
 
   const handleSubmit = async () => {
-    if (!title || !content || !category) {
-      alert('제목, 내용, 카테고리는 필수입니다.');
-      return;
+  if (!title || !content || !category) {
+    alert('제목, 내용, 카테고리는 필수입니다.');
+    return;
+  }
+
+  try {
+    let filePath = null;
+    let fileNames = [];
+
+    // 이미지 먼저 업로드
+    if (files.length > 0) {
+      const imageRes = await uploadImages(); // { filePath, fileNames }
+      // console.log("imageRes",imageRes);
+      filePath = imageRes.filePath;
+      fileNames = imageRes.fileNames;
     }
 
-    try {
-      const res = await fetch('http://localhost:10000/boards/api/write', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          boardTitle: title, // 제목 입력값
-          boardContent: content, // 내용 입력값
-          boardHashtag: category.value, // 선택된 카테고리 (해시태그) 
-          memberId: 1  // 임시 고정값 — 나중에 로그인 정보에서 가져오기. react-select는 object라서 value만 추출
-        })
-      });
-  
-      if (res.ok) {
-        const confirmResult = window.confirm("등록하시겠습니까?");
-        if(confirmResult){
-          alert('등록되었습니다!');
-          window.location.href = '/main/community/board';
-        } else {
-          alert('취소되었습니다.')
-        }
-      } else {
-        const errorText = await res.text();
-        alert('등록 실패하였습니다ㅠㅠ: ' + errorText);
+    // 게시글 등록 
+    const memberId = localStorage.getItem('memberId');
+
+    // 로그인된 유저정보
+      // const {currentUser} = useSelector((state) => state.member)
+    // 로그인된 유저의 아이디
+    // const memberId = currentUser.id;
+
+    const postRes = await fetch( `${process.env.REACT_APP_BACKEND_URL}/boards/api/write`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        boardTitle: title,
+        boardContent: content,
+        boardHashtag: `#${category.label}`,
+        memberId: memberId
+      })
+    });
+
+    if (!postRes.ok) throw new Error(await postRes.text());
+    const boardId = await postRes.json(); 
+
+    // 이미지 정보 DB 등록
+    if (filePath && fileNames.length > 0) {
+      for (const fileName of fileNames) {
+        await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/image`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            boardId,
+            boardImgPath: filePath,
+            boardImgName: fileName
+          })
+        });
       }
-    } catch {
-      console.error();
-      alert('에러가 발생하였습니다!.!');
     }
-  };
+
+    // 등록 완료 후 알림
+    const confirmResult = window.confirm("등록하시겠습니까?");
+    if (confirmResult) {
+      alert('등록되었습니다!');
+      window.location.href = '/main/community/board';
+    } else {
+      alert('취소되었습니다.');
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert('등록 실패: ' + err.message);
+  }
+};
+
 
   const handleRemoveImage = (index) => {
     const newFiles = [...files];

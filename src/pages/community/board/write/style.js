@@ -17,6 +17,7 @@ S.Container = styled.div`
 // 제목 영역 컨테이너
 S.Titles = styled.div`
     margin-top: 60px;
+    width: 1000px;
 `;
 
 // 작은 제목: "커뮤니티"

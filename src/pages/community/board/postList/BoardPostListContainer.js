@@ -14,7 +14,7 @@ const BoardPostListContainer = ({
   const handleHashtag = (e) => {
     setBoardHashtag(e.target.innerText.replaceAll(" ", "").replaceAll("#", ""))
   }
-  
+
   return (
     <>
     <S.SortBox>
@@ -51,6 +51,7 @@ const BoardPostListContainer = ({
           <S.BoardTitle>버디들의 자유 게시판 ✨</S.BoardTitle>
         </S.Titles>
         <S.WriteBtn to="/main/community/board/write">글쓰기</S.WriteBtn>
+        
       </S.TitlesAndWriteBtn>
     </S.BoardHeader>
 
@@ -60,10 +61,10 @@ const BoardPostListContainer = ({
       ) : (
         boards.map(({
           id, boardContent, boardContentCreateDate, boardContentUpdateDate, 
-          boardContentViews, boardHashtag, boardLikeCount, boardTitle, boardCommentCount,
+          boardContentViews, boardHashtag, boardLikeCount, boardTitle, boardCommentCount, boardImgName, boardImgPath,
           memberEmail, memberId, memberImgName, memberImgPath, memberNickname
           }) => ( // 필터링된 게시글만 렌더링
-          <Link to={`post/${id}`} key={id}>
+          <Link to={`post/${id}`} state={boards} key={id}>
             <S.PostCard>
               <S.Thumbnail
                 src={ "" 
@@ -75,6 +76,10 @@ const BoardPostListContainer = ({
               <S.UserInfo>
                 <S.ProfileImg 
                   src={`${memberImgPath}/${memberImgName}`}  
+                  onError={(e) => {
+                      e.target.onerror = null; // 무한 루프 방지
+                      e.target.src = '/assets/images/member/profile-default.png'; // 디폴트 이미지 강제 세팅
+                    }}  
                   onClick={(e) => {
                     e.preventDefault(); // 부모인 <Link> 클릭 방지 (기본 동작(링크 이동) 막기)
                     e.stopPropagation(); // 이벤트가 상위 요소로 전달되지 않게 막기

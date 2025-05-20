@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BoardBannerContainer from './banner/BoardBannerContainer';
 import BoardPostListContainer from './postList/BoardPostListContainer';
 import ScrollToTop from '../../../hooks/scrollToTop/ScrollToTop';
+import { Outlet } from 'react-router-dom';
 
 const BoardContainer = () => {
 
@@ -12,7 +13,6 @@ const BoardContainer = () => {
   const [boardHashtag, setBoardHashtag] = useState("")
   const [searchKeyword, setSearchKeyword] = useState("")
 
-  // 게시글 목록을 백엔드에서 가져오거나, 실패 시 더미 데이터를 사용
   useEffect(() => {
     const fetchBoards = async () => {
       try {
@@ -20,7 +20,7 @@ const BoardContainer = () => {
         const datas = await response.json();
         const { boards, hot } = await datas;
 
-        console.log("hot", hot)
+        // console.log("hot", hot)
 
         // 데이터 추가
         setBoards(boards)
@@ -31,7 +31,7 @@ const BoardContainer = () => {
     };
     fetchBoards();
 
-  }, [isUpdate, boardHashtag, order]);
+  }, [isUpdate, boardHashtag, order, searchKeyword]);
   
   return (
     <>
@@ -43,6 +43,7 @@ const BoardContainer = () => {
         setBoardHashtag={setBoardHashtag} setSearchKeyword={setSearchKeyword}
       />
       <ScrollToTop />
+
     </>
   );
 };
@@ -51,29 +52,3 @@ export default BoardContainer;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-// import React from 'react';
-// import BoardBannerContainer from './banner/BoardBannerContainer';
-// import BoardPostListContainer from './postList/BoardPostListContainer';
-
-// const BoardContainer = () => {
-//   return (
-//     <div>
-//       <BoardBannerContainer />
-//       <hr />
-//       <BoardPostListContainer />
-//     </div>
-//   );
-// };
-
-// export default BoardContainer;
