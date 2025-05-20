@@ -1,21 +1,23 @@
-import React, { useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useState } from "react";
 import S from "./style";
+import { useParams } from "react-router-dom";
+import { CalendarContext } from "../../../../context/CalendarContext";
 
 const CalendarTodo = () => {
-  //const { calendarId } = useParams();
-  const calendarId = 1;
+  
+  const { memberId, calendarId } = useParams();
+  const {state, actions} = useContext(CalendarContext);
 
   const [rotated, setRotated] = useState(false);
   const [todos, setTodos] = useState([]);
   const [completedTodos, setCompletedTodos] = useState([]);
   const [todoInput, setTodoInput] = useState("");
   const [selectedId, setSelectedId] = useState(null);
-  const nextId = useRef(1);
 
   const handleRotate = () => {
     setRotated((prev) => !prev);
   };
+
   const handleAddTodo = async () => {
     if (todoInput.trim() === "") return;
 
@@ -29,8 +31,7 @@ const CalendarTodo = () => {
           },
           body: JSON.stringify({
             todoListContent: todoInput,
-            todoListIsCompleted: 0,
-            calendarId: Number(calendarId),
+            calendarId : calendarId
           }),
         }
       );
@@ -42,7 +43,7 @@ const CalendarTodo = () => {
       const data = await response.json();
 
       const savedTodo = {
-        id: data.id || nextId.current++,
+        id: data.id ,
         text: todoInput,
       };
 
