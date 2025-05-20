@@ -3,6 +3,7 @@ import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_green.css';
 import S from './joinInfoStyle';
 import { useNavigate } from 'react-router-dom';
+import { useJoin } from './JoinContext';
 
 const JoinInfo = () => {
   const [email, setEmail] = useState('');
@@ -49,11 +50,20 @@ const JoinInfo = () => {
   const togglePassword = () => setShowPassword(!showPassword);
   const togglePasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
 
+  const { setJoinData } = useJoin();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ email, password, name, gender, birth, phone });
+    setJoinData({
+    memberEmail : email,
+    memberPassword: password,
+    memberName: name,
+    memberGender: gender,
+    memberBirth: birth,
+    memberPhone: phone
+  });
+
     navigate('/member/join/profile');
   };
 

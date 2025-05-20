@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import S from './joinProfileStyle';
+import { fontSizeH9 } from '../../../globals/common';
+import { useJoin } from './JoinContext';
+import { useNavigate } from 'react-router-dom';
 
 const JoinProfile = () => {
   const [profileImage, setProfileImage] = useState('/assets/images/member/profile-default.png');
+
+  const { joinData } = useJoin();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -17,35 +23,80 @@ const JoinProfile = () => {
     mode: 'onChange',
   });
 
+  
+
   const watchNickname = watch('memberNickName', '');
   const watchComment = watch('memberComment', '');
   const watchFile = watch('newMemberImageInput');
 
   const onSubmit = async (data) => {
-    const formData = new FormData();
-    formData.append('memberNickName', data.memberNickName);
-    formData.append('memberComment', data.memberComment);
-    if (data.newMemberImageInput?.[0]) {
-      formData.append('imageInput', data.newMemberImageInput[0]);
+  try {
+    // 1️⃣ 이미지 업로드
+    let fileName = "";
+    let filePath = "";
+
+    if (data.newMemberImageInput) {
+      const file = data.newMemberImageInput;
+      const imageForm = new FormData();
+      imageForm.append("imgFile", file);
+      imageForm.append("dataType", "profile");
+
+      console.log(data.newMemberImageInput[0])
+
+      const uploadRes = await fetch("http://localhost:10000/files/api/file-upload", {
+        method: "POST",
+        body: imageForm
+      });
+
+      const uploadData = await uploadRes.json();
+      console.log("파일 업로드 결과", uploadData);
+
+      if (uploadData.fileName && uploadData.filePath) {
+        fileName = uploadData.fileName;
+        filePath = uploadData.filePath;
+      } else {
+        console.warn("업로드 결과에 파일 정보가 없음!");
+      }
+      
     }
 
-    try {
-      const res = await fetch('join-profile-upload.member', {
-        method: 'POST',
-        body: formData,
-      });
-      const result = await res.json();
-      console.log('업로드 결과:', result);
-    } catch (err) {
-      console.error('제출 실패:', err);
+    // 2️⃣ useContext + 파일 정보 병합
+    const completeMemberData = {
+      ...joinData,
+      memberNickName: data.memberNickName,
+      memberStatusMessage: data.memberComment,
+      memberImgName: fileName,
+      memberImgPath: filePath,
+      memberProvider: "local"
+    };
+    console.log("전송 데이터", completeMemberData);
+
+    // 3️⃣ JSON으로 회원가입 요청
+    const joinRes = await fetch("http://localhost:10000/members/api/join", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(completeMemberData)
+    });
+
+    if (joinRes.ok) {
+      alert("회원가입이 완료되었습니다!");
+      navigate("/member/login");
+    } else {
+      alert("회원가입에 실패했습니다.");
     }
-  };
+  } catch (err) {
+    console.error("회원가입 중 오류:", err);
+    alert("네트워크 오류가 발생했습니다.");
+  }
+};
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    setValue('newMemberImageInput', e.target.files); // react-hook-form 상태에 등록
+    setValue('newMemberImageInput', file); // react-hook-form 상태에 등록
 
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -60,29 +111,33 @@ const JoinProfile = () => {
   };
 
   const handleNicknameBlur = async () => {
-    const nickname = watchNickname;
-    if (!nickname) return;
+  const nickname = watch('memberNickName');
+  if (!nickname) return;
 
-    try {
-      const res = await fetch('nickname-check.member', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ nickname }).toString(),
-      });
-      const data = await res.json();
+  try {
+    const res = await fetch(`http://localhost:10000/members/api/check/nickname?nickname=${encodeURIComponent(nickname)}`, {
+      method: "GET",
+    });
 
-      if (data.nicknameCheckResult) {
-        clearErrors('memberNickName');
-      } else {
-        setError('memberNickName', {
-          type: 'manual',
-          message: data.nicknameCheckResultMessage || '이미 사용 중인 닉네임입니다.',
-        });
-      }
-    } catch (err) {
-      console.error('닉네임 확인 실패:', err);
+    if (!res.ok) {
+      throw new Error("닉네임 중복 확인 실패");
     }
-  };
+
+    const isDuplicate = await res.json(); // true 또는 false
+
+    if (isDuplicate) {
+      setError('memberNickName', {
+        type: 'manual',
+        message: '이미 사용 중인 닉네임입니다.',
+      });
+    } else {
+      clearErrors('memberNickName');
+    }
+  } catch (err) {
+    console.error('닉네임 확인 실패:', err);
+  }
+};
+
 
   return (
     <S.Container>
@@ -114,9 +169,12 @@ const JoinProfile = () => {
               <S.InputTitle>
                 <span>닉네임</span>
                 {errors.memberNickName && (
-                  <span style={{ color: '#FF3F3F' }}>{errors.memberNickName.message}</span>
+                  <span style={{ color: '#FF3F3F', fontSize: '12px', marginLeft: '18px' }}>
+                    {errors.memberNickName.message}
+                  </span>
                 )}
               </S.InputTitle>
+
               <S.InputWrapper
                 style={{
                   borderColor:
@@ -124,14 +182,24 @@ const JoinProfile = () => {
                       ? '#FF3F3F'
                       : watchNickname
                       ? '#01CD74'
-                      : '#333333',
+                      : '#C5CCD2',
                 }}
               >
                 <input
                   type="text"
                   placeholder="닉네임을 입력해주세요. (최대 14자)"
                   maxLength="14"
-                  {...register('memberNickName', { required: '닉네임을 입력해주세요.' })}
+                  {...register('memberNickName', {
+                    required: '닉네임을 입력해주세요.',
+                    maxLength: {
+                      value: 14,
+                      message: '닉네임은 최대 14자까지 가능합니다.',
+                    },
+                    pattern: {
+                      value: /^[가-힣a-zA-Z0-9]{1,14}$/,
+                      message: '공백, 특수 문자(!, @, # 등) 를 제외한 문자만 가능합니다. 최대 14자',
+                    },
+                  })}
                   onBlur={handleNicknameBlur}
                 />
                 <span>{watchNickname.length} / 14</span>

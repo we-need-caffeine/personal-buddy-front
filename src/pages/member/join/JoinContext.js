@@ -1,8 +1,18 @@
-// JoinContext.js
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from 'react';
 
-// 1. context 생성
 export const JoinContext = createContext();
 
-// 2. 사용할 컴포넌트에서 쉽게 접근하기 위한 custom hook
+export const JoinProvider = ({ children }) => {
+  const [joinData, setJoinData] = useState({});
+
+  return (
+    <JoinContext.Provider value={{ joinData, setJoinData }}>
+      {children}
+    </JoinContext.Provider>
+  );
+};
+
+// 훅으로 추출해서 사용하기 쉽게
 export const useJoin = () => useContext(JoinContext);
+
+

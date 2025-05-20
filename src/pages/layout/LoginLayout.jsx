@@ -16,14 +16,19 @@ const LoginLayout = () => {
   // 쿼리스트링에서 토큰 분리
   const [searchParams] = useSearchParams()
   const jwtToken = searchParams.get("jwtToken")
+  const memberId = searchParams.get("id")
   const localJwtToken = localStorage.getItem("jwtToken")
 
   const navigate = useNavigate();
 
-  console.log(localJwtToken)
+  // console.log(localJwtToken)
 
   useEffect(() => {
     // 만약 쿼리스트링에 토큰이 있다면, 로컬스토리지에 저장
+    // if(jwtToken) {
+    //   localStorage.setItem("jwtToken", jwtToken)
+    //   navigate(`/main/${memberId}`, {replace : true})
+    // }
     if(jwtToken) {
       localStorage.setItem("jwtToken", jwtToken)
       navigate("/main", {replace : true})
@@ -43,22 +48,22 @@ const LoginLayout = () => {
         const datas = await response.json()
 
         // // 토큰으로 데이터를 못가져오면
-        // if(!response.ok) {
-        //   // 리덕스를 초기화
-        //   dispatch(setUser({
-        //     id : 0,
-        //     memberEmail : "",
-        //     memberName : "",
-        //     memberNickName : "",
-        //     memberProvider : "",
-        //   }))
-        //   dispatch(setUserStatus(false))
+        if(!response.ok) {
+          // 리덕스를 초기화
+          dispatch(setUser({
+            id : 0,
+            memberEmail : "",
+            memberName : "",
+            memberNickName : "",
+            memberProvider : "",
+          }))
+          dispatch(setUserStatus(false))
 
-        //   // 로컬스토리지 토큰 삭제
-        //   localStorage.removeItem("jwtToken")
-        //   localStorage.clear()
-        //   return;
-        // }
+          // 로컬스토리지 토큰 삭제
+          localStorage.removeItem("jwtToken")
+          localStorage.clear()
+          return;
+        }
 
 
         // 리덕스에 유저정보 파싱
@@ -71,8 +76,8 @@ const LoginLayout = () => {
   }, [localJwtToken])
 
   // 리덕스에 유저를 추가하는 코드
-  console.log("layout 리덕스 유저", currentUser)
-  console.log("layout 리덕스 유저 상태", isLogin)
+  // console.log("layout 리덕스 유저", currentUser)
+  // console.log("layout 리덕스 유저 상태", isLogin)
 
   // 토큰 정보를 확인하는 코드
   // const handleLogout = () => {

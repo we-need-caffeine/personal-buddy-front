@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { gray2Color, gray6Color } from '../../../globals/common';
+import { fontSizeH7, gray2Color, gray3Color, gray6Color } from '../../../globals/common';
 
 const S = {};
 
@@ -53,7 +53,7 @@ S.InputWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  border: ${gray2Color} 1px solid;
+  border: #C5CCD2 1px solid;
   border-radius: 10px;
   margin-bottom: -1px;
 
@@ -61,10 +61,10 @@ S.InputWrapper = styled.div`
     width: 100%;
     height: 60px;
     padding: 10px 50px 10px 10px;
-    ${gray6Color}
+    color: black;
     margin: 0px 20px;
     border: none;
-    font-size: var(--h7);
+    ${fontSizeH7}
     box-sizing: border-box;
     outline: none;
     transition: all 0.3s ease-in-out;
@@ -73,7 +73,7 @@ S.InputWrapper = styled.div`
   span {
     width: 80px;
     margin: 0px 20px;
-    color: var(--gray3);
+    ${gray3Color}
     font-weight: 700;
   }
 `;
