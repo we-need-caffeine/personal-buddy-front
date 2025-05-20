@@ -5,7 +5,7 @@ import S from './style';
 const BoardPost = () => {
   // Outlet을 통해 상위에서 전달된 postLists 가져온다.
   const { postLists } = useOutletContext() || {};
-  // console.log("postLists", postLists)
+  console.log("postLists", postLists)
   // 게시글 id
   
   const [commentText, setCommentText] = useState(''); // 댓글 입력창의 텍스트 상태
@@ -28,6 +28,7 @@ const BoardPost = () => {
   if (!postLists || postLists.length === 0) {
     return <div>로딩 중입니다...</div>;
   }
+
   if (!post) {
     return <div>해당 게시글을 찾을 수 없습니다.</div>;
   }
