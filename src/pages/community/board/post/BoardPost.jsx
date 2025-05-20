@@ -85,8 +85,10 @@ const BoardPost = () => {
           <S.Date>{post.createdDate}</S.Date>
         </S.Left>
       </S.TopInfoBox>
-      {/* 게시글 썸네일 이미지, 없으면 기본 이미지 출력 */}
-      <S.Image src={post.thumbnailUrl || '/assets/images/board/default/default-img.png'} alt="thumbnail" />
+      {/* 썸네일이 있을 때만 이미지 렌더링(alt도 같이 사라짐) */}
+      {post.thumbnailUrl && post.thumbnailUrl !== '' && (
+        <S.Image src={post.thumbnailUrl} alt="thumbnail" />
+      )}
       {/* 게시글 본문 내용 (현재는 더미 텍스트, post.content로 교체 예정) */}
       <S.Content>본문 내용</S.Content>
 

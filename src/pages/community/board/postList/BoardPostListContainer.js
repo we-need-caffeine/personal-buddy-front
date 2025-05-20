@@ -67,19 +67,15 @@ const BoardPostListContainer = ({
           <Link to={`post/${id}`} state={boards} key={id}>
             <S.PostCard>
               <S.Thumbnail
-                src={ "" 
-                  ? "" 
-                  :  `/assets/images/board/default/default-img.png` } alt='default-img' // 썸네일 없을 경우 기본 이미지
+                src={ "" || '/assets/images/board/default/default-img.png'}
+                alt="thumbnail"
               />
               <S.Tag>{boardHashtag}</S.Tag>
               <S.Title>{boardTitle}</S.Title>
               <S.UserInfo>
                 <S.ProfileImg 
                   src={`${memberImgPath}/${memberImgName}`}  
-                  onError={(e) => {
-                      e.target.onerror = null; // 무한 루프 방지
-                      e.target.src = '/assets/images/member/profile-default.png'; // 디폴트 이미지 강제 세팅
-                    }}  
+                  
                   onClick={(e) => {
                     e.preventDefault(); // 부모인 <Link> 클릭 방지 (기본 동작(링크 이동) 막기)
                     e.stopPropagation(); // 이벤트가 상위 요소로 전달되지 않게 막기
