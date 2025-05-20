@@ -15,8 +15,8 @@ const LoginContainer = () => {
 
       <S.BottomLinks>
         <a href="#">아이디 찾기</a> |
-        <a href="#">비밀번호 찾기</a> |
-        <a href="/member/join">회원가입</a>
+        <a href="#"> 비밀번호 찾기</a> |
+        <a href="/member/join"> 회원가입</a>
       </S.BottomLinks>
     </S.Container>
   );

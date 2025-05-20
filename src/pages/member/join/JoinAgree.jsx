@@ -24,20 +24,16 @@ const JoinAgree = () => {
   }, [agreed]);
 
   const handleNext = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const service = agreements.service ? 1 : 0;
-  const information = agreements.information ? 1 : 0;
-  const location = agreements.location ? 1 : 0;
+    setJoinData((prev) => ({
+      ...prev,
+      memberTermServiceAgree: 1,
+      memberTermInformationAgree: 1,
+      memberTermLocationAgree: 1,
+    }));
 
-  setJoinData((prev) => ({
-    ...prev,
-    memberTermServiceAgree: service,
-    memberTermInformationAgree: information,
-    memberTermLocationAgree: location,
-  }));
-
-  setAgreed(true);
+    setAgreed(true);
 };
 
   const toggle = (key) => {
@@ -60,6 +56,8 @@ const JoinAgree = () => {
 
   // 필수 항목만 체크
   const isValid = agreements.service && agreements.information && agreements.location;
+
+  console.log(isValid)
 
   const getSrc = (flag) =>
     flag

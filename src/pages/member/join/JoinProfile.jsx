@@ -31,7 +31,7 @@ const JoinProfile = () => {
 
   const onSubmit = async (data) => {
   try {
-    // 1️⃣ 이미지 업로드
+    // 이미지 업로드
     let fileName = "";
     let filePath = "";
 
@@ -41,7 +41,6 @@ const JoinProfile = () => {
       imageForm.append("imgFile", file);
       imageForm.append("dataType", "profile");
 
-      console.log(data.newMemberImageInput[0])
 
       const uploadRes = await fetch("http://localhost:10000/files/api/file-upload", {
         method: "POST",
@@ -60,18 +59,21 @@ const JoinProfile = () => {
       
     }
 
-    // 2️⃣ useContext + 파일 정보 병합
+    // useContext + 파일 정보 병합
     const completeMemberData = {
       ...joinData,
       memberNickName: data.memberNickName,
       memberStatusMessage: data.memberComment,
       memberImgName: fileName,
       memberImgPath: filePath,
+      memberTermServiceAgree: 1,
+      memberTermInformationAgree: 1,
+      memberTermLocationAgree: 1,
       memberProvider: "local"
     };
     console.log("전송 데이터", completeMemberData);
 
-    // 3️⃣ JSON으로 회원가입 요청
+    // JSON으로 회원가입 요청
     const joinRes = await fetch("http://localhost:10000/members/api/join", {
       method: "POST",
       headers: {
