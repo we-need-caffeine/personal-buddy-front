@@ -64,6 +64,38 @@ const S = {}
       }
     }
   `;
+  S.ButtonWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  `;
+
+  S.SocialButton = styled.button`
+    width: 410px;
+    height: 52px;
+    padding: 0 16px;
+    border: 1px solid #C5CCD2;
+    background: none;
+    color: #51555D;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+      background-color: #EFFFF8;
+    }
+
+    img {
+      width: 20px;
+      height: 20px;
+      margin-right: 40px;
+      object-fit: contain;
+    }
+  `;
 
 
 export default S;
