@@ -83,7 +83,7 @@ const BoardBannerContainer = ({ hot }) => {
                   <S.HotTitle>{boardTitle}</S.HotTitle>
                   <S.HotUserBox>
                     <S.UserProfile 
-                    src={memberImgPath + "/" + memberImgName || '/assets/images/member/profile-default.pn' }
+                    src={memberImgPath + "/" + memberImgName || '/assets/images/member/profile-default.png' }
                     onError={(e) => {
                       e.target.onerror = null; // 무한 루프 방지
                       e.target.src = '/assets/images/member/profile-default.png'; // 디폴트 이미지 강제 세팅
