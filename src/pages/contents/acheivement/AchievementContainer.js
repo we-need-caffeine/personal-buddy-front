@@ -21,8 +21,6 @@ const AchievementContainer = () => {
     const [weeklyTargets, setWeeklyTargets] = useState([]);
     const [monthlyTargets, setMonthlyTargets] = useState([]);
 
-    
-
     useEffect(() => {
         if (!memberId) return;
         
