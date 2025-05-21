@@ -170,7 +170,6 @@ S.BestCommentSection = styled.div`
 S.BestCommentItem = styled.div`
     background-color: #f6f6f6;
     padding: 20px 30px;
-    border-bottom: 1px solid ${({ theme }) => theme.PALLETE.black};
     margin-bottom: 12px;
 `;
 
@@ -263,15 +262,19 @@ S.LeftCommentWrapper = styled.div`
 `
 
 S.CommentLikeButton = styled.button`
-    ${flexCenter}
+    ${flexCenter};
     width: 40px;
     height: 27px;
-    background-color: ${({ theme }) => theme.PALLETE.gray.gray3};
     border: none;
     border-radius: 50px;
-    ${whiteColor}
-    &:hover{
-        ${whiteColor} 
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: ${({ liked, theme }) =>
+        liked ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
+    cursor: pointer;
+
+    &:hover {
         background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
     }
 `
