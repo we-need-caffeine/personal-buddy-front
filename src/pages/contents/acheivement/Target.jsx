@@ -34,7 +34,7 @@ const Target = ({
                                 <S.TargetListItem key={i}>
                                     <div style={{display: 'flex', gap: '5px', alignItems: 'center'}}>
                                         <S.TargetListIcon src={checkIcon(dailyTarget.isCompleted)} />
-                                        <S.Description targetCompleted={dailyTarget.isCompleted}>{dailyTarget.targetType} 일정 등록 ( {dailyTarget.completedCount} / {dailyTarget.standardCount} )</S.Description>
+                                        <S.Description targetcompleted={dailyTarget.isCompleted}>{dailyTarget.targetType} 일정 등록 ( {dailyTarget.completedCount} / {dailyTarget.standardCount} )</S.Description>
                                     </div>
                                     <div>
                                         <S.DescriptionGetPoint>{dailyTarget.targetGetPoint} </S.DescriptionGetPoint>
@@ -54,7 +54,7 @@ const Target = ({
                                 <S.TargetListItem key={i}>
                                     <div style={{display: 'flex', gap: '5px', alignItems: 'center'}}>
                                         <S.TargetListIcon src={checkIcon(weeklyTarget.isCompleted)} />
-                                        <S.Description targetCompleted={weeklyTarget.isCompleted}>{weeklyTarget.targetType}  일정 등록 ( {weeklyTarget.completedCount} / {weeklyTarget.standardCount} )</S.Description>
+                                        <S.Description targetcompleted={weeklyTarget.isCompleted}>{weeklyTarget.targetType}  일정 등록 ( {weeklyTarget.completedCount} / {weeklyTarget.standardCount} )</S.Description>
                                     </div>
                                     <div>
                                         <S.DescriptionGetPoint>{weeklyTarget.targetGetPoint} </S.DescriptionGetPoint>
@@ -74,7 +74,7 @@ const Target = ({
                                 <S.TargetListItem key={i}>
                                     <div style={{display: 'flex', gap: '5px', alignItems: 'center'}}>
                                         <S.TargetListIcon src={checkIcon(monthlyTarget.isCompleted)} />
-                                        <S.Description targetCompleted={monthlyTarget.isCompleted}>{monthlyTarget.targetType} 일정 등록 ( {monthlyTarget.completedCount} / {monthlyTarget.standardCount} )</S.Description>
+                                        <S.Description targetcompleted={monthlyTarget.isCompleted}>{monthlyTarget.targetType} 일정 등록 ( {monthlyTarget.completedCount} / {monthlyTarget.standardCount} )</S.Description>
                                     </div>
                                     <div>
                                         <S.DescriptionGetPoint>{monthlyTarget.targetGetPoint} </S.DescriptionGetPoint>

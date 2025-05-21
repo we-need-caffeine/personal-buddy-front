@@ -15,66 +15,60 @@ const AchievementContainer = () => {
     const [dailyRandomTargets, setDailyRandomTargets] = useState([]);
     const [weeklyRandomTargets, setWeeklyRandomTargets] = useState([]);
     const [monthlyRandomTargets, setMonthlyRandomTargets] = useState([]);
-    
+
     // 목표 완료 사항들 받아오기
     const [dailyTargets, setDailyTargets] = useState([]);
     const [weeklyTargets, setWeeklyTargets] = useState([]);
     const [monthlyTargets, setMonthlyTargets] = useState([]);
 
+    
+
     useEffect(() => {
         if (!memberId) return;
-
+        
         // 회원의 기간별 선정된 랜덤 목표 조회 
         const getRandomTargets = async () => {
-            try{
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/targets/api/target/random-target/list/${memberId}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        dailyRandomTargets,
-                        weeklyRandomTargets,
-                        monthlyRandomTargets
-                    })
-                });
-                const datas = await response.json();
-                const {dailyRandomTargets: getDailyRandoms, weeklyRandomTargets: getWeeklyRandoms, monthlyRandomTargets: getMonthlyRandoms} = datas;
-                
-                // 데이터 추가
-                setDailyRandomTargets(getDailyRandoms)
-                setWeeklyRandomTargets(getWeeklyRandoms)
-                setMonthlyRandomTargets(getMonthlyRandoms)
-            } catch{
-                console.error("Random Target 수신 중 에러");
-            }
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/targets/api/target/random-target/list/${memberId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    dailyRandomTargets,
+                    weeklyRandomTargets,
+                    monthlyRandomTargets
+                })
+            });
+
+            const datas = await response.json();
+            const {dailyRandomTargets: getDailyRandoms, weeklyRandomTargets: getWeeklyRandoms, monthlyRandomTargets: getMonthlyRandoms} = datas;
+
+            setDailyRandomTargets(getDailyRandoms)
+            setWeeklyRandomTargets(getWeeklyRandoms)
+            setMonthlyRandomTargets(getMonthlyRandoms)
         };
 
         // 회원의 목표 완료 사항 조회
         const getTargets = async () => {
-            try{
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/targets/api/target/list/${memberId}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        dailyTargets,
-                        weeklyTargets,
-                        monthlyTargets
-                    })
-                });
-                const datas = await response.json();
-                const {dailyTargets: getDailyTargets, weeklyTargets: getWeeklyTargets, monthlyTargets: getMonthlyTargets} = datas;
-                
-                // 데이터 추가
-                setDailyTargets(getDailyTargets)
-                setWeeklyTargets(getWeeklyTargets)
-                setMonthlyTargets(getMonthlyTargets)
-            } catch{
-                console.error("Target 수신 중 에러");
-            }
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/targets/api/target/list/${memberId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    dailyTargets,
+                    weeklyTargets,
+                    monthlyTargets
+                })
+            });
+            const datas = await response.json();
+            const {dailyTargets: getDailyTargets, weeklyTargets: getWeeklyTargets, monthlyTargets: getMonthlyTargets} = datas;
+            
+            // 데이터 추가
+            setDailyTargets(getDailyTargets)
+            setWeeklyTargets(getWeeklyTargets)
+            setMonthlyTargets(getMonthlyTargets)
         };
 
-        getRandomTargets();
         getTargets();
-      }, [memberId]);
+        getRandomTargets();
+    }, [memberId]);
 
     return (
         <div>
@@ -86,7 +80,7 @@ const AchievementContainer = () => {
                 weeklyTargets={weeklyTargets}
                 monthlyTargets={monthlyTargets}
             />
-            <Achievement memberId={memberId}/>
+            <Achievement/>
         </div>
     );
 };
