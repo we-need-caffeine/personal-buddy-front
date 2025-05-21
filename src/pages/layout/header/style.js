@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { blackColor, fontSizeH6, fontWeightRegular, mainGreenColor } from '../../../globals/common';
+import { blackColor, fontSizeH10, fontSizeH6, fontWeightBold, fontWeightRegular, mainGreenColor, whiteColor } from '../../../globals/common';
 
 const S = {};
 
@@ -103,12 +103,8 @@ S.MemberProfile = styled.img`
 S.ProfileCardDropdown = styled.div`
   position: absolute;
   top: 50px;
-  left: -150px;
+  right: 50px;
   z-index: 9998;
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
-  padding: 0;
 `;
 
 
@@ -127,5 +123,30 @@ S.CardBG = styled.div`
   height: 100vh;
   z-index: 9000;
 `
+
+S.AlertIconContainer = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+S.AlertImg = styled.img`
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+`
+
+S.NotReadAlertCount = styled.div`
+  position: absolute;
+  background-color: ${({ theme }) => theme.PALLETE.pointRed};
+  border-radius: 50px;
+  padding: 5px;
+  top: -7px;
+  right: 16px;
+  transform: translateX(100%);
+  ${fontWeightBold}
+  ${fontSizeH10}
+  ${whiteColor}
+`
+
 
 export default S;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { blackColor, fontSizeH6, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, gray5Color, mainGreenColor, whiteColor } from '../../../globals/common';
+import { blackColor, fontSizeH6, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightMedium, fontWeightRegular, gray5Color, mainGreenColor, whiteColor } from '../../../globals/common';
 
 const S = {};
 
@@ -14,16 +14,20 @@ S.MyPageMemberInfoContainer = styled.div`
     align-items: center;
     border: solid 1px ${({ theme }) => theme.PALLETE.gray.gray2};
     width: 198px;
+    position: relative;
 `
 
 S.MyPageMemberInfoNickName = styled.div`
-    ${fontSizeH6};
+    ${fontSizeH6}
+    ${fontWeightBold}
     margin-top: 30px;
+    cursor: pointer;
 `
 
 S.MyPageMemberInfoStatusMessage = styled.div`
-    ${fontSizeH9};
-    ${gray5Color};
+    ${fontSizeH9}
+    ${gray5Color}
+    ${fontWeightRegular}
     margin-top: 10px;
 `
 
@@ -32,46 +36,25 @@ S.MyPageMemberInfoFollowContainer = styled.div`
     justify-content: center;
     width: 190px;
     margin: 20px 0;
-    ${gray5Color};
-    ${fontSizeH8};
-    ${fontWeightLight}
+    ${gray5Color}
+    ${fontSizeH8}
+    ${fontWeightBold}
+    user-select: none; // 선택 제거
+    -webkit-user-select: none; // 크롬, 사파리
+    -moz-user-select: none; // 파이어폭스
+    -ms-user-select: none; // IE/Edge
 `
 
 S.MyPageMemberInfoFollow = styled.div`
     display: flex;
     margin: 0 5px;
+    cursor: pointer;
 `
 
 S.MyPageMemberInfoFollowCount = styled.div`
     ${mainGreenColor};
     margin-left: 2px;
-`
-
-S.MyPageMemberInfoButtonContainer = styled.div`
-    width: 200px;
-    height: 40px;
-    display: flex;
-    ${fontSizeH8};
-    ${fontWeightBold};
-    ${whiteColor};
-`
-
-S.MypageMemberInfoFollowButton = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100px;
-    height: 100%;
-    background-color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
-    `
-
-S.MypageMemberInfoMessageButton = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100px;
-    height: 100%;
-    background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
+    cursor: pointer;
 `
 
 S.MyPageTapContainer = styled.div`
@@ -81,7 +64,6 @@ S.MyPageTapContainer = styled.div`
     a {
         text-decoration: none;
         ${blackColor};
-        ${fontWeightLight};
         &.active {
             ${mainGreenColor};
         }
@@ -90,7 +72,8 @@ S.MyPageTapContainer = styled.div`
 
 S.MyPageTitleContainer = styled.div`
     padding: 20px 20px 10px 20px;
-    ${fontSizeH6};
+    ${fontSizeH6}
+    ${fontWeightMedium}
 `
 
 S.MyPageTitleIcon = styled.div`
@@ -106,7 +89,8 @@ S.MyPageSubTitle = styled.div`
     display: flex;
     flex-direction: column;
     margin: 10px 24px;
-    ${fontSizeH8};
+    ${fontSizeH8}
+    ${fontWeightRegular}
 `
 
 S.MyPageButtonContainer = styled.div`
@@ -118,9 +102,11 @@ S.FollowBtn = styled.button`
     width: 50%;
     height: 100%;
     border: none;
-    background-color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
     ${whiteColor}
     ${fontSizeH8}
+    background-color: ${({ isFollow, theme }) => 
+        isFollow === 1 ? theme.PALLETE.gray.gray4 : theme.PALLETE.primary.mainGreen
+    };
 `
 
 S.MessageBtn = styled.button`
@@ -130,6 +116,22 @@ S.MessageBtn = styled.button`
     background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
     ${whiteColor}
     ${fontSizeH8}
+`
+
+S.ProfileCardDropdown = styled.div`
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  z-index: 9998;
+`;
+
+S.CardBG = styled.div`
+  position: fixed;
+  left: 0;
+  top : 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9000;
 `
 
 export default S;
