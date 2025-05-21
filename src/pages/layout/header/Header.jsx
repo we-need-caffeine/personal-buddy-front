@@ -144,7 +144,7 @@ const Header = () => {
             {/* 프로필 영역 */}
             <S.ProfileBox>
               <S.MemberProfile
-                src={currentUser.memberImgPath}
+                src={`http://localhost:10000/images/profile/${currentUser.memberImgName}`}
                 onClick={() => {handleProfileCard(true)}}
                 onError={e => {
                   e.target.src = "/assets/images/header/default-member-img.png";
@@ -158,13 +158,14 @@ const Header = () => {
                   <ProfileCard
                     memberId={memberId}
                     profileCardMemberId={memberId}
-                    handleProfileCard={handleProfileCard}
+                    handleProfileCard={showProfileCard}
+                    onCancel={() => handleProfileCard(false)}
                   />
                 </S.ProfileCardDropdown>
               )}
               { showProfileCard && (
                 <S.CardBG 
-                  onClick={() => {handleProfileCard(false)}}
+                  onClick={() => handleProfileCard(false)}
                 />
               )}
             </S.ProfileBox>

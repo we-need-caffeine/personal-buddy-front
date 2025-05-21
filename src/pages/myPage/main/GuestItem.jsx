@@ -32,7 +32,8 @@ const GuestItem = ({
                         <ProfileCard
                             memberId={memberId}
                             profileCardMemberId={item.writerMemberId}
-                            handleProfileCard={handleProfileCard}
+                            handleProfileCard={showProfileCard}
+                            onCancel={() => handleProfileCard(false)}
                         />
                     </S.ProfileCardDropdown>
                 )}

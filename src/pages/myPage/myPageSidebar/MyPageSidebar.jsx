@@ -78,8 +78,8 @@ const MyPageSidebar = () => {
                 <div>
                     {/* 다른 유저의 마이페이지 프로필 */}
                     <S.MyPageMemberProfile>
-                        <img 
-                            src={ownerInfo.memberImgPath || "/assets/images/header/default-member-img.png"}
+                        <S.MyPageMemberProfileImg 
+                            src={`http://localhost:10000/images/profile/${ownerInfo.memberImgName}`}
                             alt='멤버 프로필 이미지'
                             onError={e => {
                                 e.target.src = "/assets/images/header/default-member-img.png";
@@ -96,7 +96,8 @@ const MyPageSidebar = () => {
                                 <ProfileCard
                                     memberId={myId}
                                     profileCardMemberId={id}
-                                    handleProfileCard={handleProfileCard}
+                                    handleProfileCard={showProfileCard}
+                                    onCancel={() => handleProfileCard(false)}
                                 />
                             </S.ProfileCardDropdown>
                         )}
@@ -155,10 +156,10 @@ const MyPageSidebar = () => {
                 </div>
             ) : (
                 <div>
-                    {/* 나의 마이페이지 프로필 */}
+                    {/* 다른 유저의 마이페이지 프로필 */}
                     <S.MyPageMemberProfile>
-                        <img 
-                            src={ownerInfo.memberImgPath || "/assets/images/header/default-member-img.png"}
+                        <S.MyPageMemberProfileImg 
+                            src={`http://localhost:10000/images/profile/${ownerInfo.memberImgName}`}
                             alt='멤버 프로필 이미지'
                             onError={e => {
                                 e.target.src = "/assets/images/header/default-member-img.png";

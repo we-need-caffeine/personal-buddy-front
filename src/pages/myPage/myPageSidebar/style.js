@@ -4,6 +4,12 @@ import { blackColor, fontSizeH6, fontSizeH8, fontSizeH9, fontWeightBold, fontWei
 const S = {};
 
 S.MyPageMemberProfile = styled.div`
+    display: flex;
+    width: 200px;
+    height: 200px;
+`
+
+S.MyPageMemberProfileImg = styled.img`
     width: 200px;
     height: 200px;
 `
@@ -39,10 +45,10 @@ S.MyPageMemberInfoFollowContainer = styled.div`
     ${gray5Color}
     ${fontSizeH8}
     ${fontWeightBold}
-    user-select: none; // 선택 제거
-    -webkit-user-select: none; // 크롬, 사파리
-    -moz-user-select: none; // 파이어폭스
-    -ms-user-select: none; // IE/Edge
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 `
 
 S.MyPageMemberInfoFollow = styled.div`
