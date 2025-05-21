@@ -13,6 +13,7 @@ const BoardPost = () => {
   const [comments, setComments] = useState([]); // 댓글 목록
   const [likeCount, setLikeCount] = useState(0); // 게시글 좋아요 수
   const [isLiked, setIsLiked] = useState(false); // 현재 사용자의 좋아요 여부
+  const [likedCommentIds, setLikedCommentIds] = useState([]); // 댓글 좋아요
 
   // 게시글을 업데이트 시키는 상태
   const [isUpdate, setIsUpdate] = useState(true);
@@ -54,6 +55,10 @@ const BoardPost = () => {
 
   }, [id,isUpdate])
 
+  const bestComments = [...comments]
+  .sort((a, b) => b.boardCommentLikeCount - a.boardCommentLikeCount)
+  .slice(0, 3);
+
   
   // 댓글 등록
   const handleCommentSubmit = async () => {
@@ -71,6 +76,7 @@ const BoardPost = () => {
       boardCommentContent: commentText,
     };
 
+
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/write`, {
         method: 'POST',
@@ -83,6 +89,7 @@ const BoardPost = () => {
         const refreshed = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/list?boardId=${id}`);
         const data = await refreshed.json();
         setComments(data);
+        console.log("좋아요 반영 후 댓글 전체", data);
       } else {
         alert('댓글 등록 실패');
       }
@@ -91,18 +98,57 @@ const BoardPost = () => {
     }
   };
 
+  // 댓글 좋아요
+  const handleCommentLike = async (commentId) => {
+  if (!memberId) {
+    alert('로그인 후 이용 가능합니다.');
+    return;
+  }
+
+  try {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/like`, {
+      method: 'POST', // 또는 'PATCH'
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ memberId, commentId })
+    });
+
+    if (response.ok) {
+      // 좋아요 목록에 추가/삭제
+      setLikedCommentIds((prev) =>
+        prev.includes(commentId)
+          ? prev.filter(id => id !== commentId)
+          : [...prev, commentId]
+      );
+
+      // 전체 댓글 목록 다시 가져오기 (추천)
+      const refreshed = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/list?boardId=${id}`);
+      const data = await refreshed.json();
+      setComments(data);
+    } else {
+      alert('댓글 좋아요 실패');
+    }
+  } catch (err) {
+    console.error('댓글 좋아요 에러!', err);
+  }
+};
+
 
   if(isLoading) return <div>로딩중... 😅</div>
   if(isError) return <div>알 수 없는 오류 발생... 😥</div>
 
   return (
-    <S.Container>
+    
+    <S.Container>   
       <S.Title>{post.boardTitle}</S.Title>
       <hr />
       <S.TopInfoBox>
         <S.Left>
           <S.ProfileImg
-            src={post.memberImgPath || '/assets/images/header/default-member-img.png'}
+            src={
+              post.memberImgPath && post.memberImgName
+                ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.memberImgPath)}&fileName=${encodeURIComponent(post.memberImgName)}`
+                : '/assets/images/header/default-member-img.png'
+            }
             onError={(e) => {
               e.target.src = '/assets/images/header/default-member-img.png';
             }}
@@ -120,8 +166,33 @@ const BoardPost = () => {
 
 
       {/* 썸네일 이미지가 있을 때만 출력 */}
-      {post.boardThumbnailUrl && <S.Image src={post.boardThumbnailUrl} alt="게시글 썸네일" />}
+      {post.boardImgPath && post.boardImgName && (
+        <S.Image
+          src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.boardImgPath)}&fileName=${encodeURIComponent(post.boardImgName)}`}
+          alt="게시글 썸네일"
+        />
+      )}
 
+
+        {/* {post.boardImgPath && post.boardImgName && (
+          <S.Image
+            src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.boardImgPath)}&fileName=${encodeURIComponent(post.boardImgName)}`}
+            alt="본문 이미지"
+            onError={(e) => {
+              e.target.src = ''; // 깨진 이미지도 표시되지 않게
+            }}
+          /> 
+        )} */}
+
+        {post.boardImgPath && post.boardImgName && (
+          <S.Image
+            src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.boardImgPath)}&fileName=${encodeURIComponent(post.boardImgName)}`}
+            alt="본문 이미지"
+             onError={(e) => {
+              e.target.src = ''; // 깨진 이미지도 표시되지 않게
+            }}
+          />
+        )}
 
       <S.Content>{post.boardContent}</S.Content>
 
@@ -156,19 +227,54 @@ const BoardPost = () => {
         </S.InputBottom>
       </S.CommentInputBox>
 
+      <S.BestCommentSection>
+        {bestComments.map((c, index) => (
+          <S.BestCommentItem key={c.id}>
+            <S.BestBadge>BEST {index + 1}</S.BestBadge>
+            <S.CommentTop>
+              <S.CommentUser>
+                <S.ProfileImg
+                  src={
+                    c.memberImgPath && c.memberImgName
+                      ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
+                      : '/assets/images/header/default-member-img.png'
+                  }
+                  onError={(e) => {
+                    e.target.src = '/assets/images/header/default-member-img.png';
+                  }}
+                  alt="댓글 작성자 프로필"
+                />
+                <S.Nickname>{c.memberNickName}</S.Nickname>
+                <S.LeftCommentWrapper>
+                  <S.CommentDate>{c.boardCommentCreateDate}</S.CommentDate>
+                  <S.CommentLikeCount>
+                    <img src="/assets/images/board/icon/like-icon.png" alt="like" />
+                    <span>{c.boardCommentLikeCount}</span>
+                  </S.CommentLikeCount>
+                </S.LeftCommentWrapper>
+              </S.CommentUser>
+            </S.CommentTop>
+            <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
+          </S.BestCommentItem>
+        ))}
+      </S.BestCommentSection>
+
       <S.CommentList>
         {comments.map((c) => (
           <S.CommentItem key={c.id}>
             <S.CommentTop>
               <S.CommentUser>
                 <S.ProfileImg
-                  src={c.memberImgPath || '/assets/images/header/default-member-img.png'}
+                  src={
+                    c.memberImgPath && c.memberImgName
+                      ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
+                      : '/assets/images/header/default-member-img.png'
+                  }
                   onError={(e) => {
                     e.target.src = '/assets/images/header/default-member-img.png';
                   }}
                   alt="댓글 작성자 프로필"
-                  >
-                  </S.ProfileImg>
+                />
                 <S.Nickname>{c.memberNickName}</S.Nickname>
                 <S.LeftCommentWrapper>
                   <S.CommentDate>{c.boardCommentCreateDate}</S.CommentDate>
@@ -180,7 +286,8 @@ const BoardPost = () => {
               </S.CommentUser>
 
               <S.Right>
-                <S.CommentLikeButton>♥</S.CommentLikeButton>
+                <S.CommentLikeButton liked={likedCommentIds.includes(c.id)} onClick={() => handleCommentLike(c.id)}>
+                  ♥</S.CommentLikeButton>
               </S.Right>
 
             </S.CommentTop>

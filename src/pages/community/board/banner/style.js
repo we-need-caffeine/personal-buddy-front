@@ -89,6 +89,19 @@ S.HotContent = styled.div`
   height: 670px;
   display: flex;
   flex-direction: column;
+  
+    &:hover .number-box {
+      width: 80px;
+      height: 80px;
+      font-size: 32px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background-color: #009dcc;
+  }
+
+  
 `;
 
 // ---------- 게시글 이미지 & 순위 박스 -----------
@@ -106,6 +119,25 @@ S.HotImageBox = styled.div`
     border-radius: 20px;
     background: #e8eaed;
   }
+
+    &::after {
+    content: '';
+      position: absolute;
+      border-radius: 20px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.75); 
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
+  }
+
+    ${S.HotContent}:hover &::after {
+      opacity: 1;
+    }
+  
 `;
 
 // 이미지 왼쪽 상단에 보여지는 순위 번호 박스
@@ -123,6 +155,8 @@ S.NumberBox = styled.div`
   line-height: 28px;
   border-radius: 20px 0 20px 0;
   ${flexCenter}
+   transition: all 0.3s ease;
+   z-index: 2;
 `;
 
 // ---------- 게시글 정보 ---------- 
