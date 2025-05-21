@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { useParams, useOutletContext } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import S from './style';
 
 const BoardPost = () => {
-  const { postLists } = useOutletContext() || {};  // Outlet을 통해 상위에서 전달받은 게시글 목록
   const { id } = useParams(); // 현재 URL의 게시글 ID 가져오기
   const { currentUser } = useSelector((state) => state.member); // Redux에서 로그인된 사용자 정보 가져오기
   const memberId = currentUser?.id;
@@ -14,35 +13,37 @@ const BoardPost = () => {
   const [likeCount, setLikeCount] = useState(0); // 게시글 좋아요 수
   const [isLiked, setIsLiked] = useState(false); // 현재 사용자의 좋아요 여부
 
-  const post = postLists?.find((p) => String(p.id) === id); // 게시글 목록 중 현재 ID에 해당하는 게시글 찾기
+  // 게시글을 업데이트 시키는 상태
+  const [isUpdate, setIsUpdate] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // 댓글 목록 가져오기
+  // 게시글 상태
+  const [post, setPost] = useState({})
+
+  // 전체 데이터를 요청해서 불러온다.
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/list?boardId=${id}`);
-        const data = await response.json();
-        setComments(data);
-      } catch (error) {
-        console.error('댓글 가져오기 실패!ㅠㅠ', error);
-      }
-    };
+    const getPost = async () => {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/${id}`)
+      if(!response.ok) throw new Error(`getPosts Error : ${response}`)
+      const datas = await response.json()
+      return datas;
+    }
 
-    if (id) fetchComments();
-  }, [id]);
+    getPost()
+      .then((res) => {
+        setPost(res.board)
+        setIsLoading(false)
+      })
+      .catch((err) => {
+        setIsError(true)
+        console.err(`getPost fetching error: ${err}`)
+      })
+ 
+  }, [isUpdate])
 
-  // 게시글 정보가 있으면 좋아요 수 초기값 설정
-  useEffect(() => {
-    if (post) setLikeCount(post.likeCount);
-  }, [post]);
 
-  // 좋아요 버튼 클릭 할 때
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    setLikeCount((l) => l + (isLiked ? -1 : 1));
-  };
-
-  // 댓그 ㄹ등록
+  // 댓글 등록
   const handleCommentSubmit = async () => {
     if (!commentText.trim()) return;
 
@@ -78,9 +79,9 @@ const BoardPost = () => {
     }
   };
 
-  // 게시글 또는 게시글 목록이 없을 경우
-  if (!postLists?.length) return <div>로딩 중...</div>;
-  if (!post) return <div>해당 게시글을 찾을 수 없습니다.</div>;
+
+  if(isLoading) return <div>로딩중... 😅</div>
+  if(isError) return <div>알 수 없는 오류 발생... 😥</div>
 
   return (
     <S.Container>
@@ -105,7 +106,7 @@ const BoardPost = () => {
 
       <S.Content>{post.boardContent}</S.Content>
 
-      <S.LikeButton liked={isLiked} onClick={handleLike}>
+      <S.LikeButton liked={isLiked}>
         ♥{likeCount}
       </S.LikeButton>
 
