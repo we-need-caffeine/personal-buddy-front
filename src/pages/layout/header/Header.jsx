@@ -98,14 +98,14 @@ const Header = () => {
       <S.Main>
         <S.Left>
           {/* 네비게이션 영역 */}
-          <NavLink to={`/main/${memberId}`}>
+          <NavLink to="/main">
             <S.IconBox>
               <img src="/assets/images/header/persenalBuddyIcon.png" alt="퍼스널 버디 아이콘" />
             </S.IconBox>
           </NavLink>
 
           <S.LinkBox>
-            <NavLink to={`/main/${memberId}`} end>일정관리</NavLink>
+            <NavLink to="/main" end>일정관리</NavLink>
             <NavLink to="/main/contents">컨텐츠</NavLink>
             <NavLink to="/main/community/event">이벤트</NavLink>
             <NavLink to="/main/community/board">커뮤니티</NavLink>
@@ -144,7 +144,7 @@ const Header = () => {
             {/* 프로필 영역 */}
             <S.ProfileBox>
               <S.MemberProfile
-                src={currentUser.memberImgPath || "/assets/images/header/default-member-img.png"}
+                src={currentUser.memberImgPath}
                 onClick={() => {handleProfileCard(true)}}
                 onError={e => {
                   e.target.src = "/assets/images/header/default-member-img.png";
