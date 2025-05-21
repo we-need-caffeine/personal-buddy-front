@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { blackColor, flexCenter, fontSizeH7, fontSizeH8, fontWeightBold, gray3Color, gray4Color, subBlueColor, whiteColor } from '../../../../globals/common';
+import styled, { css } from 'styled-components';
+import { blackColor, flexCenter, fontSizeH7, fontSizeH8, fontWeightBold, gray3Color, gray4Color, subBlueColor, warningRedColor, whiteColor } from '../../../../globals/common';
 
 const S = {};
 
@@ -50,6 +50,7 @@ S.ProfileImg = styled.img`
 S.Nickname = styled.span`
     ${fontSizeH8};
     font-weight: bold;
+    ${blackColor}
 `;
 
 // 작성일
@@ -62,6 +63,10 @@ S.ViewCount = styled.span`
 `;
 
 S.LikeCount = styled.span`
+    font-size: 13px;
+`;
+
+S.CommentCount = styled.span`
     font-size: 13px;
 `;
 
@@ -252,8 +257,26 @@ S.CommentLikeCount = styled.div`
     }
 `;
 
+S.LeftCommentWrapper = styled.div`
+    ${flexCenter}
+`
+
+S.CommentLikeButton = styled.button`
+    ${flexCenter}
+    width: 40px;
+    height: 27px;
+    background-color: ${({ theme }) => theme.PALLETE.gray.gray3};
+    border: none;
+    border-radius: 50px;
+    ${whiteColor}
+    &:hover{
+        ${whiteColor} 
+        background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
+    }
+`
+
 // 댓글 본문
-S.CommentContent = styled.p`
+S.CommentContents = styled.p`
     font-size: 15px;
     line-height: 1.6;
     padding-left: 34px;
