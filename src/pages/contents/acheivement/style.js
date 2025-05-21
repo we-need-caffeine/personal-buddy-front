@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
-import { flexBaseTop, flexCenter, fontSizeH4, fontSizeH6, fontSizeH8, fontWeightBold, fontWeightRegular, pointRedColor, subGreenColor } from '../../../globals/common';
+import { blackColor, flexBaseTop, flexCenter, fontSizeH4, fontSizeH6, fontSizeH8, fontWeightBold, fontWeightRegular, mainGreenColor, pointRedColor, subGreenColor } from '../../../globals/common';
+import { Link } from 'react-router-dom';
 
 const S = {};
 
@@ -128,6 +129,14 @@ S.AchievementIcon = styled.img.attrs(props => ({
     }))`
     position: absolute;
     top: -40px;
+`;
+
+S.Link = styled(Link)`
+    text-decoration: none;
+    ${blackColor}
+    &:hover {
+        ${mainGreenColor}
+    }
 `;
 
 export default S;

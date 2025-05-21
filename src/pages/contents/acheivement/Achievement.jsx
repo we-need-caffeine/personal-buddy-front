@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import S from './style';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Achievement = () => {
     
@@ -18,7 +19,7 @@ const Achievement = () => {
 
             const datas = await response.json();
             setAchievements(datas);
-
+            console.log(datas)
             return datas;
         }
 
@@ -28,7 +29,10 @@ const Achievement = () => {
     return (
         <div>
             <S.SubTitle>프로필을 멋지게 장식해봐요!</S.SubTitle>
-            <S.MainTitle>업적 목록 🎖️</S.MainTitle>
+            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                <S.MainTitle>업적 목록 🎖️</S.MainTitle>
+                <S.Link to={`/main/mypage/${memberId}/achievement`}>👉🏻 프로필 설정하러 가기</S.Link>
+            </div>
             <S.AchievementListBox>
             {
                 achievements.map((achievement, i) => (
