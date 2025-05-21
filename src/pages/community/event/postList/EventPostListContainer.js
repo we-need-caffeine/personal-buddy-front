@@ -1,13 +1,21 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import S from './style';
 
 const EventPostListContainer = () => {
   return (
-    <div>
-      <Link to={"post/1"}>게시글1</Link>
-      <Link to={"post/2"}>게시글2</Link>
-      <Link to={"post/3"}>게시글3</Link>
-    </div>
+    <S.PostSection>
+      <S.SubTitle>BUDDYGROUND</S.SubTitle>
+      <S.MainTitle>버디들의 챌린지</S.MainTitle>
+
+      <S.PostList>
+        <S.PostCard />
+        <S.PostCard />
+        <S.PostCard />
+        <S.PostCard />
+        <S.PostCard />
+        <S.PostCard />
+      </S.PostList>
+    </S.PostSection>
   );
 };
 

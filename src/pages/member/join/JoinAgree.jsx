@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useJoin } from './JoinContext';
-import S from './style'
+import S from './style';
 
 const JoinAgree = () => {
   const [agreements, setAgreements] = useState({
@@ -11,17 +11,30 @@ const JoinAgree = () => {
     location: false,
   });
 
-  const { setJoinData } = useJoin();
+  const [agreed, setAgreed] = useState(false);
+
+
+  const { joinData, setJoinData } = useJoin();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (agreed) {
+      navigate("/member/join/info");
+    }
+  }, [agreed]);
 
   const handleNext = (e) => {
     e.preventDefault();
-    setJoinData(prev => ({
+
+    setJoinData((prev) => ({
       ...prev,
-      agree: { agreeService: true, agreePrivacy: true },
+      memberTermServiceAgree: 1,
+      memberTermInformationAgree: 1,
+      memberTermLocationAgree: 1,
     }));
-    navigate("/member/join/info");
-  };
+
+    setAgreed(true);
+};
 
   const toggle = (key) => {
     if (key === 'all') {
@@ -41,7 +54,10 @@ const JoinAgree = () => {
     }
   };
 
+  // 필수 항목만 체크
   const isValid = agreements.service && agreements.information && agreements.location;
+
+  console.log(isValid)
 
   const getSrc = (flag) =>
     flag

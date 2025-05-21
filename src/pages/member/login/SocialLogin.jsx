@@ -1,4 +1,5 @@
 import React from 'react';
+import S from './style';
 
 const SocialLogin = () => {
 
@@ -15,11 +16,17 @@ const SocialLogin = () => {
 
 
   return (
-    <div>
-      <button onClick={navigateGoogleAuth}>구글 로그인</button>
-      <button onClick={navigateKaKaoAuth}>카카오 로그인</button>
-      <button onClick={navigateNaverAuth}>네이버 로그인</button>
-    </div>
+    <S.ButtonWrapper>
+      <S.SocialButton onClick={navigateKaKaoAuth}>
+        <img src="/assets/images/member/kakao-logo.png" alt="Kakao" />Kakao 계정으로 로그인
+      </S.SocialButton>
+      <S.SocialButton onClick={navigateNaverAuth}>
+        <img src="/assets/images/member/naver-logo.png" alt="naver" />Naver 계정으로 로그인
+      </S.SocialButton>
+      <S.SocialButton onClick={navigateGoogleAuth}>
+        <img src="/assets/images/member/google-logo.png" alt="google" />Google 계정으로 로그인
+      </S.SocialButton>
+  </S.ButtonWrapper>
   );
 };
 
