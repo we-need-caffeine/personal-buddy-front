@@ -3,7 +3,7 @@ import S from './style';
 import ProfileCard from '../../layout/profile/ProfileCard';
 
 const GuestItem = ({
-  item, i, memberId, handleDelete, formatDate
+  item, memberId, handleDelete, formatDate
 }) => {
 
   const [showProfileCard, setShowProfileCard] = useState(false);
@@ -41,7 +41,6 @@ const GuestItem = ({
                         onClick={() => {handleProfileCard(false)}}
                     />
                 )}
-
                 <span>{item.writerName}</span>
             </S.GuestBookMemberInfo>
             {item.writerMemberId === memberId || item.ownerMemberId === memberId ? 

@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
-import { flexBaseTop, flexCenter, fontSizeH4, fontSizeH6, fontSizeH8, fontWeightBold, fontWeightRegular, pointRedColor, subGreenColor } from '../../../globals/common';
+import { blackColor, flexBaseTop, flexCenter, fontSizeH4, fontSizeH6, fontSizeH8, fontWeightBold, fontWeightRegular, mainGreenColor, pointRedColor, subGreenColor } from '../../../globals/common';
+import { Link } from 'react-router-dom';
 
 const S = {};
 
@@ -64,12 +65,12 @@ S.DescriptionTitle = styled.span`
 S.Description = styled.span`
     ${fontSizeH8}
     ${fontWeightRegular}
-    text-decoration: ${({targetCompleted}) => (
-        targetCompleted ? 'line-through' : 'none'
+    text-decoration: ${({targetcompleted}) => (
+        targetcompleted ? 'line-through' : 'none'
     )};
 
-    ${({targetCompleted}) => (
-        targetCompleted ? (subGreenColor) : '#000'
+    ${({targetcompleted}) => (
+        targetcompleted ? (subGreenColor) : '#000'
     )};
 `;
 
@@ -81,7 +82,6 @@ S.DescriptionGetPoint = styled.span`
 
 S.AchievementListBox = styled.div`
     width: 1160px;
-    background-color: ${({ theme }) => theme.PALLETE.primary.lightGreen};
     ${flexBaseTop}
     flex-wrap: wrap;
     gap: 40px;
@@ -89,9 +89,11 @@ S.AchievementListBox = styled.div`
 `;
 
 S.AchievementCard = styled.div`
-    ${flexCenter}
-    position: relative;
+    display: flex;
+    justify-content: end;
+    align-items: center;
     flex-direction: column;
+    position: relative;
     width: 200px;
     height: 230px;
     border-radius: 20px;
@@ -99,14 +101,42 @@ S.AchievementCard = styled.div`
     border: solid 1px #01CD74;
     vertical-align: baseline;
     margin-top: 140px;
+    background-color: ${({isDisplayed}) => (
+        isDisplayed ? '#EFFFF8' : '#FFF'
+    )};
 `;
 
-S.AchievementIcon = styled.img`
+S.AchievementCardList = styled.ul`
+    list-style: none;
+    width: 80%;
+    padding: 17px 0 0 0;
+    margin: 17px;
+    border-top: solid 1px #B9D2C7;
+`;
+
+S.AchievementCardItem = styled.li`
+    display: flex;
+    justify-content: baseline;
+    gap: 5px;
+    padding: 6px 0;
+    font-size: 14px;
+`;
+
+S.AchievementIcon = styled.img.attrs(props => ({
+        src: props.$isCompleted
+            ? props.$src
+            : '/assets/images/contents/achievement/icons/achievement-default.png'  // 혹은 null 로 숨기기 가능
+    }))`
     position: absolute;
     top: -40px;
 `;
 
-
-
+S.Link = styled(Link)`
+    text-decoration: none;
+    ${blackColor}
+    &:hover {
+        ${mainGreenColor}
+    }
+`;
 
 export default S;

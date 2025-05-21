@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Layout from "../pages/layout/Layout";
 import MainContainer from "../pages/main/MainContainer";
 import LandingPageContainer from "../pages/landingPage/LandingPageContainer";

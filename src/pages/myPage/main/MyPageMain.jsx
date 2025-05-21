@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import S from './style';
 import { NavLink, useParams } from 'react-router-dom';
 import ConfirmModal from '../../layout/modal/ConfirmModal';
@@ -12,10 +12,6 @@ const MyPageMain = () => {
     const memberId = currentUser.id;
     // 텍스트에리어값
     const [guestBookText, setGuestBookText] = useState("");
-    // 프로필 카드의 정보
-    const [profileCardInfo, setProfileCardInfo] = useState(null);
-    // 프로필 카드의 외부 요소를 감지하는 훅함수
-    const profileImgRef = useRef();
     // 게스트북 리스트
     const [guestBooks, setGuestBooks] = useState([]);
     // 게스트북 카운터
@@ -34,22 +30,18 @@ const MyPageMain = () => {
         setGuestBookText(e.target.value);
     };
 
-    // 비동기로 방명록을 백엔드에 요청하는 함수
+    // 비동기로 방명록을 페이지로 백엔드에 요청하는 함수
     const getGuestBook = async () => {
-        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/list/page/${ownerMemberId}/${page}`, {
-            method: "GET"
-        });
+        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/list?ownerMemberId=${ownerMemberId}&page=${page}`);
         const guestBooks = await response.json()
         setGuestBooks(guestBooks);
     }
 
     // 해당 유저에게 달린 모든 방명록을 카운트하는 함수
     const getGuestBookCount = async () => {
-        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/list/${ownerMemberId}`, {
-            method: "GET"
-        });
-        const guestBooks = await response.json();
-        setGuestBookCount(guestBooks.length);
+        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/count/${ownerMemberId}`)
+        const guestBookCount = await response.json();
+        setGuestBookCount(guestBookCount);
     }
 
     // 방명록을 작성할 때, 비동기로 방명록을 작성하고, 백엔드에서 방명록 리스트를 다시 가져오고, 인풋값을 초기화하는 함수
@@ -100,7 +92,7 @@ const MyPageMain = () => {
     useEffect(() => {
         getGuestBook()
         getGuestBookCount()
-    }, [])
+    }, [ownerMemberId])
 
     // 시간값 변환 함수
     const formatDate = (time) => {
@@ -144,14 +136,14 @@ const MyPageMain = () => {
                         <span>{guestBookCount}</span>
                     </S.GuestBookWriteCount>
                 </S.GuestBookTitleContainer>
-                {/* 방명록 인풋 */}
+                {/* 방명록 인풋 영역 */}
                 <S.GuestBookInputContainer>
                     <S.GuestBookInputTitle>
                         <span>방명록을 남겨보세요, 바르고 고운말을 사용합시다.</span>
                     </S.GuestBookInputTitle>
-                    <S.GuestBookInput 
+                    <S.GuestBookInput
                         maxLength={500} 
-                        placeholder='방명록을 작성해주세요.' 
+                        placeholder='방명록을 작성해주세요.'
                         onChange={handleTextareaChange}
                         value={guestBookText}
                     >
@@ -168,6 +160,7 @@ const MyPageMain = () => {
                         >
                             <span>등록</span>
                         </S.GuestBookInputButton>
+                        {/* 컨펌 모달 */}
                         <ConfirmModal
                             isOpen={modalOpen}
                             title="방명록 등록"
@@ -177,20 +170,18 @@ const MyPageMain = () => {
                         />
                     </S.GuestBookInputBottomContainer>
                 </S.GuestBookInputContainer>
+                {/* 게스트북 리스트 영역*/}
                 <S.GuestBookListContainer>
                     {guestBooks.map((item, i) => (
                         <GuestItem 
                             key={i}
-                            i={i}
                             item={item} 
                             memberId={memberId}
                             handleDelete={handleDelete}
                             formatDate={formatDate}
                         />
-                        )
-                    )}
+                    ))}
                 </S.GuestBookListContainer>
-                {/* 페이지네이션 영역 */}
             </S.MainContainer>
         </>
     );

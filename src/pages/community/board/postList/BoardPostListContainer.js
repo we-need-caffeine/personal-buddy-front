@@ -1,28 +1,60 @@
 import React, { useEffect, useState } from 'react';
 import S from './style';
 import { data, Link } from 'react-router-dom';
+import FormatDate from '../../../../utils/formatDate/FormatDate';
+import ProfileCard from '../../../layout/profile/ProfileCard';
 
 
 const BoardPostListContainer = ({
     boards, isUpdate, setIsUpdate, setOrder, setBoardHashtag, setSearchKeyword
   }) => {
+
+  const [activeOrder, setActiveOrder] = useState("최신순");
+  const [activeTag, setActiveTag] = useState("전체일정");
   
   const handleOrder = (e) => {
-    setOrder(e.target.innerText.replaceAll(" ", ""))
-  }
+    const orderText = e.target.innerText.replaceAll(" ", "");
+    setOrder(orderText);
+    setActiveOrder(orderText); 
+  };
   
   const handleHashtag = (e) => {
-    setBoardHashtag(e.target.innerText.replaceAll(" ", "").replaceAll("#", ""))
+    const tagText = e.target.innerText.replaceAll(" ", "").replaceAll("#", "");
+    setBoardHashtag(tagText);
+    setActiveTag(tagText); 
+  };
+
+  // 프로필 카드 상태
+  const [showProfileCard, setShowProfileCard] = useState(false);
+
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  // 프로필 카드를 열고 닫는 함수
+  const handleProfileCard = (state ,user =null) => {
+    setShowProfileCard(state);
+    if (user) setSelectedUser(user);
+    console.log(user)
   }
+
+  useEffect(() => {
+    // console.log("selectedUser 변경?", selectedUser);
+}, [selectedUser]);
+
+
+  useEffect(() => {
+    console.log("boards:", boards); 
+  }, [boards]);
+
+
 
   return (
     <>
     <S.SortBox>
-      <S.SortButton onClick={handleOrder}>최신순</S.SortButton>
+      <S.SortButton onClick={handleOrder} $active={activeOrder === "최신순"}>최신순</S.SortButton>
       <p>|</p>
-      <S.SortButton onClick={handleOrder}>좋아요순</S.SortButton>
+      <S.SortButton onClick={handleOrder} $active={activeOrder === "좋아요순"}>좋아요순</S.SortButton>
       <p>|</p>
-      <S.SortButton onClick={handleOrder}>조회순</S.SortButton>
+      <S.SortButton onClick={handleOrder} $active={activeOrder === "조회순"}>조회순</S.SortButton>
     </S.SortBox>
     
     <S.BoardHeader>
@@ -38,10 +70,10 @@ const BoardPostListContainer = ({
           }}
         />
         <S.TagArea>
-          <S.TagButton onClick={handleHashtag}>#전체 일정</S.TagButton>
-          <S.TagButton onClick={handleHashtag}>#관심 일정</S.TagButton>
-          <S.TagButton onClick={handleHashtag}>#자유 게시글</S.TagButton>
-          <S.TagButton onClick={handleHashtag}>#공유 일정</S.TagButton>
+          <S.TagButton onClick={handleHashtag} $active={activeTag === "전체일정"}>#전체 일정</S.TagButton>
+          <S.TagButton onClick={handleHashtag} $active={activeTag === "관심일정"}>#관심 일정</S.TagButton>
+          <S.TagButton onClick={handleHashtag} $active={activeTag === "자유게시글"}>#자유 게시글</S.TagButton>
+          <S.TagButton onClick={handleHashtag} $active={activeTag === "공유일정"}>#공유 일정</S.TagButton>
         </S.TagArea>
       </S.SearchArea>
 
@@ -67,29 +99,41 @@ const BoardPostListContainer = ({
           <Link to={`post/${id}`} state={boards} key={id}>
             <S.PostCard>
               <S.Thumbnail
-                src={ "" 
-                  ? "" 
-                  :  `/assets/images/board/default/default-img.png` } alt='default-img' // 썸네일 없을 경우 기본 이미지
+                src={
+                  boardImgName && boardImgPath
+                    ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(boardImgPath.replace("C:/personalbuddy/", ""))}&fileName=${encodeURIComponent(boardImgName)}`
+                    : '/assets/images/board/default/default-img.png'
+                }
+                alt="thumbnail"
               />
               <S.Tag>{boardHashtag}</S.Tag>
               <S.Title>{boardTitle}</S.Title>
               <S.UserInfo>
                 <S.ProfileImg 
-                  src={`${memberImgPath}/${memberImgName}`}  
-                  onError={(e) => {
-                      e.target.onerror = null; // 무한 루프 방지
-                      e.target.src = '/assets/images/member/profile-default.png'; // 디폴트 이미지 강제 세팅
-                    }}  
+                  src={
+                    memberImgPath && memberImgName
+                    ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(memberImgPath)}&fileName=${encodeURIComponent(memberImgName)}`
+                    : '/assets/images/header/default-member-img.png'
+                  }  
+                    onError={(e) => {
+                    e.target.src = '/assets/images/header/default-member-img.png';
+                  }}
                   onClick={(e) => {
                     e.preventDefault(); // 부모인 <Link> 클릭 방지 (기본 동작(링크 이동) 막기)
                     e.stopPropagation(); // 이벤트가 상위 요소로 전달되지 않게 막기
-                    console.log(`닉네임 ${memberNickname}의 프로필 클릭`);  
-                    // 프로필 모달 호출 로직               
+                    // console.log(`닉네임 ${memberNickname}의 프로필 클릭`);  
+                    handleProfileCard(true, {
+                      memberId,
+                      memberNickname,
+                      memberImgName,
+                      memberImgPath,
+                    });             
                   }} 
+                  
                 />
                 <S.Nickname>{memberNickname}</S.Nickname>
               </S.UserInfo>
-              <S.Date>{boardContentCreateDate}</S.Date>
+              <S.Date>{FormatDate(boardContentCreateDate)}</S.Date>
               <S.MetaInfo>
                 <span>
                   <img src="/assets/images/board/icon/like-icon.png" className="icon" alt="like" />
@@ -109,6 +153,22 @@ const BoardPostListContainer = ({
         ))
       )}
     </S.PostGrid>
+
+      {/* { showProfileCard && selectedUser && selectedUser.memberId && (
+        <>
+          <S.ProfileCardDropdown>
+            <ProfileCard
+              memberId={selectedUser.memberId}
+              memberNickname={selectedUser.memberNickname}
+              memberImgPath={selectedUser.memberImgPath}
+              memberImgName={selectedUser.memberImgName}
+              onCancel={() => handleProfileCard(false)}
+            />
+          </S.ProfileCardDropdown>
+          <S.CardBG onClick={() => handleProfileCard(false)} />
+        </>
+      )} */}
+      
     </>
   );
 };

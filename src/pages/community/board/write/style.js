@@ -17,7 +17,7 @@ S.Container = styled.div`
 // 제목 영역 컨테이너
 S.Titles = styled.div`
     margin-top: 60px;
-    width: 1000px;
+    width: 1160px;
 `;
 
 // 작은 제목: "커뮤니티"
@@ -32,7 +32,7 @@ S.SubTitle = styled.div`
 S.BoardWriteTitle = styled.h2`
     ${fontSizeH4};
     ${fontWeightBold};
-    margin-bottom: 20px;
+
 `;
 
 // 구분선
@@ -56,7 +56,6 @@ S.Label = styled.label`
 S.Input = styled.input`
     width: 1000px;
     height: 40px;
-    padding: 0 10px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 10px;

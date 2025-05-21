@@ -1,30 +1,60 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import S from './style';
 import { NavLink } from 'react-router-dom';
+import { ProfileCardContext } from '../../../context/ProfileCardContext';
+import { HeaderContext } from '../../../context/HeaderContext';
 
 const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
-  
-  const [myId, setMyId] = useState(memberId);
-  const [friendId, setFriendId] = useState(profileCardMemberId);
-  const [profile, setProfile] = useState({})
+  // 프로필 카드 콘텍스트
+  const { profileCardInfo, follow, unfollow, getProfile } = useContext(ProfileCardContext);
+  // 헤더 이벤트 콘텍스트
+  const { setHeaderScroll } = useContext(HeaderContext);
 
-  // 조회하려는 유저 : memberId
-  // 내 아이디 follow
-  
-  // fetch 해당 유저
-  // 상대방 아이디 profileCardMemberId
-
-  useEffect(() => {
-    const getProfile = async () => {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/follows/api/profile-card?memberId=${myId}&profileCardMemberId=${friendId}`)
-      const datas = await response.json()
-      setProfile(datas)
+  // 팔로우 / 언팔로우
+  const handleFollow = async () => {
+    if (profileCardInfo.isFollow === 1) {
+      unfollow(memberId, profileCardMemberId)
+    } else {
+      follow(memberId, profileCardMemberId)
     }
+  }
 
-    getProfile()
-  }, [memberId, profileCardMemberId])
+  // 즐겨찾기 토글
+  const toggleFavorite = async () => {
+    await fetch(`http://localhost:10000/follows/api/favorite/toggle`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        followerMemberId: profileCardInfo.id,
+        followingMemberId: memberId,
+        followFavorite: profileCardInfo.favorite
+      })
+    })
 
-  console.log(profile)
+    // console.log(profileCardInfo);
+    // console.log(profileCardInfo.id);
+    // console.log(memberId);
+    // console.log(profileCardInfo.favorite);
+  }
+
+  // 최초로 프로필 정보를 받는 함수
+  useEffect(() => {
+    getProfile(memberId, profileCardMemberId)
+  }, [getProfile, memberId, profileCardMemberId])
+
+  // 외부요소의 스크롤을 막는 함수
+  useEffect(() => {
+    if (handleProfileCard) {
+        document.body.style.overflow = 'hidden';
+        setHeaderScroll(false)
+      }
+      return () => {
+        document.body.style.overflow = 'auto';
+        setHeaderScroll(true)
+    };
+  }, [handleProfileCard, setHeaderScroll]);
 
   return (
     <S.CardContainer>
@@ -32,31 +62,42 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
       <S.TopContainer>
         <S.MemberInfoContainer>
           <S.MemberProfile
-            src={profile.memberImgPath || "/assets/images/header/default-member-img.png"}
+            src={profileCardInfo.memberImgPath || "/assets/images/header/default-member-img.png"}
             alt="멤버 프로필 이미지" 
             onError={e => {
                 e.target.src = "/assets/images/header/default-member-img.png";
             }}
           />
           <S.MemberInfoTextContainer>
-            <S.MemberNickName>{profile.memberNickname}</S.MemberNickName>
-            <S.MemberStatusMessage>{profile.memberStatusMessage || '상태메세지 없음'}</S.MemberStatusMessage>
+            <S.MemberNickName>{profileCardInfo.memberNickname}</S.MemberNickName>
+            <S.MemberStatusMessage>{profileCardInfo.memberStatusMessage || '상태메세지 없음'}</S.MemberStatusMessage>
           </S.MemberInfoTextContainer>
         </S.MemberInfoContainer>
         <S.FollowInfoContainer>
           <S.FollowInfoContainer>
-            {memberId !== profile.id && (
+            {memberId !== profileCardInfo.id && (
               <>
-                {profile.isFollow === 1 ? (
-                  profile.favorite === 1 ? (
-                    <S.FavoriteBtn src='/assets/images/follow/star-on.png' alt='즐겨찾기 활성화' />
+                {profileCardInfo.isFollow === 1 ? (
+                  profileCardInfo.favorite === 1 ? (
+                    <S.FavoriteBtn 
+                      src='/assets/images/follow/star-on.png' 
+                      alt='즐겨찾기 활성화' 
+                      onClick={toggleFavorite}
+                    />
                   ) : (
-                    <S.FavoriteBtn src='/assets/images/follow/star-off.png' alt='즐겨찾기 비활성화' />
+                    <S.FavoriteBtn 
+                      src='/assets/images/follow/star-off.png' 
+                      alt='즐겨찾기 비활성화'
+                      onClick={toggleFavorite}
+                    />
                   )
                 ) : null}
 
-                <S.FollowBtn isFollow={profile.isFollow}>
-                  {profile.isFollow === 1 ? (
+                <S.FollowBtn
+                  onClick={() => handleFollow()} 
+                  isFollow={profileCardInfo.isFollow}
+                >
+                  {profileCardInfo.isFollow === 1 ? (
                     <span>팔로잉</span>
                   ) : (
                     <span>팔로우</span>
@@ -73,7 +114,7 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
             팔로워
           </S.FollowCountText>
           <S.FollowCountSubText>
-            {profile.followerCount}
+            {profileCardInfo.followerCount}
           </S.FollowCountSubText>
         </S.FollowerCount>
         <S.FollowCount>
@@ -81,7 +122,7 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
             팔로우
           </S.FollowCountText>
           <S.FollowCountSubText>
-            {profile.followingCount}
+            {profileCardInfo.followingCount}
           </S.FollowCountSubText>
         </S.FollowCount>
       </S.FollowCountContainer>
@@ -91,13 +132,11 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
         <S.AcheivementItems src='/assets/images/header/default-achivement-img.png' alt='업적'/>
       </S.AcheivementContainer>
       <S.SocialButtonContainer>
-        <S.MyPageButton onClick={() => { handleProfileCard(false)}}>
-          <NavLink
-            to={`/main/mypage/${profile.id}`}
-          >
-            마이페이지
-          </NavLink>
-        </S.MyPageButton>
+        <NavLink to={`/main/mypage/${profileCardInfo.id}`}>
+          <S.MyPageButton onClick={() => {handleProfileCard(false)}}>
+              마이페이지
+          </S.MyPageButton>
+        </NavLink>
         <S.MessageButton>메세지</S.MessageButton>
       </S.SocialButtonContainer>
     </S.CardContainer>

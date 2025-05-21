@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { flexCenter, fontSizeH8, gray3Color, gray4Color, subBlueColor } from '../../../../globals/common';
+import styled, { css } from 'styled-components';
+import { blackColor, flexCenter, fontSizeH7, fontSizeH8, fontWeightBold, gray3Color, gray4Color, subBlueColor, warningRedColor, whiteColor } from '../../../../globals/common';
 
 const S = {};
 
@@ -50,6 +50,7 @@ S.ProfileImg = styled.img`
 S.Nickname = styled.span`
     ${fontSizeH8};
     font-weight: bold;
+    ${blackColor}
 `;
 
 // 작성일
@@ -62,6 +63,10 @@ S.ViewCount = styled.span`
 `;
 
 S.LikeCount = styled.span`
+    font-size: 13px;
+`;
+
+S.CommentCount = styled.span`
     font-size: 13px;
 `;
 
@@ -105,41 +110,57 @@ S.CommentCountText = styled.span`
 `;
 
 S.CommentInputBox = styled.div`
-    border: 1px solid ${gray4Color.color};
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 10px;
+
 `;
 
 S.Textarea = styled.textarea`
+    font: inherit;
+    resize: none;
+    outline: none;
     width: 100%;
     height: 100px;
-    font-size: 14px;
-    resize: none;
-    border: none;
-    outline: none;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid ${({ theme }) => theme.PALLETE.gray.gray4};
+    ${blackColor}
+    ${fontSizeH7}
 `;
 
 S.InputBottom = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 15px;
+    gap: 8px;
+    ${fontSizeH7}
+    ${gray4Color}
 `;
 
 S.CharCount = styled.div`
-    font-size: 13px;
-    color: ${gray4Color.color};
+    color: ${({ theme }) => theme.PALLETE.black};
+    font-size: 14px;
+    padding-right: 4px;
 `;
 
+// 등록 버튼
 S.SubmitButton = styled.button`
-    padding: 8px 16px;
-    border: none;
-    background-color: ${({ active }) => (active ? subBlueColor.color : '#ddd')};
-    color: white;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: ${({ active }) => (active ? 'pointer' : 'default')};
+  text-align: center;
+  border: none;
+  border-radius: 50px;
+  width: 79px;
+  height: 43px;
+  ${whiteColor}
+  ${fontSizeH7}
+  ${fontWeightBold}
+
+  background-color: ${({ active, theme }) =>
+    active ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
+
+  cursor: ${({ active }) => (active ? 'pointer' : 'not-allowed')};
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 S.BestCommentSection = styled.div`
@@ -148,7 +169,7 @@ S.BestCommentSection = styled.div`
 
 S.BestCommentItem = styled.div`
     background-color: #f6f6f6;
-    padding: 16px;
+    padding: 20px 30px;
     margin-bottom: 12px;
 `;
 
@@ -196,6 +217,7 @@ S.CommentTop = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 12px;
 `;
 
 // 댓글 작성자
@@ -203,11 +225,14 @@ S.CommentUser = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
+    font-size: 14px;
+    font-weight: bold;
 `;
 
 // 댓글 작성일
 S.CommentDate = styled.span`
     font-size: 13px;
+    color: ${({ theme }) => theme.PALLETE.gray.gray4};
 `;
 
 // 댓글 좋아요 수 및 아이콘
@@ -215,9 +240,11 @@ S.CommentLikeCount = styled.div`
     display: flex;
     align-items: center;
     gap: 4px;
+    font-size: 13px;
     background: none;
     border: none;
     cursor: pointer;
+    color: ${({ theme }) => theme.PALLETE.gray.gray4};
 
     img {
         width: 14px;
@@ -229,12 +256,35 @@ S.CommentLikeCount = styled.div`
     }
 `;
 
-// 댓글 본문
-S.CommentContent = styled.p`
+
+S.LeftCommentWrapper = styled.div`
+    ${flexCenter}
+`
+
+S.CommentLikeButton = styled.button`
+    ${flexCenter};
+    width: 40px;
+    height: 27px;
+    border: none;
+    border-radius: 50px;
     font-size: 14px;
-    line-height: 1.5;
-    color: #333;
-    margin-top: 8px;
+    font-weight: bold;
+    color: white;
+    background-color: ${({ liked, theme }) =>
+        liked ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
+    cursor: pointer;
+
+    &:hover {
+        background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
+    }
+`
+
+// 댓글 본문
+S.CommentContents = styled.p`
+    font-size: 15px;
+    line-height: 1.6;
+    padding-left: 34px;
+    white-space: pre-wrap;
 `;
 
 export default S;
