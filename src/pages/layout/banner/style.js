@@ -25,4 +25,6 @@ S.BannerWrapper = styled.div`
   }
 `;
 
+
+
 export default S;
