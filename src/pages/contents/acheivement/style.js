@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
-import { flexBaseTop, flexCenter, fontSizeH4, fontSizeH6, fontSizeH8, fontWeightBold, fontWeightRegular, pointRedColor, subGreenColor } from '../../../globals/common';
+import { blackColor, flexBaseTop, flexCenter, fontSizeH4, fontSizeH6, fontSizeH8, fontWeightBold, fontWeightRegular, mainGreenColor, pointRedColor, subGreenColor } from '../../../globals/common';
+import { Link } from 'react-router-dom';
 
 const S = {};
 
@@ -100,6 +101,9 @@ S.AchievementCard = styled.div`
     border: solid 1px #01CD74;
     vertical-align: baseline;
     margin-top: 140px;
+    background-color: ${({isDisplayed}) => (
+        isDisplayed ? '#EFFFF8' : '#FFF'
+    )};
 `;
 
 S.AchievementCardList = styled.ul`
@@ -118,123 +122,21 @@ S.AchievementCardItem = styled.li`
     font-size: 14px;
 `;
 
-S.AchievementIcon = styled.img`
+S.AchievementIcon = styled.img.attrs(props => ({
+        src: props.$isCompleted
+            ? props.$src
+            : '/assets/images/contents/achievement/icons/achievement-default.png'  // 혹은 null 로 숨기기 가능
+    }))`
     position: absolute;
     top: -40px;
 `;
 
-// 임시 더미용 데이터
-S.achievementsDummy = [
-        {
-            achievementName: "알쓰", 
-            achievementScheduleCategory: "모임", 
-            achievementImgPath: "C:\personalbuddy\images\achievement",
-            achievementImgName: "알쓰.png",
-            achievementGetPoint: 30,
-            achievementMissionCount: 10,
-            memberAchievementDisplay: 0
-        },
-        {
-            achievementName: "헬린이", 
-            achievementScheduleCategory: "운동", 
-            achievementImgPath: "C:\personalbuddy\images\achievement",
-            achievementImgName: "헬린이.png",
-            achievementGetPoint: 50,
-            achievementMissionCount: 10,
-            memberAchievementDisplay: 0
-        },
-        {
-            achievementName: "스터디 스타터", 
-            achievementScheduleCategory: "공부", 
-            achievementImgPath: "C:\personalbuddy\images\achievement",
-            achievementImgName: "스터디 스타터.png",
-            achievementGetPoint: 100,
-            achievementMissionCount: 10,
-            memberAchievementDisplay: 0
-        },
-        {
-            achievementName: "중고 트레이너", 
-            achievementScheduleCategory: "운동", 
-            achievementImgPath: "C:\personalbuddy\images\achievement",
-            achievementImgName: "중고 트레이너.png",
-            achievementGetPoint: 150,
-            achievementMissionCount: 10,
-            memberAchievementDisplay: 0
-        },
-        {
-            achievementName: "CHILL GUY", 
-            achievementScheduleCategory: "모임", 
-            achievementImgPath: "C:\personalbuddy\images\achievement",
-            achievementImgName: "CHILL GUY.png",
-            achievementGetPoint: 100,
-            achievementMissionCount: 10,
-            memberAchievementDisplay: 0
-        },
-        {
-            achievementName: "무거운 엉덩이", 
-            achievementScheduleCategory: "공부", 
-            achievementImgPath: "C:\personalbuddy\images\achievement",
-            achievementImgName: "무거운 엉덩이.png",
-            achievementGetPoint: 300,
-            achievementMissionCount: 10,
-            memberAchievementDisplay: 0
-        },
-        {
-            achievementName: "TOM BOY", 
-            achievementScheduleCategory: "모임", 
-            achievementImgPath: "C:\personalbuddy\images\achievement",
-            achievementImgName: "TOM BOY.png",
-            achievementGetPoint: 200,
-            achievementMissionCount: 10,
-            memberAchievementDisplay: 0
-        },
-        {
-            achievementName: "득근 왕", 
-            achievementScheduleCategory: "운동", 
-            achievementImgPath: "C:\personalbuddy\images\achievement",
-            achievementImgName: "득근 왕.png",
-            achievementGetPoint: 300,
-            achievementMissionCount: 10,
-            memberAchievementDisplay: 0
-        },
-        {
-            achievementName: "나도 개츠비", 
-            achievementScheduleCategory: "모임", 
-            achievementImgPath: "C:\personalbuddy\images\achievement",
-            achievementImgName: "나도 개츠비.png",
-            achievementGetPoint: 400,
-            achievementMissionCount: 10,
-            memberAchievementDisplay: 0
-        },
-        {
-            achievementName: "비상한 두뇌", 
-            achievementScheduleCategory: "공부", 
-            achievementImgPath: "C:\personalbuddy\images\achievement",
-            achievementImgName: "비상한 두뇌.png",
-            achievementGetPoint: 400,
-            achievementMissionCount: 10,
-            memberAchievementDisplay: 0
-        },
-        {
-            achievementName: "나도 로니 콜먼", 
-            achievementScheduleCategory: "운동", 
-            achievementImgPath: "C:\personalbuddy\images\achievement",
-            achievementImgName: "나도 로니 콜먼.png",
-            achievementGetPoint: 600,
-            achievementMissionCount: 10,
-            memberAchievementDisplay: 0
-        },
-        {
-            achievementName: "나도 아인슈타인", 
-            achievementScheduleCategory: "공부", 
-            achievementImgPath: "C:\personalbuddy\images\achievement",
-            achievementImgName: "나도 아인슈타인.png",
-            achievementGetPoint: 900,
-            achievementMissionCount: 10,
-            memberAchievementDisplay: 0
-        },
-    ]
-
-
+S.Link = styled(Link)`
+    text-decoration: none;
+    ${blackColor}
+    &:hover {
+        ${mainGreenColor}
+    }
+`;
 
 export default S;
