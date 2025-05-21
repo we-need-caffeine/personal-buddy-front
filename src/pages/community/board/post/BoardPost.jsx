@@ -1,7 +1,8 @@
-import React, { useState, useEffect, use } from 'react';
-import { useParams, useOutletContext } from 'react-router-dom';
+import React, { useState, useEffect  } from 'react';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import S from './style';
+
 
 const BoardPost = () => {
   const { id } = useParams(); // 현재 URL의 게시글 ID 가져오기
@@ -25,27 +26,38 @@ const BoardPost = () => {
   useEffect(() => {
     const getPost = async () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/${id}`)
-      if(!response.ok) throw new Error(`getPosts Error : ${response}`)
-      const datas = await response.json()
-      return datas;
+      if(!response.ok) throw new Error(`getPosts Error : ${response.status}`)
+      const datas = await response.json();
+      setPost(datas.board);
+      setLikeCount(datas.board.boardLikeCount); 
+      setIsLoading(false);
+      // console.log("게시글 확인",datas)
+      setIsLoading(false);
+      // return datas;
     }
+    
+    // 댓글 목록 조회
+  const getComments = async () => {
+    const response = await fetch((`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/list?boardId=${id}`));
+    if(!response.ok) throw new Error(`댓글 조회 실패`)
+    const data = await response.json();
+   console.log("댓글",data)
+    setComments(data);
+  }
 
-    getPost()
-      .then((res) => {
-        setPost(res.board)
-        setIsLoading(false)
-      })
-      .catch((err) => {
-        setIsError(true)
-        console.err(`getPost fetching error: ${err}`)
-      })
- 
-  }, [isUpdate])
+  getPost()
+    .then(() => getComments())
+    .catch((err) => {
+      setIsError(true);
+      console.error(`getPost fetching error: ${err}`);
+    });
 
+  }, [id,isUpdate])
 
+  
   // 댓글 등록
   const handleCommentSubmit = async () => {
-    if (!commentText.trim()) return;
+    if (!commentText) return;
 
     if (!memberId) {
       alert('로그인 후 댓글을 작성할 수 있습니다.');
@@ -90,19 +102,26 @@ const BoardPost = () => {
       <S.TopInfoBox>
         <S.Left>
           <S.ProfileImg
-            src={post.profileImgUrl || '/assets/images/header/default-member-img.png'}
+            src={post.memberImgPath || '/assets/images/header/default-member-img.png'}
             onError={(e) => {
               e.target.src = '/assets/images/header/default-member-img.png';
             }}
             alt="작성자 프로필"
           />
-          <S.Nickname>{post.nickname}</S.Nickname>
-          <S.Date>{post.createdDate}</S.Date>
+          <S.Nickname>{post.memberNickName}</S.Nickname>
+          <S.Date>{post.boardContentCreateDate?.slice(0, 10)}</S.Date>
         </S.Left>
+        <S.Right>
+          <S.ViewCount>조회수 {post.boardContentViews}</S.ViewCount>
+          <S.LikeCount>좋아요 {post.boardLikeCount}</S.LikeCount>
+          <S.CommentCount>댓글 {post.boardCommentCount}</S.CommentCount>
+        </S.Right>
       </S.TopInfoBox>
 
+
       {/* 썸네일 이미지가 있을 때만 출력 */}
-      {post.thumbnailUrl && <S.Image src={post.thumbnailUrl} alt="thumbnail" />}
+      {post.boardThumbnailUrl && <S.Image src={post.boardThumbnailUrl} alt="게시글 썸네일" />}
+
 
       <S.Content>{post.boardContent}</S.Content>
 
@@ -148,19 +167,24 @@ const BoardPost = () => {
                     e.target.src = '/assets/images/header/default-member-img.png';
                   }}
                   alt="댓글 작성자 프로필"
-
-                />
-                <S.Nickname>{c.memberNickname}</S.Nickname>
+                  >
+                  </S.ProfileImg>
+                <S.Nickname>{c.memberNickName}</S.Nickname>
+                <S.LeftCommentWrapper>
+                  <S.CommentDate>{c.boardCommentCreateDate}</S.CommentDate>
+                  <S.CommentLikeCount>
+                    <img src="/assets/images/board/icon/like-icon.png" alt="like" />
+                    <span>{c.boardCommentLikeCount}</span>
+                  </S.CommentLikeCount>
+                </S.LeftCommentWrapper>
               </S.CommentUser>
+
               <S.Right>
-                <S.CommentDate>{c.boardCommentCreateDate}</S.CommentDate>
-                <S.CommentLikeCount>
-                  <img src="/assets/images/board/icon/like-icon.png" alt="like" />
-                  <span>{c.likeCount}</span>
-                </S.CommentLikeCount>
+                <S.CommentLikeButton>♥</S.CommentLikeButton>
               </S.Right>
+
             </S.CommentTop>
-            <S.CommentContent>{c.boardCommentContent}</S.CommentContent>
+            <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
           </S.CommentItem>
         ))}
       </S.CommentList>

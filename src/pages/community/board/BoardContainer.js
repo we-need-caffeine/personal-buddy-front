@@ -28,6 +28,7 @@ const BoardContainer = () => {
       } catch{
         console.error("fetchBoards함수 error");
       }
+      
     };
     fetchBoards();
 

@@ -10,6 +10,11 @@ const BoardWrite = () => {
   const [previewUrls, setPreviewUrls] = useState([]); // 이미지 파일을 base64로 변환한 URL 배열 (브라우저에서 미리보기용으로 사용)
   const [category, setCategory] = useState(null); // react-select는 object 형태
 
+   // 로그인된 유저정보
+      const {currentUser} = useSelector((state) => state.member)
+    // 로그인된 유저의 아이디
+    const memberId = currentUser.id;
+
     const categoryOptions = [
     { label: '자유 게시글', value: '자유' },
     { label: '관심 일정', value: '관심' },
@@ -79,12 +84,7 @@ const BoardWrite = () => {
     }
 
     // 게시글 등록 
-    const memberId = localStorage.getItem('memberId');
-
-    // 로그인된 유저정보
-      // const {currentUser} = useSelector((state) => state.member)
-    // 로그인된 유저의 아이디
-    // const memberId = currentUser.id;
+    // const memberId = localStorage.getItem('memberId');
 
     const postRes = await fetch( `${process.env.REACT_APP_BACKEND_URL}/boards/api/write`, {
       method: 'POST',
