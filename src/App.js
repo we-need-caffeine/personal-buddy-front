@@ -4,6 +4,8 @@ import router from './routes/router';
 import GlobalStyle from './globals/globalStyle';
 import { ThemeProvider } from 'styled-components';
 import theme from './globals/theme';
+import { ProfileCardProvider } from './context/ProfileCardContext';
+import { HeaderProvider } from './context/HeaderContext';
 
 
 function App() {
@@ -11,7 +13,11 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <RouterProvider router = {router} />
+          <HeaderProvider>
+            <ProfileCardProvider>
+              <RouterProvider router = {router} />
+            </ProfileCardProvider>
+          </HeaderProvider>
       </ThemeProvider>
     </>
   );

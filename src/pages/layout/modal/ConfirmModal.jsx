@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import S from './style';
+import { HeaderContext } from '../../../context/HeaderContext';
 
 const ConfirmModal = ({ isOpen, title, message, onConfirm, onCancel }) => {
 
@@ -22,17 +23,19 @@ const ConfirmModal = ({ isOpen, title, message, onConfirm, onCancel }) => {
     //     onCancel={() => setModalOpen(false)} // 배경, 취소버튼, X버튼을 눌렀을 때, 실행할 함수를 담는 공간입니다.
     // />
 
-    useEffect(() => {
+    // 헤더 이벤트 콘텍스트
+    const { setHeaderScroll } = useContext(HeaderContext);
 
+    useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
+            setHeaderScroll(false)
         }
-
         return () => {
             document.body.style.overflow = 'auto';
+            setHeaderScroll(true)
         };
-        
-    }, [isOpen]);
+    }, [isOpen, setHeaderScroll]);
 
     if (!isOpen) return (
         <>

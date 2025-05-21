@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Alert from '../alert/Alert'; // 경로에 맞게 수정해줘!
 import S from './style';
 import ProfileCard from '../profile/ProfileCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser, setUserStatus } from '../../../modules/member';
+import { HeaderContext } from '../../../context/HeaderContext';
 
 const Header = () => {
   // 로그인된 유저정보
@@ -13,6 +14,8 @@ const Header = () => {
   const memberId = currentUser.id;
   // 헤더 이벤트 상태
   const [showHeader, setShowHeader] = useState(true);
+  // 헤더 이벤트 콘텍스트
+  const { headerScroll } = useContext(HeaderContext);
   // 알림창 상태
   const [showAlertModal, setShowAlertModal] = useState(false);
   // 프로필 카드 상태
@@ -31,29 +34,36 @@ const Header = () => {
   const handleAlertModal = (state) => {
     setShowAlertModal(state);
   }
-  // 읽지 않은 알림을 조회하는 함수
-  const getNotReadAlertCount = async () => {
-    const response = await fetch(`http://localhost:10000/alerts/api/alert/count/${memberId}`)
-    const data = await response.json()
-    setNotReadAlertCount(data)
-  }
-
+  
   // 읽지않은 알림을 최초로 실행시키기
   useEffect(() => {
+    // 읽지 않은 알림을 조회하는 함수
+    const getNotReadAlertCount = async () => {
+      const response = await fetch(`http://localhost:10000/alerts/api/alert/count/${memberId}`)
+      const data = await response.json()
+      setNotReadAlertCount(data)
+    }
     getNotReadAlertCount()
-  }, [])
+  }, [memberId])
   
   // 헤더의 업 다운 이벤트
   useEffect(() => {
-    const handleWheel = (e) => {
-      if (e.deltaY > 0) {
-        setShowHeader(false);
-      } else if (e.deltaY < 0) {
-        setShowHeader(true);
+    if (headerScroll) {
+      const handleWheel = (e) => {
+        if (e.deltaY > 0) {
+          setShowHeader(false);
+        } else if (e.deltaY < 0) {
+          setShowHeader(true);
+        };
       };
-    };
-    window.addEventListener("wheel", handleWheel);
-  }, []);
+      // 휠 이벤트 감지 후 함수 등록
+      window.addEventListener("wheel", handleWheel);
+      
+      return() => {
+        window.removeEventListener("wheel", handleWheel);
+      }
+    }
+  }, [headerScroll]);
 
   // 로그아웃 : 로컬스토리지의 토큰정보를 지우고, 리덕스에 있는 멤버정보를 비운다.
   const handleLogout = () => {

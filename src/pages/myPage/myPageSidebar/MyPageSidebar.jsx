@@ -1,8 +1,9 @@
 import { NavLink, useParams } from 'react-router-dom';
 import S from './style';
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ProfileCard from '../../layout/profile/ProfileCard';
+import { ProfileCardContext } from '../../../context/ProfileCardContext';
 
 const MyPageSidebar = () => {
 
@@ -18,7 +19,9 @@ const MyPageSidebar = () => {
     const [ownerInfo, setOnwerInfo] = useState({});
     // 프로필 카드 상태
     const [showProfileCard, setShowProfileCard] = useState(false);
-    
+    // 프로필 카드 콘텍스트
+    const { profileCardInfo, follow, unfollow } = useContext(ProfileCardContext);
+
     // 프로필 카드를 열고 닫는 함수
     const handleProfileCard = (state) => {
         setShowProfileCard(state)
@@ -26,38 +29,23 @@ const MyPageSidebar = () => {
 
     // 팔로우 / 언팔로우
     const handleFollow = async () => {
-        if (ownerInfo.isFollow === 1) {
-            const response = await fetch(`http://localhost:10000/follows/api/follow/delete?followerMemberId=${id}&followingMemberId=${myId}`, {
-                method: "DELETE"
-            })
-            if (response.ok) {
-                alert("팔로우 취소")
-                getOwnerInfo()
-            } else {
-            }
+        if (profileCardInfo.isFollow === 1) {
+            unfollow(myId, id)
         } else {
-            const response = await fetch(`http://localhost:10000/follows/api/follow/${id}?followingMemberId=${myId}`, {
-                method: "POST"
-            })
-            
-            if (response.ok) {
-                alert("팔로우 성공")
-                getOwnerInfo()
-            } else {
-            }
+            follow(myId, id)
         }
     }
 
+  
     // 현재 마이페이지 오너의 정보를 가져오는 함수
-    const getOwnerInfo = async () => {
-        const response = await fetch(`http://localhost:10000/follows/api/profile-card?memberId=${myId}&profileCardMemberId=${id}`)
-        const data = await response.json()
-        setOnwerInfo(data)
-    }
-    
     useEffect(() => {
+        const getOwnerInfo = async () => {
+            const response = await fetch(`http://localhost:10000/follows/api/profile-card?memberId=${myId}&profileCardMemberId=${id}`)
+            const data = await response.json()
+            setOnwerInfo(data)
+        }
         getOwnerInfo()
-    }, [id, myId])
+    }, [id, myId, profileCardInfo])
 
     // 팔로우 카운트를 변환해주는 함수
     function formatKoreanNumber(num) {

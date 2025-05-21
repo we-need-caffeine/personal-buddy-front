@@ -39,16 +39,22 @@ S.MyPageMemberInfoFollowContainer = styled.div`
     ${gray5Color}
     ${fontSizeH8}
     ${fontWeightBold}
+    user-select: none; // 선택 제거
+    -webkit-user-select: none; // 크롬, 사파리
+    -moz-user-select: none; // 파이어폭스
+    -ms-user-select: none; // IE/Edge
 `
 
 S.MyPageMemberInfoFollow = styled.div`
     display: flex;
     margin: 0 5px;
+    cursor: pointer;
 `
 
 S.MyPageMemberInfoFollowCount = styled.div`
     ${mainGreenColor};
     margin-left: 2px;
+    cursor: pointer;
 `
 
 S.MyPageTapContainer = styled.div`

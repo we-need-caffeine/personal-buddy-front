@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import S from './style';
+import { HeaderContext } from '../../../context/HeaderContext';
 
 const Alert = ({memberId, handleAlertModal}) => {
 
@@ -7,6 +8,8 @@ const Alert = ({memberId, handleAlertModal}) => {
     const [alertInfo, setAlertInfo] = useState([]);
     // 알림 타입 정보
     const [alertType, setAlertType] = useState("");
+    // 헤더 이벤트 콘텍스트
+    const { setHeaderScroll } = useContext(HeaderContext);
 
     // 알림을 조회하는 함수
     const getAlerts = async() => {
@@ -89,15 +92,29 @@ const Alert = ({memberId, handleAlertModal}) => {
     useEffect(() => {
         if (handleAlertModal) {
             document.body.style.overflow = 'hidden';
+            setHeaderScroll(false)
         }
         return () => {
             document.body.style.overflow = 'auto';
+            setHeaderScroll(true)
         };
-    }, [handleAlertModal]);
+    }, [handleAlertModal, setHeaderScroll]);
 
     // 알림을 최초 조회하고, 알림 타입이 바뀔 때 마다 재조회
     useEffect(() => {
         if (memberId) {
+            // 알림을 조회하는 함수
+            const getAlerts = async() => {
+                let url = "";
+                if (alertType === null || alertType === "") {
+                    url = `http://localhost:10000/alerts/api/alert/list?memberId=${memberId}`
+                } else {
+                    url = `http://localhost:10000/alerts/api/alert/list?memberId=${memberId}&alertType=${alertType}`
+                }
+                const response = await fetch(url);
+                const alerts = await response.json();
+                setAlertInfo(alerts);
+            };
             getAlerts();
         }
     }, [memberId, alertType]);
