@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import S from './style';
 import { useSelector } from 'react-redux';
 
@@ -8,26 +8,22 @@ const Achievement = () => {
     const {currentUser} = useSelector((state) => state.member)
     // 로그인된 유저의 아이디
     const memberId = currentUser.id;
-
-    const achievements = S.achievementsDummy;
+    const [achievements, setAchievements] = useState([]);
+    
     useEffect(() => {
-        const getAchievements = async () => {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/achievements/api/achievement/list`)
-
-            const data = await response.json();
-            console.log(data);
-        }
+        if(!memberId) return;
 
         const getMemberAchievements = async () => {
             const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/achievements/api/achievement/${memberId}`)
 
-            const data = await response.json();
-            console.log(data);
+            const datas = await response.json();
+            setAchievements(datas);
+
+            return datas;
         }
 
-        getAchievements();
         getMemberAchievements();
-    },[])
+    },[memberId])
 
     return (
         <div>
@@ -36,8 +32,11 @@ const Achievement = () => {
             <S.AchievementListBox>
             {
                 achievements.map((achievement, i) => (
-                    <S.AchievementCard>
-                    <S.AchievementIcon src='/assets/images/contents/achievement/icons/achievement-default.png'/>
+                    <S.AchievementCard isDisplayed={achievement.memberAchievementDisplay == 1}>
+                    <S.AchievementIcon 
+                    $src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${achievement.achievementImgPath}&fileName=${encodeURIComponent(achievement.achievementImgName)}`}
+                        $isCompleted={achievement.achievementCompleted == 1}
+                        alt='/assets/images/contents/achievement/icons/achievement-default.png'/>
                     <S.DescriptionTitle>{achievement.achievementName}</S.DescriptionTitle>
                         <S.AchievementCardList>
                             <S.AchievementCardItem>
@@ -50,7 +49,7 @@ const Achievement = () => {
                             </S.AchievementCardItem>
                             <S.AchievementCardItem>
                                 <img src='/assets/images/contents/achievement/icons/achievement-check-ok.png' />
-                                (0 / {achievement.achievementMissionCount})
+                                ({achievement.achievementCurrentMissionCount} / {achievement.achievementMissionCount})
                             </S.AchievementCardItem>
                             <S.AchievementCardItem>
                                 <img src='/assets/images/contents/achievement/icons/achievement-check-ok.png' />
