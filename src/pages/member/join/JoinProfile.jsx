@@ -42,7 +42,7 @@ const JoinProfile = () => {
       imageForm.append("dataType", "profile");
 
 
-      const uploadRes = await fetch("http://localhost:10000/files/api/file-upload", {
+      const uploadRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/files/api/file-upload`, {
         method: "POST",
         body: imageForm
       });
@@ -74,7 +74,7 @@ const JoinProfile = () => {
     console.log("전송 데이터", completeMemberData);
 
     // JSON으로 회원가입 요청
-    const joinRes = await fetch("http://localhost:10000/members/api/join", {
+    const joinRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/members/api/join`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -117,7 +117,7 @@ const JoinProfile = () => {
   if (!nickname) return;
 
   try {
-    const res = await fetch(`http://localhost:10000/members/api/check/nickname?nickname=${encodeURIComponent(nickname)}`, {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/members/api/check/nickname?nickname=${encodeURIComponent(nickname)}`, {
       method: "GET",
     });
 

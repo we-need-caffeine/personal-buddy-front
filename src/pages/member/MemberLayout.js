@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -26,10 +26,15 @@ const LogoWrapper = styled.div`
   }
 `;
 
+
+
 const MemberLayout = () => {
+  
+  const navigate = useNavigate();
+
   return (
     <Wrapper>
-      <LogoWrapper>
+      <LogoWrapper onClick={() => navigate('/member/login')} style={{ cursor: 'pointer' }}>
         <img src="/assets/images/member/logo.png" alt="로고" />
       </LogoWrapper>
       <Outlet />

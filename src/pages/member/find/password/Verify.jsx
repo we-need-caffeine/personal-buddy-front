@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import S from './style';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,7 +6,6 @@ const Verify = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
-  const [serverCode, setServerCode] = useState(null);
   const [timer, setTimer] = useState(0);
 
   const [isNameValid, setIsNameValid] = useState(false);
@@ -14,6 +13,11 @@ const Verify = () => {
   const [isCodeValid, setIsCodeValid] = useState(false);
   const [codeSent, setCodeSent] = useState(false);
 
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [emailAuthCodeValid, setEmailAuthCodeValid] = useState(false);
+  const [emailVerifyMessage, setEmailVerifyMessage] = useState('');
+
+  const timerRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,12 +27,12 @@ const Verify = () => {
 
   const sendCode = async () => {
     try {
-      const response = await fetch("http://localhost:10000/sms/api/email/send", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/email/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email })
+        body: JSON.stringify(email)
       });
 
       const data = await response.json();
@@ -37,15 +41,18 @@ const Verify = () => {
         return;
       }
 
-      setServerCode(data.verificationCode);
+      // 테스트 전용 코드
+      console.log("이메일 인증 코드:", data.verificationCode);
+
       setCodeSent(true);
       setTimer(180);
-      alert(`※ 인증번호 [${data.verificationCode}] (테스트용)이 발송되었습니다.`);
+      alert(data.message || "이메일 인증번호가 전송되었습니다.");
 
-      const countdown = setInterval(() => {
+      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = setInterval(() => {
         setTimer((prev) => {
           if (prev <= 1) {
-            clearInterval(countdown);
+            clearInterval(timerRef.current);
             return 0;
           }
           return prev - 1;
@@ -57,26 +64,34 @@ const Verify = () => {
     }
   };
 
-  const verifyCode = async () => {
+  const handleCheckEmailCode = async () => {
     try {
-      const response = await fetch("http://localhost:10000/sms/api/email/verify-code", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/email/verify-code`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ code })
+        body: JSON.stringify(code)
       });
 
       const data = await response.json();
-      if (response.ok && data.isFlag) {
+      console.log("응답:", data);
+
+      if (data.isFlag) {
+        setEmailVerified(true);
+        setEmailAuthCodeValid(true);
+        setEmailVerifyMessage(data.message || "※ 이메일 인증 완료");
         setIsCodeValid(true);
-        alert(data.message || "인증 성공!");
+        clearInterval(timerRef.current);
       } else {
+        setEmailVerified(false);
+        setEmailAuthCodeValid(false);
         setIsCodeValid(false);
+        setEmailVerifyMessage(data.message || "※ 이메일 인증 실패");
         alert(data.message || "인증번호가 일치하지 않습니다.");
       }
-    } catch (err) {
-      console.error("인증 오류:", err);
+    } catch (error) {
+      console.error("인증번호 확인 오류:", error);
       alert("인증 확인 중 오류 발생");
     }
   };
@@ -84,22 +99,60 @@ const Verify = () => {
   const formatTime = (sec) =>
     `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isNameValid && isEmailValid && isCodeValid) {
-      navigate('/member/find-password/reset', { state: { name, email } });
-    } else {
-      alert('모든 항목을 올바르게 입력하고 인증을 완료해주세요.');
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!(isNameValid && isEmailValid && isCodeValid)) {
+    alert("모든 항목을 올바르게 입력하고 인증을 완료해주세요.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/members/api/find/password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        memberName: name,
+        memberEmail: email
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || "회원 정보 조회 실패");
+      return;
     }
-  };
+
+    const id = data.id;
+
+    navigate('/member/find-password/reset', {
+      state: {
+        id,
+        memberName: name,
+        memberEmail: email
+      }
+    });
+  } catch (err) {
+    console.error("비밀번호 찾기 요청 실패:", err);
+    alert("서버 오류 발생");
+  }
+};
 
   return (
     <S.Container>
       <S.Wrapper>
         <form onSubmit={handleSubmit}>
-          <S.Title>
-            <span>비밀번호 찾기</span>
-          </S.Title>
+          <S.TitleWrapper>
+            <S.Title>
+              <span>비밀번호 찾기</span>
+            </S.Title>
+            <S.StepText>
+              <span>1. 아이디 입력 &gt; <S.ActiveStep>2. 본인확인</S.ActiveStep> &gt; 3. 비밀번호 변경</span>
+            </S.StepText>
+          </S.TitleWrapper>
           <S.SubTitle>
             <span>본인확인 이메일로 인증</span>
           </S.SubTitle>
@@ -137,9 +190,15 @@ const Verify = () => {
                 />
                 <S.AuthCheckWrapper>
                   <S.TimerText>{formatTime(timer)}</S.TimerText>
-                  <S.VerifyButton type="button" onClick={verifyCode}>확인</S.VerifyButton>
+                  <S.VerifyButton type="button" onClick={handleCheckEmailCode}>확인</S.VerifyButton>
                 </S.AuthCheckWrapper>
               </S.InputWrapper>
+            )}
+
+            {emailVerifyMessage && (
+              <div style={{ color: isCodeValid ? '#01CD74' : '#FF3F3F', marginTop: '5px' }}>
+                {emailVerifyMessage}
+              </div>
             )}
 
             <S.SignupButton

@@ -84,7 +84,7 @@ const JoinInfo = () => {
   const handleSendEmailAuth = async () => {
     try {
 
-        const checkUrl = `http://localhost:10000/members/api/email/check?email=${encodeURIComponent(email)}`;
+        const checkUrl = `${process.env.REACT_APP_BACKEND_URL}/members/api/email/check?email=${encodeURIComponent(email)}`;
         const duplicateRes = await fetch(checkUrl, {
         method: "GET"
         });
@@ -97,7 +97,7 @@ const JoinInfo = () => {
         }
 
 
-        const response = await fetch("http://localhost:10000/sms/api/email/send", {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/email/send`, {
             method: "POST",
             headers: {
             "Content-Type": "application/json"
@@ -138,7 +138,7 @@ const JoinInfo = () => {
 
   const handleCheckEmailCode = async () => {
         try {
-        const response = await fetch("http://localhost:10000/sms/api/email/verify-code", {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/email/verify-code`, {
             method: "POST",
             headers: {
             "Content-Type": "application/json"
@@ -166,7 +166,7 @@ const JoinInfo = () => {
     };
 
     const handleSendPhoneAuth = async () => {
-      // const checkUrl = `http://localhost:10000/members/api/phone/check?phone=${encodeURIComponent(phone)}`;
+      // const checkUrl = `${process.env.REACT_APP_BACKEND_URL}/members/api/phone/check?phone=${encodeURIComponent(phone)}`;
       // const res = await fetch(checkUrl);
       // const data = await res.json();
     
@@ -177,7 +177,7 @@ const JoinInfo = () => {
       //   return;
       // }
     
-      // const sendRes = await fetch("http://localhost:10000/sms/api/sms/send", {
+      // const sendRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/sms/send`, {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(phone)
@@ -198,7 +198,7 @@ const JoinInfo = () => {
     };
 
     const handleCheckPhoneCode = async () => {
-      // const res = await fetch("http://localhost:10000/sms/api/phone/verify-code", {
+      // const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/phone/verify-code`, {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(phoneAuthCode)
