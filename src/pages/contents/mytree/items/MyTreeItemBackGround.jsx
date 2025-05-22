@@ -1,10 +1,11 @@
 import React from 'react';
+import S from '../style';
 
 const MyTreeItemBackground = () => {
   return (
-    <div>
+    <S.ItemCardListBox>
       배경 컴포넌트
-    </div>
+    </S.ItemCardListBox>
   );
 };
 

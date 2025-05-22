@@ -1,15 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import S from './style';
 
 const MyTreeContainer = () => {
   
+    const location = useLocation();
+    const pathName = location.pathname;
+
     const backgroundRef = useRef(null);
     const stickerRef = useRef(null);
     const isDragging = useRef(false);
     const startOffset = useRef({ x: 0, y: 0 });
     const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-
 
     const handleMouseDown = (e) => {
         const backgroundRect = backgroundRef.current.getBoundingClientRect();
@@ -64,6 +66,18 @@ const MyTreeContainer = () => {
         }
     }, [])
 
+  const getSeleted = (pathName) => {
+    if(pathName == "/main/contents/mytree") {
+      return 'all'
+    } else if(pathName == "/main/contents/mytree/background") {
+      return 'background'
+    } else if(pathName == "/main/contents/mytree/sticker"){
+      return 'sticker'
+    } else if(pathName == "/main/contents/mytree/tree"){
+      return 'tree'
+    }
+  }
+
   return (
     <div>
       <S.SubTitle>언젠가는 아름다워질 나의 나무 ✨</S.SubTitle>
@@ -86,12 +100,12 @@ const MyTreeContainer = () => {
       <S.SubTitle>아이템을 직접 적용 시켜봐요 😎</S.SubTitle>
       <S.MainTitle>아이템 목록 💼</S.MainTitle>
       <div>
-        <div>
-          <Link to={""}>전체</Link>
-          <Link to={"background"}>배경</Link>
-          <Link to={"sticker"}>스티커</Link>
-          <Link to={"tree"}>나무</Link>
-        </div>
+        <S.ItemTabBox>
+          <S.ItemTabLink selected={getSeleted(pathName) == 'all'} to={""}>전체</S.ItemTabLink>
+          <S.ItemTabLink selected={getSeleted(pathName) == 'background'} to={"background"}>배경</S.ItemTabLink>
+          <S.ItemTabLink selected={getSeleted(pathName) == 'sticker'} to={"sticker"}>스티커</S.ItemTabLink>
+          <S.ItemTabLink selected={getSeleted(pathName) == 'tree'} to={"tree"}>나무</S.ItemTabLink>
+        </S.ItemTabBox>
         <Outlet />
       </div>
     </div>
