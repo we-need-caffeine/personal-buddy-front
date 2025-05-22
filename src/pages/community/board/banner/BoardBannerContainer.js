@@ -20,6 +20,7 @@ const BoardBannerContainer = ({ hot }) => {
       setCurrentIndex((move) => move + 1);
   };
 
+
   // 현재 인덱스를 기준으로 슬라이더의 X축 이동값 계산 (320px 너비 + 100px 간격)
   const translateX = -(currentIndex * (320 + 100));
 
