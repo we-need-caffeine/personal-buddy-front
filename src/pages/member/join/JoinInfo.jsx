@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_green.css';
 import S from './joinInfoStyle';
-import { useNavigate } from 'react-router-dom';
+import { data, useNavigate } from 'react-router-dom';
 import { useJoin } from './JoinContext';
 
 const JoinInfo = () => {
@@ -111,6 +111,8 @@ const JoinInfo = () => {
             alert(data.message || "이메일 전송 실패");
             return;
         }
+        // 테스트 전용 코드
+        console.log("이메일 인증 코드:", data.verificationCode);
 
         alert(data.message || "이메일 인증번호가 전송되었습니다.");
         setShowAuthInput(true);
@@ -131,6 +133,8 @@ const JoinInfo = () => {
         alert("네트워크 오류가 발생했습니다.");
         }
     };
+  
+  
 
   const handleCheckEmailCode = async () => {
         try {
@@ -280,6 +284,7 @@ const JoinInfo = () => {
       // console.log("전화번호 유효성:", phoneValidation);
       // console.log("전화 인증코드 확인:", phoneAuthCodeValid);
       // console.log("최종 상태:", isFormValid);
+
   return (
     <S.Container>
       <S.Form onSubmit={handleSubmit}>
