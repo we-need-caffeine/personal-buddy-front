@@ -1,13 +1,16 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import MyTree from './items/MyTree';
+import S from './style';
 
 const MyTreeContainer = () => {
   return (
     <div>
-      나의 나무
-      <div>
+      <S.SubTitle>언젠가는 아름다워질 나의 나무 ✨</S.SubTitle>
+      <S.MainTitle>나의 성장 나무 🌳</S.MainTitle>
+      <MyTree>
         성장 나무 컴포넌트
-      </div>
+      </MyTree>
       <div>
         나무 꾸미기
         <div>
