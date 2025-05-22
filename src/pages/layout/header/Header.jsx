@@ -42,6 +42,8 @@ const Header = () => {
       const response = await fetch(`http://localhost:10000/alerts/api/alert/count/${memberId}`)
       const data = await response.json()
       setNotReadAlertCount(data)
+      console.log(data);
+      
     }
     getNotReadAlertCount()
   }, [memberId])
@@ -134,7 +136,7 @@ const Header = () => {
                   alt="알림 아이콘"
                   onClick={() => {handleAlertModal(true)}}
                 />
-                {notReadAlertCount > 0 && (
+                {notReadAlertCount === 0 && (
                   <S.NotReadAlertCount>
                     {notReadAlertCount > 99 ? "99+" : notReadAlertCount}
                   </S.NotReadAlertCount>
@@ -144,7 +146,7 @@ const Header = () => {
             {/* 프로필 영역 */}
             <S.ProfileBox>
               <S.MemberProfile
-                src={currentUser.memberImgPath}
+                src={`http://localhost:10000/images/profile/${currentUser.memberImgName}`}
                 onClick={() => {handleProfileCard(true)}}
                 onError={e => {
                   e.target.src = "/assets/images/header/default-member-img.png";
@@ -158,13 +160,14 @@ const Header = () => {
                   <ProfileCard
                     memberId={memberId}
                     profileCardMemberId={memberId}
-                    handleProfileCard={handleProfileCard}
+                    handleProfileCard={showProfileCard}
+                    onCancel={() => handleProfileCard(false)}
                   />
                 </S.ProfileCardDropdown>
               )}
               { showProfileCard && (
                 <S.CardBG 
-                  onClick={() => {handleProfileCard(false)}}
+                  onClick={() => handleProfileCard(false)}
                 />
               )}
             </S.ProfileBox>

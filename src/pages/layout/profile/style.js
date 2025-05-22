@@ -49,6 +49,7 @@ S.MemberStatusMessage = styled.div`
   ${fontSizeH9}
   ${fontWeightRegular}
   ${gray5Color}
+  width: 140px;
 `;
 
 S.FollowInfoContainer = styled.div`
