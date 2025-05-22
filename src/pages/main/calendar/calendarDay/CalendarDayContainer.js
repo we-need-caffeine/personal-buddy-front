@@ -7,9 +7,10 @@ import { CalendarContext } from '../../../../context/CalendarContext';
 const CalendarDayContainer = () => {
   const { currentUser } = useSelector((state) => state.member)
   const { state, action } = useContext(CalendarContext)
+  const {calendars} = state;
   const { memberId, calendarId } = useParams();
 
-  const calendar = state.filter(({id}) => id === Number(calendarId))[0];
+  const calendar = calendars.filter(({id}) => id === Number(calendarId))[0];
 
   return (
     <div style={{display:"flex"}}>

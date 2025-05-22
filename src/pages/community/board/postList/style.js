@@ -248,4 +248,26 @@ S.MetaInfo = styled.div`
         height: 12px;
     }
 `;
+
+// ---------- 프로필 모달 -----------
+S.ProfileCardDropdown = styled.div`
+    position: absolute;
+    top: ${({yLocation}) => (
+        `${yLocation}px`
+    )};
+    right: calc(100% - ${({xLocation}) => (
+        `${xLocation}px`
+    )});
+    transform: translateX(100%);
+    z-index: 9998;
+`;
+
+S.CardBG = styled.div`
+    position: fixed;
+    left: 0;
+    top : 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+`
 export default S;

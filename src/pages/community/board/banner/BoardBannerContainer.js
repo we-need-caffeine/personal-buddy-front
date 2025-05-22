@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import S from './style';
 import { Link } from 'react-router-dom';
+import FormatDate from '../../../../utils/formatDate/FormatDate';
 
 const BoardBannerContainer = ({ hot }) => {
   const [hotPosts, setHotPosts] = useState([]); // Hot 게시글 리스트 상태
@@ -18,6 +19,7 @@ const BoardBannerContainer = ({ hot }) => {
     if (currentIndex < hotPosts.length - visibleCount)
       setCurrentIndex((move) => move + 1);
   };
+
 
   // 현재 인덱스를 기준으로 슬라이더의 X축 이동값 계산 (320px 너비 + 100px 간격)
   const translateX = -(currentIndex * (320 + 100));
@@ -77,7 +79,7 @@ const BoardBannerContainer = ({ hot }) => {
                     }}
                       alt={`hot-${index}`}
                     />
-                    <S.NumberBox>{index + 1}</S.NumberBox> {/* 순위 번호 */}
+                    <S.NumberBox className="number-box">{index + 1}</S.NumberBox> {/* 순위 번호 */}
                   </S.HotImageBox>
                   <S.HotTag>{boardHashtag}</S.HotTag>
                   <S.HotTitle>{boardTitle}</S.HotTitle>
@@ -91,7 +93,7 @@ const BoardBannerContainer = ({ hot }) => {
                     />
                     <S.UserNickname>{memberNickname}</S.UserNickname>
                   </S.HotUserBox>
-                  <S.HotDate>{boardContentCreateDate}</S.HotDate>
+                  <S.HotDate>{FormatDate(boardContentCreateDate)}</S.HotDate>
                   <S.HotMetaBox>
                     <span>
                       <img
