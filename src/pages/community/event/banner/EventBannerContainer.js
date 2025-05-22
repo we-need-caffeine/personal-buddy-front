@@ -17,7 +17,6 @@ const EventBannerContainer = () => {
     });
   }, []);
 
-
   return (
     <S.EventWrapper>
       <S.SubTitle>BUDDYGROUND</S.SubTitle>
