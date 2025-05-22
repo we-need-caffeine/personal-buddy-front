@@ -35,18 +35,28 @@ const Header = () => {
     setShowAlertModal(state);
   }
   
-  // 읽지않은 알림을 최초로 실행시키기
+  // 읽지않은 알림의 수를 조회
   useEffect(() => {
-    // 읽지 않은 알림을 조회하는 함수
     const getNotReadAlertCount = async () => {
       const response = await fetch(`http://localhost:10000/alerts/api/alert/count/${memberId}`)
       const data = await response.json()
       setNotReadAlertCount(data)
-      console.log(data);
-      
     }
     getNotReadAlertCount()
   }, [memberId])
+
+  // 알림 버튼 클릭시, 알림을 읽음처리
+  const readAlerts = async() => {
+    await fetch(`http://localhost:10000/alerts/api/alert/read/${memberId}`, {
+        method: "PUT"
+    })
+    .then((res) => {
+        if (res.ok) {
+        } else {
+        }
+    })
+    .catch(console.error)
+  }
   
   // 헤더의 업 다운 이벤트
   useEffect(() => {
@@ -134,9 +144,12 @@ const Header = () => {
                 <S.AlertImg
                   src="/assets/images/header/alert.png"
                   alt="알림 아이콘"
-                  onClick={() => {handleAlertModal(true)}}
+                  onClick={() => {
+                    handleAlertModal(true)
+                    readAlerts()
+                  }}
                 />
-                {notReadAlertCount === 0 && (
+                {notReadAlertCount > 0 && (
                   <S.NotReadAlertCount>
                     {notReadAlertCount > 99 ? "99+" : notReadAlertCount}
                   </S.NotReadAlertCount>
