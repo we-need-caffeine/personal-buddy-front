@@ -65,17 +65,19 @@ S.Dot = styled.span`
 
 
 S.Banner1Text = styled.div`
+  
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 10%;
   color: white;
   font-size: 24px;
   font-weight: bold;
+  line-height: 1.2;
 `;
 
 S.Banner2Text = styled.div`
     position: absolute;
-  top: 50%;
+  top: 40%;
   left: 10%;
   color: white;
   font-size: 24px;
@@ -84,7 +86,7 @@ S.Banner2Text = styled.div`
 `
 S.Banner3Text = styled.div`
     position: absolute;
-  top: 50%;
+  top: 40%;
   left: 10%;
   color: white;
   font-size: 24px;

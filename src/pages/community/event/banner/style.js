@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { fontSizeH4, fontSizeH8, fontWeightBold, fontWeightRegular } from '../../../../globals/common';
+import { flexCenter, fontSizeH4, fontSizeH8, fontWeightBold, fontWeightRegular } from '../../../../globals/common';
 
 const S = {};
 
@@ -31,7 +31,7 @@ S.MainTitle = styled.div`
 `;
 
 S.EventBannerBox = styled.div`
-    display: flex;
+    ${flexCenter}
     gap: 20px;
     padding-bottom: 60px;
 `;
