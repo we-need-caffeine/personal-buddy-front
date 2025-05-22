@@ -35,9 +35,8 @@ const Header = () => {
     setShowAlertModal(state);
   }
   
-  // 읽지않은 알림을 최초로 실행시키기
+  // 읽지않은 알림의 수를 조회
   useEffect(() => {
-    // 읽지 않은 알림을 조회하는 함수
     const getNotReadAlertCount = async () => {
       const response = await fetch(`http://localhost:10000/alerts/api/alert/count/${memberId}`)
       const data = await response.json()
@@ -45,6 +44,19 @@ const Header = () => {
     }
     getNotReadAlertCount()
   }, [memberId])
+
+  // 알림 버튼 클릭시, 알림을 읽음처리
+  const readAlerts = async() => {
+    await fetch(`http://localhost:10000/alerts/api/alert/read/${memberId}`, {
+        method: "PUT"
+    })
+    .then((res) => {
+        if (res.ok) {
+        } else {
+        }
+    })
+    .catch(console.error)
+  }
   
   // 헤더의 업 다운 이벤트
   useEffect(() => {
@@ -98,14 +110,14 @@ const Header = () => {
       <S.Main>
         <S.Left>
           {/* 네비게이션 영역 */}
-          <NavLink to={`/main/${memberId}`}>
+          <NavLink to="/main">
             <S.IconBox>
               <img src="/assets/images/header/persenalBuddyIcon.png" alt="퍼스널 버디 아이콘" />
             </S.IconBox>
           </NavLink>
 
           <S.LinkBox>
-            <NavLink to={`/main/${memberId}`} end>일정관리</NavLink>
+            <NavLink to="/main" end>일정관리</NavLink>
             <NavLink to="/main/contents">컨텐츠</NavLink>
             <NavLink to="/main/community/event">이벤트</NavLink>
             <NavLink to="/main/community/board">커뮤니티</NavLink>
@@ -132,7 +144,10 @@ const Header = () => {
                 <S.AlertImg
                   src="/assets/images/header/alert.png"
                   alt="알림 아이콘"
-                  onClick={() => {handleAlertModal(true)}}
+                  onClick={() => {
+                    handleAlertModal(true)
+                    readAlerts()
+                  }}
                 />
                 {notReadAlertCount > 0 && (
                   <S.NotReadAlertCount>
@@ -144,7 +159,7 @@ const Header = () => {
             {/* 프로필 영역 */}
             <S.ProfileBox>
               <S.MemberProfile
-                src={currentUser.memberImgPath || "/assets/images/header/default-member-img.png"}
+                src={`http://localhost:10000/images/profile/${currentUser.memberImgName}`}
                 onClick={() => {handleProfileCard(true)}}
                 onError={e => {
                   e.target.src = "/assets/images/header/default-member-img.png";
@@ -158,13 +173,14 @@ const Header = () => {
                   <ProfileCard
                     memberId={memberId}
                     profileCardMemberId={memberId}
-                    handleProfileCard={handleProfileCard}
+                    handleProfileCard={showProfileCard}
+                    onCancel={() => handleProfileCard(false)}
                   />
                 </S.ProfileCardDropdown>
               )}
               { showProfileCard && (
                 <S.CardBG 
-                  onClick={() => {handleProfileCard(false)}}
+                  onClick={() => handleProfileCard(false)}
                 />
               )}
             </S.ProfileBox>

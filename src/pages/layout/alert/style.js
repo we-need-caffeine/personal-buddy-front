@@ -39,10 +39,11 @@ S.TopContainer = styled.div`
 `;
 
 S.SelectBox = styled.select`
-  max-width: 100px;
-  max-height: 30px;
-  padding: 5px 10px;
+  width: 100px;
+  height: 30px;
+  padding: 5px;
   border-radius: 5px;
+  ${fontSizeH8}
   border: 1px solid ${({ theme }) => theme.PALLETE.gray.gray4};
 `;
 
