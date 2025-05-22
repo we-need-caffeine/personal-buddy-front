@@ -3,6 +3,7 @@ import S from './style';
 import { data, Link } from 'react-router-dom';
 import FormatDate from '../../../../utils/formatDate/FormatDate';
 import ProfileCard from '../../../layout/profile/ProfileCard';
+import { useSelector } from 'react-redux';
 
 
 const BoardPostListContainer = ({
@@ -11,7 +12,10 @@ const BoardPostListContainer = ({
 
   const [activeOrder, setActiveOrder] = useState("최신순");
   const [activeTag, setActiveTag] = useState("전체일정");
-  
+
+  const { currentUser } = useSelector((state) => state.member); // Redux에서 로그인된 사용자 정보 가져오기
+  const currentMemberId = currentUser?.id;
+  const [profileCardPosition, setProfileCardPosition] = useState({x:0, y:0});
   const handleOrder = (e) => {
     const orderText = e.target.innerText.replaceAll(" ", "");
     setOrder(orderText);
@@ -26,14 +30,17 @@ const BoardPostListContainer = ({
 
   // 프로필 카드 상태
   const [showProfileCard, setShowProfileCard] = useState(false);
-
   const [selectedUser, setSelectedUser] = useState(null);
 
   // 프로필 카드를 열고 닫는 함수
-  const handleProfileCard = (state ,user =null) => {
-    setShowProfileCard(state);
-    if (user) setSelectedUser(user);
-    console.log(user)
+  const handleProfileCard = (state, user = null) => {
+    if(user != selectedUser){
+      setSelectedUser(user)
+      setShowProfileCard(prev => !prev);
+    }else{
+      setShowProfileCard(false);
+      setSelectedUser(null)
+    }
   }
 
   useEffect(() => {
@@ -122,12 +129,10 @@ const BoardPostListContainer = ({
                     e.preventDefault(); // 부모인 <Link> 클릭 방지 (기본 동작(링크 이동) 막기)
                     e.stopPropagation(); // 이벤트가 상위 요소로 전달되지 않게 막기
                     // console.log(`닉네임 ${memberNickname}의 프로필 클릭`);  
-                    handleProfileCard(true, {
-                      memberId,
-                      memberNickname,
-                      memberImgName,
-                      memberImgPath,
-                    });             
+                    console.log("x : ", e.clientX)
+                    console.log("y : ", e.clientY)
+                    handleProfileCard(showProfileCard, memberId);
+                      setProfileCardPosition({x: e.clientX, y: e.clientY})
                   }} 
                   
                 />
@@ -152,23 +157,24 @@ const BoardPostListContainer = ({
           </Link>
         ))
       )}
-    </S.PostGrid>
-
-      {/* { showProfileCard && selectedUser && selectedUser.memberId && (
-        <>
-          <S.ProfileCardDropdown>
-            <ProfileCard
-              memberId={selectedUser.memberId}
-              memberNickname={selectedUser.memberNickname}
-              memberImgPath={selectedUser.memberImgPath}
-              memberImgName={selectedUser.memberImgName}
-              onCancel={() => handleProfileCard(false)}
-            />
-          </S.ProfileCardDropdown>
-          <S.CardBG onClick={() => handleProfileCard(false)} />
-        </>
-      )} */}
       
+    </S.PostGrid>
+      {
+        showProfileCard && (
+        <S.CardBG onClick={(e) => handleProfileCard(showProfileCard, selectedUser)} >
+           <S.ProfileCardDropdown
+            xLocation={profileCardPosition.x}
+            yLocation={profileCardPosition.y}
+          >
+             <ProfileCard
+               memberId={currentMemberId}
+               profileCardMemberId={selectedUser}
+               handleProfileCard={showProfileCard}
+             />
+           </S.ProfileCardDropdown>
+        </S.CardBG>
+      )}
+        
     </>
   );
 };
