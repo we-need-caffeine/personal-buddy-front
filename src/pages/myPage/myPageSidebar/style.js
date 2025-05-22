@@ -26,7 +26,9 @@ S.MyPageMemberInfoContainer = styled.div`
 S.MyPageMemberInfoNickName = styled.div`
     ${fontSizeH6}
     ${fontWeightBold}
+    text-align: center;
     margin-top: 30px;
+    width: 140px;
     cursor: pointer;
 `
 
@@ -35,6 +37,8 @@ S.MyPageMemberInfoStatusMessage = styled.div`
     ${gray5Color}
     ${fontWeightRegular}
     margin-top: 10px;
+    text-align: center;
+    width: 140px;
 `
 
 S.MyPageMemberInfoFollowContainer = styled.div`

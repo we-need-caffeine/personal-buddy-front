@@ -18,7 +18,7 @@ const ConfirmModal = ({ handleConfrmModal, title, message, onConfirm, onCancel }
             setHeaderScroll(true)
         };
     }, [handleConfrmModal, setHeaderScroll]);
-
+    
     if (!handleConfrmModal) return (
         <>
         </>

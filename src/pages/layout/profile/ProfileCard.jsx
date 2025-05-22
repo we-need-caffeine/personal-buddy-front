@@ -69,8 +69,12 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard, onCancel
             }}
           />
           <S.MemberInfoTextContainer>
-            <S.MemberNickName>{profileCardInfo.memberNickname}</S.MemberNickName>
-            <S.MemberStatusMessage>{profileCardInfo.memberStatusMessage || '상태메세지 없음'}</S.MemberStatusMessage>
+            <S.MemberNickName>
+              {profileCardInfo.memberNickname}
+            </S.MemberNickName>
+            <S.MemberStatusMessage>
+              {profileCardInfo.memberStatusMessage || '상태메세지 없음'}
+            </S.MemberStatusMessage>
           </S.MemberInfoTextContainer>
         </S.MemberInfoContainer>
         <S.FollowInfoContainer>
