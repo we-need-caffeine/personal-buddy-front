@@ -189,22 +189,22 @@ const JoinProfile = () => {
               >
                 <input
                   type="text"
-                  placeholder="닉네임을 입력해주세요. (최대 14자)"
-                  maxLength="14"
+                  placeholder="닉네임을 입력해주세요. (최대 12자)"
+                  maxLength="12"
                   {...register('memberNickName', {
                     required: '닉네임을 입력해주세요.',
                     maxLength: {
-                      value: 14,
-                      message: '닉네임은 최대 14자까지 가능합니다.',
+                      value: 12,
+                      message: '닉네임은 최대 12자까지 가능합니다.',
                     },
                     pattern: {
-                      value: /^[가-힣a-zA-Z0-9]{1,14}$/,
-                      message: '공백, 특수 문자(!, @, # 등) 를 제외한 문자만 가능합니다. 최대 14자',
+                      value: /^[가-힣a-zA-Z0-9]{1,12}$/,
+                      message: '공백, 특수 문자(!, @, # 등) 를 제외한 문자만 가능합니다. 최대 12자',
                     },
                   })}
                   onBlur={handleNicknameBlur}
                 />
-                <span>{watchNickname.length} / 14</span>
+                <span>{watchNickname.length} / 12</span>
               </S.InputWrapper>
             </S.Wrapper>
 
