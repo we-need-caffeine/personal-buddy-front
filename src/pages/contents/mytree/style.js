@@ -71,7 +71,7 @@ S.MyTreeItemStickerIcon = styled.div`
     z-index: 1000;
     box-sizing: border-box;
     &:hover{
-        border: dashed 1px rgb(36, 255, 84);
+        border: dashed 3px rgb(36, 255, 84);
     }
 `;
 
