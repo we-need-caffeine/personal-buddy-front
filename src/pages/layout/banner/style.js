@@ -4,17 +4,21 @@ import { fontWeightRegular } from '../../../globals/common';
 const S = {};
 
 S.BannerWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  max-width: 1920px;
+  width: 100%;        
   height: 300px;
-  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+
+  .swiper-slide {
+    position: relative;
+    width: 100%;
+    height: 300px;
+  }
 
   .swiper-slide img {
-    width: 100%;
-    height: 100%;
+    width: 100vw;             
+    height: 300px;
     object-fit: cover;
-    border-radius: 0;
   }
 
   .swiper-button-prev,
@@ -23,13 +27,15 @@ S.BannerWrapper = styled.div`
   }
 
   .swiper-pagination-bullet-active {
-    background: #00C896 ;
+    background: #00C896;
   }
 `;
 
+
 S.SliderImage = styled.div`
-  width: 1920px;
-  height: 300px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 `
 
 S.bannerTitle = styled.div`
@@ -38,23 +44,23 @@ S.bannerTitle = styled.div`
     margin-bottom: 10px;
 `
 
-S.Dot = styled.span`
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: ${({ active }) => (active ? '#00C896' : '#ddd')};
-    cursor: pointer;
-    transition: background 0.3s;
+S.DotsContainer = styled.div`
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
 `;
 
-S.DotsContainer = styled.div`
-    position: absolute; 
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 8px;
-    z-index: 10;
+S.Dot = styled.span`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: ${({ active }) => (active ? '#00C896' : '#ddd')};
+  cursor: pointer;
+  transition: background 0.3s;
 `;
 
 

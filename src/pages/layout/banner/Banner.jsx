@@ -56,6 +56,7 @@ const Banner = () => {
           </S.Banner2Text>
         </SwiperSlide>
       </Swiper>
+      
          <S.DotsContainer>
         {[...Array(totalSlides)].map((_, i) => (
           <S.Dot
