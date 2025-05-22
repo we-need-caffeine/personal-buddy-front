@@ -6,8 +6,9 @@ import { useSelector } from "react-redux";
 const CalendarHeader = () => {
   const { currentUser } = useSelector((state) => state.member)
   const { state } = useContext(CalendarContext)
-
-  const calendarList = state.map(({id, calendarTitle}) => (
+  const { calendars } = state
+  //console.log("calendars:", calendars);
+  const calendarList = calendars.map(({id, calendarTitle}) => (
     <NavLink key={id} to={`/main/${currentUser.id}/${id}`}>{calendarTitle}</NavLink>
   ))
 

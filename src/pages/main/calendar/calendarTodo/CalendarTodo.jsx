@@ -1,12 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import S from "./style";
 import { useParams } from "react-router-dom";
 import { CalendarContext } from "../../../../context/CalendarContext";
 
 const CalendarTodo = () => {
-  
   const { memberId, calendarId } = useParams();
-  const {state, actions} = useContext(CalendarContext);
+  const { state } = useContext(CalendarContext);
+  const { calendars, todos: contextTodos } = state;
 
   const [rotated, setRotated] = useState(false);
   const [todos, setTodos] = useState([]);
@@ -14,13 +14,35 @@ const CalendarTodo = () => {
   const [todoInput, setTodoInput] = useState("");
   const [selectedId, setSelectedId] = useState(null);
 
+  useEffect(() => {
+    const todosNotCompleted = [];
+    const todosCompleted = [];
+
+    contextTodos.forEach((todos) => {
+      todos.forEach((todo) => {
+        const formattedTodo = {
+          id: todo.id,
+          text: todo.todoListContent,
+        };
+
+        if (todo.todoListIsCompleted === 0) {
+          todosNotCompleted.push(formattedTodo);
+        } else if (todo.todoListIsCompleted === 1) {
+          todosCompleted.push(formattedTodo);
+        }
+      });
+    });
+
+    setTodos(todosNotCompleted);
+    setCompletedTodos(todosCompleted);
+  }, [calendarId, contextTodos]);
+
   const handleRotate = () => {
     setRotated((prev) => !prev);
   };
 
   const handleAddTodo = async () => {
     if (todoInput.trim() === "") return;
-
     try {
       const response = await fetch(
         "http://localhost:10000/todo-lists/api/register",
@@ -31,22 +53,18 @@ const CalendarTodo = () => {
           },
           body: JSON.stringify({
             todoListContent: todoInput,
-            calendarId : calendarId
+            calendarId: calendarId,
           }),
         }
       );
-
       if (!response.ok) {
         throw new Error("할 일 등록 실패");
       }
-
       const data = await response.json();
-
       const savedTodo = {
-        id: data.id ,
+        id: data.id,
         text: todoInput,
       };
-
       setTodos((prev) => [...prev, savedTodo]);
       setTodoInput("");
     } catch (error) {
@@ -54,19 +72,65 @@ const CalendarTodo = () => {
     }
   };
 
-  const handleToggleTodo = (todo, isCompleted) => {
-    if (isCompleted) {
-      setCompletedTodos((prev) => prev.filter((t) => t.id !== todo.id));
-      setTodos((prev) => [...prev, todo]);
-    } else {
-      setTodos((prev) => prev.filter((t) => t.id !== todo.id));
-      setCompletedTodos((prev) => [...prev, todo]);
+  const handleToggleTodo = async (todo, isCompleted) => {
+    const updatedStatus = isCompleted ? 0 : 1;
+    try {
+      const response = await fetch(
+        `http://localhost:10000/todo-lists/api/update`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            todoListContent: todo.text,
+            todoListIsCompleted: updatedStatus,
+            id: todo.id,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("할 일 상태 업데이트 실패");
+      }
+
+      const updatedTodo = { ...todo, todoListIsCompleted: updatedStatus };
+
+      if (isCompleted) {
+        setCompletedTodos((prev) => prev.filter((t) => t.id !== todo.id));
+        setTodos((prev) => [...prev, updatedTodo]);
+      } else {
+        setTodos((prev) => prev.filter((t) => t.id !== todo.id));
+        setCompletedTodos((prev) => [...prev, updatedTodo]);
+      }
+
+      setSelectedId(null);
+    } catch (error) {
+      console.error("할 일 완료 에러:", error);
     }
-    setSelectedId(null);
   };
 
-  const handleRemoveTodo = (idToRemove) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== idToRemove));
+  const handleRemoveTodo = async (idToRemove) => {
+    try {
+      const response = await fetch(
+        `http://localhost:10000/todo-lists/api/${idToRemove}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("서버에서 삭제 실패");
+      }
+
+      // ✅ 두 목록에서 모두 제거
+      setTodos((prev) => prev.filter((todo) => todo.id !== idToRemove));
+      setCompletedTodos((prev) =>
+        prev.filter((todo) => todo.id !== idToRemove)
+      );
+    } catch (error) {
+      console.error("할 일 삭제 에러:", error);
+    }
     setSelectedId(null);
   };
 
@@ -83,7 +147,6 @@ const CalendarTodo = () => {
           <S.CircleIcon
             src="/assets/images/main/calendar/circle.png"
             alt="체크 이미지"
-            onClick={() => console.log("입력창 체크 아이콘")}
           />
           <S.AddIcon
             src="/assets/images/main/calendar/add.png"
@@ -144,9 +207,20 @@ const CalendarTodo = () => {
                 <S.CircleIcon
                   src="/assets/images/main/calendar/check.png"
                   alt="완료 체크"
-                  onClick={() => handleToggleTodo(todo, true)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleToggleTodo(todo, true);
+                  }}
                 />
                 <S.TodoTextWrapper>{todo.text}</S.TodoTextWrapper>
+                <S.DeleteIcon
+                  src="/assets/images/main/calendar/delete.png"
+                  alt="삭제 아이콘"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemoveTodo(todo.id);
+                  }}
+                />
               </S.TodoDone>
             ))}
           </S.DoneTodoWrapper>
