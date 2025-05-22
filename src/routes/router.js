@@ -138,7 +138,7 @@ const router = createBrowserRouter([
                     element: <MyTreeContainer />, // 성장나무
                     children: [
                       {
-                        path: "all",
+                        path: "",
                         element: <MyTreeItemsAll />, // 성장나무 - 전체 /main/contents/mytree
                       },
                       {

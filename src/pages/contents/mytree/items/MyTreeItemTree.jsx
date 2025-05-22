@@ -3,9 +3,9 @@ import S from '../style';
 
 const MyTreeItemTree = () => {
     return (
-        <div>
+        <S.ItemCardListBox>
             내 나무 돌리도
-        </div>
+        </S.ItemCardListBox>
     );
 };
 
