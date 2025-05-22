@@ -54,6 +54,12 @@ S.Title = styled.div`
   }
 `;
 
+S.ErrorMessage = styled.div`
+  color: red;
+  font-size: 14px;
+  margin-top: -10px;
+`;
+
 S.SubTitle = styled.div`
   display: flex;
   flex-direction: column;

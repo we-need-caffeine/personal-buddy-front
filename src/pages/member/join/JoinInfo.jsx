@@ -97,7 +97,7 @@ const JoinInfo = () => {
         }
 
 
-        const response = await fetch("http://localhost:10000/sms/api/sendEmail", {
+        const response = await fetch("http://localhost:10000/sms/api/email/send", {
             method: "POST",
             headers: {
             "Content-Type": "application/json"
@@ -138,7 +138,7 @@ const JoinInfo = () => {
 
   const handleCheckEmailCode = async () => {
         try {
-        const response = await fetch("http://localhost:10000/sms/api/email/verifyCode", {
+        const response = await fetch("http://localhost:10000/sms/api/email/verify-code", {
             method: "POST",
             headers: {
             "Content-Type": "application/json"
@@ -177,7 +177,7 @@ const JoinInfo = () => {
       //   return;
       // }
     
-      // const sendRes = await fetch("http://localhost:10000/sms/api/sendSms", {
+      // const sendRes = await fetch("http://localhost:10000/sms/api/sms/send", {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(phone)
@@ -198,7 +198,7 @@ const JoinInfo = () => {
     };
 
     const handleCheckPhoneCode = async () => {
-      // const res = await fetch("http://localhost:10000/sms/api/phone/verifyCode", {
+      // const res = await fetch("http://localhost:10000/sms/api/phone/verify-code", {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(phoneAuthCode)

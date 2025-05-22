@@ -22,12 +22,31 @@ const FindId = () => {
 
   const navigate = useNavigate();
 
-  
-
   const formatTimer = (sec) =>
     `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
 
-  const handleSendPhoneAuth = () => {
+  const handleSendPhoneAuth = async () => {
+    // 실제 서버 연동 시
+    /*
+    try {
+      const res = await fetch('http://localhost:10000/sms/api/phone/send-code', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ phone })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        alert('※ 인증번호가 발송되었습니다.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('인증번호 발송 실패');
+    }
+    */
+
+    // 테스트용 코드
     alert('※ 인증번호 [000000] (테스트용)이 발송되었습니다.');
     setShowAuthInput(true);
     setAuthResultMessage('※ 인증번호가 발송되었습니다. (000000)');
@@ -46,7 +65,8 @@ const FindId = () => {
     }, 1000);
   };
 
-  const handleCheckPhoneCode = () => {
+  const handleCheckPhoneCode = async () => {
+    // 테스트용 인증
     if (phoneAuthCode === '000000') {
       setIsAuthValid(true);
       setAuthResultMessage('※ 휴대전화번호 인증 완료');
@@ -55,44 +75,73 @@ const FindId = () => {
       setIsAuthValid(false);
       setAuthResultMessage('※ 인증번호가 올바르지 않습니다');
     }
+
+    // 실제 서버 연동 시
+    /*
+    try {
+      const res = await fetch("http://localhost:10000/sms/api/phone/verify-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phone: phone,
+          code: phoneAuthCode
+        })
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.isFlag) {
+        setIsAuthValid(true);
+        setAuthResultMessage(data.message || "※ 휴대전화번호 인증 완료");
+        clearInterval(timerRef.current);
+      } else {
+        setIsAuthValid(false);
+        setAuthResultMessage(data.message || "※ 인증번호가 올바르지 않습니다");
+      }
+    } catch (err) {
+      console.error(err);
+      setIsAuthValid(false);
+      setAuthResultMessage("※ 서버 오류로 인증 실패");
+    }
+    */
   };
 
   const onSubmit = async (data) => {
-  if (!isAuthValid) {
-    alert('인증번호 확인을 완료해주세요.');
-    return;
-  }
-
-  try {
-    const res = await fetch("http://localhost:10000/members/api/find/email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        memberName: data.memberName,
-        memberPhone: data.phone
-      }),
-    });
-
-    if (!res.ok) {
-      throw new Error("이메일 찾기 실패");
+    if (!isAuthValid) {
+      alert('인증번호 확인을 완료해주세요.');
+      return;
     }
 
-    const foundUser = await res.json();
+    try {
+      const res = await fetch("http://localhost:10000/members/api/find/email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          memberName: data.memberName,
+          memberPhone: data.phone
+        }),
+      });
 
-    navigate("/member/find-id-complete", {
-      state: {
-        memberName: foundUser.memberName,
-        memberEmail: foundUser.memberEmail,
-        memberCreateDate: foundUser.memberCreateDate,
+      if (!res.ok) {
+        throw new Error("이메일 찾기 실패");
       }
-    });
-  } catch (err) {
-    console.error(err);
-    alert("이메일 찾기 실패");
-  }
-};
+
+      const foundUser = await res.json();
+
+      navigate("/member/find-id-complete", {
+        state: {
+          memberName: foundUser.memberName,
+          memberEmail: foundUser.memberEmail,
+          memberCreateDate: foundUser.memberCreateDate,
+        }
+      });
+    } catch (err) {
+      console.error(err);
+      alert("이메일 찾기 실패");
+    }
+  };
 
   return (
     <S.Container>
@@ -163,7 +212,12 @@ const FindId = () => {
             )}
 
             {/* 제출 */}
-            <S.SignupButton type="submit" className={isAuthValid && watch('memberName') && watch('phone') ? 'active' : ''}>다음</S.SignupButton>
+            <S.SignupButton
+              type="submit"
+              className={isAuthValid && watch('memberName') && watch('phone') ? 'active' : ''}
+            >
+              다음
+            </S.SignupButton>
           </S.Inputs>
         </form>
       </S.Wrapper>
