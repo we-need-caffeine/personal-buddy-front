@@ -32,11 +32,6 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard, onCancel
         followFavorite: profileCardInfo.favorite
       })
     })
-
-    // console.log(profileCardInfo);
-    // console.log(profileCardInfo.id);
-    // console.log(memberId);
-    // console.log(profileCardInfo.favorite);
   }
 
   // 최초로 프로필 정보를 받는 함수
@@ -99,7 +94,7 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard, onCancel
 
                 <S.FollowBtn
                   onClick={() => handleFollow()} 
-                  isFollow={profileCardInfo.isFollow}
+                  $isFollow={profileCardInfo.isFollow}
                 >
                   {profileCardInfo.isFollow === 1 ? (
                     <span>팔로잉</span>

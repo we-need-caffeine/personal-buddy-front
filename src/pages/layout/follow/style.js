@@ -64,7 +64,9 @@ S.SearchBox = styled.div`
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: 240px;
+  width: ${({$memberId, $profileMemberId}) =>
+    $memberId === $profileMemberId ? "240px" : "350px"
+  };
   height: 30px;
   border: 1px solid ${({ theme }) => theme.PALLETE.gray.gray4};
   border-radius: 5px;
@@ -93,30 +95,12 @@ S.SearchInput = styled.textarea`
 S.ListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 370px;
+  gap: 20px;
+  padding: 0 25px;
+  height: 350px;
+  padding-bottom: 20px;
   overflow-y: auto;
   overflow-x: hidden;
-  gap: 20px;
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  &::-webkit-scrollbar-track {
-    background: #f0f0f0;
-    border-radius: 10px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #b0b0b0;
-    border-radius: 10px;
-    border: 2px solid #f0f0f0;
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background: #888;
-  }
-  &::-webkit-scrollbar-corner {
-    background: #f0f0f0;
-  }
 `
 
 S.ItemContainer = styled.div`
@@ -128,6 +112,7 @@ S.ItemContainer = styled.div`
 `
 
 S.MemberInfoContainer = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
 `
@@ -168,7 +153,8 @@ S.MemberStatusFollow = styled.span`
 S.MemberFavoriteImg = styled.img`
   width: 14px;
   height: 13px;
-  padding-bottom: 2px;
+  position: relative;
+  top: -1px;
 `
 
 S.MemberStatusMessage = styled.span`
@@ -189,6 +175,22 @@ S.UnFollowBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+`
+
+S.ProfileCardDropdown = styled.div`
+    position: absolute;
+    top: 40px;
+    left: 0px;
+    z-index: 10003;
+`;
+
+S.CardBG = styled.div`
+    position: fixed;
+    left: 0;
+    top : 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10002;
 `
 
 export default S;

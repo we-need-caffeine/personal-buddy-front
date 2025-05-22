@@ -114,8 +114,8 @@ S.FollowBtn = styled.button`
     border: none;
     ${whiteColor}
     ${fontSizeH8}
-    background-color: ${({ isFollow, theme }) => 
-        isFollow === 1 ? theme.PALLETE.gray.gray4 : theme.PALLETE.primary.mainGreen
+    background-color: ${({ $isFollow, theme }) => 
+        $isFollow === 1 ? theme.PALLETE.gray.gray4 : theme.PALLETE.primary.mainGreen
     };
 `
 
