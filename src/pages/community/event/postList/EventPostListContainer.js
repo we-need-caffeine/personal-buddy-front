@@ -58,7 +58,6 @@ const EventPostListContainer = () => {
             <div>time</div>
           </div>
       </div>   
-
         
 
       </S.PostListWrapper>
