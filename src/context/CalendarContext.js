@@ -14,6 +14,7 @@ const CalendarProvider = ({ children }) => {
   const [colors, setColors] = useState([]);
   const [calendars, setCalendars] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
+
   const [calendarIndex, setCalendarIndex] = useState(null);
   const memberId = useSelector((state) => state.member.currentUser.id);
   const [selectedCalendarId, setSelectedCalendarId] = useState(null);
@@ -43,8 +44,7 @@ const CalendarProvider = ({ children }) => {
         allTodos.push(calendar.todoLists);
       });
 
-      setCalendarIndex(datas.calendars[0].calendarIndex);
-      //console.log(datas);
+      setCalendarIndex(datas.calendars[0].calendarIndex);;
       // 객체 -> 배열로 데이터 값
       const { calendars } = await datas;
       setCalendars(calendars);
@@ -71,8 +71,8 @@ const CalendarProvider = ({ children }) => {
   }, [memberId]);
 
   useEffect(() => {
-    const categoryTitles = [];
-    const getCategory = async () => {
+ 
+    const getCategories = async () => {
       const response = await fetch(
          `${process.env.REACT_APP_BACKEND_URL}/schedules/api/categories`,
          {
@@ -81,20 +81,20 @@ const CalendarProvider = ({ children }) => {
         );
         const datas = await response.json();
         datas.forEach((category) => {
-          categoryTitles.push(category.scheduleCategoryTitle);
+          categories.push(category.scheduleCategoryTitle);
         })
-        setCategories(categoryTitles);
-        //console.log(categoryTitles);
+        setCategories(categories);
     };
-    getCategory();
+    getCategories();
   }, [memberId])
 
+ 
   const value = {
     state: {
       calendars,
       selectedCalendarId,
       colors,
-      categories,
+      categories
     },
     actions: {
       //  할일, 캘린더, 캘린더 공유, 일정, 일정 공유
