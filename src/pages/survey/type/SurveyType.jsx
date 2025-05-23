@@ -1,54 +1,87 @@
 import React, { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { SurveyContext } from '../../../context/SurveyContext';
+import S from './style';
+
+
+// 한글 카테고리 → 영문 키 매핑
+const categoryMap = {
+  '음식': 'food',
+  '운동': 'health',
+  '음악': 'music',
+  '영화': 'movie',
+  '독서': 'book',
+  '패션': 'fashion',
+  '여행': 'travel',
+};
+
+const categories = Object.keys(categoryMap); // 한글 리스트로 구성
 
 const SurveyType = () => {
-  const { state, actions } = useContext(SurveyContext)
-  const { insert, insertConfirm } = actions
-  const [catogerys, setCategorys] = useState([])
-
+  const { actions } = useContext(SurveyContext);
+  const { insert, insertConfirm } = actions;
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const navigate = useNavigate();
 
-  const onClickToCheck = (e) => {
-    let value = e.target.value
-    if(e.target.checked){
-      setCategorys([...catogerys, value])
+  const handleClickTag = (tag) => {
+    if (selectedCategories.includes(tag)) {
+      setSelectedCategories(selectedCategories.filter((item) => item !== tag));
     } else {
-      setCategorys(catogerys.filter((c) => c !== value))
+      setSelectedCategories([...selectedCategories, tag]);
     }
-  }
+  };
 
-  const onClickToInsertAndNavigate = () => {
-    insert(catogerys)
-    insertConfirm(catogerys[0])
-    navigate(catogerys[0])
-  }
+  const handleNext = () => {
+    if (selectedCategories.length < 2) {
+      alert('관심사를 최소 2개 이상 선택해주세요.');
+      return;
+    }
+
+    insert(selectedCategories);
+    insertConfirm(selectedCategories[0]);
+
+    const englishKey = categoryMap[selectedCategories[0]];
+    navigate(`/survey/${englishKey}`);
+  };
 
   return (
-    <div>
-      <div>타입</div>
-      <div>
-        <label>
-          <input onClick={onClickToCheck} type='checkbox' value="food" />
-          <p>음식</p>
-        </label>
-      </div>
-      <div>
-        <label>
-          <input onClick={onClickToCheck} type='checkbox' value="travel" />
-          <p>여행</p>
-        </label>
-      </div>
-      <div>
-        <label>
-          <input  onClick={onClickToCheck}type='checkbox' value="health" />
-          <p>운동</p>
-        </label>
-      </div>
-      <div>
-        <button onClick={onClickToInsertAndNavigate}>다음으로</button>
-      </div>
-    </div>
+    <S.Container>
+      <S.Left>
+        <S.SpeechBubble>
+          더 나은 맞춤형 경험을 위해 당신의 관심사를<br />
+          알려주세요! 선택해주신 관심사를 바탕으로<br />
+          유용한 정보와 맞춤형 추천을 제공해드립니다.
+        </S.SpeechBubble>
+        <S.LogoImg src="/assets/images/logo/buddy-logo.png" alt="로고 이미지" />
+      </S.Left>
+
+      <S.Right>
+        <S.RightWrapper>
+          <div>
+            <S.MainTitle>0. 관심사를 선택해 주세요</S.MainTitle>
+            <S.SubTitle><span>*필수 </span>최소 2개 이상</S.SubTitle>
+
+            <S.Tags>
+              {categories.map((tag, idx) => (
+                <S.Tag
+                  key={idx}
+                  className={selectedCategories.includes(tag) ? 'selected' : ''}
+                  onClick={() => handleClickTag(tag)}
+                >
+                  {tag}
+                </S.Tag>
+              ))}
+            </S.Tags>
+          </div>
+
+          <S.NextBtnWrapper>
+            <S.NextBtn type="button" onClick={handleNext}>
+              다음으로
+            </S.NextBtn>
+          </S.NextBtnWrapper>
+        </S.RightWrapper>
+      </S.Right>
+    </S.Container>
   );
 };
 
