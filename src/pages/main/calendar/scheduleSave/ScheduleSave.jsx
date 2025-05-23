@@ -8,7 +8,8 @@ import { CalendarContext } from "../../../../context/CalendarContext";
 const ScheduleSave = () => {
   const { memberId, calendarId } = useParams();
   const { state } = useContext(CalendarContext);
-  const { colors, categories } = state;
+  const { calendars, colors, categories } = state;
+  const [calendarMembers, setCalendarMembers] = useState([]);
   const [mainCategory, setMainCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [mainOpen, setMainOpen] = useState(false);
@@ -42,7 +43,6 @@ const ScheduleSave = () => {
   const memberRef = useRef(null);
   const mainRef = useRef(null);
   const subRef = useRef(null);
-  //console.log(categories);
   const mainCategories = categories;
   const subCategories = {
     운동: ["운동", "독서", "명상"],
@@ -55,7 +55,6 @@ const ScheduleSave = () => {
     건강: ["병원방문", "운동", "건강검진", "약복용"],
   };
 
-  //console.log(categories);
   const members = ["장재영", "양진영", "함지현"];
   const repeatOptions = ["없음", "매일", "매주", "선택한 날짜의 요일"];
 
@@ -64,6 +63,15 @@ const ScheduleSave = () => {
       prev.includes(name) ? prev.filter((m) => m !== name) : [...prev, name]
     );
   };
+
+  useEffect(() => {
+    //console.log(calendars);
+    calendars.forEach((calendar) => {
+      if(calendar.id === Number(calendarId)) {
+
+      }
+    })
+  })
 
   const saveSchedule = async () => {
     const response = await fetch (
