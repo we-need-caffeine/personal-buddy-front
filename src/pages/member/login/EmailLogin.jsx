@@ -1,17 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import {
-  InputGroup,
-  InputWrapper,
-  Input,
-  Label,
-  ClearIcon,
-  TogglePasswordIcon,
-  RememberMe,
-  LoginButton,
-  ErrorMessage
-} from './loginStyle';
+import S from './loginStyle';
 
 const EmailLogin = () => {
   const {
@@ -73,9 +63,9 @@ const EmailLogin = () => {
         .catch(console.error);
     })}>
       {/* 이메일 입력 */}
-      <InputGroup>
-        <InputWrapper>
-          <Input
+      <S.InputGroup>
+        <S.InputWrapper>
+          <S.Input
             type="email"
             id="email"
             className={email ? 'filled' : ''}
@@ -87,22 +77,22 @@ const EmailLogin = () => {
               },
             })}
           />
-          <Label htmlFor="email">이메일</Label>
-          <ClearIcon
+          <S.Label htmlFor="email">이메일</S.Label>
+          <S.ClearIcon
             src="/assets/images/member/login-input-cancel-icon.png"
             alt="입력 취소"
             onClick={() => setValue('memberEmail', '')}
           />
-        </InputWrapper>
-        <ErrorMessage show={!!errors.memberEmail}>
+        </S.InputWrapper>
+        <S.ErrorMessage show={!!errors.memberEmail}>
           {errors.memberEmail?.message || '⠀'}
-        </ErrorMessage>
-      </InputGroup>
+        </S.ErrorMessage>
+      </S.InputGroup>
 
       {/* 비밀번호 입력 */}
-      <InputGroup>
-        <InputWrapper>
-          <Input
+      <S.InputGroup>
+        <S.InputWrapper>
+          <S.Input
             type={showPassword ? 'text' : 'password'}
             id="password"
             className={password ? 'filled' : ''}
@@ -114,13 +104,13 @@ const EmailLogin = () => {
               },
             })}
           />
-          <Label htmlFor="password">비밀번호</Label>
-          <ClearIcon
+          <S.Label htmlFor="password">비밀번호</S.Label>
+          <S.ClearIcon
             src="/assets/images/member/login-input-cancel-icon.png"
             alt="입력 취소"
             onClick={() => setValue('memberPassword', '')}
           />
-          <TogglePasswordIcon
+          <S.TogglePasswordIcon
             src={
               showPassword
                 ? '/assets/images/member/see-password-icon-true.png'
@@ -129,14 +119,14 @@ const EmailLogin = () => {
             alt="비밀번호 보기"
             onClick={() => setShowPassword(prev => !prev)}
           />
-        </InputWrapper>
-        <ErrorMessage show={!!errors.memberPassword}>
+        </S.InputWrapper>
+        <S.ErrorMessage show={!!errors.memberPassword}>
           {errors.memberPassword?.message || '⠀'}
-        </ErrorMessage>
-      </InputGroup>
+        </S.ErrorMessage>
+      </S.InputGroup>
 
       {/* 로그인 상태 유지 */}
-      <RememberMe>
+      <S.RememberMe>
         <img
           src={
             rememberMe
@@ -148,12 +138,12 @@ const EmailLogin = () => {
           style={{ width: '20px', height: '20px', cursor: 'pointer' }}
         />
         <span onClick={() => setRememberMe(prev => !prev)}>로그인 상태 유지</span>
-      </RememberMe>
+      </S.RememberMe>
 
       {/* 로그인 버튼 */}
-      <LoginButton type="submit" className={email && password ? 'active' : ''} disabled={isSubmitting}>
+      <S.LoginButton type="submit" className={email && password ? 'active' : ''} disabled={isSubmitting}>
         로그인
-      </LoginButton>
+      </S.LoginButton>
     </form>
   );
 };

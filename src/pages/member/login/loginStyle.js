@@ -1,19 +1,20 @@
-// loginStyle.js
 import styled from 'styled-components';
 import { blackColor, fontSizeH8 } from '../../../globals/common';
 
-export const InputGroup = styled.div`
-  /* margin-bottom: 20px; */
-`;
+const S = {};
 
-export const InputWrapper = styled.div`
+S.InputGroup = styled.div``;
+
+S.InputWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
 `;
 
-export const ErrorMessage = styled.p`
+S.ErrorMessage = styled.p.withConfig({
+  shouldForwardProp: (prop) => prop !== 'show',
+})`
   height: 18px;
   margin: 5px 20px;
   ${fontSizeH8}
@@ -21,8 +22,7 @@ export const ErrorMessage = styled.p`
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
 `;
 
-
-export const Input = styled.input`
+S.Input = styled.input`
   width: 100%;
   height: 60px;
   padding: 10px 40px 10px 10px;
@@ -44,7 +44,7 @@ export const Input = styled.input`
   }
 `;
 
-export const Label = styled.label`
+S.Label = styled.label`
   position: absolute;
   margin: 0px 20px;
   left: 10px;
@@ -56,30 +56,30 @@ export const Label = styled.label`
   pointer-events: none;
   transition: all 0.3s ease-in-out;
 
-  ${Input}:focus + &,
-  ${Input}.filled + & {
+  ${S.Input}:focus + &,
+  ${S.Input}.filled + & {
     top: 10px;
     font-size: 12px;
     color: #8e8e8e;
   }
 `;
 
-export const Icon = styled.img`
+S.Icon = styled.img`
   position: absolute;
   width: 20px;
   height: 20px;
   cursor: pointer;
 `;
 
-export const ClearIcon = styled(Icon)`
+S.ClearIcon = styled(S.Icon)`
   right: 30px;
 `;
 
-export const TogglePasswordIcon = styled(Icon)`
+S.TogglePasswordIcon = styled(S.Icon)`
   right: 60px;
 `;
 
-export const RememberMe = styled.div`
+S.RememberMe = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,7 +90,7 @@ export const RememberMe = styled.div`
   font-weight: 300;
 `;
 
-export const LoginButton = styled.button`
+S.LoginButton = styled.button`
   width: 410px;
   height: 50px;
   padding: 10px;
@@ -108,3 +108,5 @@ export const LoginButton = styled.button`
     cursor: pointer;
   }
 `;
+
+export default S;

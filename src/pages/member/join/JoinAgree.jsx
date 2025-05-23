@@ -57,8 +57,6 @@ const JoinAgree = () => {
   // 필수 항목만 체크
   const isValid = agreements.service && agreements.information && agreements.location;
 
-  console.log(isValid)
-
   const getSrc = (flag) =>
     flag
       ? '/assets/images/member/checkbox-icon-true.png'
