@@ -6,7 +6,7 @@ import { CalendarContext } from "../../../../context/CalendarContext";
 const CalendarTodo = () => {
   const { memberId, calendarId } = useParams();
   const { state } = useContext(CalendarContext);
-  const { calendars} = state;
+  const { calendars } = state;
 
   const [rotated, setRotated] = useState(false);
   const [todos, setTodos] = useState([]);
@@ -17,9 +17,10 @@ const CalendarTodo = () => {
   useEffect(() => {
     const todosNotCompleted = [];
     const todosCompleted = [];
-
+    //console.log(calendars);
     calendars.forEach((calendar) => {
-      console.log(calendar);
+      //console.log(calendar);
+      //console.log(calendar);
       if (calendar.id === Number(calendarId)) {
         calendar.todoLists.forEach((todo) => {
           const formattedTodo = {
@@ -64,8 +65,8 @@ const CalendarTodo = () => {
         throw new Error("할 일 등록 실패");
       }
       const data = await response.json();
-      console.log(todoInput)
-      console.log(calendarId);
+      // console.log(todoInput);
+      // console.log(calendarId);
       //console.log("등록 후 응답:", data);
       const savedTodo = {
         id: data,
@@ -202,7 +203,7 @@ const CalendarTodo = () => {
             <S.ArrowIcon
               src="/assets/images/main/calendar/arrow.png"
               alt="화살표 이미지"
-              rotated={rotated}
+              $rotated={rotated}
             />
           </S.IconButton>
           <S.TodoTextWrapper>완료됨</S.TodoTextWrapper>
