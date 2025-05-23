@@ -5,7 +5,8 @@ theme.PALLETE = {
         mainGreen: "#01CD74",
         subGreen: "#24C394",
         lightGreen: "#EFFFF8",
-        subBlue: "#009DCC"
+        subBlue: "#009DCC",
+        subBlueHover: "#009DFF"
     },
 
     black: "#000",
