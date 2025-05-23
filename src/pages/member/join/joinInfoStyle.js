@@ -28,7 +28,9 @@ S.HiddenRadio = styled.input`
   display: none;
 `;
 
-S.InputWrapper = styled.div`
+S.InputWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isValid',
+})`
   position: relative;
   display: flex;
   align-items: center;
@@ -44,7 +46,9 @@ S.InputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
-S.PasswordInputWrapper = styled.div`
+S.PasswordInputWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isValid',
+})`
   position: relative;
   display: flex;
   align-items: center;
@@ -60,7 +64,9 @@ S.PasswordInputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
-S.EmailInputWrapper = styled.div`
+S.EmailInputWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isValid',
+})`
   position: relative;
   display: flex;
   align-items: center;
@@ -77,7 +83,9 @@ S.EmailInputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
-S.NameInputWrapper = styled.div`
+S.NameInputWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isValid',
+})`
   position: relative;
   display: flex;
   align-items: center;
@@ -92,7 +100,9 @@ S.NameInputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
-S.BirthInputWrapper = styled.div`
+S.BirthInputWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'validationState',
+})`
   position: relative;
   display: flex;
   align-items: center;
@@ -107,7 +117,9 @@ S.BirthInputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
-S.PhoneInputWrapper = styled.div`
+S.PhoneInputWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isValid',
+})`
   position: relative;
   display: flex;
   align-items: center;
@@ -122,7 +134,9 @@ S.PhoneInputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
-S.EmailVerifyCodeInputWrapper = styled.div`
+S.EmailVerifyCodeInputWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isValid',
+})`
   position: relative;
   display: flex;
   align-items: center;
@@ -138,7 +152,9 @@ S.EmailVerifyCodeInputWrapper = styled.div`
   transition: border 0.3s ease-in-out;
 `;
 
-S.PhoneVerifyCodeInputWrapper = styled.div`
+S.PhoneVerifyCodeInputWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isValid',
+})`
   position: relative;
   display: flex;
   align-items: center;
@@ -158,12 +174,16 @@ S.PhoneVerifyCodeInputWrapper = styled.div`
 
 
 // 인증번호 전용 래퍼
-S.AuthInputWrapper = styled(S.InputWrapper)`
+S.AuthInputWrapper = styled(S.InputWrapper).withConfig({
+  shouldForwardProp: (prop) => prop !== 'isValid',
+})`
   justify-content: space-between;
 `;
 
 // 입력 필드
-S.Input = styled.input`
+S.Input = styled.input.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isValid',
+})`
   width: 100%;
   height: 60px;
   padding: 10px 50px 10px 10px;
@@ -184,7 +204,9 @@ S.Icon = styled.img`
 `;
 
 // 상태 기반 버튼
-S.StatusButton = styled.button`
+S.StatusButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isValid',
+})`
   width: 200px;
   line-height: 30px;
   margin-right: 15px;
@@ -232,12 +254,16 @@ S.TogglePasswordConfirm = styled.img`
 `;
 
 // 성별 선택
-S.GenderSelect = styled.div`
+S.GenderSelect = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isValid',
+})`
   display: flex;
   margin: 0px 15px 0px -15px;
 `;
 
-S.GenderButton = styled.span`
+S.GenderButton = styled.span.withConfig({
+  shouldForwardProp: (prop) => prop !== 'active',
+})`
   display: inline-block;
   width: 100px;
   height: 30px;
@@ -287,7 +313,9 @@ S.FailMessage = styled.span`
 `;
 
 // 가입 버튼
-S.SubmitButton = styled.button`
+S.SubmitButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isValid',
+})`
   width: 460px;
   height: 50px;
   padding: 10px;
