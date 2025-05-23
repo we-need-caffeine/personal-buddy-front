@@ -75,7 +75,6 @@ const Verify = () => {
       });
 
       const data = await response.json();
-      console.log("응답:", data);
 
       if (data.isFlag) {
         setEmailVerified(true);

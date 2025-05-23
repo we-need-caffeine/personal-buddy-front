@@ -6,7 +6,7 @@ const JoinContainer = () => {
   const [joinData, setJoinData] = useState({
     agree: {},
     info: {},
-    profile: {}
+    profile: {},
   });
 
   return (

@@ -122,7 +122,9 @@ S.Inputs = styled.div`
   gap: 20px;
 `;
 
-S.InputWrapper = styled.div`
+S.InputWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isValid',
+})`
   position: relative;
   display: flex;
   align-items: center;

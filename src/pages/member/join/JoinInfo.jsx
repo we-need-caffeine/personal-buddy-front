@@ -476,7 +476,7 @@ const JoinInfo = () => {
               setBirth(date);
               setBirthValidation(date ? true : false);
             }}
-            render={({ defaultValue, value, ...props }, ref) => (
+            render={({ render, defaultValue, value, ...props }, ref) => (
               <S.Input {...props} ref={ref} placeholder="생년월일 선택" required />
             )}
           />
