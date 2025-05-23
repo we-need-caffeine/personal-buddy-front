@@ -39,13 +39,18 @@ S.MainTitle = styled.div`
 S.BannerSliderWrapper = styled.div`
     width: 100%;
     overflow: hidden;
+
+    & .swiper-slide {
+        width: 680px !important;
+        height: 450px !important;
+    }
 `;
 
 // 배너 카드 한 장
 S.BannerCard = styled.div`
     position: relative;
-    width: 100%;
-    height: 250px;
+    width: 680px;
+    height: 450px;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);

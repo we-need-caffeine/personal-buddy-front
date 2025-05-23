@@ -9,6 +9,7 @@ const Layout = () => {
     return (
         <>
             <Header />
+            <Banner />
             <S.MainWrapper>
                 <Outlet />
             </S.MainWrapper>
