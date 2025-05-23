@@ -170,7 +170,9 @@ S.ItemCard = styled.div`
         selected ? `solid 5px #01CD74` : `solid 1px #EFFFF8`
     )};
     box-sizing: border-box;
-    background-color: ${({theme}) => theme.PALLETE.primary.lightGreen};
+    background-color: ${({appliedCount, notAppliedCount}) => (
+        appliedCount == 0 ? '#EFFFF8' : notAppliedCount == 0 ? '#DDD' : '#24C394'
+    )};
     border-radius: 30px;
     width: 150px;
     height: 234px;
@@ -181,7 +183,7 @@ S.ItemCardImg = styled.div`
     height: 100px;
     margin: 10px;
     background-image: url(${({url}) => url});
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 `
@@ -203,7 +205,7 @@ S.ItemAddButton = styled.button`
     ${whiteColor};
     border: none;
     &:hover{
-        background-color: ${({theme}) => theme.PALLETE.primary.subBlue2};
+        background-color: ${({theme}) => theme.PALLETE.primary.subBlueHover};
     }
 `
 
