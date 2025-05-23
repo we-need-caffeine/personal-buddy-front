@@ -35,7 +35,6 @@ const MainContainer = () => {
   return (
     <div>
       <CalendarProvider>
-        <Banner />
         <Outlet />
       </CalendarProvider>
     </div>
