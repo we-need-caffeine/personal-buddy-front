@@ -6,7 +6,7 @@ import { HeaderContext } from '../../../context/HeaderContext';
 
 const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard, onCancel}) => {
   // 프로필 카드 콘텍스트
-  const { profileCardInfo, follow, unfollow, getProfile } = useContext(ProfileCardContext);
+  const { profileCardInfo, follow, unfollow, getProfile, toggleFavorite } = useContext(ProfileCardContext);
   // 헤더 이벤트 콘텍스트
   const { setHeaderScroll } = useContext(HeaderContext);
 
@@ -19,25 +19,10 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard, onCancel
     }
   }
 
-  // 즐겨찾기 토글
-  const toggleFavorite = async () => {
-    await fetch(`http://localhost:10000/follows/api/favorite/toggle`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        followerMemberId: profileCardInfo.id,
-        followingMemberId: memberId,
-        followFavorite: profileCardInfo.favorite
-      })
-    })
-  }
-
   // 최초로 프로필 정보를 받는 함수
   useEffect(() => {
     getProfile(memberId, profileCardMemberId)
-  }, [getProfile, memberId, profileCardMemberId])
+  }, [memberId, profileCardMemberId])
 
   // 외부요소의 스크롤을 막는 함수
   useEffect(() => {
@@ -81,13 +66,13 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard, onCancel
                     <S.FavoriteBtn 
                       src='/assets/images/follow/star-on.png' 
                       alt='즐겨찾기 활성화' 
-                      onClick={toggleFavorite}
+                      onClick={() => toggleFavorite(memberId, profileCardMemberId)}
                     />
                   ) : (
                     <S.FavoriteBtn 
                       src='/assets/images/follow/star-off.png' 
                       alt='즐겨찾기 비활성화'
-                      onClick={toggleFavorite}
+                      onClick={() => toggleFavorite(memberId, profileCardMemberId)}
                     />
                   )
                 ) : null}
