@@ -49,6 +49,7 @@ S.MemberStatusMessage = styled.div`
   ${fontSizeH9}
   ${fontWeightRegular}
   ${gray5Color}
+  width: 140px;
 `;
 
 S.FollowInfoContainer = styled.div`
@@ -70,8 +71,8 @@ S.FollowBtn = styled.button`
   ${whiteColor}
   ${fontSizeH9}
   ${fontWeightBold}
-  background-color: ${({ isFollow, theme }) => 
-    isFollow === 1 ? theme.PALLETE.gray.gray3 : theme.PALLETE.primary.mainGreen
+  background-color: ${({ $isFollow, theme }) => 
+    $isFollow === 1 ? theme.PALLETE.gray.gray3 : theme.PALLETE.primary.mainGreen
   };
   
 `

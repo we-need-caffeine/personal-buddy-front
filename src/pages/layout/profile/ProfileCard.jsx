@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { ProfileCardContext } from '../../../context/ProfileCardContext';
 import { HeaderContext } from '../../../context/HeaderContext';
 
-const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
+const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard, onCancel}) => {
   // 프로필 카드 콘텍스트
   const { profileCardInfo, follow, unfollow, getProfile } = useContext(ProfileCardContext);
   // 헤더 이벤트 콘텍스트
@@ -32,11 +32,6 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
         followFavorite: profileCardInfo.favorite
       })
     })
-
-    // console.log(profileCardInfo);
-    // console.log(profileCardInfo.id);
-    // console.log(memberId);
-    // console.log(profileCardInfo.favorite);
   }
 
   // 최초로 프로필 정보를 받는 함수
@@ -62,15 +57,19 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
       <S.TopContainer>
         <S.MemberInfoContainer>
           <S.MemberProfile
-            src={profileCardInfo.memberImgPath || "/assets/images/header/default-member-img.png"}
+            src={`http://localhost:10000/images/profile/${profileCardInfo.memberImgName}`}
             alt="멤버 프로필 이미지" 
             onError={e => {
                 e.target.src = "/assets/images/header/default-member-img.png";
             }}
           />
           <S.MemberInfoTextContainer>
-            <S.MemberNickName>{profileCardInfo.memberNickname}</S.MemberNickName>
-            <S.MemberStatusMessage>{profileCardInfo.memberStatusMessage || '상태메세지 없음'}</S.MemberStatusMessage>
+            <S.MemberNickName>
+              {profileCardInfo.memberNickname}
+            </S.MemberNickName>
+            <S.MemberStatusMessage>
+              {profileCardInfo.memberStatusMessage || '상태메세지 없음'}
+            </S.MemberStatusMessage>
           </S.MemberInfoTextContainer>
         </S.MemberInfoContainer>
         <S.FollowInfoContainer>
@@ -95,7 +94,7 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
 
                 <S.FollowBtn
                   onClick={() => handleFollow()} 
-                  isFollow={profileCardInfo.isFollow}
+                  $isFollow={profileCardInfo.isFollow}
                 >
                   {profileCardInfo.isFollow === 1 ? (
                     <span>팔로잉</span>
@@ -133,7 +132,7 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard}) => {
       </S.AcheivementContainer>
       <S.SocialButtonContainer>
         <NavLink to={`/main/mypage/${profileCardInfo.id}`}>
-          <S.MyPageButton onClick={() => {handleProfileCard(false)}}>
+          <S.MyPageButton onClick={onCancel}>
               마이페이지
           </S.MyPageButton>
         </NavLink>

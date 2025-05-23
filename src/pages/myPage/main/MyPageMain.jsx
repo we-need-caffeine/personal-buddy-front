@@ -17,13 +17,17 @@ const MyPageMain = () => {
     // 게스트북 카운터
     const [guestBookCount, setGuestBookCount] = useState(0);
     // 모달 상태값
-    const [modalOpen, setModalOpen] = useState(false);
+    const [showConfrmModal, setShowConfrmModal] = useState(false);
     // 마이페이지 파람에서 id값을 가져오는 훅함수
     const { id } = useParams();
     // 게스트북 오너 아이디를 저장
     const ownerMemberId = id;
     // 페이지
     const page = 1;
+
+    const handleConfrmModal = (state) => {
+        setShowConfrmModal(state)
+    }
 
     // 텍스트에리어에서 값을 입력할 때 마다 잡아서 상태변경
     const handleTextareaChange = (e) => {
@@ -62,7 +66,7 @@ const MyPageMain = () => {
         .then((res) => {
             if (res.ok) {
                 setGuestBookText("");
-                setModalOpen(false);
+                handleConfrmModal(false);
                 getGuestBook()
                 getGuestBookCount()
             } else {
@@ -97,7 +101,7 @@ const MyPageMain = () => {
     // 시간값 변환 함수
     const formatDate = (time) => {
         const date = new Date(time);
-        const offsetDate = new Date(date.getTime() + (9 * 60 * 60 * 1000));
+        const offsetDate = new Date(date.getTime() + (60 * 1000));
         const yyyy = offsetDate.getFullYear();
         const mm = String(offsetDate.getMonth() + 1).padStart(2, '0');
         const dd = String(offsetDate.getDate()).padStart(2, '0');
@@ -156,17 +160,17 @@ const MyPageMain = () => {
                         <S.GuestBookInputButton 
                             $isActive={guestBookText.length > 0}
                             $disabled={guestBookText.length === 0}
-                            onClick={() => setModalOpen(true)}
+                            onClick={() => handleConfrmModal(true)}
                         >
                             <span>등록</span>
                         </S.GuestBookInputButton>
                         {/* 컨펌 모달 */}
                         <ConfirmModal
-                            isOpen={modalOpen}
+                            handleConfrmModal={showConfrmModal}
                             title="방명록 등록"
                             message="방명록을 등록 하시겠습니까?"
                             onConfirm={handleRegister}
-                            onCancel={() => setModalOpen(false)}
+                            onCancel={() => handleConfrmModal(false)}
                         />
                     </S.GuestBookInputBottomContainer>
                 </S.GuestBookInputContainer>
@@ -175,7 +179,7 @@ const MyPageMain = () => {
                     {guestBooks.map((item, i) => (
                         <GuestItem 
                             key={i}
-                            item={item} 
+                            item={item}
                             memberId={memberId}
                             handleDelete={handleDelete}
                             formatDate={formatDate}
