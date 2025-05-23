@@ -7,8 +7,8 @@ import { CalendarContext } from "../../../../context/CalendarContext";
 
 const ScheduleSave = () => {
   const { memberId, calendarId } = useParams();
-  const {state} = useContext(CalendarContext);
-  const {colors} = state;
+  const { state } = useContext(CalendarContext);
+  const { colors, categories } = state;
   const [mainCategory, setMainCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [mainOpen, setMainOpen] = useState(false);
@@ -42,14 +42,20 @@ const ScheduleSave = () => {
   const memberRef = useRef(null);
   const mainRef = useRef(null);
   const subRef = useRef(null);
-
-  const mainCategories = ["개인", "업무", "취미"];
+  //console.log(categories);
+  const mainCategories = categories;
   const subCategories = {
-    개인: ["운동", "독서", "명상"],
+    운동: ["운동", "독서", "명상"],
+    공부: ["게임", "음악", "여행"],
     업무: ["회의", "보고", "개발"],
-    취미: ["게임", "음악", "여행"],
+    모임: ["가족모임", "친구모임", "직장모임"],
+    여가: ["영화감상", "드라마보기", "산책", "취미활동"],
+    식사: ["아침식사", "점심식사", "저녁식사", "간식", "외식"],
+    여행: ["국내여행", "해외여행", "당일치기", "캠핑"],
+    건강: ["병원방문", "운동", "건강검진", "약복용"],
   };
 
+  //console.log(categories);
   const members = ["장재영", "양진영", "함지현"];
   const repeatOptions = ["없음", "매일", "매주", "선택한 날짜의 요일"];
 
@@ -58,6 +64,21 @@ const ScheduleSave = () => {
       prev.includes(name) ? prev.filter((m) => m !== name) : [...prev, name]
     );
   };
+
+  const saveSchedule = async () => {
+    const response = await fetch (
+      `${process.env.REACT_APP_BACKEND_URL}/schedules/api/register`,
+      {
+        method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+
+          }),
+      }
+    )
+  }
 
   const getColorName = (code) => {
     const map = {
@@ -96,6 +117,7 @@ const ScheduleSave = () => {
     "22:00",
     "23:00",
   ];
+
   useEffect(() => {
     if (start && end) {
       const isoStart =
@@ -105,6 +127,7 @@ const ScheduleSave = () => {
       setStartAndEndFromDate(isoStart, isoEnd);
     }
   }, [start, end]);
+
   // 외부 클릭 감지 추가
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -135,6 +158,7 @@ const ScheduleSave = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   return (
     <S.Container>
       <S.TitleInputContainer>
@@ -235,9 +259,11 @@ const ScheduleSave = () => {
                           setColorDropdownOpen(false);
                         }}
                       >
-                        <S.ColorCircle color={c} />
-                        <S.MemberName>{getColorName(c)}</S.MemberName>
-                        <S.CheckIcon checked={color === c} />
+                        <S.MemberWrapper>
+                          <S.ColorCircle color={c} />
+                          <S.MemberName>{getColorName(c)}</S.MemberName>
+                        </S.MemberWrapper>
+                          <S.CheckIcon checked={color === c} />
                       </S.MemberItem>
                     ))}
                   </S.MemberDropdownList>
@@ -258,8 +284,10 @@ const ScheduleSave = () => {
                   <S.MemberDropdownList>
                     {members.map((m) => (
                       <S.MemberItem key={m} onClick={() => toggleMember(m)}>
-                        <S.ProfileIcon />
-                        <S.MemberName>{m}</S.MemberName>
+                        <S.MemberWrapper>
+                          <S.ProfileIcon />
+                          <S.MemberName>{m}</S.MemberName>
+                        </S.MemberWrapper>
                         <S.CheckIcon checked={selectedMembers.includes(m)} />
                       </S.MemberItem>
                     ))}
@@ -367,7 +395,7 @@ const ScheduleSave = () => {
           </S.ContentFormGroup>
 
           <S.ButtonGroup>
-            <S.SaveButton>저장</S.SaveButton>
+            <S.SaveButton >저장</S.SaveButton>
             <S.CancelButton>취소</S.CancelButton>
           </S.ButtonGroup>
         </S.ContentWrapper>
