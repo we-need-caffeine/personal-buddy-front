@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import S from './style';
+import SwiperCore from "swiper/core";
+import { Autoplay, EffectCoverflow } from "swiper/modules";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import 'swiper/css/autoplay';
-import { Autoplay } from 'swiper/modules';
+import { Link } from 'react-router-dom';
+SwiperCore.use([Autoplay]);
 
 const EventBannerContainer = () => {
   const [banners, setBanners] = useState([]);
@@ -12,7 +14,7 @@ const EventBannerContainer = () => {
   fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/current`)
     .then(res => res.json())
     .then(data => {
-      console.log('배너 데이터 확인', data);
+      // console.log('배너 데이터 확인', data);
       setBanners(data);
     });
   }, []);
@@ -24,29 +26,38 @@ const EventBannerContainer = () => {
 
       <S.BannerSliderWrapper>
         <Swiper
-          modules={[Autoplay]}
-          autoplay={{ delay: 3000 }}
+          spaceBetween={50}
+          modules={[EffectCoverflow]}
+          autoplay={{ delay: 2000, disableOnInteraction: false }}
+          effect={'coverflow'}
+          centeredSlides={true}
+          slidesPerView={2}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 400,
+            modifier: 1,
+            slideShadows: false,
+          }}
           loop={true}
-          spaceBetween={20}
-          slidesPerView={1.5}
-          grabCursor={true}
+          // onSlideChange={() => console.log('slide change')}
+          // onSwiper={(swiper) => console.log(swiper)}
         >
-          {banners.map((event, i) => {
-            const parts = event.thumbnailUrl?.split('/');
-            const filePath = parts?.slice(0, -1).join('/');
-            const fileName = parts?.slice(-1)[0];
-            const imageUrl = `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${filePath}&fileName=${fileName}`;
-            console.log("이미지 경로", imageUrl);
 
+          {banners.map((event, i) => { 
+            const filePath = event.eventImgPath; 
+            const fileName = event.eventImgName;
+            const imageUrl = `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${ filePath}&fileName=${encodeURIComponent(fileName)}`;
+            
             return (
-              <SwiperSlide key={i}>
-                <S.BannerCard>
-                  <img src={imageUrl} alt="이벤트 배너" />
-                </S.BannerCard>
-              </SwiperSlide>
-            );
-          })}
-          <div>{banners.length === 0 }진행중인 이벤트가 없습니다.</div>
+            <SwiperSlide key={i}>
+               <Link to={`read/${event.id}`}>
+                  <S.BannerCard>
+                    <img src={encodeURI(imageUrl)} alt="이벤트 배너" />
+                  </S.BannerCard>
+                </Link>
+            </SwiperSlide>
+          )})}
         </Swiper>
       </S.BannerSliderWrapper>
     </S.EventWrapper>
