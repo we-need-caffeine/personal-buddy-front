@@ -4,39 +4,55 @@ import { useSelector } from 'react-redux';
 import { useContext, useEffect, useState } from 'react';
 import ProfileCard from '../../layout/profile/ProfileCard';
 import { ProfileCardContext } from '../../../context/ProfileCardContext';
+import FollowerModal from '../../layout/follow/FollowerModal';
+import FollowModal from '../../layout/follow/FollowModal';
 
 const MyPageSidebar = () => {
 
     // 게스트북의 주인의 아이디
     const { id } = useParams();
+    // 게스트북의 주인의 아이디(숫자형)
+    const ownerId = Number(id);
     // 로그인된 유저정보
     const {currentUser} = useSelector((state) => state.member)
     // 로그인된 유저의 아이디
     const myId = currentUser.id;
-    // 로그인된 유저의 아이디(문자열)   
-    const memberIdStr = myId.toString();
     // 오너의 정보
     const [ownerInfo, setOnwerInfo] = useState({});
     // 프로필 카드 상태
     const [showProfileCard, setShowProfileCard] = useState(false);
     // 프로필 카드 콘텍스트
     const { profileCardInfo, follow, unfollow } = useContext(ProfileCardContext);
+    // 팔로워 리스트 상태
+    const [showFollowerList, setShowFollowerList] = useState(false);
+    // 팔로우 리스트 상태
+    const [showFollowList, setShowFollowList] = useState(false);
+
+
+    // 팔로워 리스트를 열고 닫는 함수
+    const handleFollowerList = (state) => {
+        setShowFollowerList(state)
+    }
+
+    // 팔로우 리스트를 열고 닫는 함수
+    const handleFollowList = (state) => {
+        setShowFollowList(state)
+    }
 
     // 프로필 카드를 열고 닫는 함수
     const handleProfileCard = (state) => {
         setShowProfileCard(state)
     }
 
-    // 팔로우 / 언팔로우
+    // 마이페이지 사이드바 전용 - 팔로우 / 언팔로우
     const handleFollow = async () => {
-        if (profileCardInfo.isFollow === 1) {
+        if (ownerInfo.isFollow === 1) {
             unfollow(myId, id)
         } else {
             follow(myId, id)
         }
     }
-
-  
+    
     // 현재 마이페이지 오너의 정보를 가져오는 함수
     useEffect(() => {
         const getOwnerInfo = async () => {
@@ -74,12 +90,12 @@ const MyPageSidebar = () => {
 
     return (
         <div>
-            {id !== memberIdStr ? (
+            {ownerId !== myId ? (
                 <div>
                     {/* 다른 유저의 마이페이지 프로필 */}
                     <S.MyPageMemberProfile>
-                        <img 
-                            src={ownerInfo.memberImgPath || "/assets/images/header/default-member-img.png"}
+                        <S.MyPageMemberProfileImg 
+                            src={`http://localhost:10000/images/profile/${ownerInfo.memberImgName}`}
                             alt='멤버 프로필 이미지'
                             onError={e => {
                                 e.target.src = "/assets/images/header/default-member-img.png";
@@ -88,15 +104,18 @@ const MyPageSidebar = () => {
                     </S.MyPageMemberProfile>
                     <S.MyPageMemberInfoContainer>
                         <S.MyPageMemberInfoNickName onClick={() => handleProfileCard(true)}>
-                            <span>{ownerInfo.memberNickname}</span>
+                            <span>
+                                {ownerInfo.memberNickname}
+                            </span>
                         </S.MyPageMemberInfoNickName>
                         {/* 프로필 카드 영역 */}
                         {showProfileCard && (
                             <S.ProfileCardDropdown>
                                 <ProfileCard
                                     memberId={myId}
-                                    profileCardMemberId={id}
-                                    handleProfileCard={handleProfileCard}
+                                    profileCardMemberId={ownerId}
+                                    handleProfileCard={showProfileCard}
+                                    onCancel={() => handleProfileCard(false)}
                                 />
                             </S.ProfileCardDropdown>
                         )}
@@ -104,26 +123,28 @@ const MyPageSidebar = () => {
                             <S.CardBG onClick={() => {handleProfileCard(false)}}/>
                         )}
                         <S.MyPageMemberInfoStatusMessage>
-                            <span>{ownerInfo.memberStatusMessage}</span>
+                            <span>
+                                {ownerInfo.memberStatusMessage}
+                            </span>
                         </S.MyPageMemberInfoStatusMessage>
                         <S.MyPageMemberInfoFollowContainer>
-                            <S.MyPageMemberInfoFollow>
+                            <S.MyPageMemberInfoFollow onClick={() => {handleFollowerList(true)}}>
                                 <span>팔로워</span>
                                 <S.MyPageMemberInfoFollowCount>
-                                    <span>{formatKoreanNumber(ownerInfo.followingCount)}</span>
+                                    <span>{formatKoreanNumber(ownerInfo.followerCount)}</span>
                                 </S.MyPageMemberInfoFollowCount>
                             </S.MyPageMemberInfoFollow>
-                            <S.MyPageMemberInfoFollow>
+                            <S.MyPageMemberInfoFollow onClick={() => {handleFollowList(true)}}>
                                 <span>팔로우</span>
                                 <S.MyPageMemberInfoFollowCount>
-                                    <span>{formatKoreanNumber(ownerInfo.followerCount)}</span>
+                                    <span>{formatKoreanNumber(ownerInfo.followingCount)}</span>
                                 </S.MyPageMemberInfoFollowCount>
                             </S.MyPageMemberInfoFollow>
                         </S.MyPageMemberInfoFollowContainer>
                     </S.MyPageMemberInfoContainer>  
                     <S.MyPageButtonContainer>
                         <S.FollowBtn 
-                            isFollow={ownerInfo.isFollow}
+                            $isFollow={ownerInfo.isFollow}
                             onClick={() => handleFollow()}
                         >
                             팔로우
@@ -152,13 +173,31 @@ const MyPageSidebar = () => {
                             </S.MyPageSubTitle>
                         </S.MyPageTitleContainer>
                     </S.MyPageTapContainer>
+                    {/* 팔로워 리스트 영역 */}
+                    {showFollowerList && (
+                        <FollowerModal
+                            memberId={myId}
+                            profileMemberId={ownerId}
+                            handleFollowerList={showFollowerList}
+                            onCancel={() => handleFollowerList(false)}
+                        />
+                    )}
+                    {/* 팔로우 리스트 영역 */}
+                    {showFollowList && (
+                        <FollowModal
+                            memberId={myId}
+                            profileMemberId={ownerId}
+                            handleFollowerList={showFollowerList}
+                            onCancel={() => handleFollowList(false)}
+                        />
+                    )}
                 </div>
             ) : (
                 <div>
-                    {/* 나의 마이페이지 프로필 */}
+                    {/* 다른 유저의 마이페이지 프로필 */}
                     <S.MyPageMemberProfile>
-                        <img 
-                            src={ownerInfo.memberImgPath || "/assets/images/header/default-member-img.png"}
+                        <S.MyPageMemberProfileImg 
+                            src={`http://localhost:10000/images/profile/${ownerInfo.memberImgName}`}
                             alt='멤버 프로필 이미지'
                             onError={e => {
                                 e.target.src = "/assets/images/header/default-member-img.png";
@@ -174,7 +213,7 @@ const MyPageSidebar = () => {
                                 <S.ProfileCardDropdown>
                                     <ProfileCard
                                         memberId={myId}
-                                        profileCardMemberId={id}
+                                        profileCardMemberId={ownerId}
                                         handleProfileCard={handleProfileCard}
                                     />
                                 </S.ProfileCardDropdown>
@@ -186,13 +225,13 @@ const MyPageSidebar = () => {
                             <span>{ownerInfo.memberStatusMessage}</span>
                         </S.MyPageMemberInfoStatusMessage>
                         <S.MyPageMemberInfoFollowContainer>
-                            <S.MyPageMemberInfoFollow>
+                            <S.MyPageMemberInfoFollow onClick={() => {handleFollowerList(true)}}>
                                 <span>팔로워</span>
                                 <S.MyPageMemberInfoFollowCount>
                                     <span>{formatKoreanNumber(ownerInfo.followerCount)}</span>
                                 </S.MyPageMemberInfoFollowCount>
                             </S.MyPageMemberInfoFollow>
-                            <S.MyPageMemberInfoFollow>
+                            <S.MyPageMemberInfoFollow onClick={() => {handleFollowList(true)}}>
                                 <span>팔로잉</span>
                                 <S.MyPageMemberInfoFollowCount>
                                     <span>{formatKoreanNumber(ownerInfo.followingCount)}</span>
@@ -269,6 +308,24 @@ const MyPageSidebar = () => {
                                 </NavLink>
                             </S.MyPageSubTitle>
                         </S.MyPageTitleContainer>
+                        {/* 팔로워 리스트 영역 */}
+                        {showFollowerList && (
+                            <FollowerModal
+                                memberId={myId}
+                                profileMemberId={ownerId}
+                                handleFollowerList={showFollowerList}
+                                onCancel={() => handleFollowerList(false)}
+                            />
+                        )}
+                        {/* 팔로우 리스트 영역 */}
+                        {showFollowList && (
+                            <FollowModal
+                                memberId={myId}
+                                profileMemberId={ownerId}
+                                handleFollowerList={showFollowList}
+                                onCancel={() => handleFollowList(false)}
+                            />
+                        )}
                     </S.MyPageTapContainer>
                 </div>
             )}

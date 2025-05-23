@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 
 const S = {}
 
@@ -34,18 +35,28 @@ const S = {}
     align-items: center;
   `;
 
-  S.Tab = styled(Link)`
-    width: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    height: 100%;
-    text-align: center;
-    text-decoration: none;
-    border-top-right-radius: ${props => (props.right ? '30px' : '0')};
-    background-color: ${props => (props.active ? '#D9D9D9' : 'transparent')};
-  `;
+  S.Tab = styled(NavLink)`
+  width: 50%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+  background-color: #d9d9d9;
+
+  border-top-left-radius: ${({ right }) => (!right ? '25px' : '0')};
+  border-top-right-radius: ${({ right }) => (right ? '25px' : '0')};
+
+  &.active {
+    background-color: transparent;
+    font-weight: 400;
+  }
+`;
 
   S.BottomLinks = styled.div`
     color: #218838;

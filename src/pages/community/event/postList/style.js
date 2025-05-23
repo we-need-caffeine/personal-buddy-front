@@ -1,10 +1,11 @@
 import styled from 'styled-components';
+import { flexCenter } from '../../../../globals/common';
 
 const S = {};
 
 // 상단 배너
 S.EventWrapper = styled.div`
-    width: 1400px;
+    /* width: 1400px; */
     margin: auto;
     display: flex;
     flex-direction: column;
@@ -39,21 +40,23 @@ S.BannerCard = styled.div`
 
 // 챌린지 리스트
 S.PostSection = styled.div`
-    width: 1400px;
+    /* width: 1400px; */
     margin: 80px auto;
 `;
 
-S.PostList = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px 30px;
+S.PostListWrapper = styled.div`
+    ${flexCenter}
+  flex-wrap: wrap;
+  gap: 178px 36px; 
+  width: 100%;
 `;
 
 S.PostCard = styled.div`
-    width: 360px;
-    height: 234px;
-    background-color: #ddd;
-    border-radius: 18px;
+  width: 560px; 
+  height: 344px;;
+  background-color: #ddd;
+  border-radius: 18px;
 `;
+
 
 export default S;

@@ -8,7 +8,7 @@ const LayoutWithBanner = () => {
     return (
         <>
             <header><Header /></header>
-            <banner><Banner /></banner>
+            <Banner />
             <main>
                 <Outlet />
             </main>

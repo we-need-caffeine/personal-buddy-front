@@ -6,7 +6,7 @@ import LoginLayout from "../pages/layout/LoginLayout";
 import ContentsContainer from "../pages/contents/ContentsContainer";
 import AchievementContainer from "../pages/contents/acheivement/AchievementContainer";
 import MyTreeContainer from "../pages/contents/mytree/MyTreeContainer";
-import MyTree from "../pages/contents/mytree/items/MyTree";
+import MyTreeItemTree from "../pages/contents/mytree/items/MyTreeItemTree";
 import LoginContainer from "../pages/member/login/LoginContainer";
 import PointShopContainer from "../pages/contents/pointshop/PointShopContainer";
 import MyTreeItemsAll from "../pages/contents/mytree/items/MyTreeItemsAll";
@@ -138,7 +138,7 @@ const router = createBrowserRouter([
                     element: <MyTreeContainer />, // 성장나무
                     children: [
                       {
-                        path: "all",
+                        path: "",
                         element: <MyTreeItemsAll />, // 성장나무 - 전체 /main/contents/mytree
                       },
                       {
@@ -151,7 +151,7 @@ const router = createBrowserRouter([
                       },
                       {
                         path: "tree",
-                        element: <MyTree />, // 성장나무 - 나무 /main/contents/mytree/tree
+                        element: <MyTreeItemTree />, // 성장나무 - 나무 /main/contents/mytree/tree
                       },
                     ],
                   },

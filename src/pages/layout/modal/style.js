@@ -28,6 +28,7 @@ S.ModalContainer = styled.div`
 S.TitleContainer = styled.div`
   background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
   ${whiteColor}
+  
   height: 40px;
   padding: 0 25px;
   display: flex;
