@@ -48,7 +48,6 @@ const JoinProfile = () => {
       });
 
       const uploadData = await uploadRes.json();
-      console.log("파일 업로드 결과", uploadData);
 
       if (uploadData.fileName && uploadData.filePath) {
         fileName = uploadData.fileName;
@@ -71,7 +70,6 @@ const JoinProfile = () => {
       memberTermLocationAgree: 1,
       memberProvider: "local"
     };
-    console.log("전송 데이터", completeMemberData);
 
     // JSON으로 회원가입 요청
     const joinRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/members/api/join`, {
