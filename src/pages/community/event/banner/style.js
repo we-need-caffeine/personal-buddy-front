@@ -1,12 +1,14 @@
 import styled from 'styled-components';
-import { fontSizeH4, fontSizeH8, fontWeightBold, fontWeightRegular } from '../../../../globals/common';
+import { flexCenter, fontSizeH4, fontSizeH8, fontWeightBold, fontWeightRegular } from '../../../../globals/common';
 
 const S = {};
 
 S.BannerSliderWrapper = styled.div`
-  width: 100%;
-  min-height: 250px; 
+  width: 680px;
+  min-height: 450px; 
   overflow: hidden;
+  margin: 0 auto;
+  overflow: visible;
 `;
 
 // 배너 전체 영역
@@ -38,14 +40,15 @@ S.MainTitle = styled.div`
 // Swiper 슬라이더 wrapper
 S.BannerSliderWrapper = styled.div`
     width: 100%;
-    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    padding: 30px 0;
 `;
 
 // 배너 카드 한 장
 S.BannerCard = styled.div`
-    position: relative;
-    width: 100%;
-    height: 250px;
+    width: 680px;
+    height: 450px;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -54,8 +57,10 @@ S.BannerCard = styled.div`
         width: 100%;
         height: 100%;
         object-fit: cover;
+        /* object-position: ${props => props.objectPosition || 'center'}; */
     }
 `;
+
 
 // 배너 이미지 위 텍스트박스
 S.BannerTextBox = styled.div`
