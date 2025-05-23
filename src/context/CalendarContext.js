@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 // 초기값
 const CalendarContext = createContext({
@@ -9,11 +10,14 @@ const CalendarContext = createContext({
 
 // 제공하는 값
 const CalendarProvider = ({ children }) => {
-  const [todos, setTodos] = useState([]);
+  const [colors, setColors] = useState([]);
   const [calendars, setCalendars] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
   const [calendarIndex, setCalendarIndex] = useState(null);
   const memberId = useSelector((state) => state.member.currentUser.id);
+  const [selectedCalendarId, setSelectedCalendarId] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getCalendarsAll = async () => {
@@ -28,17 +32,18 @@ const CalendarProvider = ({ children }) => {
         }
       );
       const datas = await response.json();
-      //console.log(datas);
+
       const allTodos = [];
+
       datas.calendars.forEach((calendar) => {
         calendar.todoLists.forEach((todo) => {
           todo.calendarId = calendar.id;
-        })
+        });
         allTodos.push(calendar.todoLists);
       });
-      setTodos(allTodos);
 
       setCalendarIndex(datas.calendars[0].calendarIndex);
+      console.log(datas);
       // 객체 -> 배열로 데이터 값
       const { calendars } = await datas;
       setCalendars(calendars);
@@ -48,8 +53,21 @@ const CalendarProvider = ({ children }) => {
   }, [isUpdate, memberId]);
 
   useEffect(() => {
-   // console.log("todos 상태 변경됨:", todos);
-  }, [todos]);
+    const getColors = async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/schedules/api/colors`,
+        {
+          method: "GET",
+        }
+      );
+      const datas = await response.json();
+
+      //console.log(datas);
+      setColors(datas);
+    };
+
+    getColors();
+  }, [memberId]);
 
   useEffect(() => {
     // console.log("CalendarContext 상태값:", calendars);
@@ -59,7 +77,8 @@ const CalendarProvider = ({ children }) => {
   const value = {
     state: {
       calendars,
-      todos,
+      selectedCalendarId,
+      colors,
     },
     actions: {
       //  할일, 캘린더, 캘린더 공유, 일정, 일정 공유
