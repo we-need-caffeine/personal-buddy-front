@@ -35,7 +35,39 @@ S.CalendarWrapper = styled.div`
   .fc-timegrid {
     border: none !important;
   }
+  .fc-timegrid-slot-lane {
+  border-right: none !important;
+}
+.fc-scrollgrid {
+  border-right: none !important;
+}
+.fc-scroller,
+.fc-scroller-liquid-absolute {
+  background: transparent !important;
+  overflow-y: overlay !important;
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
 
+/* 오른쪽 공간을 만들 수 있는 root-level wrapper 제거 */
+.fc-timegrid-body,
+.fc-timegrid-body > table,
+.fc-scrollgrid {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+  background-color: #ffffff !important;
+  box-sizing: border-box;
+}
+
+/* 그 어떤 border-right도 제거 */
+.fc-timegrid-body td,
+.fc-scrollgrid,
+.fc-scrollgrid td,
+.fc-scrollgrid-section {
+  border-right: none !important;
+}
   /* 시간 구분선 */
   .fc-timegrid-slot {
     border-top: 1px solid #e5e7eb;
@@ -87,6 +119,13 @@ S.CalendarWrapper = styled.div`
     border: none !important;
     color: white !important; /* 텍스트 가독성 위해 흰색 */
   }
+
+  .fc-event {
+  margin: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+}
 `;
 
 export default S;
