@@ -43,6 +43,7 @@ const EventBannerContainer = () => {
           // onSlideChange={() => console.log('slide change')}
           // onSwiper={(swiper) => console.log(swiper)}
         >
+
           {banners.map((event, i) => { 
             const filePath = event.eventImgPath; 
             const fileName = event.eventImgName;
