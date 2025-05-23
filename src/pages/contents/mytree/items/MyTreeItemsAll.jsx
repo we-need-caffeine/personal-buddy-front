@@ -1,72 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import S from '../style';
+import { useSelector } from 'react-redux';
 
 const MyTreeItemsAll = () => {
 
-  const [selectedItemCard, setSelectedItemCard] = useState(-1);
 
-  const ItemsDummy = [
-    {
-      itemId: 1,
-      itemIndex: 1,
-      itemType: "스티커",
-      itemImgUrl: "/assets/images/contents/tree/item/sticker/minipin.png",
-      itemCount: "20",
-      itemName: "강이",
-      itemWidth: 60,
-      itemHeight: 60,
-    },
-    {
-      itemId: 1,
-      itemIndex: 2,
-      itemType: "스티커",
-      itemImgUrl: "/assets/images/contents/tree/item/sticker/minipin.png",
-      itemCount: "20",
-      itemName: "강이",
-      itemWidth: 60,
-      itemHeight: 60,
-    },
-    {
-      itemId: 1,
-      itemIndex: 3,
-      itemType: "스티커",
-      itemImgUrl: "/assets/images/contents/tree/item/sticker/minipin.png",
-      itemCount: "20",
-      itemName: "강이",
-      itemWidth: 60,
-      itemHeight: 60,
-    },
-    {
-      itemId: 1,
-      itemIndex: 4,
-      itemType: "스티커",
-      itemImgUrl: "/assets/images/contents/tree/item/sticker/minipin.png",
-      itemCount: "20",
-      itemName: "강이",
-      itemWidth: 60,
-      itemHeight: 60,
-    },
-    {
-      itemId: 2,
-      itemIndex: 5,
-      itemType: "배경",
-      itemImgUrl: "/assets/images/contents/tree/item/background/snowing-night.png",
-      itemCount: "20",
-      itemName: "눈밤",
-      itemWidth: 60,
-      itemHeight: 60,
-    },
-    {
-      itemId: 3,
-      itemIndex: 6,
-      itemType: "나무",
-      itemImgUrl: "/assets/images/contents/tree/item/tree/cristmastree.png",
-      itemCount: "20",
-      itemName: "크리스마스 나무",
-      itemWidth: 250,
-      itemHeight: 300,
-    },
-  ]
+  // 로그인된 유저정보
+  const {currentUser} = useSelector((state) => state.member)
+  // 로그인된 유저의 아이디
+  const memberId = currentUser.id;
+
+  const [selectedItemCard, setSelectedItemCard] = useState(-1);
+  const [memberItems, setMemberItems] = useState([]);
+
+  useEffect(() => {
+    const getItems = async () => {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/my-tree/api/tree/list`,{
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          "memberId": memberId,
+          "itemType": null
+        })
+        
+      })
+
+      const data = await response.json();
+      
+      const memberItems = data.memberTreeItemList;
+      setMemberItems(memberItems);
+    }
+
+
+    getItems();
+  }, [memberId]);
 
   const handleClickItemCard = (index) => {
     if(selectedItemCard != index){
@@ -79,28 +46,34 @@ const MyTreeItemsAll = () => {
   return (
     <S.ItemCardListBox>
       {
-        ItemsDummy.map((item, i) => (
+        memberItems.map((item, i) => (
           <S.ItemCard 
             key={i} 
-            onClick={() => {handleClickItemCard(item.itemIndex)}}
-            selected={item.itemIndex === selectedItemCard}
+            onClick={() => {handleClickItemCard(i)}}
+            selected={i === selectedItemCard}
+            appliedCount={item.appliedCount}
+            notAppliedCount={item.notAppliedCount}
           >
-            <S.ItemCardImg url={item.itemImgUrl}/>
+            <S.ItemCardImg url={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${item.itemImgPath}&fileName=${item.itemImgName}`}/>
             <S.ItemDescriptionH8>{item.itemName}</S.ItemDescriptionH8>
-            <S.ItemDescriptionH8>보유 : 30</S.ItemDescriptionH8>
             {
                 item.itemType == "스티커" && (
                 <>
-                  <S.ItemDescriptionH10>사이즈 ({item.itemWidth} X {item.itemHeight})</S.ItemDescriptionH10>
+                  <S.ItemDescriptionH8>남은 개수 : {item.notAppliedCount}</S.ItemDescriptionH8>
+                  <S.ItemDescriptionH10>사이즈 ({item.itemSizeWidth} X {item.itemSizeHeight})</S.ItemDescriptionH10>
                 </>
               )
             }
             
             {
-              item.itemIndex === selectedItemCard && (
+              i === selectedItemCard && (
                 <>
                   <S.ButtonWrapper>
-                    <S.ItemAddButton>추가</S.ItemAddButton>
+                    {
+                      item.notAppliedCount != 0 && (
+                        <S.ItemAddButton>추가</S.ItemAddButton>
+                      )
+                    }
                     <S.ItemRemoveButton>제거</S.ItemRemoveButton>
                   </S.ButtonWrapper>
                 </>
