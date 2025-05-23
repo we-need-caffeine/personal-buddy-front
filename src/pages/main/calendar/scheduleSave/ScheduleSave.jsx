@@ -1,7 +1,14 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import S from "./style";
+import { useScheduleForm } from "../../../../hooks/calendar/useScheduleForm";
+import { useLocation, useParams } from "react-router-dom";
+import { Calendar } from "@fullcalendar/core/index.js";
+import { CalendarContext } from "../../../../context/CalendarContext";
 
 const ScheduleSave = () => {
+  const { memberId, calendarId } = useParams();
+  const {state} = useContext(CalendarContext);
+  const {colors} = state;
   const [mainCategory, setMainCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [mainOpen, setMainOpen] = useState(false);
@@ -9,8 +16,27 @@ const ScheduleSave = () => {
   const [color, setColor] = useState("");
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [repeat, setRepeat] = useState("");
+  const [repeatDropdownOpen, setRepeatDropdownOpen] = useState(false);
+  const repeatRef = useRef(null);
   const [memberDropdownOpen, setMemberDropdownOpen] = useState(false);
   const [colorDropdownOpen, setColorDropdownOpen] = useState(false);
+  const location = useLocation();
+  const [openStartTime, setOpenStartTime] = useState(false);
+  const [openEndTime, setOpenEndTime] = useState(false);
+  const endTimeRef = useRef(null);
+  const timeRef = useRef(null);
+  const { start, end } = location.state || {};
+  const {
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    setStartDate,
+    setStartTime,
+    setEndDate,
+    setEndTime,
+    setStartAndEndFromDate,
+  } = useScheduleForm();
 
   const colorRef = useRef(null);
   const memberRef = useRef(null);
@@ -24,7 +50,6 @@ const ScheduleSave = () => {
     취미: ["게임", "음악", "여행"],
   };
 
-  const colors = ["green", "yellow", "pink", "red", "blue"];
   const members = ["장재영", "양진영", "함지현"];
   const repeatOptions = ["없음", "매일", "매주", "선택한 날짜의 요일"];
 
@@ -33,15 +58,17 @@ const ScheduleSave = () => {
       prev.includes(name) ? prev.filter((m) => m !== name) : [...prev, name]
     );
   };
-  
-  const [startDate, setStartDate] = useState("2025-06-01");
-  const [startTime, setStartTime] = useState("09:00");
-  const [openStartTime, setOpenStartTime] = useState(false);
-  const [endDate, setEndDate] = useState("2025-06-01");
-  const [endTime, setEndTime] = useState("10:00");
-  const [openEndTime, setOpenEndTime] = useState(false);
-  const endTimeRef = useRef(null);
-  const timeRef = useRef(null);
+
+  const getColorName = (code) => {
+    const map = {
+      "#01CD74": "초록",
+      "#4AB3F7": "스카이블루",
+      "#F35F8C": "핑크",
+      "#B38BDC": "보라",
+      "#3FC2C8": "민트",
+    };
+    return map[code] ?? code;
+  };
 
   const timeOptions = [
     "00:00",
@@ -69,7 +96,15 @@ const ScheduleSave = () => {
     "22:00",
     "23:00",
   ];
-
+  useEffect(() => {
+    if (start && end) {
+      const isoStart =
+        typeof start === "string" ? start : new Date(start).toISOString();
+      const isoEnd =
+        typeof end === "string" ? end : new Date(end).toISOString();
+      setStartAndEndFromDate(isoStart, isoEnd);
+    }
+  }, [start, end]);
   // 외부 클릭 감지 추가
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -90,6 +125,9 @@ const ScheduleSave = () => {
       }
       if (endTimeRef.current && !endTimeRef.current.contains(e.target)) {
         setOpenEndTime(false);
+      }
+      if (repeatRef.current && !repeatRef.current.contains(e.target)) {
+        setRepeatDropdownOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -184,7 +222,8 @@ const ScheduleSave = () => {
                 <S.MemberSelectBox
                   onClick={() => setColorDropdownOpen((prev) => !prev)}
                 >
-                  {color ? color : "색상 선택"}
+                  <S.ColorCircle color={color} />
+                  {color ? getColorName(color) : "색상 선택"}
                 </S.MemberSelectBox>
                 {colorDropdownOpen && (
                   <S.MemberDropdownList>
@@ -197,7 +236,7 @@ const ScheduleSave = () => {
                         }}
                       >
                         <S.ColorCircle color={c} />
-                        <S.MemberName>{c}</S.MemberName>
+                        <S.MemberName>{getColorName(c)}</S.MemberName>
                         <S.CheckIcon checked={color === c} />
                       </S.MemberItem>
                     ))}
@@ -292,18 +331,32 @@ const ScheduleSave = () => {
             </S.ContentRow>
 
             {/* 반복 */}
+            {/* 반복 */}
             <S.ContentRow>
               반복
-              <S.Select
-                value={repeat}
-                onChange={(e) => setRepeat(e.target.value)}
-              >
-                {repeatOptions.map((r) => (
-                  <option key={r} value={r}>
-                    {r}
-                  </option>
-                ))}
-              </S.Select>
+              <S.MemberDropdownContainer ref={repeatRef}>
+                <S.MemberSelectBox
+                  onClick={() => setRepeatDropdownOpen((prev) => !prev)}
+                >
+                  {repeat || "반복 선택"}
+                </S.MemberSelectBox>
+                {repeatDropdownOpen && (
+                  <S.MemberDropdownList>
+                    {repeatOptions.map((option) => (
+                      <S.MemberItem
+                        key={option}
+                        onClick={() => {
+                          setRepeat(option);
+                          setRepeatDropdownOpen(false);
+                        }}
+                      >
+                        <S.MemberName>{option}</S.MemberName>
+                        <S.CheckIcon checked={repeat === option} />
+                      </S.MemberItem>
+                    ))}
+                  </S.MemberDropdownList>
+                )}
+              </S.MemberDropdownContainer>
             </S.ContentRow>
 
             {/* 내용 */}
