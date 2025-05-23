@@ -16,7 +16,7 @@ const LoginLayout = () => {
   // 쿼리스트링에서 토큰 분리
   const [searchParams] = useSearchParams()
   const jwtToken = searchParams.get("jwtToken")
-  const memberId = searchParams.get("id")
+  // const memberId = searchParams.get("id")
   const localJwtToken = localStorage.getItem("jwtToken")
 
   const navigate = useNavigate();
@@ -44,9 +44,6 @@ const LoginLayout = () => {
           }
         })
 
-        // 정상 응답
-        const datas = await response.json()
-
         // // 토큰으로 데이터를 못가져오면
         if(!response.ok) {
           // 리덕스를 초기화
@@ -60,11 +57,13 @@ const LoginLayout = () => {
           dispatch(setUserStatus(false))
 
           // 로컬스토리지 토큰 삭제
-          localStorage.removeItem("jwtToken")
+          // localStorage.removeItem("jwtToken")
           localStorage.clear()
           return;
         }
 
+        // 정상 응답
+        const datas = await response.json()
 
         // 리덕스에 유저정보 파싱
         dispatch(setUser(datas.currentUser))

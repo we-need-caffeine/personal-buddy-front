@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useJoin } from './JoinContext';
+import { useJoin } from '../../JoinContext';
 import S from './style';
 
-const JoinAgree = () => {
+const SocialJoinAgree = () => {
   const [agreements, setAgreements] = useState({
     all: false,
     service: false,
@@ -56,6 +56,8 @@ const JoinAgree = () => {
 
   // 필수 항목만 체크
   const isValid = agreements.service && agreements.information && agreements.location;
+
+  console.log(isValid)
 
   const getSrc = (flag) =>
     flag
@@ -189,4 +191,4 @@ const JoinAgree = () => {
   );
 };
 
-export default JoinAgree;
+export default SocialJoinAgree;

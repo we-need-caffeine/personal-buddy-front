@@ -20,9 +20,14 @@ const FindIdComplete = () => {
     <S.Container>
           <S.Wrapper>
             <form>
-              <S.Title>
-                <span>아이디 찾기</span>
-              </S.Title>
+              <S.TitleWrapper>
+                <S.Title>
+                  <span>이메일 찾기</span>
+                </S.Title>
+                <S.StepText>
+                  <span>1. 본인확인 &gt; <S.ActiveStep>2. 이메일 확인</S.ActiveStep> </span>
+                </S.StepText>
+              </S.TitleWrapper>
               <S.SubTitle>
                 <span>고객님의 정보와 일치하는 아이디 입니다.</span>
               </S.SubTitle>

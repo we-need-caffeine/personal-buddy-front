@@ -46,8 +46,8 @@ S.Title = styled.div`
   gap: 10px;
 
   span {
-    line-height: 30px;
-    border-bottom: #D9D9D9 1px solid;
+    line-height: 10px;
+
     color: black;
     ${fontSizeH7};
     ${fontWeightRegular};
@@ -144,6 +144,25 @@ S.PhoneButton = styled.button`
     border: 1px solid;
     ${warningRedColor}
   }
+`;
+
+S.TitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d9d9d9;
+`;
+
+S.ActiveStep = styled.span`
+  color: #01CD74;
+`;
+
+
+S.StepText = styled.div`
+  font-size: 14px;
+  color: #555;
 `;
 
 S.VerifyButton = styled.button`

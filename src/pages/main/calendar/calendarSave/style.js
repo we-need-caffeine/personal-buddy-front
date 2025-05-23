@@ -7,6 +7,22 @@ import {
 } from "../../../../globals/common";
 const S = {};
 
+// 공통 드롭다운 박스 스타일
+const sharedDropdownBoxStyle = `
+  width: 191px;
+  height: 37px;
+  padding-left: 12px;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  background-color: #FAFAFA;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  ${fontSizeH8};
+`;
+
 S.Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -57,17 +73,11 @@ S.Row = styled.div`
 `;
 
 S.Label = styled.div`
-  font-size: 16px;
-  font-weight: bold;
+  ${fontWeightRegular}
 `;
 
 S.Input = styled.input`
-  width: 191px;
-  height: 37px;
-  border-radius: 10px;
-  padding-left: 9px;
-  border: 1px solid #eee;
-  background-color: #fafafa;
+  ${sharedDropdownBoxStyle}
 `;
 
 S.InviteSection = styled.div`
@@ -75,12 +85,7 @@ S.InviteSection = styled.div`
 `;
 
 S.SearchBox = styled.input`
-  width: 191px;
-  height: 37px;
-  padding-left: 9px;
-  border-radius: 10px;
-  border: 1px solid #eee;
-  background-color: #fafafa;
+  ${sharedDropdownBoxStyle}
 `;
 
 S.Dropdown = styled.div`
@@ -136,7 +141,7 @@ S.MemberList = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 30px;
-  gap: 20px;
+  gap: 12px;
 `;
 
 S.MemberListTitle = styled.div`
@@ -146,6 +151,7 @@ S.MemberListTitle = styled.div`
 
 S.MemberItem = styled.div`
   display: flex;
+
   align-items: center;
 `;
 

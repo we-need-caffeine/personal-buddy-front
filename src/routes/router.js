@@ -71,6 +71,8 @@ import CalendarContainer from "../pages/main/calendar/CalendarContainer";
 import CalendarDayContainer from "../pages/main/calendar/calendarDay/CalendarDayContainer";
 import CalendarMonthContainer from "../pages/main/calendar/calendarMonth/CalendarMonthContainer";
 import CalendarWeekContainer from "../pages/main/calendar/calendarWeek/CalendarWeekContainer";
+import SocialJoinAgree from "../pages/member/join/social/agree/SocialJoinAgree";
+import SignUp from "../pages/member/join/SignUp";
 
 const router = createBrowserRouter([
   {
@@ -341,15 +343,21 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <JoinAgree />,
-          },
-          {
-            path: "info",
-            element: <JoinInfo />,
-          },
-          {
-            path: "profile",
-            element: <JoinProfile />,
+            element: <SignUp />,
+            children: [
+              {
+                path: "",
+                element: <JoinAgree />,
+              },
+              {
+                path: "info",
+                element: <JoinInfo />,
+              },
+              {
+                path: "profile",
+                element: <JoinProfile />,
+              },
+            ],
           },
         ],
       },
