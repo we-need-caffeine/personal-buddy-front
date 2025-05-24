@@ -10,9 +10,11 @@ const CalendarContext = createContext({
 
 // 제공하는 값
 const CalendarProvider = ({ children }) => {
+  const [categories, setCategories] = useState([]);
   const [colors, setColors] = useState([]);
   const [calendars, setCalendars] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
+
   const [calendarIndex, setCalendarIndex] = useState(null);
   const memberId = useSelector((state) => state.member.currentUser.id);
   const [selectedCalendarId, setSelectedCalendarId] = useState(null);
@@ -42,8 +44,7 @@ const CalendarProvider = ({ children }) => {
         allTodos.push(calendar.todoLists);
       });
 
-      setCalendarIndex(datas.calendars[0].calendarIndex);
-      console.log(datas);
+      setCalendarIndex(datas.calendars[0].calendarIndex);;
       // 객체 -> 배열로 데이터 값
       const { calendars } = await datas;
       setCalendars(calendars);
@@ -62,7 +63,7 @@ const CalendarProvider = ({ children }) => {
       );
       const datas = await response.json();
 
-      //console.log(datas);
+     
       setColors(datas);
     };
 
@@ -70,15 +71,30 @@ const CalendarProvider = ({ children }) => {
   }, [memberId]);
 
   useEffect(() => {
-    // console.log("CalendarContext 상태값:", calendars);
-    // console.log(process.env.REACT_APP_BACKEND_URL);
-  }, [calendars]);
+ 
+    const getCategories = async () => {
+      const response = await fetch(
+         `${process.env.REACT_APP_BACKEND_URL}/schedules/api/categories`,
+         {
+          method: 'GET',
+         }
+        );
+        const datas = await response.json();
+        datas.forEach((category) => {
+          categories.push(category.scheduleCategoryTitle);
+        })
+        setCategories(categories);
+    };
+    getCategories();
+  }, [memberId])
 
+ 
   const value = {
     state: {
       calendars,
       selectedCalendarId,
       colors,
+      categories
     },
     actions: {
       //  할일, 캘린더, 캘린더 공유, 일정, 일정 공유

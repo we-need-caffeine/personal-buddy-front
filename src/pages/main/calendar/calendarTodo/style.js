@@ -112,10 +112,10 @@ S.CircleIcon = styled.img`
 `;
 
 S.ArrowIcon = styled.img`
-    position: absolute;
-    left: 10px;
-    transition: transform 0.3s ease;
-    transform: ${({ rotated }) => (rotated ? 'rotate(90deg)' : 'rotate(0deg)')};
+  position: absolute;
+  left: 10px;
+  transition: transform 0.3s ease;
+  transform: ${({ $rotated }) => ($rotated ? 'rotate(90deg)' : 'rotate(0deg)')};
 `;
 
 S.IconButton = styled.button`
