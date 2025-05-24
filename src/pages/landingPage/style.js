@@ -12,6 +12,11 @@ S.Container = styled.div`
     position: relative;
 `;
 
+S.Img = styled.img`
+    ${flexCenter}
+    padding: 30px;
+`
+
 S.Title = styled.h1`
     font-size: 50px;
     margin-bottom: 20px;

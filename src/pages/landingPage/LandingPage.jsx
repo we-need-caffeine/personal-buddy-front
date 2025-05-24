@@ -36,10 +36,15 @@ const LandingPage = () => {
           playlist: videoId,
         },
         events: {
-          onReady: () => {
-            setMusicStarted(true); // 음악 정보 표시
-          },
+        onReady: () => {
+            setMusicStarted(true); // 음악 표시
         },
+        onStateChange: (event) => {
+            if (event.data === window.YT.PlayerState.ENDED) {
+            playerRef.current.playVideo(); // loop가 안 먹을시 강제 재시작
+            }
+        }
+        }
       });
     };
   }, []);
@@ -79,8 +84,9 @@ const LandingPage = () => {
 
   return (
     <S.Container onClick={handleClick}>
+      <S.Img src='../assets/images//logo/buddy-logo.png' alt='logo-img' />
       <S.Title>HEY BUDDY!</S.Title>
-      <S.Subtitle>화면을 클릭해보세요!</S.Subtitle>
+      <S.Subtitle>화면을 클릭하면 컨페티가 팡팡팡~.~</S.Subtitle>
 
       {musicStarted && (
         <S.MusicInfo>
