@@ -5,7 +5,6 @@ const S = {};
 S.CalendarWrapper = styled.div`
   width: 840px;
   height: 780px;
-  gap: 40px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -36,38 +35,38 @@ S.CalendarWrapper = styled.div`
     border: none !important;
   }
   .fc-timegrid-slot-lane {
-  border-right: none !important;
-}
-.fc-scrollgrid {
-  border-right: none !important;
-}
-.fc-scroller,
-.fc-scroller-liquid-absolute {
-  background: transparent !important;
-  overflow-y: overlay !important;
-  padding-right: 0 !important;
-  margin-right: 0 !important;
-}
+    border-right: none !important;
+  }
+  .fc-scrollgrid {
+    border-right: none !important;
+  }
+  .fc-scroller,
+  .fc-scroller-liquid-absolute {
+    background: transparent !important;
+    overflow-y: overlay !important;
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+  }
 
-/* 오른쪽 공간을 만들 수 있는 root-level wrapper 제거 */
-.fc-timegrid-body,
-.fc-timegrid-body > table,
-.fc-scrollgrid {
-  width: 100% !important;
-  max-width: 100% !important;
-  padding-right: 0 !important;
-  margin-right: 0 !important;
-  background-color: #ffffff !important;
-  box-sizing: border-box;
-}
+  /* 오른쪽 공간을 만들 수 있는 root-level wrapper 제거 */
+  .fc-timegrid-body,
+  .fc-timegrid-body > table,
+  .fc-scrollgrid {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+    background-color: #ffffff !important;
+    box-sizing: border-box;
+  }
 
-/* 그 어떤 border-right도 제거 */
-.fc-timegrid-body td,
-.fc-scrollgrid,
-.fc-scrollgrid td,
-.fc-scrollgrid-section {
-  border-right: none !important;
-}
+  /* 그 어떤 border-right도 제거 */
+  .fc-timegrid-body td,
+  .fc-scrollgrid,
+  .fc-scrollgrid td,
+  .fc-scrollgrid-section {
+    border-right: none !important;
+  }
   /* 시간 구분선 */
   .fc-timegrid-slot {
     border-top: 1px solid #e5e7eb;
@@ -115,17 +114,57 @@ S.CalendarWrapper = styled.div`
   }
 
   .fc-event {
-    background-color: #01cd74 !important;
+    /* background-color: #01cd74 !important; */
     border: none !important;
     color: white !important; /* 텍스트 가독성 위해 흰색 */
   }
 
   .fc-event {
-  margin: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
+    margin: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+  }
+
+  .fc-highlight {
+    background-color: #01cd74 !important; // 
+    opacity: 0.4; // 선택적: 좀 더 연하게
+  }
+
+.fc-v-event {
+  
+    background-color: var(--fc-event-bg-color);
+    border: 1px solid var(--fc-event-border-color);
+}
+.fc-v-event {
+  --fc-event-bg-color: transparent;
 }
 `;
 
+S.DateInfoWrapper = styled.div`
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #01cd74;
+`;
+
+S.TodayText = styled.span`
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
+S.ArrowIcon = styled.img`
+  margin-right: 10px;
+  width: 12px;
+  height: 24px;
+  cursor: pointer;
+`;
+
+S.LeftArrowIcon = styled(S.ArrowIcon)`
+  width: 12px;
+  height: 24px;
+  transform: rotate(180deg);
+`;
 export default S;

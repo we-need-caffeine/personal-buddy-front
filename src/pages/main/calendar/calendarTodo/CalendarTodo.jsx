@@ -17,9 +17,9 @@ const CalendarTodo = () => {
   useEffect(() => {
     const todosNotCompleted = [];
     const todosCompleted = [];
-    //console.log(calendars);
+
     calendars.forEach((calendar) => {
-      //console.log(calendar);
+
       if (calendar.id === Number(calendarId)) {
         calendar.todoLists.forEach((todo) => {
           const formattedTodo = {
@@ -64,9 +64,6 @@ const CalendarTodo = () => {
         throw new Error("할 일 등록 실패");
       }
       const data = await response.json();
-      // console.log(todoInput);
-      // console.log(calendarId);
-      //console.log("등록 후 응답:", data);
       const savedTodo = {
         id: data,
         text: todoInput,
@@ -117,8 +114,6 @@ const CalendarTodo = () => {
   };
 
   useEffect(() => {
-    // console.log("selectedId:", selectedId);
-    // console.log("todos:", todos);
   }, [selectedId, todos]);
 
   const handleRemoveTodo = async (idToRemove) => {

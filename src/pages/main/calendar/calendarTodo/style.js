@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-
+import {
+  fontSizeH4,
+  fontSizeH8,
+  fontWeightRegular,
+  fontWeightLight,
+} from "../../../../globals/common";
 const S = {};
 
 S.Container = styled.div`
@@ -13,9 +18,6 @@ S.Container = styled.div`
     background-color: #EEFFF8;
 `;
 
-// S.Div = styled.div`
-
-// `;
 
 S.TodoContainer = styled.div`
   display: flex;
@@ -72,6 +74,8 @@ S.TodoWrapper = styled.div`
 
 S.TodoTextWrapper = styled.span`
     margin-left: 40px;
+    ${fontWeightRegular};
+    ${fontSizeH8};
 `;
 
 S.DoneWrapper = styled.div`
