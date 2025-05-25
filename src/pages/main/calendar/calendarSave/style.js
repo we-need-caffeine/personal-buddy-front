@@ -30,7 +30,7 @@ S.Container = styled.div`
   width: 560px;
   height: 780px;
   background: white;
-  border: 1px solid #fafafa;
+  border: 1px solid black;
   box-sizing: border-box;
 `;
 
@@ -57,10 +57,9 @@ S.RowContainer = styled.div`
   align-items: center;
   width: 560px;
   height: 73px;
-  border: ${({ noBorder }) => (noBorder ? "none" : "1px solid #fafafa")};
-  border-top: 1px solid #fafafa;
-  border-left: 1px solid #fafafa;
-  border-right: 1px solid #fafafa;
+  border-top: 1px solid black;
+  border-bottom: ${({ noBorder }) => (noBorder ? "none" : "1px solid black")};
+
 `;
 
 S.Row = styled.div`
@@ -164,25 +163,37 @@ S.HostBadge = styled.div`
   font-weight: bold;
 `;
 
-S.DeleteButtonContainer = styled.div`
-  width: 476px;
-  flex-grow: 1;
-`;
-
-S.DeleteButtonWrapper = styled.div`
+S.ButtonGroup = styled.div`
   display: flex;
-  justify-content: end;
-  width: 100%;
+  align-items: end;
+  justify-content: space-between;
+  width: 222px;
+  height: 37px;
+  background-color: white;
 `;
 
-S.DeleteButton = styled.button`
+S.SaveButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 102px;
   height: 37px;
-  background-color: #e74c3c;
-  color: white;
   border: none;
-  border-radius: 12px;
-  font-weight: bold;
+  color: white;
+  border-radius: 10px;
+  background-color: #01cd74;
 `;
 
+S.CancelButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 102px;
+  height: 37px;
+  border: none;
+  color: #bbbbbb;
+  border: 1px solid #bbbbbb;
+  border-radius: 10px;
+  background-color: white;
+`;
 export default S;
