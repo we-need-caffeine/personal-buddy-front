@@ -117,8 +117,8 @@ S.ChatRoomModalContainer = styled.div`
 S.ChatModalContainer = styled.div`
   position: absolute;
   top: 80px;
-  right: 250px;
-  z-index: 9999;
+  right: 90px;
+  z-index: 10000;
 `
 
 

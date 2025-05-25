@@ -1,23 +1,28 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import S from './style';
-import { HeaderContext } from '../../../context/HeaderContext';
+import { ChatContext } from '../../../context/ChatContext';
 
-const Chat = ({ onCancel }) => {
+const Chat = ({ memberId, chatRoomId, onCancel }) => {
 
-  // 프로필 카드 상태
-  const [showProfileCard, setShowProfileCard] = useState(false);
-  // 텍스트에리어값
-  const [inputText, setInputText] = useState("");
-  // 필터 조건
-  const [followFilter, setFollowFilter] = useState("");
-  // 채팅방 목록
-  const [chatRoomList, setChatRoomList] = useState([]);
+  // 채팅 콘텍스트
+  const { chatList, getChatList, inputChat, handleChatChange, sendMessage } = useContext(ChatContext)
 
-  // 텍스트에리어에서 값을 입력할 때 마다 잡아서 상태변경
-  const handleTextareaChange = (e) => {
-      setInputText(e.target.value);
-  };
+  // 컴포넌트 내부
+  const scrollRef = useRef();
 
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [chatList]); // chatList가 바뀔 때마다 맨 아래로
+
+  useEffect(() => {
+    getChatList(memberId, chatRoomId)
+  },[chatRoomId, memberId])
+  
+  useEffect(() => {
+    console.log("최신 chatList:", chatList);
+  }, [chatList]);
 
   return (
     <S.ChatRoomContainer>
@@ -26,66 +31,49 @@ const Chat = ({ onCancel }) => {
         <S.Title>메세지</S.Title>
         <S.CloseButton src='/assets/images/modal/close-button.png' alt='x버튼' onClick={onCancel}/>
       </S.TitleContainer>
-      <S.TopContainer>
-        <S.SearchBox>
-          <S.SearchIcon
-            src='/assets/images/follow/search-icon.png'
-            alt='돋보기 아이콘'
-          />
-          <S.SearchInput
-            maxLength={14} 
-            placeholder='닉네임 검색'
-            onChange={handleTextareaChange}
-            value={inputText}
-            spellCheck={false}
-            onDrop={e => e.preventDefault()}
-            onDragOver={e => e.preventDefault()}
-          >
-          </S.SearchInput>
-        </S.SearchBox>
-        <S.SelectBox onChange={(e) => setFollowFilter(e.target.value)}>
-          <option value="">전체</option>
-          <option value="follow">팔로잉</option>
-          <option value="favorite">즐겨찾기</option>
-        </S.SelectBox>
-      </S.TopContainer>
-      <S.ListContainer>
-        {chatRoomList.map((item) => (
-          <S.ItemContainer key={item.chatRoomId}>
-            <S.MemberInfoContainer>
-              <S.MemberImg
+      <S.ChatLogContainer ref={scrollRef}>
+        {chatList.map((item, i) => 
+          item.chatWriterMemberId !== memberId ? (
+            <S.LeftChat key={i}>
+              <S.LeftMemberImg 
                 src={`http://localhost:10000/images/profile/${item.memberImgName}`}
-                alt='멤버 프로필 이미지'
-                onClick={() => {
-                }}
                 onError={e => {
                   e.target.src = "/assets/images/header/default-member-img.png";
                 }}
-                />
-              <S.MemberInfoTextContainer>
-                <S.MemberStatusContainer>
-                  <S.MemberNickName>{item.memberNickName}</S.MemberNickName>
-                  {item.unReadCount > 0 && (
-                    <S.UnReadCount>
-                      {item.unReadCount > 999 ? "999+" : item.unReadCount}
-                    </S.UnReadCount>
-                  )}
-                </S.MemberStatusContainer>
-                <S.MemberStatusMessage>
-                  {item.chatRoomLastChat || '메세지가 없습니다.'}
-                </S.MemberStatusMessage>
-              </S.MemberInfoTextContainer>
-            </S.MemberInfoContainer>
-            <S.RightContainer>
-              <S.LastChatDate>오전 11:20</S.LastChatDate>
-              <S.OutChatRoom>채팅방 나가기</S.OutChatRoom>
-            </S.RightContainer>
-            {/* {item.chatRoomLastChatDate && (
-              <S.LastChatDate>{item.chatRoomLastChatDate}</S.LastChatDate>
-            )} */}
-          </S.ItemContainer>
-        ))}
-      </S.ListContainer>
+              />
+              <S.LeftTextContainer>
+                <S.LeftNickName>{item.memberNickname}</S.LeftNickName>
+                <S.LeftContent>{item.chatContent}</S.LeftContent>
+              </S.LeftTextContainer>
+            </S.LeftChat>
+          ) : (
+            <S.RightChat key={i}>
+              <S.RightContent>{item.chatContent}</S.RightContent>
+            </S.RightChat>
+          )
+        )}
+      </S.ChatLogContainer>
+      <S.ChatInputBox>
+        <S.ChatInput
+          maxLength={200}
+          placeholder="메세지 입력"
+          onChange={handleChatChange}
+          value={inputChat}
+          spellCheck={false}
+          onDrop={e => e.preventDefault()}
+          onDragOver={e => e.preventDefault()}
+          onKeyDown={e => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              sendMessage(chatRoomId, memberId, inputChat);
+            }
+          }}
+        >
+        </S.ChatInput>
+        <S.SendButton onClick={() => sendMessage(chatRoomId, memberId, inputChat)}>
+          전송
+        </S.SendButton>
+      </S.ChatInputBox>
     </S.ChatRoomContainer>
   );
 };

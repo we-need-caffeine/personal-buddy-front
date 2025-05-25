@@ -8,6 +8,7 @@ import { setUser, setUserStatus } from '../../../modules/member';
 import { HeaderContext } from '../../../context/HeaderContext';
 import ChatRoom from '../chatting/ChatRoom';
 import { ChatContext } from '../../../context/ChatContext';
+import Chat from '../chatting/Chat';
 
 const Header = () => {
   // 로그인된 유저정보
@@ -25,7 +26,7 @@ const Header = () => {
   // 읽지 않은 알림 수
   const [notReadAlertCount, setNotReadAlertCount] = useState(0);
   // 채팅 콘텍스트
-  const { showChatRoom, handleChatRoom, showChat, handleChat } = useContext(ChatContext)
+  const { connect, disconnect, chatRoomList, getChatRoomList, showChatRoom, handleChatRoom, showChat, handleChat, chatRoomId } = useContext(ChatContext)
   // 리덕스 사용
   const dispatch = useDispatch();
 
@@ -38,6 +39,19 @@ const Header = () => {
   const handleAlertModal = (state) => {
     setShowAlertModal(state);
   }
+
+  // 채팅룸을 최초로 조회하는 함수
+  useEffect(() => {
+    getChatRoomList(memberId);
+  }, [memberId]);
+
+  // chatRoomList가 변경될 때마다 connect
+  useEffect(() => {
+    if (chatRoomList.length > 0) {
+      connect(chatRoomList);
+      return () => disconnect();
+    }
+  }, [chatRoomList]);
   
   // 읽지않은 알림의 수를 조회
   useEffect(() => {
@@ -199,30 +213,31 @@ const Header = () => {
           <ChatRoom
             memberId={memberId}
             handleChatRoom={showChatRoom}
-            onCancel={() => {handleChatRoom(false)}}
+            onCancel={() => {
+              handleChatRoom(false)
+              handleChat(false)
+            }}
           />
         </S.ChatRoomModalContainer>
       )}
       {showChatRoom && (
         <S.CardBG 
-          onClick={() => {handleChatRoom(false)}}
+          onClick={() => {
+            handleChatRoom(false)
+            handleChat(false)
+          }}
         />
       )}
 
       {/* 채팅 */}
       {showChat && (
         <S.ChatModalContainer>
-          <ChatRoom
+          <Chat
             memberId={memberId}
-            handleChatRoom={showChat}
+            chatRoomId={chatRoomId}
             onCancel={() => {handleChat(false)}}
           />
         </S.ChatModalContainer>
-      )}
-      {showChat && (
-        <S.CardBG 
-          onClick={() => {handleChat(false)}}
-        />
       )}
 
       {/* 알림창 */}

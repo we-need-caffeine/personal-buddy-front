@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import S from './style';
 import ProfileCard from '../profile/ProfileCard';
 
-const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId}) => {
+const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId, handleChat}) => {
 
   // 프로필 카드 상태값
   const [showProfileCard, setShowProfileCard] = useState(false);
@@ -15,14 +15,17 @@ const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId}) => {
   return (
     <>
       <S.ItemContainer 
-        key={item.chatRoomId}
-        onClick={() => {setChatRoomId(item.chatRoomId)}}
+        onClick={() => {
+          setChatRoomId(item.chatRoomId)
+          handleChat()
+        }}
       >
         <S.MemberInfoContainer>
           <S.MemberImg
             src={`http://localhost:10000/images/profile/${item.memberImgName}`}
             alt='멤버 프로필 이미지'
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               handleProfileCard(true)
             }}
             onError={e => {
@@ -68,7 +71,7 @@ const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId}) => {
         </S.RightContainer>
         {/* {item.chatRoomLastChatDate && (
           <S.LastChatDate>{item.chatRoomLastChatDate}</S.LastChatDate>
-        )} */}
+        )} */}  
       </S.ItemContainer>
     </>
   );

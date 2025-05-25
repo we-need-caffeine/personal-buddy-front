@@ -9,7 +9,7 @@ const ChatRoom = ({ memberId, handleChatRoom, onCancel}) => {
   // 헤더 이벤트 콘텍스트
   const { setHeaderScroll } = useContext(HeaderContext);
   // 채팅 콘텍스트
-  const { chatRoomList, getChatRoomList, handleTextareaChange, setFollowFilter, inputText, followFilter, setChatRoomId } = useContext(ChatContext)
+  const { chatRoomList, getChatRoomList, handleTextareaChange, setFollowFilter, inputText, followFilter, setChatRoomId, handleChat } = useContext(ChatContext)
 
   //최초로 채팅의 리스트를 가져오는 함수
   useEffect(() => {
@@ -64,6 +64,7 @@ const ChatRoom = ({ memberId, handleChatRoom, onCancel}) => {
             key={i}
             item={item}
             memberId={memberId}
+            handleChat={() => handleChat(true)}
             setChatRoomId={setChatRoomId}
             onCancel={onCancel}
           />
