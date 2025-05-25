@@ -82,6 +82,7 @@ const LandingPage = () => {
     setIsMuted(!isMuted);
   };
 
+
   return (
     <S.Container onClick={handleClick}>
       <S.Img src='../assets/images//logo/buddy-logo.png' alt='logo-img' />

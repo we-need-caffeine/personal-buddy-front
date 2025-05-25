@@ -65,7 +65,7 @@ S.Dot = styled.span`
 
 
 S.Banner1Text = styled.div`
-  
+  margin-top: 30px;
   position: absolute;
   top: 40%;
   left: 10%;

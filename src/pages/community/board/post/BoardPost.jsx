@@ -42,7 +42,7 @@ const BoardPost = () => {
     const response = await fetch((`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/list?boardId=${id}`));
     if(!response.ok) throw new Error(`댓글 조회 실패`)
     const data = await response.json();
-   console.log("댓글",data)
+  //  console.log("댓글",data)
     setComments(data);
   }
 
@@ -50,7 +50,7 @@ const BoardPost = () => {
     .then(() => getComments())
     .catch((err) => {
       setIsError(true);
-      console.error(`getPost fetching error: ${err}`);
+      // console.error(`getPost fetching error: ${err}`);
     });
 
   }, [id,isUpdate])
@@ -89,12 +89,12 @@ const BoardPost = () => {
         const refreshed = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/list?boardId=${id}`);
         const data = await refreshed.json();
         setComments(data);
-        console.log("좋아요 반영 후 댓글 전체", data);
+        // console.log("좋아요 반영 후 댓글 전체", data);
       } else {
         alert('댓글 등록 실패');
       }
     } catch (err) {
-      console.error('댓글 등록 에러!', err);
+      // console.error('댓글 등록 에러!', err);
     }
   };
 
@@ -128,7 +128,7 @@ const BoardPost = () => {
       alert('댓글 좋아요 실패');
     }
   } catch (err) {
-    console.error('댓글 좋아요 에러!', err);
+    // console.error('댓글 좋아요 에러!', err);
   }
 };
 
@@ -166,12 +166,12 @@ const BoardPost = () => {
 
 
       {/* 썸네일 이미지가 있을 때만 출력 */}
-      {post.boardImgPath && post.boardImgName && (
+      {/* {post.boardImgPath && post.boardImgName && (
         <S.Image
           src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.boardImgPath)}&fileName=${encodeURIComponent(post.boardImgName)}`}
           alt="게시글 썸네일"
         />
-      )}
+      )} */}
 
 
         {/* {post.boardImgPath && post.boardImgName && (
