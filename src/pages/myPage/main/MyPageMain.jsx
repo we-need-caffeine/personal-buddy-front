@@ -190,7 +190,6 @@ const MyPageMain = () => {
                             onAskDelete={handleAskDelete}
                             formatDate={formatDate}
                         />
-                        
                     ))}
                 </S.GuestBookListContainer>
                 {/* 삭제 컨펌 모달 */}

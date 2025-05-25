@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Alert from '../alert/Alert'; // 경로에 맞게 수정해줘!
 import S from './style';
@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUser, setUserStatus } from '../../../modules/member';
 import { HeaderContext } from '../../../context/HeaderContext';
 import ChatRoom from '../chatting/ChatRoom';
-import { Stomp } from '@stomp/stompjs';
+import { ChatContext } from '../../../context/ChatContext';
 
 const Header = () => {
   // 로그인된 유저정보
@@ -17,39 +17,17 @@ const Header = () => {
   // 헤더 이벤트 상태
   const [showHeader, setShowHeader] = useState(true);
   // 헤더 이벤트 콘텍스트
-  const { headerScroll, showChatRoom, handleChatRoom, showChat, handleChat } = useContext(HeaderContext);
+  const { headerScroll } = useContext(HeaderContext);
   // 알림창 상태
   const [showAlertModal, setShowAlertModal] = useState(false);
   // 프로필 카드 상태
   const [showProfileCard, setShowProfileCard] = useState(false);
   // 읽지 않은 알림 수
   const [notReadAlertCount, setNotReadAlertCount] = useState(0);
+  // 채팅 콘텍스트
+  const { showChatRoom, handleChatRoom, showChat, handleChat } = useContext(ChatContext)
   // 리덕스 사용
   const dispatch = useDispatch();
-  // 채팅 메세지를 담는 변수
-  const [messages, setMessages] = useState([]);
-  // 텍스트에리어값 변수
-  const [inputText, setInputText] = useState("");
-
-  const stompClient = useRef(null);
-
-  // 웹소켓 연결 설정
-  const connect = () => {
-    const socket = new WebSocket("ws://localhost:10000/ws");
-    stompClient.current = Stomp.over(socket);
-    stompClient.current.connect({}, () => {
-    stompClient.current.subscribe(`/sub/chatroom/`, (message) => {
-    const newMessage = JSON.parse(message.body);
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-      });
-    });
-  };
-  // 웹소켓 연결 해제
-  const disconnect = () => {
-    if (stompClient.current) {
-      stompClient.current.disconnect();
-    }
-  };
 
   // 프로필 카드를 열고 닫는 함수
   const handleProfileCard = (state) => {

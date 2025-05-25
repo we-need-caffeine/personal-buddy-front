@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react';
 import S from './style';
+import { HeaderContext } from '../../../context/HeaderContext';
 
 const Chat = ({ onCancel }) => {
 
-  // 헤더 이벤트 콘텍스트
-  const { setHeaderScroll } = useContext(HeaderContext);
   // 프로필 카드 상태
   const [showProfileCard, setShowProfileCard] = useState(false);
   // 텍스트에리어값
