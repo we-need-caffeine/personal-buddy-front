@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import {
   fontSizeH4, fontSizeH6, fontSizeH8,
   fontWeightRegular, fontWeightMedium, fontWeightBold,
+  fontWeightThin,
 } from '../../../../globals/common';
 
 const S = {};
@@ -42,12 +43,27 @@ S.Hr = styled.hr`
     border-top: 1px solid #D9D9D9;
     margin: 30px 0;
 `;
+S.fileMB = styled.div`
+    font-size: 14px;
+    ${fontWeightThin};
+    margin-top: 60px;
+    margin-bottom: 10px;
+    width: 1000px;
+
+`
 
 // 필드 라벨 스타일
 S.Label = styled.label`
     ${fontSizeH6};
     ${fontWeightMedium};
     margin-top: 60px;
+    margin-bottom: 10px;
+    width: 1000px;
+`;
+
+S.Label2 = styled.label`
+    ${fontSizeH6};
+    ${fontWeightMedium};
     margin-bottom: 10px;
     width: 1000px;
 `;
@@ -175,7 +191,6 @@ S.CustomFileBox = styled.div`
     border-radius: 10px;
     font-size: 14px;
     background-color: #fff;
-    margin-top: 160px;
     cursor: pointer;
 
     &:hover {
