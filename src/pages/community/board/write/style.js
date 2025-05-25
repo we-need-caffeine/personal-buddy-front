@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import {
   fontSizeH4, fontSizeH6, fontSizeH8,
   fontWeightRegular, fontWeightMedium, fontWeightBold,
+  fontWeightThin,
 } from '../../../../globals/common';
 
 const S = {};
@@ -42,6 +43,13 @@ S.Hr = styled.hr`
     border-top: 1px solid #D9D9D9;
     margin: 30px 0;
 `;
+S.fileMB = styled.div`
+    font-size: 14px;
+    ${fontWeightThin};
+    margin-top: 60px;
+    margin-bottom: 10px;
+    width: 1000px;
+`
 
 // 필드 라벨 스타일
 S.Label = styled.label`
@@ -52,11 +60,20 @@ S.Label = styled.label`
     width: 1000px;
 `;
 
+S.Label2 = styled.label`
+    ${fontSizeH6};
+    ${fontWeightMedium};
+    margin-bottom: 10px;
+    width: 1000px;
+`;
+
 // 제목 입력 필드 스타일
 S.Input = styled.input`
     width: 1000px;
     height: 40px;
     font-size: 14px;
+    padding: 12px 20px;
+    box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 10px;
 `;
@@ -97,6 +114,8 @@ S.Select = styled.select`
 S.TextArea = styled.textarea`
     width: 1000px;
     height: 400px;
+    padding: 12px 20px;
+    box-sizing: border-box;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -159,7 +178,23 @@ S.FileInputWrapper = styled.div`
 
 // 실제 파일 인풋 태그 스타일
 S.FileInput = styled.input`
+    display: none;
+`;
+
+S.CustomFileBox = styled.div`
+    width: 1000px;
+    height: 40px;
+    border: 1px solid #ccc;
+    padding: 12px 20px; 
+    box-sizing: border-box;
+    border-radius: 10px;
     font-size: 14px;
+    background-color: #fff;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #f5f5f5;
+    }
 `;
 
 

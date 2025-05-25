@@ -84,7 +84,7 @@ const JoinInfo = () => {
   const handleSendEmailAuth = async () => {
     try {
 
-        const checkUrl = `http://localhost:10000/members/api/email/check?email=${encodeURIComponent(email)}`;
+        const checkUrl = `${process.env.REACT_APP_BACKEND_URL}/members/api/email/check?email=${encodeURIComponent(email)}`;
         const duplicateRes = await fetch(checkUrl, {
         method: "GET"
         });
@@ -97,7 +97,7 @@ const JoinInfo = () => {
         }
 
 
-        const response = await fetch("http://localhost:10000/sms/api/email/send", {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/email/send`, {
             method: "POST",
             headers: {
             "Content-Type": "application/json"
@@ -138,7 +138,7 @@ const JoinInfo = () => {
 
   const handleCheckEmailCode = async () => {
         try {
-        const response = await fetch("http://localhost:10000/sms/api/email/verify-code", {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/email/verify-code`, {
             method: "POST",
             headers: {
             "Content-Type": "application/json"
@@ -147,7 +147,6 @@ const JoinInfo = () => {
         });
 
         const data = await response.json();
-        console.log("응답:", data);
 
         if (data.isFlag) {
             setEmailVerified(true);
@@ -166,18 +165,18 @@ const JoinInfo = () => {
     };
 
     const handleSendPhoneAuth = async () => {
-      // const checkUrl = `http://localhost:10000/members/api/phone/check?phone=${encodeURIComponent(phone)}`;
-      // const res = await fetch(checkUrl);
-      // const data = await res.json();
+      const checkUrl = `${process.env.REACT_APP_BACKEND_URL}/members/api/phone/check?phone=${encodeURIComponent(phone)}`;
+      const res = await fetch(checkUrl);
+      const data = await res.json();
+
+      if (data) {
+        alert(data.message || "이미 등록된 번호입니다.");
+        setPhoneValidation(false);
+        setPhoneMessage("※ 이미 등록된 전화번호입니다.");
+        return;
+      }
     
-      // if (data.exists) {
-      //   alert(data.message || "이미 등록된 번호입니다.");
-      //   setPhoneValidation(false);
-      //   setPhoneMessage("※ 이미 등록된 전화번호입니다.");
-      //   return;
-      // }
-    
-      // const sendRes = await fetch("http://localhost:10000/sms/api/sms/send", {
+      // const sendRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/sms/send`, {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(phone)
@@ -198,7 +197,7 @@ const JoinInfo = () => {
     };
 
     const handleCheckPhoneCode = async () => {
-      // const res = await fetch("http://localhost:10000/sms/api/phone/verify-code", {
+      // const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/phone/verify-code`, {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(phoneAuthCode)
@@ -274,16 +273,6 @@ const JoinInfo = () => {
       phoneValidation === true &&
       phoneAuthCodeValid === true &&
       isConfirmValid === true;
-
-      // console.log("이메일 유효:", isEmailValid);
-      // console.log("이메일 인증코드 확인:", emailAuthCodeValid);
-      // console.log("비밀번호 유효:", isPasswordValid);
-      // console.log("이름 유효:", isNameValid);
-      // console.log("성별 유효:", isGenderValid);
-      // console.log("생일 입력됨:", birth);
-      // console.log("전화번호 유효성:", phoneValidation);
-      // console.log("전화 인증코드 확인:", phoneAuthCodeValid);
-      // console.log("최종 상태:", isFormValid);
 
   return (
     <S.Container>
@@ -476,7 +465,7 @@ const JoinInfo = () => {
               setBirth(date);
               setBirthValidation(date ? true : false);
             }}
-            render={({ defaultValue, value, ...props }, ref) => (
+            render={({ render, defaultValue, value, ...props }, ref) => (
               <S.Input {...props} ref={ref} placeholder="생년월일 선택" required />
             )}
           />

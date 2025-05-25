@@ -12,7 +12,7 @@ const Identify = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:10000/members/api/email/check?email=${encodeURIComponent(email)}`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/members/api/email/check?email=${encodeURIComponent(email)}`);
 
       if (!response.ok) {
         throw new Error('서버 응답 오류');
@@ -33,9 +33,14 @@ const Identify = () => {
     <S.Container>
       <S.Wrapper>
         <form onSubmit={handleSubmit}>
-          <S.Title>
-            <span>비밀번호 찾기</span>
-          </S.Title>
+          <S.TitleWrapper>
+            <S.Title>
+              <span>비밀번호 찾기</span>
+            </S.Title>
+            <S.StepText>
+              <span><S.ActiveStep>1. 아이디 입력</S.ActiveStep> &gt; 2. 본인확인 &gt; 3. 비밀번호 변경</span>
+            </S.StepText>
+          </S.TitleWrapper>
           <S.SubTitle>
             <span>비밀번호를 찾고자하는 이메일을 입력해주세요.</span>
           </S.SubTitle>

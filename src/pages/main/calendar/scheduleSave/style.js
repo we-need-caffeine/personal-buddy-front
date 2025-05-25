@@ -18,13 +18,13 @@ const sharedDropdownBoxStyle = `
   background-color: #FAFAFA;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   cursor: pointer;
   ${fontSizeH8};
 `;
 
 // 전체 캘린더 저장 화면 컨테이너
 S.Container = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -100,6 +100,7 @@ S.DateInput = styled.input`
   outline: none;
   background-color: #fafafa;
   border-radius: 10px;
+  padding: 12px;
   box-sizing: border-box;
 `;
 
@@ -148,15 +149,19 @@ S.ContentRow = styled.div`
   align-items: center;
   width: 100%;
   height: 37px;
+  ${fontWeightLight}
 `;
 
 S.ContentRowInput = styled.input`
   height: 100%;
   width: 320px;
+  padding: 12px;
   box-sizing: border-box;
+  border: none;
   outline: none;
-  border: 1px solid #bbbbbb;
+  background-color: #fafafa;
   border-radius: 10px;
+  ${fontWeightLight}
   ${fontSizeH8};
 `;
 
@@ -166,7 +171,8 @@ S.ContentRowTextInput = styled.input`
   box-sizing: border-box;
   border-radius: 10px;
   outline: none;
-  border: 1px solid #bbbbbb;
+  border: none;
+  background-color: #fafafa;
   ${fontSizeH8};
 `;
 
@@ -197,6 +203,7 @@ S.Select = styled.select`
   background-color: #fafafa;
   font-size: 14px;
   ${fontSizeH8};
+  ${fontWeightLight}
   appearance: none;
 `;
 
@@ -206,6 +213,7 @@ S.ContentRowTextArea = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 143px;
+  ${fontWeightLight}
 `;
 
 S.ContentTextAreaWrapper = styled.div`
@@ -254,7 +262,13 @@ S.MemberDropdownContainer = styled.div`
 `;
 
 S.MemberSelectBox = styled.div`
-  ${sharedDropdownBoxStyle}
+ ${sharedDropdownBoxStyle}
+  ${fontWeightLight}
+`;
+
+S.MemberWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 S.MemberDropdownList = styled.div`
@@ -271,6 +285,7 @@ S.MemberDropdownList = styled.div`
 S.MemberItem = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 12px;
   cursor: pointer;
   &:hover {
@@ -287,7 +302,6 @@ S.ProfileIcon = styled.div`
 `;
 
 S.MemberName = styled.div`
-  flex: 1;
   ${fontSizeH8};
 `;
 
@@ -299,7 +313,7 @@ S.CheckIcon = styled.div`
   border: 2px solid #00c851;
 `;
 
-// ✅ 커스텀 드롭다운
+// 커스텀 드롭다운
 S.CustomDropdownContainer = styled.div`
   position: relative;
   width: 150px;
@@ -351,7 +365,8 @@ S.TimeDropdownContainer = styled.div`
 S.TimeBox = styled.div`
   height: 37px;
   background-color: #fafafa;
-  border: 1px solid #ccc;
+  border: none;
+  order: none;
   border-radius: 10px;
   padding: 0 12px;
   display: flex;

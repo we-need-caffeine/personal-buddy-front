@@ -20,7 +20,6 @@ import CommunityLayout from "../pages/community/CommunityLayout";
 import EventContainer from "../pages/community/event/EventContainer";
 import BoardContainer from "../pages/community/board/BoardContainer";
 import EventPostContainer from "../pages/community/event/post/EventPostContainer";
-import EventPost from "../pages/community/event/post/EventPost";
 import BoardPostcontainer from "../pages/community/board/post/BoardPostContainer";
 import BoardWriteContainer from "../pages/community/board/write/BoardWriteContainer";
 import BoardEditContainer from "../pages/community/board/edit/BoardEditContainer";
@@ -71,16 +70,31 @@ import CalendarContainer from "../pages/main/calendar/CalendarContainer";
 import CalendarDayContainer from "../pages/main/calendar/calendarDay/CalendarDayContainer";
 import CalendarMonthContainer from "../pages/main/calendar/calendarMonth/CalendarMonthContainer";
 import CalendarWeekContainer from "../pages/main/calendar/calendarWeek/CalendarWeekContainer";
+import SignUp from "../pages/member/join/SignUp";
+import LayoutWithoutBanner from "../pages/layout/LayoutWithoutBanner";
+import WakeUpDetail from "../pages/community/event/post/wakeup/WakeUpDetail";
+import RoutineShareDetail from "../pages/community/event/post/Routine/RoutineShareDetail";
+import HealingDayDetail from "../pages/community/event/post/Healing/HealingDayDetail";
 
 const router = createBrowserRouter([
+    {
+    path: "/",
+    element: <LayoutWithoutBanner />, // 랜딩 전용 레이아웃
+    children: [
+      {
+        path: "/",
+        element: <LandingPageContainer />, // 랜딩 페이지
+      },
+    ],
+  },
   {
     path: "/",
     element: <Layout />,
     children: [
-      {
-        path: "/",
-        element: <LandingPageContainer />, // 랜딩 페이지 http://localhost:3000/
-      },
+      // {
+      //   path: "/",
+      //   element: <LandingPageContainer />, // 랜딩 페이지 http://localhost:3000/
+      // },
       {
         path: "/main",
         element: <LoginLayout />, // 로그인 확인 /main
@@ -138,7 +152,7 @@ const router = createBrowserRouter([
                     element: <MyTreeContainer />, // 성장나무
                     children: [
                       {
-                        path: "all",
+                        path: "",
                         element: <MyTreeItemsAll />, // 성장나무 - 전체 /main/contents/mytree
                       },
                       {
@@ -198,8 +212,16 @@ const router = createBrowserRouter([
                 element: <EventPostContainer />,
                 children: [
                   {
-                    path: ":id",
-                    element: <EventPost />,
+                    path: ":id/wake-up",
+                    element: <WakeUpDetail />
+                  },
+                  {
+                    path: ":id/routine",
+                    element: <RoutineShareDetail />
+                  },
+                  {
+                    path: ":id/healing-day",
+                    element: <HealingDayDetail />
                   },
                 ],
               },
@@ -341,15 +363,21 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <JoinAgree />,
-          },
-          {
-            path: "info",
-            element: <JoinInfo />,
-          },
-          {
-            path: "profile",
-            element: <JoinProfile />,
+            element: <SignUp />,
+            children: [
+              {
+                path: "",
+                element: <JoinAgree />,
+              },
+              {
+                path: "info",
+                element: <JoinInfo />,
+              },
+              {
+                path: "profile",
+                element: <JoinProfile />,
+              },
+            ],
           },
         ],
       },

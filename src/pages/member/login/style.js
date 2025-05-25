@@ -35,7 +35,9 @@ const S = {}
     align-items: center;
   `;
 
-  S.Tab = styled(NavLink)`
+  S.Tab = styled(NavLink).withConfig({
+  shouldForwardProp: (prop) => prop !== 'right',
+})`
   width: 50%;
   height: 60px;
   display: flex;

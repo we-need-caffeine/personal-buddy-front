@@ -6,7 +6,7 @@ import { CalendarContext } from "../../../../context/CalendarContext";
 const CalendarTodo = () => {
   const { memberId, calendarId } = useParams();
   const { state } = useContext(CalendarContext);
-  const { calendars, todos: contextTodos } = state;
+  const { calendars } = state;
 
   const [rotated, setRotated] = useState(false);
   const [todos, setTodos] = useState([]);
@@ -18,24 +18,27 @@ const CalendarTodo = () => {
     const todosNotCompleted = [];
     const todosCompleted = [];
 
-    contextTodos.forEach((todos) => {
-      todos.forEach((todo) => {
-        const formattedTodo = {
-          id: todo.id,
-          text: todo.todoListContent,
-        };
+    calendars.forEach((calendar) => {
 
-        if (todo.todoListIsCompleted === 0) {
-          todosNotCompleted.push(formattedTodo);
-        } else if (todo.todoListIsCompleted === 1) {
-          todosCompleted.push(formattedTodo);
-        }
-      });
+      if (calendar.id === Number(calendarId)) {
+        calendar.todoLists.forEach((todo) => {
+          const formattedTodo = {
+            id: todo.id,
+            text: todo.todoListContent,
+          };
+
+          if (todo.todoListIsCompleted === 0) {
+            todosNotCompleted.push(formattedTodo);
+          } else if (todo.todoListIsCompleted === 1) {
+            todosCompleted.push(formattedTodo);
+          }
+        });
+      }
     });
 
     setTodos(todosNotCompleted);
     setCompletedTodos(todosCompleted);
-  }, [calendarId, contextTodos]);
+  }, [calendarId, calendars]);
 
   const handleRotate = () => {
     setRotated((prev) => !prev);
@@ -45,7 +48,7 @@ const CalendarTodo = () => {
     if (todoInput.trim() === "") return;
     try {
       const response = await fetch(
-        "http://localhost:10000/todo-lists/api/register",
+        `${process.env.REACT_APP_BACKEND_URL}/todo-lists/api/register`,
         {
           method: "POST",
           headers: {
@@ -62,7 +65,7 @@ const CalendarTodo = () => {
       }
       const data = await response.json();
       const savedTodo = {
-        id: data.id,
+        id: data,
         text: todoInput,
       };
       setTodos((prev) => [...prev, savedTodo]);
@@ -110,6 +113,9 @@ const CalendarTodo = () => {
     }
   };
 
+  useEffect(() => {
+  }, [selectedId, todos]);
+
   const handleRemoveTodo = async (idToRemove) => {
     try {
       const response = await fetch(
@@ -123,7 +129,7 @@ const CalendarTodo = () => {
         throw new Error("서버에서 삭제 실패");
       }
 
-      // ✅ 두 목록에서 모두 제거
+      // 두 목록에서 모두 제거
       setTodos((prev) => prev.filter((todo) => todo.id !== idToRemove));
       setCompletedTodos((prev) =>
         prev.filter((todo) => todo.id !== idToRemove)
@@ -169,7 +175,6 @@ const CalendarTodo = () => {
               src="/assets/images/main/calendar/circle.png"
               alt="체크 이미지"
               onClick={(e) => {
-                e.stopPropagation();
                 handleToggleTodo(todo, false);
               }}
             />
@@ -179,7 +184,6 @@ const CalendarTodo = () => {
                 src="/assets/images/main/calendar/delete.png"
                 alt="삭제 아이콘"
                 onClick={(e) => {
-                  e.stopPropagation();
                   handleRemoveTodo(todo.id);
                 }}
               />
@@ -193,7 +197,7 @@ const CalendarTodo = () => {
             <S.ArrowIcon
               src="/assets/images/main/calendar/arrow.png"
               alt="화살표 이미지"
-              rotated={rotated}
+              $rotated={rotated}
             />
           </S.IconButton>
           <S.TodoTextWrapper>완료됨</S.TodoTextWrapper>
@@ -208,7 +212,6 @@ const CalendarTodo = () => {
                   src="/assets/images/main/calendar/check.png"
                   alt="완료 체크"
                   onClick={(e) => {
-                    e.stopPropagation();
                     handleToggleTodo(todo, true);
                   }}
                 />
@@ -217,7 +220,6 @@ const CalendarTodo = () => {
                   src="/assets/images/main/calendar/delete.png"
                   alt="삭제 아이콘"
                   onClick={(e) => {
-                    e.stopPropagation();
                     handleRemoveTodo(todo.id);
                   }}
                 />

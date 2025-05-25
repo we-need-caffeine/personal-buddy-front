@@ -1,10 +1,11 @@
 import React from 'react';
+import S from '../style';
 
 const MyTreeItemSticker = () => {
     return (
-        <div>
+        <S.ItemCardListBox>
             내 스티커
-        </div>
+        </S.ItemCardListBox>
     );
 };
 

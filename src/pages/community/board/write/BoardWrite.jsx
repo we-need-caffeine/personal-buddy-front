@@ -229,6 +229,7 @@ const BoardWrite = () => {
           placeholder="내용을 입력해주세요 (3000자 제한)"
           />
 
+        
         {previewUrls.length > 0 && (
           <S.PreviewWrapper>
             {previewUrls.map((url, i) => (
@@ -253,9 +254,20 @@ const BoardWrite = () => {
           </S.FileSize>
         )}
 
-        <S.FileNotice>첨부파일은 최대 30MB까지 등록 가능합니다.</S.FileNotice>
+        <S.fileMB>첨부파일은 30MB까지 등록 가능합니다.</S.fileMB>
+        <S.Label2>파일 첨부</S.Label2>
         <S.FileInputWrapper>
-          <S.FileInput type="file" multiple onChange={handleFileChange} />
+          <label htmlFor="file-upload">
+            <S.CustomFileBox>
+              클릭해서 첨부파일을 등록해주세요
+            </S.CustomFileBox>
+          </label>
+          <S.FileInput
+            id="file-upload"
+            type="file"
+            multiple
+            onChange={handleFileChange}
+          />
         </S.FileInputWrapper>
 
         <S.SubmitButton 

@@ -34,6 +34,7 @@ const JoinProfile = () => {
     // 이미지 업로드
     let fileName = "";
     let filePath = "";
+    let memberImgPath = "";
 
     if (data.newMemberImageInput) {
       const file = data.newMemberImageInput;
@@ -42,17 +43,17 @@ const JoinProfile = () => {
       imageForm.append("dataType", "profile");
 
 
-      const uploadRes = await fetch("http://localhost:10000/files/api/file-upload", {
+      const uploadRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/files/api/file-upload`, {
         method: "POST",
         body: imageForm
       });
 
       const uploadData = await uploadRes.json();
-      console.log("파일 업로드 결과", uploadData);
 
       if (uploadData.fileName && uploadData.filePath) {
         fileName = uploadData.fileName;
         filePath = uploadData.filePath;
+        memberImgPath = uploadData.memberImgPath;
       } else {
         console.warn("업로드 결과에 파일 정보가 없음!");
       }
@@ -65,16 +66,15 @@ const JoinProfile = () => {
       memberNickName: data.memberNickName,
       memberStatusMessage: data.memberComment,
       memberImgName: fileName,
-      memberImgPath: filePath,
+      memberImgPath: memberImgPath,
       memberTermServiceAgree: 1,
       memberTermInformationAgree: 1,
       memberTermLocationAgree: 1,
       memberProvider: "local"
     };
-    console.log("전송 데이터", completeMemberData);
 
     // JSON으로 회원가입 요청
-    const joinRes = await fetch("http://localhost:10000/members/api/join", {
+    const joinRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/members/api/join`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -117,7 +117,7 @@ const JoinProfile = () => {
   if (!nickname) return;
 
   try {
-    const res = await fetch(`http://localhost:10000/members/api/check/nickname?nickname=${encodeURIComponent(nickname)}`, {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/members/api/nickname/check?nickname=${encodeURIComponent(nickname)}`, {
       method: "GET",
     });
 

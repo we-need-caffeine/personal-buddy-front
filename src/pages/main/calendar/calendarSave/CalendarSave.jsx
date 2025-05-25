@@ -1,34 +1,94 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import S from "./style";
+import { CalendarContext } from "../../../../context/CalendarContext";
+import { useParams } from "react-router-dom";
 
 const CalendarSave = () => {
-  const [calendarName, setCalendarName] = useState("WeNeedCaffeine");
-  const [allMembers] = useState([
-    "김동건",
-    "서민아",
-    "박세현",
-    "이덕준",
-    "홍길동",
-    "이순신",
-  ]);
-  const [invitedMembers, setInvitedMembers] = useState([
-    "장재영",
-    "양진영",
-    "함지현",
-    "김영수",
-    "강감찬",
-    "홍길동",
-  ]);
+  const { memberId, calendarId } = useParams();
+  const [calendarName, setCalendarName] = useState("퍼스널 버디");
+  const { state } = useContext(CalendarContext);
+  const [allMembers, setAllMembers] = useState([]);
+  const [invitedMembers, setInvitedMembers] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const toggleInvite = (name) => {
-    if (!invitedMembers.includes(name)) {
-      setInvitedMembers((prev) => [...prev, name]);
+  const toggleInvite = (member) => {
+    if (!invitedMembers.some((m) => m.id === member.id)) {
+      setInvitedMembers((prev) => [...prev, member]);
     }
   };
 
-  // 외부 클릭 시 드롭다운 닫기
+  const getMutualFollowings = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/${memberId}/followings`,
+        { method: "GET" }
+      );
+      const datas = await response.json();
+      setAllMembers(datas);
+
+    } catch (error) {
+      console.error("캘린더 초대 멤버 조회 실패", error);
+    }
+  };
+
+  useEffect(() => {
+    getMutualFollowings();
+  }, [calendarId]);
+
+  const registerCalendar = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            calendarTitle: calendarName,
+            calendarIndex: 3,
+            memberId: Number(memberId),
+          }),
+        }
+      );
+      const data = await res.json();
+      return data.calendarId;
+    } catch (error) {
+      console.error("캘린더 등록 실패", error);
+      return null;
+    }
+  };
+
+  const inviteMembers = async (calendarId) => {
+    try {
+      const invites = invitedMembers.map((member) => ({
+        calendarInviteInvitedMemberId: member.id,
+        calendarInviteHostId: Number(memberId),
+        calendarInviteIsApproved: 0,
+        calendarId: calendarId,
+      }));
+
+      await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/invites`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(invites),
+        }
+      );
+    } catch (error) {
+      console.error("초대 멤버 등록 실패", error);
+    }
+  };
+
+  const handleSave = async () => {
+    const calendarId = await registerCalendar();
+    if (calendarId) {
+      await inviteMembers(calendarId);
+      alert("캘린더가 저장되었습니다.");
+      // navigate('/calendars'); 등 이동 처리 가능
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -45,7 +105,7 @@ const CalendarSave = () => {
         <S.Title>캘린더 설정</S.Title>
       </S.TitleContainer>
 
-      <S.RowContainer noBorder>
+      <S.RowContainer $noBorder>
         <S.Row>
           <S.Label>캘린더 이름</S.Label>
           <S.Input
@@ -65,20 +125,27 @@ const CalendarSave = () => {
             />
             {isDropdownOpen && (
               <S.Dropdown>
-                {allMembers.map((member) => (
-                  <S.DropdownItem key={member}>
-                    <S.Left>
-                      <S.ProfileIcon />
-                      <S.DropdownName>{member}</S.DropdownName>
-                    </S.Left>
-                    <S.InviteButton
-                      onClick={() => toggleInvite(member)}
-                      disabled={invitedMembers.includes(member)}
-                    >
-                      {invitedMembers.includes(member) ? "초대됨" : "초대"}
-                    </S.InviteButton>
-                  </S.DropdownItem>
-                ))}
+                {allMembers.map((member) => {
+                  const isInvited = invitedMembers.some(
+                    (m) => m.id === member.id
+                  );
+                  // console.log(member.id, isInvited);
+                  // console.log("allMembers:", allMembers);
+                  return (
+                    <S.DropdownItem key={member.id}>
+                      <S.Left>
+                        <S.ProfileIcon />
+                        <S.DropdownName>{member.memberName}</S.DropdownName>
+                      </S.Left>
+                      <S.InviteButton
+                        onClick={() => toggleInvite(member)}
+                        disabled={isInvited}
+                      >
+                        {isInvited ? "초대됨" : "초대"}
+                      </S.InviteButton>
+                    </S.DropdownItem>
+                  );
+                })}
               </S.Dropdown>
             )}
           </S.InviteSection>
@@ -91,20 +158,18 @@ const CalendarSave = () => {
             멤버 리스트 ({invitedMembers.length}/8)
           </S.MemberListTitle>
           {invitedMembers.map((m) => (
-            <S.MemberItem key={m}>
+            <S.MemberItem key={m.id}>
               <S.ProfileIcon />
-              <S.MemberName>{m}</S.MemberName>
-              {m === "강감찬" && <S.HostBadge />}
+              <S.MemberName>{m.memberName}</S.MemberName>
             </S.MemberItem>
           ))}
         </S.MemberList>
       </S.ContentContainer>
 
-      <S.DeleteButtonContainer>
-        <S.DeleteButtonWrapper>
-          <S.DeleteButton>삭제</S.DeleteButton>
-        </S.DeleteButtonWrapper>
-      </S.DeleteButtonContainer>
+      <S.ButtonGroup>
+        <S.SaveButton onClick={handleSave}>저장</S.SaveButton>
+        <S.CancelButton>취소</S.CancelButton>
+      </S.ButtonGroup>
     </S.Container>
   );
 };

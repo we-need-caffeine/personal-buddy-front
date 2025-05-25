@@ -1,47 +1,60 @@
+// src/pages/main/community/event/banner/style.js
+
 import styled from 'styled-components';
-import { fontSizeH4, fontSizeH8, fontWeightBold, fontWeightRegular } from '../../../../globals/common';
+import {
+  fontSizeH4,
+  fontSizeH8,
+  fontWeightBold,
+  fontWeightRegular,
+} from '../../../../globals/common';
 
 const S = {};
 
-// ---------- 전체 래퍼 & 제목 -----------
-// 전체 슬라이드 영역을 감싸는 최상위 래퍼
+// 전체 이벤트 배너 영역
 S.EventWrapper = styled.div`
-    width: 1400px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    
-`
-// 작은 제목 (BUDDYGROUND)
+  width: 1400px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+`;
+
+// 소제목 (예: BUDDYGROUND)
 S.SubTitle = styled.div`
-    ${fontSizeH8}
-    ${fontWeightRegular}
-    color: #555;
-    padding-bottom: 3px;
+  ${fontSizeH8}
+  ${fontWeightRegular}
+  color: #555;
+  padding-bottom: 3px;
 `;
 
-// 메인 제목 (진행중인 이벤트)
+// 메인 타이틀 (예: 진행중인 이벤트)
 S.MainTitle = styled.div`
-    ${fontSizeH4}
-    ${fontWeightBold}
-    color: black;
-    margin-top: 1px;
-    text-align: left;
-    padding-bottom: 55px;
+  ${fontSizeH4}
+  ${fontWeightBold}
+  color: black;
+  margin-top: 1px;
+  text-align: left;
+  padding-bottom: 30px;
 `;
 
-S.EventBannerBox = styled.div`
-    display: flex;
-    gap: 20px;
-    padding-bottom: 60px;
+// Swiper 전체 wrapper
+S.BannerSliderWrapper = styled.div`
+  width: 100%;
+  overflow: hidden;
+
+  & .swiper-slide {
+    width: 680px !important;
+    height: 450px !important;
+  }
 `;
 
+// 배너 카드 1장
 S.BannerCard = styled.div`
-    width: 440px;
-    height: 250px;
-    border-radius: 20px;
-    overflow: hidden;
-    background-color: gray;
+  position: relative;
+  width: 680px;
+  height: 450px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 
   img {
     width: 100%;
@@ -50,6 +63,23 @@ S.BannerCard = styled.div`
   }
 `;
 
+// 배너 이미지 위 텍스트 영역 (옵션: 제목/설명 등)
+S.BannerTextBox = styled.div`
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: white;
+  z-index: 2;
+`;
 
+S.BannerTitle = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+S.BannerSub = styled.div`
+  font-size: 14px;
+  margin-top: 5px;
+`;
 
 export default S;

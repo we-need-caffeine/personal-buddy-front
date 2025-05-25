@@ -113,7 +113,7 @@ const FindId = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:10000/members/api/find/email", {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/members/api/find/email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -147,9 +147,14 @@ const FindId = () => {
     <S.Container>
       <S.Wrapper>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <S.Title>
-            <span>아이디 찾기</span>
-          </S.Title>
+          <S.TitleWrapper>
+            <S.Title>
+              <span>이메일 찾기</span>
+            </S.Title>
+            <S.StepText>
+              <span><S.ActiveStep>1. 본인확인 </S.ActiveStep> &gt; 2. 이메일 확인 </span>
+            </S.StepText>
+          </S.TitleWrapper>
           <S.SubTitle>
             <span>본인확인 SMS 인증</span>
           </S.SubTitle>
