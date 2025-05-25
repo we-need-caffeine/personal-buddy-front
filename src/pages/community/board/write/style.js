@@ -49,7 +49,6 @@ S.fileMB = styled.div`
     margin-top: 60px;
     margin-bottom: 10px;
     width: 1000px;
-
 `
 
 // 필드 라벨 스타일
