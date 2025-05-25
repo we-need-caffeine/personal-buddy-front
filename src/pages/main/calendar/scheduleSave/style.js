@@ -149,13 +149,13 @@ S.ContentRow = styled.div`
   align-items: center;
   width: 100%;
   height: 37px;
-  
   ${fontWeightLight}
 `;
 
 S.ContentRowInput = styled.input`
   height: 100%;
   width: 320px;
+  padding: 12px;
   box-sizing: border-box;
   border: none;
   outline: none;
