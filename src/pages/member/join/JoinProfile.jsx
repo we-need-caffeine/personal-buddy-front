@@ -34,6 +34,7 @@ const JoinProfile = () => {
     // 이미지 업로드
     let fileName = "";
     let filePath = "";
+    let memberImgPath = "";
 
     if (data.newMemberImageInput) {
       const file = data.newMemberImageInput;
@@ -52,6 +53,7 @@ const JoinProfile = () => {
       if (uploadData.fileName && uploadData.filePath) {
         fileName = uploadData.fileName;
         filePath = uploadData.filePath;
+        memberImgPath = uploadData.memberImgPath;
       } else {
         console.warn("업로드 결과에 파일 정보가 없음!");
       }
@@ -64,7 +66,7 @@ const JoinProfile = () => {
       memberNickName: data.memberNickName,
       memberStatusMessage: data.memberComment,
       memberImgName: fileName,
-      memberImgPath: filePath,
+      memberImgPath: memberImgPath,
       memberTermServiceAgree: 1,
       memberTermInformationAgree: 1,
       memberTermLocationAgree: 1,
@@ -115,7 +117,7 @@ const JoinProfile = () => {
   if (!nickname) return;
 
   try {
-    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/members/api/check/nickname?nickname=${encodeURIComponent(nickname)}`, {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/members/api/nickname/check?nickname=${encodeURIComponent(nickname)}`, {
       method: "GET",
     });
 
