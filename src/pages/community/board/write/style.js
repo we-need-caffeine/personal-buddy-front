@@ -160,9 +160,6 @@ S.FileInputWrapper = styled.div`
 // 실제 파일 인풋 태그 스타일
 S.FileInput = styled.input`
     font-size: 14px;
-
-    
-    
 `;
 
 
