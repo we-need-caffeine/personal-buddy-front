@@ -268,7 +268,7 @@ S.MemberSelectBox = styled.div`
 
 S.MemberWrapper = styled.div`
   display: flex;
-  
+  align-items: center;
 `;
 
 S.MemberDropdownList = styled.div`
