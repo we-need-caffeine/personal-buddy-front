@@ -253,9 +253,18 @@ const BoardWrite = () => {
           </S.FileSize>
         )}
 
-        <S.FileNotice>첨부파일은 최대 30MB까지 등록 가능합니다.</S.FileNotice>
         <S.FileInputWrapper>
-          <S.FileInput type="file" multiple onChange={handleFileChange} />
+          <label htmlFor="file-upload">
+            <S.CustomFileBox>
+              클릭해서 첨부파일을 등록해주세요
+            </S.CustomFileBox>
+          </label>
+          <S.FileInput
+            id="file-upload"
+            type="file"
+            multiple
+            onChange={handleFileChange}
+          />
         </S.FileInputWrapper>
 
         <S.SubmitButton 
