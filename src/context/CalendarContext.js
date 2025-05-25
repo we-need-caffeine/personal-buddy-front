@@ -17,6 +17,7 @@ const CalendarProvider = ({ children }) => {
   const [calendarIndex, setCalendarIndex] = useState(null);
   const memberId = useSelector((state) => state.member.currentUser.id);
   const [selectedCalendarId, setSelectedCalendarId] = useState(null);
+
   const getCalendarsAll = async () => {
     const response = await fetch(
       `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/calendars`,
@@ -39,7 +40,9 @@ const CalendarProvider = ({ children }) => {
       allTodos.push(calendar.todoLists);
     });
 
-    setCalendarIndex(datas.calendars[0].calendarIndex);
+    if (datas.calendars.length > 0) {
+      setCalendarIndex(datas.calendars[0].calendarIndex);
+    }
     // 객체 -> 배열로 데이터 값
     const { calendars } = await datas;
     setCalendars(calendars);
@@ -80,7 +83,7 @@ const CalendarProvider = ({ children }) => {
         );
         setCategories(newCategories);
       } catch (error) {
-        console.error("카테고리 조회", error);
+        console.error("카테고리 조회 실패", error);
       }
     };
     getCategories();

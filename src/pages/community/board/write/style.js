@@ -57,6 +57,8 @@ S.Input = styled.input`
     width: 1000px;
     height: 40px;
     font-size: 14px;
+    padding: 12px 20px;
+    box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 10px;
 `;
@@ -97,6 +99,8 @@ S.Select = styled.select`
 S.TextArea = styled.textarea`
     width: 1000px;
     height: 400px;
+    padding: 12px 20px;
+    box-sizing: border-box;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -159,7 +163,24 @@ S.FileInputWrapper = styled.div`
 
 // 실제 파일 인풋 태그 스타일
 S.FileInput = styled.input`
+    display: none;
+`;
+
+S.CustomFileBox = styled.div`
+    width: 1000px;
+    height: 40px;
+    border: 1px solid #ccc;
+    padding: 12px 20px; 
+    box-sizing: border-box;
+    border-radius: 10px;
     font-size: 14px;
+    background-color: #fff;
+    margin-top: 160px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #f5f5f5;
+    }
 `;
 
 

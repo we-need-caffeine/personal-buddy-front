@@ -1,4 +1,3 @@
-// DecorateStyle.js
 import styled from "styled-components";
 import {
   fontSizeH4,
@@ -34,14 +33,17 @@ S.TabContainer = styled.div`
 `;
 
 S.Tab = styled.button`
+  display: flex; // 추가
+  align-items: center; // 추가
+  justify-content: center;
   text-align: center;
   line-height: 33px;
   font-size: 16px;
-  padding: 0 12px; 
+  padding: 0 12px;
   height: 33px;
   color: #06c371;
   font-weight: ${fontWeightMedium};
-  background-color: #eefff8;
+  background-color: white;
   border: none;
   border-top-left-radius: 6.3px;
   border-top-right-radius: 6.3px;
@@ -49,7 +51,7 @@ S.Tab = styled.button`
   border-left: 1px solid #06c371;
   border-right: 1px solid #06c371;
   cursor: pointer;
-  white-space: nowrap; 
+  white-space: nowrap;
 
   &.selected {
     background-color: #06c371;
@@ -61,4 +63,23 @@ S.ItemWrapper = styled.div`
   // 콘텐츠 렌더링 영역
 `;
 
+S.DailyButtonWrapper = styled.div`
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #01CD74;
+    color: #fff;
+    width: 80px;
+    height: 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 16px;
+    ${fontWeightMedium};
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+`;
 export default S;

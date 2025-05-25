@@ -2,13 +2,15 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import S from "./style";
 import { useScheduleForm } from "../../../../hooks/calendar/useScheduleForm";
 import { useLocation, useParams } from "react-router-dom";
-import { Calendar } from "@fullcalendar/core/index.js";
 import { CalendarContext } from "../../../../context/CalendarContext";
+import { useNavigate } from "react-router-dom";
 
 const ScheduleSave = () => {
+  const navigate = useNavigate();
   const { memberId, calendarId } = useParams();
-  const { state } = useContext(CalendarContext);
+  const { state, actions } = useContext(CalendarContext);
   const { calendars, colors, categories } = state;
+  const { getCalendarsAll } = actions;
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [calendarMembers, setCalendarMembers] = useState([]);
@@ -61,21 +63,21 @@ const ScheduleSave = () => {
 
   const toggleMember = (member) => {
     setSelectedMembers((prev) => {
-      const isSelected = prev.some((m) => m.name === member.name);
+      const isSelected = prev.some((m) => m.id === member.id);
       return isSelected
-        ? prev.filter((m) => m.name !== member.name)
+        ? prev.filter((m) => m.id !== member.id)
         : [...prev, member];
     });
   };
 
   useEffect(() => {
-    console.log(calendars);
     const members = [];
 
     calendars.forEach((calendar) => {
       if (calendar.id === Number(calendarId)) {
         calendar.sharedMemberLists.forEach((member) => {
           members.push({
+            id: member.id,
             name: member.memberName,
             imgPath: member.memberImgPath,
             imgName: member.memberImgName,
@@ -99,21 +101,23 @@ const ScheduleSave = () => {
       scheduleCategory: mainCategory || null,
       scheduleRepeat: repeat === "없음" ? 0 : 1,
     };
-    try{
+    try {
       const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/schedules/api/register`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        `${process.env.REACT_APP_BACKEND_URL}/schedules/api/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("일정 등록 실패");
       }
-    );
-    if (!response.ok){
-      throw new Error("일정 등록 실패");
-    }
-    } catch(error){
+      navigate(`/main/${memberId}/${calendarId}`);
+      getCalendarsAll();
+    } catch (error) {
       console.error("일정 등록 에러", error);
     }
   };
@@ -326,7 +330,7 @@ const ScheduleSave = () => {
                   <S.MemberDropdownList>
                     {calendarMembers.map((m) => (
                       <S.MemberItem
-                        key={m.name}
+                        key={m.id}
                         onClick={() => toggleMember(m)}
                       >
                         <S.MemberWrapper>
@@ -447,8 +451,12 @@ const ScheduleSave = () => {
           </S.ContentFormGroup>
 
           <S.ButtonGroup>
-            <S.SaveButton onClick= {saveSchedule}>저장</S.SaveButton>
-            <S.CancelButton>취소</S.CancelButton>
+            <S.SaveButton onClick={saveSchedule}>저장</S.SaveButton>
+            <S.CancelButton
+              onClick={() => navigate(`/main/${memberId}/${calendarId}`)}
+            >
+              취소
+            </S.CancelButton>
           </S.ButtonGroup>
         </S.ContentWrapper>
       </S.ContentContainer>
