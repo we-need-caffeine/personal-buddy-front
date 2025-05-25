@@ -20,7 +20,6 @@ const CalendarTodo = () => {
     //console.log(calendars);
     calendars.forEach((calendar) => {
       //console.log(calendar);
-      //console.log(calendar);
       if (calendar.id === Number(calendarId)) {
         calendar.todoLists.forEach((todo) => {
           const formattedTodo = {

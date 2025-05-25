@@ -49,7 +49,7 @@ const BoardPostListContainer = ({
 
 
   useEffect(() => {
-    console.log("boards:", boards); 
+    // console.log("boards:", boards); 
   }, [boards]);
 
 
@@ -129,8 +129,8 @@ const BoardPostListContainer = ({
                     e.preventDefault(); // 부모인 <Link> 클릭 방지 (기본 동작(링크 이동) 막기)
                     e.stopPropagation(); // 이벤트가 상위 요소로 전달되지 않게 막기
                     // console.log(`닉네임 ${memberNickname}의 프로필 클릭`);  
-                    console.log("x : ", e.clientX)
-                    console.log("y : ", e.clientY)
+                    // console.log("x : ", e.clientX)
+                    // console.log("y : ", e.clientY)
                     handleProfileCard(showProfileCard, memberId);
                       setProfileCardPosition({x: e.clientX, y: e.clientY})
                   }} 
