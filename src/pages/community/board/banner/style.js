@@ -141,22 +141,24 @@ S.HotImageBox = styled.div`
 `;
 
 // 이미지 왼쪽 상단에 보여지는 순위 번호 박스
-S.NumberBox = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50px;
-  height: 50px;
-  background-color: #009dcc;
-  color: white;
-  font-size: 24px;
-  font-weight: 700;
-  text-align: center;
-  line-height: 28px;
-  border-radius: 20px 0 20px 0;
-  ${flexCenter}
-   transition: all 0.3s ease;
-   z-index: 2;
+S.NumberBox = styled.div.attrs(() => ({
+    className: 'number-box', // &:hover .number-box를 감지해서 작동하기때문에 클래스를 넣어준다.
+  }))`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    background-color: #009dcc;
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 28px;
+    border-radius: 20px 0 20px 0;
+    ${flexCenter}
+    transition: all 0.3s ease;
+    z-index: 2;
 `;
 
 // ---------- 게시글 정보 ---------- 

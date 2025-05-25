@@ -48,76 +48,66 @@ const BoardBannerContainer = ({ hot }) => {
         </S.HotBtnLeft>
 
         <S.Hot>
-          <S.HotSlider style={{ transform: `translateX(${translateX}px)` }}> {/* 슬라이더 내부 컨텐츠들을 감싸고, transform으로 이동 처리 */}
-            {hot.map(({
-              boardCommentCount,
-              boardContent,
-              boardContentCreateDate,
-              boardContentUpdateDate,
-              boardContentViews,
-              boardHashtag,
-              boardLikeCount,
-              boardTitle,
-              id,
-              memberEmail,
-              memberId,
-              memberImgName,
-              memberImgPath,
-              memberNickname,
-            }, index) => (
-              <S.HotContent key={id}>
-                <Link to={`post/${id}`}>
+          <S.HotSlider style={{ transform: `translateX(${translateX}px)` }}>
+            {hotPosts.map((post, index) => (
+              <S.HotContent key={post.id}>
+                <Link to={`post/${post.id}`}>
+                  {/* 게시글 썸네일 이미지 */}
                   <S.HotImageBox>
                     <img
                       className="img"
                       src={
-                        memberImgPath + '/' + memberImgName || '/assets/images/board/default/default-img.png'
+                        post.boardImgPath && post.boardImgName
+                          ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.boardImgPath)}&fileName=${encodeURIComponent(post.boardImgName)}`
+                          : '/assets/images/board/default/default-img.png'
                       }
                       onError={(e) => {
-                      e.target.onerror = null; // 무한 루프 방지
-                      e.target.src = '/assets/images/board/default/default-img.png'; // 디폴트 이미지 강제 세팅
-                    }}
+                        e.target.onerror = null;
+                        e.target.src = '/assets/images/board/default/default-img.png';
+                      }}
                       alt={`hot-${index}`}
                     />
-                    <S.NumberBox className="number-box">{index + 1}</S.NumberBox> {/* 순위 번호 */}
+                    <S.NumberBox>{index + 1}</S.NumberBox>
                   </S.HotImageBox>
-                  <S.HotTag>{boardHashtag}</S.HotTag>
-                  <S.HotTitle>{boardTitle}</S.HotTitle>
+
+                  {/* 게시글 해시태그 */}
+                  <S.HotTag>{post.boardHashtag}</S.HotTag>
+
+                  {/* 게시글 제목 */}
+                  <S.HotTitle>{post.boardTitle}</S.HotTitle>
+
+                  {/* 작성자 프로필 + 닉네임 */}
                   <S.HotUserBox>
-                    <S.UserProfile 
-                    src={memberImgPath + "/" + memberImgName || '/assets/images/member/profile-default.png' }
-                    onError={(e) => {
-                      e.target.onerror = null; // 무한 루프 방지
-                      e.target.src = '/assets/images/member/profile-default.png'; // 디폴트 이미지 강제 세팅
-                    }}  
+                    <S.UserProfile
+                      src={
+                        post.memberImgPath && post.memberImgName
+                          ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.memberImgPath)}&fileName=${encodeURIComponent(post.memberImgName)}`
+                          : '/assets/images/member/profile-default.png'
+                      }
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = '/assets/images/member/profile-default.png';
+                      }}
                     />
-                    <S.UserNickname>{memberNickname}</S.UserNickname>
+                    <S.UserNickname>{post.memberNickname}</S.UserNickname>
                   </S.HotUserBox>
-                  <S.HotDate>{FormatDate(boardContentCreateDate)}</S.HotDate>
+
+                  {/* 게시일 */}
+                  <S.HotDate>{FormatDate(post.boardContentCreateDate)}</S.HotDate>
+
+                  {/* 좋아요/조회수/댓글수 */}
                   <S.HotMetaBox>
                     <span>
-                      <img
-                        src="/assets/images/board/icon/like-icon.png"
-                        className="icon"
-                        alt="like"
-                      />
-                      {boardLikeCount}
+                      <img src="/assets/images/board/icon/like-icon.png" className="icon" alt="like" />
+                      {post.boardLikeCount}
                     </span>
                     <span>
-                      <img
-                        src="/assets/images/board/icon/view-icon.png"
-                        className="icon"
-                        alt="view"
-                      />
-                      {boardContentViews}
+                      <img src="/assets/images/board/icon/view-icon.png" className="icon" alt="view" />
+                      {post.boardContentViews}
                     </span>
                     <span>
-                      <img
-                        src="/assets/images/board/icon/chat-icon.png"
-                        className="icon"
-                        alt="chat"
-                      />
-                      {boardCommentCount}
+                      <img src="/assets/images/board/icon/chat-icon.png" className="icon" alt="chat" />
+                      {post.boardCommentCount}
                     </span>
                   </S.HotMetaBox>
                 </Link>

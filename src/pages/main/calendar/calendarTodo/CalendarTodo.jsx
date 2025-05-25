@@ -48,7 +48,7 @@ const CalendarTodo = () => {
     if (todoInput.trim() === "") return;
     try {
       const response = await fetch(
-        "http://localhost:10000/todo-lists/api/register",
+        `${process.env.REACT_APP_BACKEND_URL}/todo-lists/api/register`,
         {
           method: "POST",
           headers: {

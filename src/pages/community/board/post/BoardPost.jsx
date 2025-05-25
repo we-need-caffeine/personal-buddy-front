@@ -16,12 +16,12 @@ const BoardPost = () => {
   const [likedCommentIds, setLikedCommentIds] = useState([]); // 댓글 좋아요
 
   // 게시글을 업데이트 시키는 상태
-  const [isUpdate, setIsUpdate] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(true); // 게시글이 업데이트 되었는지 여부
+  const [isError, setIsError] = useState(false); // 데이터 로딩 에러 여부
+  const [isLoading, setIsLoading] = useState(false); // 로딩 중 여부
 
   // 게시글 상태
-  const [post, setPost] = useState({})
+  const [post, setPost] = useState({}) // 게시글 상세
 
   // 전체 데이터를 요청해서 불러온다.
   useEffect(() => {
@@ -29,8 +29,8 @@ const BoardPost = () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/${id}`)
       if(!response.ok) throw new Error(`getPosts Error : ${response.status}`)
       const datas = await response.json();
-      setPost(datas.board);
-      setLikeCount(datas.board.boardLikeCount); 
+      setPost(datas.board); // 게시글 저장
+      setLikeCount(datas.board.boardLikeCount);  // 좋아요 수 저장
       setIsLoading(false);
       // console.log("게시글 확인",datas)
       setIsLoading(false);
@@ -42,8 +42,8 @@ const BoardPost = () => {
     const response = await fetch((`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/list?boardId=${id}`));
     if(!response.ok) throw new Error(`댓글 조회 실패`)
     const data = await response.json();
-   console.log("댓글",data)
-    setComments(data);
+  //  console.log("댓글",data)
+    setComments(data); // 댓글 저장
   }
 
   getPost()
@@ -55,6 +55,7 @@ const BoardPost = () => {
 
   }, [id,isUpdate])
 
+  // 좋아요 수 기준으로 댓글 정렬 후 TOP3만 자르기
   const bestComments = [...comments]
   .sort((a, b) => b.boardCommentLikeCount - a.boardCommentLikeCount)
   .slice(0, 3);
@@ -62,7 +63,7 @@ const BoardPost = () => {
   
   // 댓글 등록
   const handleCommentSubmit = async () => {
-    if (!commentText) return;
+    if (!commentText) return; // 댓글이 없으면 안 됨
 
     if (!memberId) {
       alert('로그인 후 댓글을 작성할 수 있습니다.');
@@ -85,11 +86,11 @@ const BoardPost = () => {
       });
 
       if (response.ok) {
-        setCommentText('');  // 입력창 비우기
+        setCommentText('');  // 등록 후 입력창 초기화
         const refreshed = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/list?boardId=${id}`);
         const data = await refreshed.json();
-        setComments(data);
-        console.log("좋아요 반영 후 댓글 전체", data);
+        setComments(data); // 댓글 목록 새고
+        // console.log("좋아요 반영 후 댓글 전체", data);
       } else {
         alert('댓글 등록 실패');
       }
@@ -107,20 +108,20 @@ const BoardPost = () => {
 
   try {
     const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/like`, {
-      method: 'POST', // 또는 'PATCH'
+      method: 'POST', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ memberId, commentId })
     });
 
     if (response.ok) {
-      // 좋아요 목록에 추가/삭제
-      setLikedCommentIds((prev) =>
-        prev.includes(commentId)
-          ? prev.filter(id => id !== commentId)
-          : [...prev, commentId]
+      // liked 상태 
+      setLikedCommentIds((c) =>
+        c.includes(commentId)
+          ? c.filter(id => id !== commentId)
+          : [...c, commentId]
       );
 
-      // 전체 댓글 목록 다시 가져오기 (추천)
+      // 좋아요 수 반영을 위해 댓글 새로고침
       const refreshed = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/list?boardId=${id}`);
       const data = await refreshed.json();
       setComments(data);
@@ -128,10 +129,62 @@ const BoardPost = () => {
       alert('댓글 좋아요 실패');
     }
   } catch (err) {
-    console.error('댓글 좋아요 에러!', err);
+    console.error('댓글 좋아요 에러', err);
   }
 };
 
+// 게시글 좋아요 여부
+const checkLiked = async () => {
+  const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/like-check`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ boardId: post.id, memberId }),
+    });
+    const result = await res.json();
+    setIsLiked(result === 1); // 1이면 좋아요 누른 것
+  };
+  
+  // 게시글 좋아요 추가
+  const likePost = async () => {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/like`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ boardId: post.id, memberId }),
+    });
+  };
+
+  // 게시글 좋아요 취소
+  const unlikePost = async () => {
+  await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/unLike`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ boardId: post.id, memberId }),
+    });
+  };
+
+  // 게시글 좋아요 버튼 클릭 시 처리 함수
+  const handlePostLike = async () => {
+    // 로그인 안 된 경우 알림
+    if (!memberId) {
+      alert("로그인 후 이용해주세요");
+      return;
+    }
+    try {
+      if (isLiked) {
+        // 이미 좋아요 누른 상태라면 취소
+        await unlikePost();
+        setLikeCount((c) => c - 1);
+      } else {
+        // 좋아요 추가
+        await likePost();
+        setLikeCount((c) => c + 1);
+      }
+      // 좋아요 상태
+      setIsLiked((c) => !c);
+    } catch (err) {
+      console.error("게시글 좋아요 처리 실패", err);
+    }
+  };
 
   if(isLoading) return <div>로딩중... 😅</div>
   if(isError) return <div>알 수 없는 오류 발생... 😥</div>
@@ -163,27 +216,6 @@ const BoardPost = () => {
           <S.CommentCount>댓글 {post.boardCommentCount}</S.CommentCount>
         </S.Right>
       </S.TopInfoBox>
-
-
-      {/* 썸네일 이미지가 있을 때만 출력 */}
-      {post.boardImgPath && post.boardImgName && (
-        <S.Image
-          src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.boardImgPath)}&fileName=${encodeURIComponent(post.boardImgName)}`}
-          alt="게시글 썸네일"
-        />
-      )}
-
-
-        {/* {post.boardImgPath && post.boardImgName && (
-          <S.Image
-            src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.boardImgPath)}&fileName=${encodeURIComponent(post.boardImgName)}`}
-            alt="본문 이미지"
-            onError={(e) => {
-              e.target.src = ''; // 깨진 이미지도 표시되지 않게
-            }}
-          /> 
-        )} */}
-
         {post.boardImgPath && post.boardImgName && (
           <S.Image
             src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.boardImgPath)}&fileName=${encodeURIComponent(post.boardImgName)}`}
@@ -196,7 +228,7 @@ const BoardPost = () => {
 
       <S.Content>{post.boardContent}</S.Content>
 
-      <S.LikeButton liked={isLiked}>
+      <S.LikeButton liked={isLiked} onClick={handlePostLike}>
         ♥{likeCount}
       </S.LikeButton>
 
@@ -205,6 +237,7 @@ const BoardPost = () => {
         <S.CommentCountText>{comments.length}</S.CommentCountText>
       </S.CommentTitleBox>
 
+      {/* 댓글 입력창 */}
       <S.CommentInputBox>
         <S.Textarea
           placeholder="댓글을 입력해주세요"
@@ -227,10 +260,11 @@ const BoardPost = () => {
         </S.InputBottom>
       </S.CommentInputBox>
 
+      {/* Best댓글  */}
       <S.BestCommentSection>
         {bestComments.map((c, index) => (
           <S.BestCommentItem key={c.id}>
-            <S.BestBadge>BEST {index + 1}</S.BestBadge>
+            <S.BestBadge>⭐ BEST {index + 1}</S.BestBadge>
             <S.CommentTop>
               <S.CommentUser>
                 <S.ProfileImg
@@ -259,6 +293,7 @@ const BoardPost = () => {
         ))}
       </S.BestCommentSection>
 
+      {/* 일반 댓글 */}
       <S.CommentList>
         {comments.map((c) => (
           <S.CommentItem key={c.id}>

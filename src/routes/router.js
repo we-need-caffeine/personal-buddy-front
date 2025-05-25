@@ -71,18 +71,28 @@ import CalendarContainer from "../pages/main/calendar/CalendarContainer";
 import CalendarDayContainer from "../pages/main/calendar/calendarDay/CalendarDayContainer";
 import CalendarMonthContainer from "../pages/main/calendar/calendarMonth/CalendarMonthContainer";
 import CalendarWeekContainer from "../pages/main/calendar/calendarWeek/CalendarWeekContainer";
-import SocialJoinAgree from "../pages/member/join/social/agree/SocialJoinAgree";
 import SignUp from "../pages/member/join/SignUp";
+import LayoutWithoutBanner from "../pages/layout/LayoutWithoutBanner";
 
 const router = createBrowserRouter([
+    {
+    path: "/",
+    element: <LayoutWithoutBanner />, // 랜딩 전용 레이아웃
+    children: [
+      {
+        path: "/",
+        element: <LandingPageContainer />, // 랜딩 페이지
+      },
+    ],
+  },
   {
     path: "/",
     element: <Layout />,
     children: [
-      {
-        path: "/",
-        element: <LandingPageContainer />, // 랜딩 페이지 http://localhost:3000/
-      },
+      // {
+      //   path: "/",
+      //   element: <LandingPageContainer />, // 랜딩 페이지 http://localhost:3000/
+      // },
       {
         path: "/main",
         element: <LoginLayout />, // 로그인 확인 /main
