@@ -266,6 +266,11 @@ S.MemberSelectBox = styled.div`
   ${fontWeightLight}
 `;
 
+S.MemberWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 S.MemberDropdownList = styled.div`
   position: absolute;
   top: 42px;
@@ -280,6 +285,7 @@ S.MemberDropdownList = styled.div`
 S.MemberItem = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 12px;
   cursor: pointer;
   &:hover {

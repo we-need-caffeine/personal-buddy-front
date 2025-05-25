@@ -7,8 +7,11 @@ import { CalendarContext } from "../../../../context/CalendarContext";
 
 const ScheduleSave = () => {
   const { memberId, calendarId } = useParams();
-  const {state} = useContext(CalendarContext);
-  const {colors} = state;
+  const { state } = useContext(CalendarContext);
+  const { calendars, colors, categories } = state;
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [calendarMembers, setCalendarMembers] = useState([]);
   const [mainCategory, setMainCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [mainOpen, setMainOpen] = useState(false);
@@ -42,21 +45,77 @@ const ScheduleSave = () => {
   const memberRef = useRef(null);
   const mainRef = useRef(null);
   const subRef = useRef(null);
-
-  const mainCategories = ["개인", "업무", "취미"];
+  const mainCategories = categories;
   const subCategories = {
-    개인: ["운동", "독서", "명상"],
+    운동: ["헬스", "수영", "등산"],
+    공부: ["게임", "음악", "여행"],
     업무: ["회의", "보고", "개발"],
-    취미: ["게임", "음악", "여행"],
+    모임: ["가족모임", "친구모임", "직장모임"],
+    여가: ["영화감상", "드라마보기", "산책", "취미활동"],
+    식사: ["아침식사", "점심식사", "저녁식사", "간식", "외식"],
+    여행: ["국내여행", "해외여행", "당일치기", "캠핑"],
+    건강: ["병원방문", "건강검진", "약복용"],
   };
 
-  const members = ["장재영", "양진영", "함지현"];
   const repeatOptions = ["없음", "매일", "매주", "선택한 날짜의 요일"];
 
-  const toggleMember = (name) => {
-    setSelectedMembers((prev) =>
-      prev.includes(name) ? prev.filter((m) => m !== name) : [...prev, name]
+  const toggleMember = (member) => {
+    setSelectedMembers((prev) => {
+      const isSelected = prev.some((m) => m.name === member.name);
+      return isSelected
+        ? prev.filter((m) => m.name !== member.name)
+        : [...prev, member];
+    });
+  };
+
+  useEffect(() => {
+    console.log(calendars);
+    const members = [];
+
+    calendars.forEach((calendar) => {
+      if (calendar.id === Number(calendarId)) {
+        calendar.sharedMemberLists.forEach((member) => {
+          members.push({
+            name: member.memberName,
+            imgPath: member.memberImgPath,
+            imgName: member.memberImgName,
+          });
+        });
+      }
+    });
+
+    setCalendarMembers(members);
+  }, [calendarId, calendars]);
+
+  const saveSchedule = async () => {
+    const payload = {
+      calendarId: Number(calendarId),
+      scheduleColor: color,
+      scheduleCreatedDate: new Date().toISOString().replace("Z", "+09:00"),
+      scheduleStartDate: `${startDate}T${startTime}:00+09:00`,
+      scheduleEndDate: `${endDate}T${endTime}:00+09:00`,
+      scheduleTitle: title,
+      scheduleContent: content,
+      scheduleCategory: mainCategory || null,
+      scheduleRepeat: repeat === "없음" ? 0 : 1,
+    };
+    try{
+      const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/schedules/api/register`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
     );
+    if (!response.ok){
+      throw new Error("일정 등록 실패");
+    }
+    } catch(error){
+      console.error("일정 등록 에러", error);
+    }
   };
 
   const getColorName = (code) => {
@@ -96,6 +155,7 @@ const ScheduleSave = () => {
     "22:00",
     "23:00",
   ];
+
   useEffect(() => {
     if (start && end) {
       const isoStart =
@@ -105,6 +165,7 @@ const ScheduleSave = () => {
       setStartAndEndFromDate(isoStart, isoEnd);
     }
   }, [start, end]);
+
   // 외부 클릭 감지 추가
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -135,10 +196,15 @@ const ScheduleSave = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   return (
     <S.Container>
       <S.TitleInputContainer>
-        <S.TitleInput placeholder="제목을 입력하세요" />
+        <S.TitleInput
+          placeholder="제목을 입력하세요"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
       </S.TitleInputContainer>
 
       <S.DateContainer>
@@ -235,8 +301,10 @@ const ScheduleSave = () => {
                           setColorDropdownOpen(false);
                         }}
                       >
-                        <S.ColorCircle color={c} />
-                        <S.MemberName>{getColorName(c)}</S.MemberName>
+                        <S.MemberWrapper>
+                          <S.ColorCircle color={c} />
+                          <S.MemberName>{getColorName(c)}</S.MemberName>
+                        </S.MemberWrapper>
                         <S.CheckIcon checked={color === c} />
                       </S.MemberItem>
                     ))}
@@ -252,15 +320,24 @@ const ScheduleSave = () => {
                 <S.MemberSelectBox
                   onClick={() => setMemberDropdownOpen(!memberDropdownOpen)}
                 >
-                  캘린더 멤버 ({selectedMembers.length})
+                  캘린더 멤버 ({calendarMembers.length})
                 </S.MemberSelectBox>
                 {memberDropdownOpen && (
                   <S.MemberDropdownList>
-                    {members.map((m) => (
-                      <S.MemberItem key={m} onClick={() => toggleMember(m)}>
-                        <S.ProfileIcon />
-                        <S.MemberName>{m}</S.MemberName>
-                        <S.CheckIcon checked={selectedMembers.includes(m)} />
+                    {calendarMembers.map((m) => (
+                      <S.MemberItem
+                        key={m.name}
+                        onClick={() => toggleMember(m)}
+                      >
+                        <S.MemberWrapper>
+                          <S.ProfileIcon src={m.imgPath} alt={m.name} />
+                          <S.MemberName>{m.name}</S.MemberName>
+                        </S.MemberWrapper>
+                        <S.CheckIcon
+                          checked={selectedMembers.some(
+                            (s) => s.name === m.name
+                          )}
+                        />
                       </S.MemberItem>
                     ))}
                   </S.MemberDropdownList>
@@ -309,7 +386,7 @@ const ScheduleSave = () => {
                     <S.CustomDropdownList>
                       {subCategories[mainCategory]?.map((item) => (
                         <S.CustomDropdownItem
-                          key={item}
+                          key={`${mainCategory}-${item}`}
                           onClick={() => {
                             setSubCategory(item);
                             setSubOpen(false);
@@ -362,12 +439,15 @@ const ScheduleSave = () => {
             {/* 내용 */}
             <S.ContentRowTextArea>
               내용
-              <S.ContentRowTextInput />
+              <S.ContentRowTextInput
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
             </S.ContentRowTextArea>
           </S.ContentFormGroup>
 
           <S.ButtonGroup>
-            <S.SaveButton>저장</S.SaveButton>
+            <S.SaveButton onClick= {saveSchedule}>저장</S.SaveButton>
             <S.CancelButton>취소</S.CancelButton>
           </S.ButtonGroup>
         </S.ContentWrapper>
