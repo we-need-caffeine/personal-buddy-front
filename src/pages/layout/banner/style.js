@@ -76,7 +76,8 @@ S.Banner1Text = styled.div`
 `;
 
 S.Banner2Text = styled.div`
-    position: absolute;
+  position: absolute;
+  margin-top: 30px;
   top: 40%;
   left: 10%;
   color: white;
@@ -85,7 +86,8 @@ S.Banner2Text = styled.div`
 
 `
 S.Banner3Text = styled.div`
-    position: absolute;
+  position: absolute;
+  margin-top: 30px;
   top: 40%;
   left: 10%;
   color: white;
