@@ -182,9 +182,20 @@ const checkLiked = async () => {
       // 좋아요 상태
       setIsLiked((c) => !c);
     } catch (err) {
-      console.error("게시글 좋아요 처리 실패", err);
+      console.error("좋아요 처리 실패", err)
     }
   };
+
+  // 조회수 증가
+  useEffect(() => {
+    if (id) {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/increase/${id}`, {
+        method: 'PATCH',
+      })
+        .then(() => console.log('조회수 증가 완료'))
+        .catch(err => console.error('조회수 증가 실패 ', err));
+      }
+    }, [id]);
 
   if(isLoading) return <div>로딩중... 😅</div>
   if(isError) return <div>알 수 없는 오류 발생... 😥</div>
