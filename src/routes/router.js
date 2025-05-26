@@ -20,7 +20,6 @@ import CommunityLayout from "../pages/community/CommunityLayout";
 import EventContainer from "../pages/community/event/EventContainer";
 import BoardContainer from "../pages/community/board/BoardContainer";
 import EventPostContainer from "../pages/community/event/post/EventPostContainer";
-import EventPost from "../pages/community/event/post/EventPost";
 import BoardPostcontainer from "../pages/community/board/post/BoardPostContainer";
 import BoardWriteContainer from "../pages/community/board/write/BoardWriteContainer";
 import BoardEditContainer from "../pages/community/board/edit/BoardEditContainer";
@@ -73,6 +72,9 @@ import CalendarMonthContainer from "../pages/main/calendar/calendarMonth/Calenda
 import CalendarWeekContainer from "../pages/main/calendar/calendarWeek/CalendarWeekContainer";
 import SignUp from "../pages/member/join/SignUp";
 import LayoutWithoutBanner from "../pages/layout/LayoutWithoutBanner";
+import WakeUpDetail from "../pages/community/event/post/wakeup/WakeUpDetail";
+import RoutineShareDetail from "../pages/community/event/post/Routine/RoutineShareDetail";
+import HealingDayDetail from "../pages/community/event/post/Healing/HealingDayDetail";
 
 const router = createBrowserRouter([
     {
@@ -210,8 +212,16 @@ const router = createBrowserRouter([
                 element: <EventPostContainer />,
                 children: [
                   {
-                    path: ":id",
-                    element: <EventPost />,
+                    path: ":id/wake-up",
+                    element: <WakeUpDetail />
+                  },
+                  {
+                    path: ":id/routine",
+                    element: <RoutineShareDetail />
+                  },
+                  {
+                    path: ":id/healing-day",
+                    element: <HealingDayDetail />
                   },
                 ],
               },

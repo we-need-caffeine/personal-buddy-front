@@ -6,6 +6,7 @@ import ProfileCard from '../../layout/profile/ProfileCard';
 import { ProfileCardContext } from '../../../context/ProfileCardContext';
 import FollowerModal from '../../layout/follow/FollowerModal';
 import FollowModal from '../../layout/follow/FollowModal';
+import { HeaderContext } from '../../../context/HeaderContext';
 
 const MyPageSidebar = () => {
 
@@ -22,11 +23,13 @@ const MyPageSidebar = () => {
     // 프로필 카드 상태
     const [showProfileCard, setShowProfileCard] = useState(false);
     // 프로필 카드 콘텍스트
-    const { profileCardInfo, follow, unfollow } = useContext(ProfileCardContext);
+    const { follow, unfollow, toggleFavorite } = useContext(ProfileCardContext);
     // 팔로워 리스트 상태
     const [showFollowerList, setShowFollowerList] = useState(false);
     // 팔로우 리스트 상태
     const [showFollowList, setShowFollowList] = useState(false);
+    // 헤더 콘텍스트
+    const { setViewChatRoom } = useContext(HeaderContext);
 
 
     // 팔로워 리스트를 열고 닫는 함수
@@ -52,6 +55,15 @@ const MyPageSidebar = () => {
             follow(myId, id)
         }
     }
+
+    //메세지를 시작하는 함수
+    const startChatting = async () => {
+        const response = await fetch(`http://localhost:10000/chats/api/chat-room/register?memberId=${myId}&secondMemberId=${ownerId}`, {
+            method: "POST"
+        })
+        const data = await response.json()
+        console.log(data);
+    }
     
     // 현재 마이페이지 오너의 정보를 가져오는 함수
     useEffect(() => {
@@ -61,7 +73,7 @@ const MyPageSidebar = () => {
             setOnwerInfo(data)
         }
         getOwnerInfo()
-    }, [id, myId, profileCardInfo])
+    }, [id, myId, follow, unfollow, toggleFavorite])
 
     // 팔로우 카운트를 변환해주는 함수
     function formatKoreanNumber(num) {
@@ -149,7 +161,9 @@ const MyPageSidebar = () => {
                         >
                             팔로우
                         </S.FollowBtn>
-                        <S.MessageBtn>
+                        <S.MessageBtn
+                            onClick={() => startChatting()}
+                        >
                             메세지
                         </S.MessageBtn>
                     </S.MyPageButtonContainer>

@@ -4,6 +4,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import ConfirmModal from '../../layout/modal/ConfirmModal';
 import { useSelector } from 'react-redux';
 import GuestItem from './GuestItem';
+import ConfirmDeleteModal from '../../layout/modal/ConfirmDeleteModal';
 
 const MyPageMain = () => {
     // 로그인된 유저정보
@@ -16,7 +17,7 @@ const MyPageMain = () => {
     const [guestBooks, setGuestBooks] = useState([]);
     // 게스트북 카운터
     const [guestBookCount, setGuestBookCount] = useState(0);
-    // 모달 상태값
+    // 컨펌 모달 상태값
     const [showConfrmModal, setShowConfrmModal] = useState(false);
     // 마이페이지 파람에서 id값을 가져오는 훅함수
     const { id } = useParams();
@@ -25,28 +26,38 @@ const MyPageMain = () => {
     // 페이지
     const page = 1;
 
+    // 컨펌 모달 상태를 변경하는 함수
     const handleConfrmModal = (state) => {
         setShowConfrmModal(state)
     }
+
+    // 컨펌 삭제용 모달 상태값
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleteTargetId, setDeleteTargetId] = useState(null);
+
+    // 삭제 요청 받기 (자식에서)
+    const handleAskDelete = (id) => {
+        setDeleteTargetId(id);
+        setShowDeleteModal(true);
+    };
+
+    // 실제 삭제 로직
+    const handleConfirmDelete = async () => {
+        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/delete/${deleteTargetId}`, {
+            method: "DELETE"
+        });
+        if (response.ok) {
+            setShowDeleteModal(false);
+            setDeleteTargetId(null);
+        } else {
+            alert("방명록 삭제 실패");
+        }
+    };
 
     // 텍스트에리어에서 값을 입력할 때 마다 잡아서 상태변경
     const handleTextareaChange = (e) => {
         setGuestBookText(e.target.value);
     };
-
-    // 비동기로 방명록을 페이지로 백엔드에 요청하는 함수
-    const getGuestBook = async () => {
-        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/list?ownerMemberId=${ownerMemberId}&page=${page}`);
-        const guestBooks = await response.json()
-        setGuestBooks(guestBooks);
-    }
-
-    // 해당 유저에게 달린 모든 방명록을 카운트하는 함수
-    const getGuestBookCount = async () => {
-        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/count/${ownerMemberId}`)
-        const guestBookCount = await response.json();
-        setGuestBookCount(guestBookCount);
-    }
 
     // 방명록을 작성할 때, 비동기로 방명록을 작성하고, 백엔드에서 방명록 리스트를 다시 가져오고, 인풋값을 초기화하는 함수
     const handleRegister = async() => {
@@ -67,8 +78,6 @@ const MyPageMain = () => {
             if (res.ok) {
                 setGuestBookText("");
                 handleConfrmModal(false);
-                getGuestBook()
-                getGuestBookCount()
             } else {
                 alert("방명록 작성을 실패했습니다.")
             }
@@ -76,27 +85,24 @@ const MyPageMain = () => {
         .catch(console.error)
     }
 
-    
-    // 방명록을 삭제하는 함수
-    const handleDelete = async (id) => {
-        const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/delete/${id}`, {
-            method: "DELETE"
-        });
-
-        if (response.ok) {  
-            alert("방명록 삭제 성공!");
-            getGuestBook();
-            getGuestBookCount();
-        } else {
-            alert("방명록 삭제 실패");
-        }
-    };
-        
     //최초로 방명록 리스트와 카운팅을 가져오는 함수
     useEffect(() => {
+        // 비동기로 방명록을 페이지로 백엔드에 요청하는 함수
+        const getGuestBook = async () => {
+            const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/list?ownerMemberId=${ownerMemberId}&page=${page}`);
+            const guestBooks = await response.json()
+            setGuestBooks(guestBooks);
+        }
+
+    // 해당 유저에게 달린 모든 방명록을 카운트하는 함수
+        const getGuestBookCount = async () => {
+            const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/count/${ownerMemberId}`)
+            const guestBookCount = await response.json();
+            setGuestBookCount(guestBookCount);
+        }
         getGuestBook()
         getGuestBookCount()
-    }, [ownerMemberId])
+    }, [ownerMemberId, showConfrmModal, showDeleteModal])
 
     // 시간값 변환 함수
     const formatDate = (time) => {
@@ -181,11 +187,19 @@ const MyPageMain = () => {
                             key={i}
                             item={item}
                             memberId={memberId}
-                            handleDelete={handleDelete}
+                            onAskDelete={handleAskDelete}
                             formatDate={formatDate}
                         />
                     ))}
                 </S.GuestBookListContainer>
+                {/* 삭제 컨펌 모달 */}
+                <ConfirmDeleteModal
+                    handleConfrmDeleteModal={showDeleteModal}
+                    title="방명록 삭제"
+                    message="방명록을 삭제 하시겠습니까?"
+                    onConfirmDelete={handleConfirmDelete}
+                    onCancel={() => setShowDeleteModal(false)}
+                />
             </S.MainContainer>
         </>
     );

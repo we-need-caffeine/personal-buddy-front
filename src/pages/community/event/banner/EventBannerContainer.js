@@ -51,7 +51,7 @@ const EventBannerContainer = () => {
             
             return (
             <SwiperSlide key={i}>
-               <Link to={`read/${event.id}`}>
+               <Link to={`/main/community/event/post/${event.id}/routine`}>
                   <S.BannerCard>
                     <img src={encodeURI(imageUrl)} alt="이벤트 배너" />
                   </S.BannerCard>
@@ -61,6 +61,8 @@ const EventBannerContainer = () => {
         </Swiper>
       </S.BannerSliderWrapper>
     </S.EventWrapper>
+
+    
 
   );
 };

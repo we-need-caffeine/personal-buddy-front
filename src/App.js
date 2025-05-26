@@ -6,6 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import theme from './globals/theme';
 import { ProfileCardProvider } from './context/ProfileCardContext';
 import { HeaderProvider } from './context/HeaderContext';
+import { ChatProvider } from './context/ChatContext';
 
 
 function App() {
@@ -15,7 +16,9 @@ function App() {
         <GlobalStyle />
           <HeaderProvider>
             <ProfileCardProvider>
-              <RouterProvider router = {router} />
+              <ChatProvider>
+                <RouterProvider router = {router} />
+              </ChatProvider>
             </ProfileCardProvider>
           </HeaderProvider>
       </ThemeProvider>

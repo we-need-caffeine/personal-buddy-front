@@ -107,6 +107,20 @@ S.ProfileCardDropdown = styled.div`
   z-index: 9998;
 `;
 
+S.ChatRoomModalContainer = styled.div`
+  position: absolute;
+  top: 80px;
+  right: 500px;
+  z-index: 9999;
+`
+
+S.ChatModalContainer = styled.div`
+  position: absolute;
+  top: 80px;
+  right: 90px;
+  z-index: 10000;
+`
+
 
 S.AlertModalContainer = styled.div`
   position: absolute;
