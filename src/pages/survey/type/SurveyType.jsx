@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { SurveyContext } from '../../../context/SurveyContext';
 import S from './style';
 
-
-// 한글 카테고리 → 영문 키 매핑
 const categoryMap = {
   '음식': 'food',
   '운동': 'health',
@@ -15,7 +13,7 @@ const categoryMap = {
   '여행': 'travel',
 };
 
-const categories = Object.keys(categoryMap); // 한글 리스트로 구성
+const categories = Object.keys(categoryMap);
 
 const SurveyType = () => {
   const { actions } = useContext(SurveyContext);
@@ -25,7 +23,7 @@ const SurveyType = () => {
 
   const handleClickTag = (tag) => {
     if (selectedCategories.includes(tag)) {
-      setSelectedCategories(selectedCategories.filter((item) => item !== tag));
+      setSelectedCategories(selectedCategories.filter(item => item !== tag));
     } else {
       setSelectedCategories([...selectedCategories, tag]);
     }
@@ -40,8 +38,16 @@ const SurveyType = () => {
     insert(selectedCategories);
     insertConfirm(selectedCategories[0]);
 
-    const englishKey = categoryMap[selectedCategories[0]];
-    navigate(`/survey/${englishKey}`);
+    const englishCategories = selectedCategories.map(tag => categoryMap[tag]);
+
+    // localStorage에 선택 카테고리 배열 저장 (JSON.stringify)
+    try {
+      localStorage.setItem('selectedCategories', JSON.stringify(englishCategories));
+    } catch (err) {
+      console.error('로컬스토리지 저장 실패:', err);
+    }
+
+    navigate(`/survey/${englishCategories[0]}`);
   };
 
   return (
@@ -75,9 +81,7 @@ const SurveyType = () => {
           </div>
 
           <S.NextBtnWrapper>
-            <S.NextBtn type="button" onClick={handleNext}>
-              다음으로
-            </S.NextBtn>
+            <S.NextBtn type="button" onClick={handleNext}>다음으로</S.NextBtn>
           </S.NextBtnWrapper>
         </S.RightWrapper>
       </S.Right>
