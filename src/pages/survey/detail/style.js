@@ -124,6 +124,7 @@ S.NextBtnWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  gap: 28px;
 `;
 
 S.NextBtn = styled.button`
