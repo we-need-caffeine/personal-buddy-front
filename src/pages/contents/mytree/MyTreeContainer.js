@@ -1,20 +1,32 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import S from './style';
+import { useSelector } from 'react-redux';
 
 const MyTreeContainer = () => {
   
     const location = useLocation();
     const pathName = location.pathname;
 
+    // 로그인된 유저정보
+    const {currentUser} = useSelector((state) => state.member)
+    // 로그인된 유저의 아이디
+    const memberId = currentUser.id;
+
     const backgroundRef = useRef(null);
-    const stickerRef = useRef(null);
+    const stickerRef = useRef([]);
     const isDragging = useRef(false);
     const startOffset = useRef({ x: 0, y: 0 });
     const [startPos, setStartPos] = useState({ x: 0, y: 0 });
 
+    // 서버에 요청한 회원의 나무 적용 정보
+    const [memberAppliedItemBackground, setMemberAppliedItemBackground] = useState({});
+    const [memberAppliedItemTree, setMemberAppliedItemTree] = useState({});
+    const [memberAppliedItemsSticker, setMemberAppliedItemSticker] = useState([{}]);
+
     const handleMouseDown = (e) => {
         const backgroundRect = backgroundRef.current.getBoundingClientRect();
+        
         startOffset.current.x = e.clientX - backgroundRect.left - startPos.x;
         startOffset.current.y = e.clientY - backgroundRect.top - startPos.y;
         
@@ -23,10 +35,10 @@ const MyTreeContainer = () => {
 
     
     useEffect(() => {
-      const handleMouseMove = (e) => {
+      const handleMouseMove = (e, i) => {
           if (!isDragging.current) return;
           const backgroundRect = backgroundRef.current.getBoundingClientRect();
-          const stickerRect = stickerRef.current.getBoundingClientRect();
+          const stickerRect = stickerRef.current[i].getBoundingClientRect();
 
           const newX = e.clientX - backgroundRect.left - startOffset.current.x;
           const newY = e.clientY - backgroundRect.top - startOffset.current.y;
@@ -35,15 +47,16 @@ const MyTreeContainer = () => {
           const clampedY = Math.max(0, Math.min(newY, backgroundRect.height - stickerRect.height));
 
           // 리렌더 없이 스타일만 조작
-          if (stickerRef.current) {
-              stickerRef.current.style.left = `${clampedX}px`;
-              stickerRef.current.style.top = `${clampedY}px`;
+          if (stickerRef.current[i]) {
+              stickerRef.current[i].style.left = `${clampedX}px`;
+              stickerRef.current[i].style.top = `${clampedY}px`;
           }
       };
 
-      const handleMouseUp = () => {
+      const handleMouseUp = (e) => {
         const backgroundRect = backgroundRef.current.getBoundingClientRect();
-        const stickerRect = stickerRef.current.getBoundingClientRect();
+        console.log(stickerRect);
+        const stickerRect = stickerRef.current[e].getBoundingClientRect();
 
         const finalX = stickerRect.left - backgroundRect.left;
         const finalY = stickerRect.top - backgroundRect.top;
@@ -79,33 +92,76 @@ const MyTreeContainer = () => {
     }
   }
 
+  useEffect(() => {
+    const getAppliedItems = async () => {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/my-tree/api/tree/list/applied/${memberId}`,{
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      const data = await response.json();
+
+      data.memberAppliedTrees.map((item) => {
+        switch(item.itemType){
+          case "스티커":
+            setMemberAppliedItemSticker(prev => {
+              console.log(item);
+              if(memberAppliedItemsSticker === 0){
+                console.log(item)
+                return [item]
+              }else{
+                return [...prev, item]
+              }
+            })
+            break;
+          case "배경":
+            setMemberAppliedItemBackground(item);
+            break;
+          case "나무":
+            setMemberAppliedItemTree(item);
+            break;
+        }
+      })
+    }
+
+    getAppliedItems();
+  }, [memberId])
+
   return (
     <div>
       <S.SubTitle>언젠가는 아름다워질 나의 나무 ✨</S.SubTitle>
       <S.MainTitle>나의 성장 나무 🌳</S.MainTitle>
       <S.MyTreeWrapper>
-                <S.MyTreeBackGround ref={backgroundRef}>
-                    <S.MyTreeItemStickerIcon
-                        ref={stickerRef}
-                        onMouseDown={handleMouseDown}
-                        xLocation={startPos.x} 
-                        yLocation={startPos.y} 
-                    />
-                    <S.MyTreeItemTreeIcon/>
-                </S.MyTreeBackGround>
-                <S.ButtonWrapper>
-                    <S.SaveButton>저장</S.SaveButton>
-                    <S.CancelButton>취소</S.CancelButton>
-                </S.ButtonWrapper>
+        <S.MyTreeBackGround 
+          url={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${memberAppliedItemBackground.itemImgPath}&fileName=${memberAppliedItemBackground.itemImgName}`} 
+          ref={backgroundRef}
+          >
+          {
+            memberAppliedItemsSticker.map((sticker, i) => (
+                <S.MyTreeItemStickerIcon 
+                ref={stickerRef.current[i]}
+                url={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${sticker.itemImgPath}&fileName=${sticker.itemImgName}`}
+                onMouseDown={(e, i) => handleMouseDown(e, i)}
+                xLocation={sticker.treeCustomizingPositionX}
+                yLocation={sticker.treeCustomizingPositionX}/>
+              )
+            )
+          }
+          <S.MyTreeItemTreeIcon url={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${memberAppliedItemTree.itemImgPath}&fileName=${memberAppliedItemTree.itemImgName}`}/>
+        </S.MyTreeBackGround>
+        <S.ButtonWrapper>
+          <S.SaveButton>저장</S.SaveButton>
+          <S.CancelButton>취소</S.CancelButton>
+        </S.ButtonWrapper>
       </S.MyTreeWrapper>
       <S.SubTitle>아이템을 직접 적용 시켜봐요 😎</S.SubTitle>
       <S.MainTitle>아이템 목록 💼</S.MainTitle>
       <div>
         <S.ItemTabBox>
-          <S.ItemTabLink selected={getSeleted(pathName) == 'all'} to={""}>전체</S.ItemTabLink>
-          <S.ItemTabLink selected={getSeleted(pathName) == 'background'} to={"background"}>배경</S.ItemTabLink>
-          <S.ItemTabLink selected={getSeleted(pathName) == 'sticker'} to={"sticker"}>스티커</S.ItemTabLink>
-          <S.ItemTabLink selected={getSeleted(pathName) == 'tree'} to={"tree"}>나무</S.ItemTabLink>
+          <S.ItemTabLink selected={getSeleted(pathName) === 'all'} to={""}>전체</S.ItemTabLink>
+          <S.ItemTabLink selected={getSeleted(pathName) === 'background'} to={"background"}>배경</S.ItemTabLink>
+          <S.ItemTabLink selected={getSeleted(pathName) === 'sticker'} to={"sticker"}>스티커</S.ItemTabLink>
+          <S.ItemTabLink selected={getSeleted(pathName) === 'tree'} to={"tree"}>나무</S.ItemTabLink>
         </S.ItemTabBox>
         <Outlet />
       </div>
