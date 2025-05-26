@@ -3,12 +3,13 @@ import S from './style';
 import ProfileCard from '../../layout/profile/ProfileCard';
 
 const GuestItem = ({
-  item, memberId, handleDelete, formatDate
+  item, memberId, onAskDelete, formatDate
 }) => {
 
+  // 프로필 카드 상태값
   const [showProfileCard, setShowProfileCard] = useState(false);
 
-  // 프로필 카드 상태
+  // 프로필 카드 상태 변환 함수
   const handleProfileCard = (state) => {
       setShowProfileCard(state)
   }
@@ -46,7 +47,7 @@ const GuestItem = ({
             </S.GuestBookMemberInfo>
             {item.writerMemberId === memberId || item.ownerMemberId === memberId ? 
             (
-                <S.GuestBookDeleteButton onClick={() => handleDelete(item.id)}>
+                <S.GuestBookDeleteButton onClick={() => onAskDelete(item.id)}>
                     <span>삭제</span>
                 </S.GuestBookDeleteButton>
             ) : (

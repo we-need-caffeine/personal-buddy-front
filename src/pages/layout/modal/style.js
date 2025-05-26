@@ -26,9 +26,12 @@ S.ModalContainer = styled.div`
 `
 
 S.TitleContainer = styled.div`
-  background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
+  background-color: ${({ $handleConfrmDeleteModal, theme }) => 
+    $handleConfrmDeleteModal 
+      ? theme.PALLETE.pointRed
+      : theme.PALLETE.primary.subBlue 
+  };
   ${whiteColor}
-  
   height: 40px;
   padding: 0 25px;
   display: flex;
@@ -60,7 +63,11 @@ S.ButtonContainer = styled.div`
 `;
 
 S.ConfirmButton = styled.button`
-  background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
+  background-color: ${({ $handleConfrmDeleteModal, theme }) => 
+    $handleConfrmDeleteModal 
+    ? theme.PALLETE.pointRed
+    : theme.PALLETE.primary.subBlue 
+  };
   ${whiteColor}
   border: none;
   border-radius: 50px;

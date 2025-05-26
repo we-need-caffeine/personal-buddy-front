@@ -11,7 +11,7 @@ const FollowModal = ({ memberId, profileMemberId, handleFollowerList, onCancel }
   // 프로필 카드 상태
   const [showProfileCard, setShowProfileCard] = useState(false);
   // 프로필 카드 콘텍스트
-  const { profileCardInfo, unfollow } = useContext(ProfileCardContext);
+  const { unfollow } = useContext(ProfileCardContext);
   // 필터 조건
   const [followFilter, setFollowFilter] = useState("");
   // 텍스트에리어값
@@ -46,7 +46,7 @@ const FollowModal = ({ memberId, profileMemberId, handleFollowerList, onCancel }
       setFollowList(datas);
     }
     getFollower()
-  }, [followFilter, inputText, profileMemberId, profileCardInfo])
+  }, [followFilter, inputText, profileMemberId])
 
   // 외부 요소 스크롤을 막는 함수
     useEffect(() => {
@@ -58,7 +58,7 @@ const FollowModal = ({ memberId, profileMemberId, handleFollowerList, onCancel }
             document.body.style.overflow = 'auto';
             setHeaderScroll(true)
         };
-    }, [handleFollowerList, setHeaderScroll, profileCardInfo]);
+    }, [handleFollowerList, setHeaderScroll]);
 
   return (
     <>
@@ -81,8 +81,8 @@ const FollowModal = ({ memberId, profileMemberId, handleFollowerList, onCancel }
                 alt='돋보기 아이콘'
               />
               <S.SearchInput
-                maxLength={20} 
-                placeholder='검색'
+                maxLength={14} 
+                placeholder='닉네임 검색'
                 onChange={handleTextareaChange}
                 value={inputText}
                 spellCheck={false}
