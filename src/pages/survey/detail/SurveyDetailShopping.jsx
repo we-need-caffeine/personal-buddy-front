@@ -45,11 +45,18 @@ const SurveyDetailShopping = () => {
       const nextCategory = selectedCategories[nextIndex];
       navigate(`/survey/${nextCategory}`);
     } else {
-      navigate('/main'); // 모든 카테고리 끝나면 메인으로
+      navigate('/main');
     }
   };
 
+  const handlePrev = () => {
+    navigate(-1); // 이전 페이지로 이동
+  };
+
   const shoppingOptions = shoppingOptionsMap[category] || [];
+  const currentIndex = selectedCategories.indexOf(category);
+  const isLastCategory = currentIndex === selectedCategories.length - 1;
+  const nextButtonText = isLastCategory ? '설문 완료' : '다음 카테고리로';
 
   return (
     <S.Container>
@@ -77,7 +84,8 @@ const SurveyDetailShopping = () => {
             </S.Tags>
           </div>
           <S.NextBtnWrapper>
-            <S.NextBtn type="button" onClick={handleNext}>다음으로</S.NextBtn>
+            <S.NextBtn type="button" onClick={handlePrev} style={{ backgroundColor: '#BBBBBB' }}>뒤로가기</S.NextBtn>
+            <S.NextBtn type="button" onClick={handleNext}>{nextButtonText}</S.NextBtn>
           </S.NextBtnWrapper>
         </S.RightWrapper>
       </S.Right>
