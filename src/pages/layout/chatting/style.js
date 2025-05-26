@@ -1,9 +1,23 @@
 import styled from "styled-components";
-import { blackColor, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, fontWeightRegular, gray5Color, pointRedColor, whiteColor } from "../../../globals/common";
+import { blackColor, fontSizeH10, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, fontWeightRegular, gray5Color, mainGreenColor, pointRedColor, whiteColor } from "../../../globals/common";
 
 const S = {};
 
+S.Backdrop = styled.div`
+  position: fixed;
+  left: 0; 
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10001;
+`
+
 S.ChatRoomContainer = styled.div`
+  z-index: 10002;
   background-color: ${({ theme }) => theme.PALLETE.white};
   width: 400px;
   height: 480px;
@@ -95,6 +109,8 @@ S.ItemContainer = styled.div`
   height: 70px;
   box-sizing: border-box;
   padding: 0 25px;
+  cursor: pointer;
+  transition: 0.18s;
   &:hover {
     background-color: ${({ theme }) => theme.PALLETE.gray.gray2}
   }
@@ -156,7 +172,7 @@ S.RightContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;
-  gap: 2px;
+  gap: 4px;
 `
 
 S.LastChatDate = styled.span`
@@ -173,10 +189,8 @@ S.OutChatRoom = styled.span`
 `
 
 S.ProfileCardDropdown = styled.div`
-    position: absolute;
-    top: 40px;
-    left: 0px;
-    z-index: 10003;
+  position: fixed;
+  z-index: 10501;
 `;
 
 S.CardBG = styled.div`
@@ -185,7 +199,7 @@ S.CardBG = styled.div`
     top : 0;
     width: 100vw;
     height: 100vh;
-    z-index: 10002;
+    z-index: 10400;
 `
 
 S.ChatLogContainer = styled.div`
@@ -202,7 +216,7 @@ S.LeftChat = styled.div`
   max-width: 240px;
   max-height: 240px;
   display: flex;
-  align-items: start;
+  align-items: end;
   justify-content: left;
 `
 
@@ -245,6 +259,28 @@ S.RightContent = styled.div`
   background-color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
   border-radius: 5px;
   margin-top: 5px;
+`
+
+S.LeftChatInfoContainer = styled.div`
+  ${gray5Color}
+  ${fontSizeH10}
+  ${fontWeightLight}
+  padding-left: 5px;
+`
+
+S.RightChatInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: end;
+  ${gray5Color}
+  ${fontSizeH10}
+  ${fontWeightLight}
+  padding-right: 5px;
+`
+
+S.ChatReadingInfo = styled.div`
+  ${mainGreenColor}
 `
 
 S.ChatInputBox = styled.div`

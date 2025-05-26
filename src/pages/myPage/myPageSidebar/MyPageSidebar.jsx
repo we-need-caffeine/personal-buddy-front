@@ -20,10 +20,12 @@ const MyPageSidebar = () => {
     const myId = currentUser.id;
     // 오너의 정보
     const [ownerInfo, setOnwerInfo] = useState({});
-    // 프로필 카드 상태
+    // 마이페이지용 프로필카드 상태
     const [showProfileCard, setShowProfileCard] = useState(false);
+    // 마이페이지용 프로필카드 드롭다운
+    const [dropdownPos, setDropdownPos] = useState({ x: 0, y: 0 });
     // 프로필 카드 콘텍스트
-    const { follow, unfollow, toggleFavorite } = useContext(ProfileCardContext);
+    const { handleFollow, toggleFavorite } = useContext(ProfileCardContext);
     // 팔로워 리스트 상태
     const [showFollowerList, setShowFollowerList] = useState(false);
     // 팔로우 리스트 상태
@@ -31,6 +33,10 @@ const MyPageSidebar = () => {
     // 채팅 콘텍스트
     const { handleChatRoom } = useContext(ChatContext)
 
+    // 마이페이지용 프로필 카드를 열고 닫는 함수
+    const handleProfileCard = (state) => {
+        setShowProfileCard(state)
+    }
 
     // 팔로워 리스트를 열고 닫는 함수
     const handleFollowerList = (state) => {
@@ -40,20 +46,6 @@ const MyPageSidebar = () => {
     // 팔로우 리스트를 열고 닫는 함수
     const handleFollowList = (state) => {
         setShowFollowList(state)
-    }
-
-    // 프로필 카드를 열고 닫는 함수
-    const handleProfileCard = (state) => {
-        setShowProfileCard(state)
-    }
-
-    // 마이페이지 사이드바 전용 - 팔로우 / 언팔로우
-    const handleFollow = async () => {
-        if (ownerInfo.isFollow === 1) {
-            unfollow(myId, id)
-        } else {
-            follow(myId, id)
-        }
     }
 
     //메세지를 시작하는 함수
@@ -73,7 +65,7 @@ const MyPageSidebar = () => {
             setOnwerInfo(data)
         }
         getOwnerInfo()
-    }, [id, myId, follow, unfollow, toggleFavorite])
+    }, [id, myId, handleFollow, toggleFavorite])
 
     // 팔로우 카운트를 변환해주는 함수
     function formatKoreanNumber(num) {
@@ -115,24 +107,36 @@ const MyPageSidebar = () => {
                         />
                     </S.MyPageMemberProfile>
                     <S.MyPageMemberInfoContainer>
-                        <S.MyPageMemberInfoNickName onClick={() => handleProfileCard(true)}>
+                        <S.MyPageMemberInfoNickName
+                            onClick={(e) => {
+                              setDropdownPos({ x: e.clientX, y: e.clientY });
+                              handleProfileCard(true)
+                            }}
+                        >
                             <span>
                                 {ownerInfo.memberNickname}
                             </span>
                         </S.MyPageMemberInfoNickName>
                         {/* 프로필 카드 영역 */}
                         {showProfileCard && (
-                            <S.ProfileCardDropdown>
-                                <ProfileCard
-                                    memberId={myId}
-                                    profileCardMemberId={ownerId}
-                                    handleProfileCard={showProfileCard}
-                                    onCancel={() => handleProfileCard(false)}
-                                />
+                            <S.ProfileCardDropdown
+                                style={{ top: dropdownPos.y, left: dropdownPos.x }}
+                            >
+                            <ProfileCard
+                                memberId={myId} // 로그인된 유저의 아이디
+                                profileCardMemberId={ownerId} // 정보를 볼 유저의 아이디
+                                handleProfileCard={showProfileCard}
+                                onCancel={() => handleProfileCard(false)}
+                            />
                             </S.ProfileCardDropdown>
                         )}
                         { showProfileCard && (
-                            <S.CardBG onClick={() => {handleProfileCard(false)}}/>
+                            <S.CardBG 
+                                onClick={() => {
+                                handleProfileCard(false)
+                                setDropdownPos({ x: 0, y: 0 });
+                            }}
+                            />
                         )}
                         <S.MyPageMemberInfoStatusMessage>
                             <span>
@@ -204,7 +208,7 @@ const MyPageSidebar = () => {
                         <FollowModal
                             memberId={myId}
                             profileMemberId={ownerId}
-                            handleFollowerList={showFollowerList}
+                            handleFollowList={showFollowList}
                             onCancel={() => handleFollowList(false)}
                         />
                     )}
@@ -222,21 +226,34 @@ const MyPageSidebar = () => {
                         />
                     </S.MyPageMemberProfile>
                     <S.MyPageMemberInfoContainer>
-                        <S.MyPageMemberInfoNickName onClick={() => handleProfileCard(true)}>
+                        <S.MyPageMemberInfoNickName 
+                            onClick={(e) => {
+                              setDropdownPos({ x: e.clientX, y: e.clientY });
+                              handleProfileCard(true)
+                            }}
+                        >
                             <span>{ownerInfo.memberNickname}</span>
                         </S.MyPageMemberInfoNickName>
                             {/* 프로필 카드 영역 */}
                             {showProfileCard && (
-                                <S.ProfileCardDropdown>
-                                    <ProfileCard
-                                        memberId={myId}
-                                        profileCardMemberId={ownerId}
-                                        handleProfileCard={handleProfileCard}
-                                    />
+                                <S.ProfileCardDropdown
+                                    style={{ top: dropdownPos.y, left: dropdownPos.x }}
+                                >
+                                <ProfileCard
+                                    memberId={myId} // 로그인된 유저의 아이디
+                                    profileCardMemberId={ownerId} // 정보를 볼 유저의 아이디
+                                    handleProfileCard={showProfileCard}
+                                    onCancel={() => handleProfileCard(false)}
+                                />
                                 </S.ProfileCardDropdown>
                             )}
                             { showProfileCard && (
-                                <S.CardBG onClick={() => {handleProfileCard(false)}}/>
+                                <S.CardBG 
+                                    onClick={() => {
+                                    handleProfileCard(false)
+                                    setDropdownPos({ x: 0, y: 0 });
+                                }}
+                                />
                             )}
                         <S.MyPageMemberInfoStatusMessage>
                             <span>{ownerInfo.memberStatusMessage}</span>
@@ -339,7 +356,7 @@ const MyPageSidebar = () => {
                             <FollowModal
                                 memberId={myId}
                                 profileMemberId={ownerId}
-                                handleFollowerList={showFollowList}
+                                handleFollowList={showFollowList}
                                 onCancel={() => handleFollowList(false)}
                             />
                         )}

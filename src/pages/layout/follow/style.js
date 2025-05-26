@@ -13,7 +13,7 @@ S.Backdrop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10001;
+  z-index: 9999;
 `
 
 S.ModalContainer = styled.div`
