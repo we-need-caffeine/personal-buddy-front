@@ -47,7 +47,7 @@ const EventBannerContainer = () => {
           {banners.map((event, i) => { 
             const filePath = event.eventImgPath; 
             const fileName = event.eventImgName;
-            const imageUrl = `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${ filePath}&fileName=${encodeURIComponent(fileName)}`;
+            const imageUrl = `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${ filePath}&fileName=${(fileName)}`;
             
             return (
             <SwiperSlide key={i}>

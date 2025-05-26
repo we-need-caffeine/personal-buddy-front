@@ -95,10 +95,6 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      // {
-      //   path: "/",
-      //   element: <LandingPageContainer />, // 랜딩 페이지 http://localhost:3000/
-      // },
       {
         path: "/main",
         element: <LoginLayout />, // 로그인 확인 /main
