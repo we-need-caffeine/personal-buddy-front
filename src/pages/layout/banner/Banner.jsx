@@ -68,7 +68,7 @@ const Banner = () => {
         {[...Array(totalSlides)].map((_, i) => (
           <S.Dot
             key={i}
-            active={activeIndex === i}
+            $active={activeIndex === i}
             onClick={() => handleDotClick(i)}
           />
         ))}

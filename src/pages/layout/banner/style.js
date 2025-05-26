@@ -58,7 +58,7 @@ S.Dot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: ${({ active }) => (active ? '#00C896' : '#ddd')};
+  background: ${({ $active }) => ($active ? '#00C896' : '#ddd')};
   cursor: pointer;
   transition: background 0.3s;
 `;
