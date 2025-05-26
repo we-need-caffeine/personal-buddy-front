@@ -96,8 +96,6 @@ const BoardPost = () => {
     } catch (err) {
       console.error('댓글 등록 에러!', err);
     }
-
-    
   };
 
   // 댓글 좋아요
