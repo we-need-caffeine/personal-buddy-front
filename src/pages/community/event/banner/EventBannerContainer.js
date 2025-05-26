@@ -62,6 +62,8 @@ const EventBannerContainer = () => {
       </S.BannerSliderWrapper>
     </S.EventWrapper>
 
+    
+
   );
 };
 
