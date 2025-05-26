@@ -28,14 +28,6 @@ import SurveyContainer from "../pages/survey/SurveyContainer";
 import SurveyLayout from "../pages/survey/SurveyLayout/SurveyLayout";
 import SurveyIntroContainer from "../pages/survey/intro/SurveyIntroContainer";
 import SurveyType from "../pages/survey/type/SurveyType";
-import SurveyFood from "../pages/survey/food/SurveyFood";
-import SurveyTravel from "../pages/survey/travel/SurveyTravel";
-import SurveyFoodInfo from "../pages/survey/food/info/SurveyFoodInfo";
-import SurveyFoodPlace from "../pages/survey/food/place/SurveyFoodPlace";
-import SurveyFoodShopping from "../pages/survey/food/shopping/SurveyFoodShopping";
-import SurveyTravelInfo from "../pages/survey/travel/info/SurveyTravelInfo";
-import SurveyTravelPlace from "../pages/survey/travel/place/SurveyTravelPlace";
-import SurveyTravelShopping from "../pages/survey/travel/shopping/SurveyTravelShopping";
 import MemberLayout from "../pages/member/MemberLayout";
 import EmailLogin from "../pages/member/login/EmailLogin";
 import SocialLogin from "../pages/member/login/SocialLogin";
@@ -75,7 +67,6 @@ import LayoutWithoutBanner from "../pages/layout/LayoutWithoutBanner";
 import WakeUpDetail from "../pages/community/event/post/wakeup/WakeUpDetail";
 import RoutineShareDetail from "../pages/community/event/post/Routine/RoutineShareDetail";
 import HealingDayDetail from "../pages/community/event/post/Healing/HealingDayDetail";
-import SurveyDetail from "../pages/survey/detail/SurveyDetail";
 import SurveyDetailInfo from "../pages/survey/detail/SurveyDetailInfo";
 import SurveyDetailPlace from "../pages/survey/detail/SurveyDetailPlace";
 import SurveyDetailShopping from "../pages/survey/detail/SurveyDetailShopping";
@@ -97,7 +88,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/main",
-        element: <LoginLayout />, // 로그인 확인 /main
+        element: <LoginLayout />, // 로그인 확인 /main 
         children: [
           {
             path : "",
