@@ -6,7 +6,7 @@ import ProfileCard from '../../layout/profile/ProfileCard';
 import { ProfileCardContext } from '../../../context/ProfileCardContext';
 import FollowerModal from '../../layout/follow/FollowerModal';
 import FollowModal from '../../layout/follow/FollowModal';
-import { HeaderContext } from '../../../context/HeaderContext';
+import { ChatContext } from '../../../context/ChatContext';
 
 const MyPageSidebar = () => {
 
@@ -28,8 +28,8 @@ const MyPageSidebar = () => {
     const [showFollowerList, setShowFollowerList] = useState(false);
     // 팔로우 리스트 상태
     const [showFollowList, setShowFollowList] = useState(false);
-    // 헤더 콘텍스트
-    const { setViewChatRoom } = useContext(HeaderContext);
+    // 채팅 콘텍스트
+    const { handleChatRoom } = useContext(ChatContext)
 
 
     // 팔로워 리스트를 열고 닫는 함수
@@ -162,7 +162,10 @@ const MyPageSidebar = () => {
                             팔로우
                         </S.FollowBtn>
                         <S.MessageBtn
-                            onClick={() => startChatting()}
+                            onClick={() => {
+                            startChatting()
+                            handleChatRoom(true)
+                        }}
                         >
                             메세지
                         </S.MessageBtn>
