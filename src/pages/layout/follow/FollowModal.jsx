@@ -4,10 +4,10 @@ import { HeaderContext } from '../../../context/HeaderContext';
 import { ProfileCardContext } from '../../../context/ProfileCardContext';
 import ProfileCard from '../profile/ProfileCard';
 
-const FollowModal = ({ memberId, profileMemberId, handleFollowerList, onCancel }) => {
-
-  // 헤더 이벤트 콘텍스트
-  const { setHeaderScroll } = useContext(HeaderContext);
+const FollowModal = ({ memberId, profileMemberId, handleFollowList, onCancel }) => {
+  
+  // 헤더 스크롤 상태
+  const { lockScroll, unlockScroll } = useContext(HeaderContext);
   // 프로필 카드 상태
   const [showProfileCard, setShowProfileCard] = useState(false);
   // 프로필 카드 콘텍스트
@@ -48,17 +48,11 @@ const FollowModal = ({ memberId, profileMemberId, handleFollowerList, onCancel }
     getFollower()
   }, [followFilter, inputText, profileMemberId])
 
-  // 외부 요소 스크롤을 막는 함수
-    useEffect(() => {
-        if (handleFollowerList) {
-            document.body.style.overflow = 'hidden';
-            setHeaderScroll(false)
-        }
-        return () => {
-            document.body.style.overflow = 'auto';
-            setHeaderScroll(true)
-        };
-    }, [handleFollowerList, setHeaderScroll]);
+  useEffect(() => {
+      if (handleFollowList) lockScroll();
+      return () => unlockScroll();
+  }, [handleFollowList]);
+
 
   return (
     <>

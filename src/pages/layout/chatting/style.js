@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { blackColor, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, fontWeightRegular, gray5Color, pointRedColor, whiteColor } from "../../../globals/common";
+import { blackColor, fontSizeH10, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, fontWeightRegular, gray5Color, mainGreenColor, pointRedColor, whiteColor } from "../../../globals/common";
 
 const S = {};
 
@@ -172,7 +172,7 @@ S.RightContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;
-  gap: 2px;
+  gap: 4px;
 `
 
 S.LastChatDate = styled.span`
@@ -216,7 +216,7 @@ S.LeftChat = styled.div`
   max-width: 240px;
   max-height: 240px;
   display: flex;
-  align-items: start;
+  align-items: end;
   justify-content: left;
 `
 
@@ -259,6 +259,28 @@ S.RightContent = styled.div`
   background-color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
   border-radius: 5px;
   margin-top: 5px;
+`
+
+S.LeftChatInfoContainer = styled.div`
+  ${gray5Color}
+  ${fontSizeH10}
+  ${fontWeightLight}
+  padding-left: 5px;
+`
+
+S.RightChatInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: end;
+  ${gray5Color}
+  ${fontSizeH10}
+  ${fontWeightLight}
+  padding-right: 5px;
+`
+
+S.ChatReadingInfo = styled.div`
+  ${mainGreenColor}
 `
 
 S.ChatInputBox = styled.div`

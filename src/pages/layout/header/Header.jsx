@@ -32,7 +32,7 @@
     // 읽지 않은 알림 수
     const [notReadAlertCount, setNotReadAlertCount] = useState(0);
     // 채팅 콘텍스트
-    const { connect, disconnect, chatRoomList, getChatRoomList, showChatRoom, handleChatRoom, showChat, handleChat, chatRoomId } = useContext(ChatContext)
+    const { connect, disconnect, chatRoomList, getChatRoomList, showChatRoom, handleChatRoom, showChat, handleChat, chatRoomId, userNickName } = useContext(ChatContext)
     // 리덕스 사용
     const dispatch = useDispatch();
     
@@ -49,7 +49,7 @@
     // 채팅룸을 최초로 조회하는 함수
     useEffect(() => {
       getChatRoomList(memberId);
-    }, [memberId]);
+    }, [memberId, showChat]);
 
     // 채팅룸이 켜질 때 transition 없이 바로 보여주기
     useEffect(() => {
@@ -248,23 +248,15 @@
             }}
           />
         )}
-        { showChatRoom && (
-          <S.CardBG
-            onClick={() => {
-              handleChatRoom(false)
-            }}
-          />
-        )}
-        
+
         {/* 채팅 */}
         {showChat && (
-          <S.ChatModalContainer>
-            <Chat
-              memberId={memberId}
-              chatRoomId={chatRoomId}
-              onCancel={() => {handleChat(false)}}
-            />
-          </S.ChatModalContainer>
+          <Chat
+            memberId={memberId}
+            chatRoomId={chatRoomId}
+            userNickName={userNickName}
+            onCancel={() => {handleChat(false)}}
+          />
         )}
 
         {/* 알림창 */}

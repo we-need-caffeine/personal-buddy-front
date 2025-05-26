@@ -208,7 +208,7 @@ const MyPageSidebar = () => {
                         <FollowModal
                             memberId={myId}
                             profileMemberId={ownerId}
-                            handleFollowerList={showFollowerList}
+                            handleFollowList={showFollowList}
                             onCancel={() => handleFollowList(false)}
                         />
                     )}
@@ -356,7 +356,7 @@ const MyPageSidebar = () => {
                             <FollowModal
                                 memberId={myId}
                                 profileMemberId={ownerId}
-                                handleFollowerList={showFollowList}
+                                handleFollowList={showFollowList}
                                 onCancel={() => handleFollowList(false)}
                             />
                         )}

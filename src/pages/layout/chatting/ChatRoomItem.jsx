@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import S from './style';
 import ProfileCard from '../profile/ProfileCard';
+import DisplayDate from '../../../utils/DisplayDate/DisplayDate';
 
-const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId, handleChat}) => {
+
+const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId, setUserNickName, handleChat}) => {
 
   // 프로필 카드 상태값
   const [showProfileCard, setShowProfileCard] = useState(false);
@@ -14,11 +16,15 @@ const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId, handleChat}) => 
       setShowProfileCard(state)
   }
 
+  console.log(item);
+  
+
   return (
     <>
       <S.ItemContainer 
         onClick={() => {
           setChatRoomId(item.chatRoomId)
+          setUserNickName(item.memberNickName)
           handleChat()
         }}
       >
@@ -75,12 +81,11 @@ const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId, handleChat}) => 
           </S.MemberInfoTextContainer>
         </S.MemberInfoContainer>
         <S.RightContainer>
-          <S.LastChatDate>오전 11:20</S.LastChatDate>
+          <S.LastChatDate>
+            {DisplayDate(item.chatRoomLastChatTime) || '--'}
+          </S.LastChatDate>
           <S.OutChatRoom>채팅방 나가기</S.OutChatRoom>
         </S.RightContainer>
-        {/* {item.chatRoomLastChatDate && (
-          <S.LastChatDate>{item.chatRoomLastChatDate}</S.LastChatDate>
-        )} */}  
       </S.ItemContainer>
     </>
   );

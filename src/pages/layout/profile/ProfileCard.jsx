@@ -5,27 +5,21 @@ import { ProfileCardContext } from '../../../context/ProfileCardContext';
 import { HeaderContext } from '../../../context/HeaderContext';
 
 const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard, onCancel}) => {
+
   // 프로필 카드 콘텍스트
   const { profileCardInfo, getProfile, toggleFavorite, handleFollow } = useContext(ProfileCardContext);
-  // 헤더 이벤트 콘텍스트
-  const { setHeaderScroll } = useContext(HeaderContext);
+  // 헤더 스크롤을 막는 상태
+  const { lockScroll, unlockScroll } = useContext(HeaderContext);
 
   // 최초로 프로필 정보를 받는 함수
   useEffect(() => {
     getProfile(memberId, profileCardMemberId)
   }, [ memberId, profileCardMemberId])
 
-  // 외부요소의 스크롤을 막는 함수
   useEffect(() => {
-    if (handleProfileCard) {
-        document.body.style.overflow = 'hidden';
-        setHeaderScroll(false)
-      }
-      return () => {
-        document.body.style.overflow = 'auto';
-        setHeaderScroll(true)
-    };
-  }, [handleProfileCard, setHeaderScroll]);
+      if (handleProfileCard) lockScroll();
+      return () => unlockScroll();
+  }, [handleProfileCard]);
 
   return (
     <S.CardContainer>

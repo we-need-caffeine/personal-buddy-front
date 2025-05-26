@@ -7,7 +7,7 @@ import ChatRoomItem from './ChatRoomItem';
 const ChatRoom = ({ memberId, handleChatRoom, onCancel}) => {
 
   // 채팅 콘텍스트
-  const { chatRoomList, getChatRoomList, handleTextareaChange, setFollowFilter, inputText, followFilter, setChatRoomId, handleChat } = useContext(ChatContext)
+  const { chatRoomList, getChatRoomList, handleTextareaChange, setFollowFilter, inputText, followFilter, setChatRoomId, setUserNickName, handleChat } = useContext(ChatContext)
   // 외부 요소 스크롤을 막는 함수
   const { lockScroll, unlockScroll } = useContext(HeaderContext);
 
@@ -60,6 +60,7 @@ const ChatRoom = ({ memberId, handleChatRoom, onCancel}) => {
               memberId={memberId}
               handleChat={() => handleChat(true)}
               setChatRoomId={setChatRoomId}
+              setUserNickName={setUserNickName}
               onCancel={onCancel}
             />
           ))}
