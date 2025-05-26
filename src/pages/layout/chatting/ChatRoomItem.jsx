@@ -6,6 +6,8 @@ const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId, handleChat}) => 
 
   // 프로필 카드 상태값
   const [showProfileCard, setShowProfileCard] = useState(false);
+  // 프로필카드 드롭다운의 위치
+  const [dropdownPos, setDropdownPos] = useState({ x: 0, y: 0 });
 
   // 프로필 카드 상태 변환 함수
   const handleProfileCard = (state) => {
@@ -26,6 +28,7 @@ const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId, handleChat}) => 
             alt='멤버 프로필 이미지'
             onClick={(e) => {
               e.stopPropagation();
+              setDropdownPos({ x: e.clientX, y: e.clientY });
               handleProfileCard(true)
             }}
             onError={e => {
@@ -34,7 +37,10 @@ const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId, handleChat}) => 
             />
             {/* 프로필 카드 영역 */}
             {showProfileCard && (
-              <S.ProfileCardDropdown>
+              <S.ProfileCardDropdown
+                onClick={e => e.stopPropagation()}
+                style={{ top: dropdownPos.y, left: dropdownPos.x }}
+              >
                 <ProfileCard
                     memberId={memberId}
                     profileCardMemberId={item.memberId}
@@ -48,7 +54,10 @@ const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId, handleChat}) => 
             )}
             {showProfileCard && (
               <S.CardBG 
-                  onClick={() => {handleProfileCard(false)}}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleProfileCard(false)
+                }}
               />
             )}
           <S.MemberInfoTextContainer>

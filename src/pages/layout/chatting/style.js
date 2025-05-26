@@ -3,7 +3,21 @@ import { blackColor, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, fo
 
 const S = {};
 
+S.Backdrop = styled.div`
+  position: fixed;
+  left: 0; 
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10001;
+`
+
 S.ChatRoomContainer = styled.div`
+  z-index: 10002;
   background-color: ${({ theme }) => theme.PALLETE.white};
   width: 400px;
   height: 480px;
@@ -95,6 +109,8 @@ S.ItemContainer = styled.div`
   height: 70px;
   box-sizing: border-box;
   padding: 0 25px;
+  cursor: pointer;
+  transition: 0.18s;
   &:hover {
     background-color: ${({ theme }) => theme.PALLETE.gray.gray2}
   }
@@ -173,10 +189,8 @@ S.OutChatRoom = styled.span`
 `
 
 S.ProfileCardDropdown = styled.div`
-    position: absolute;
-    top: 40px;
-    left: 0px;
-    z-index: 10003;
+  position: fixed;
+  z-index: 10501;
 `;
 
 S.CardBG = styled.div`
@@ -185,7 +199,7 @@ S.CardBG = styled.div`
     top : 0;
     width: 100vw;
     height: 100vh;
-    z-index: 10002;
+    z-index: 10400;
 `
 
 S.ChatLogContainer = styled.div`

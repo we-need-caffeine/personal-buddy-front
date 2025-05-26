@@ -6,23 +6,14 @@ import { HeaderContext } from '../../../context/HeaderContext';
 
 const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard, onCancel}) => {
   // 프로필 카드 콘텍스트
-  const { profileCardInfo, follow, unfollow, getProfile, toggleFavorite } = useContext(ProfileCardContext);
+  const { profileCardInfo, getProfile, toggleFavorite, handleFollow } = useContext(ProfileCardContext);
   // 헤더 이벤트 콘텍스트
   const { setHeaderScroll } = useContext(HeaderContext);
-
-  // 팔로우 / 언팔로우
-  const handleFollow = async () => {
-    if (profileCardInfo.isFollow === 1) {
-      unfollow(memberId, profileCardMemberId)
-    } else {
-      follow(memberId, profileCardMemberId)
-    }
-  }
 
   // 최초로 프로필 정보를 받는 함수
   useEffect(() => {
     getProfile(memberId, profileCardMemberId)
-  }, [memberId, profileCardMemberId])
+  }, [ memberId, profileCardMemberId])
 
   // 외부요소의 스크롤을 막는 함수
   useEffect(() => {
@@ -78,7 +69,7 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard, onCancel
                 ) : null}
 
                 <S.FollowBtn
-                  onClick={() => handleFollow()} 
+                  onClick={() => handleFollow(memberId, profileCardMemberId)} 
                   $isFollow={profileCardInfo.isFollow}
                 >
                   {profileCardInfo.isFollow === 1 ? (

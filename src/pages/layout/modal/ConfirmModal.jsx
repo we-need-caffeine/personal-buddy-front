@@ -4,20 +4,14 @@ import { HeaderContext } from '../../../context/HeaderContext';
 
 const ConfirmModal = ({ handleConfrmModal, title, message, onConfirm, onCancel }) => {
 
-    // 헤더 이벤트 콘텍스트
-    const { setHeaderScroll } = useContext(HeaderContext);
 
     // 외부 요소 스크롤을 막는 함수
+    const { lockScroll, unlockScroll } = useContext(HeaderContext);
+
     useEffect(() => {
-        if (handleConfrmModal) {
-            document.body.style.overflow = 'hidden';
-            setHeaderScroll(false)
-        }
-        return () => {
-            document.body.style.overflow = 'auto';
-            setHeaderScroll(true)
-        };
-    }, [handleConfrmModal, setHeaderScroll]);
+        if (handleConfrmModal) lockScroll();
+        return () => unlockScroll();
+    }, [handleConfrmModal]);
     
     if (!handleConfrmModal) return (
         <>

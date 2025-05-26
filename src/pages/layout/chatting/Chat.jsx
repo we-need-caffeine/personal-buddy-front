@@ -3,18 +3,21 @@ import S from './style';
 import { ChatContext } from '../../../context/ChatContext';
 
 const Chat = ({ memberId, chatRoomId, onCancel }) => {
-
+  
   // 채팅 콘텍스트
   const { chatList, getChatList, inputChat, handleChatChange, sendMessage } = useContext(ChatContext)
+  // 외부 요소 스크롤을 막는 함수
+  const { lockScroll, unlockScroll } = useContext(HeaderContext);
 
   // 컴포넌트 내부
   const scrollRef = useRef();
 
+  // chatList가 바뀔 때마다 맨 아래로
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [chatList]); // chatList가 바뀔 때마다 맨 아래로
+  }, [chatList]);
 
   useEffect(() => {
     getChatList(memberId, chatRoomId)
@@ -24,9 +27,14 @@ const Chat = ({ memberId, chatRoomId, onCancel }) => {
     console.log("최신 chatList:", chatList);
   }, [chatList]);
 
+  useEffect(() => {
+      if (chatRoomId) lockScroll();
+      return () => unlockScroll();
+  }, [chatRoomId]);
+
   return (
     <S.ChatRoomContainer>
-      {/* 메세지 타이틀 / 닫기 버튼 */}
+      {/* 채팅 타이틀 / 닫기 버튼 */}
       <S.TitleContainer>
         <S.Title>메세지</S.Title>
         <S.CloseButton src='/assets/images/modal/close-button.png' alt='x버튼' onClick={onCancel}/>
