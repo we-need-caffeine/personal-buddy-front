@@ -13,8 +13,10 @@ export const ChatProvider  = ({ children }) => {
   const [showChatRoom, setShowChatRoom] = useState(false);
   // 헤더 채팅 활성화
   const [showChat, setShowChat] = useState(false);
-  // 활성화된 채팅방의 아이디를 담는변수
+  // 활성화된 채팅방의 아이디를 담는 변수
   const [chatRoomId, setChatRoomId] = useState(0)
+  // 활성화된 채팅방의 상대 닉네임을 담는 변수
+  const [userNickName, setUserNickName] = useState("")
   // 사용자의 채팅 입력값을 받는 변수
   const [inputChat, setInputChat] = useState("");
   // 사용자 입력을 저장할 변수
@@ -108,6 +110,7 @@ export const ChatProvider  = ({ children }) => {
       showChatRoom, handleChatRoom,
       showChat, handleChat,
       chatRoomId, setChatRoomId,
+      userNickName, setUserNickName,
       chatList, getChatList
     }}>
       {children}

@@ -11,12 +11,13 @@ S.Container = styled.div`
   justify-content: center;
   width: 100%;
   height: 90px;
-  transition: transform 0.5s ease;
-  z-index: 10000;
+  transition: ${({ $noTransition }) => $noTransition ? "none" : "transform 0.5s ease"};
+  z-index: 9000;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
   ${fontSizeH6};
   ${blackColor};
-  ${fontWeightRegular}
+  ${fontWeightRegular};
+  transform: ${({ $showHeader }) => $showHeader ? 'translateY(0)' : 'translateY(-110%)'};
 `;
 
 // 가운데 정렬되는 내부 컨테이너 (전체 max-width 설정)
@@ -100,42 +101,14 @@ S.MemberProfile = styled.img`
   cursor: pointer;
 `
 
-S.ProfileCardDropdown = styled.div`
-  position: absolute;
-  top: 50px;
-  right: 50px;
-  z-index: 9998;
-`;
-
-S.ChatRoomModalContainer = styled.div`
-  position: absolute;
-  top: 80px;
-  right: 500px;
-  z-index: 9999;
-`
-
 S.ChatModalContainer = styled.div`
-  position: absolute;
-  top: 80px;
-  right: 90px;
-  z-index: 10000;
+  position: fixed;
+  z-index: 10002;
 `
-
 
 S.AlertModalContainer = styled.div`
-  position: absolute;
-  top: 80px;
-  right: 240px;
-  z-index: 9999;
-`
-
-S.CardBG = styled.div`
   position: fixed;
-  left: 0;
-  top : 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9000;
+  z-index: 10003;
 `
 
 S.AlertIconContainer = styled.div`
@@ -162,5 +135,20 @@ S.NotReadAlertCount = styled.div`
   ${whiteColor}
 `
 
+// ------------------------ [ 드롭다운 스타일 ]
+S.ProfileCardDropdown = styled.div`
+  position: fixed;
+  z-index: 11000;
+`;
+
+// ------------------------ [ 카드 백그라운드 스타일 ]
+S.CardBG = styled.div`
+  position: fixed;
+  left: 0;
+  top : 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+`
 
 export default S;

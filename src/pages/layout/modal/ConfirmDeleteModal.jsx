@@ -3,20 +3,14 @@ import S from './style';
 import { HeaderContext } from '../../../context/HeaderContext';
 
 const ConfirmDeleteModal = ({handleConfrmDeleteModal, onCancel, title, message, onConfirmDelete}) => {
-  // 헤더 이벤트 콘텍스트
-  const { setHeaderScroll } = useContext(HeaderContext);
 
-  // 외부 요소 스크롤을 막는 함수
+  // 헤더 스크롤을 막는 상태
+  const { lockScroll, unlockScroll } = useContext(HeaderContext);
+
   useEffect(() => {
-    if (handleConfrmDeleteModal) {
-      document.body.style.overflow = 'hidden';
-      setHeaderScroll(false)
-    }
-    return () => {
-      document.body.style.overflow = 'auto';
-      setHeaderScroll(true)
-    };
-  }, [handleConfrmDeleteModal, setHeaderScroll]);
+      if (handleConfrmDeleteModal) lockScroll();
+      return () => unlockScroll();
+  }, [handleConfrmDeleteModal]);
 
   if (!handleConfrmDeleteModal) return (
     <>

@@ -175,20 +175,20 @@ S.GuestBookCreateTime = styled.div`
     ${fontSizeH9}
 `
 
+//------------------------ [ 드롭다운 스타일 ]
 S.ProfileCardDropdown = styled.div`
-    position: absolute;
-    top: 10px;
-    left: -150px;
-    z-index: 9998;
+  position: fixed;
+  z-index: 11000;
 `;
 
+//------------------------ [ 카드 백그라운드 스타일 ]
 S.CardBG = styled.div`
-    position: fixed;
-    left: 0;
-    top : 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9000;
+  position: fixed;
+  left: 0;
+  top : 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
 `
 
 export default S;
