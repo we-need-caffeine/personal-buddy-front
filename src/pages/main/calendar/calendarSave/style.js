@@ -58,7 +58,7 @@ S.RowContainer = styled.div`
   width: 560px;
   height: 73px;
   border-top: 1px solid black;
-  border-bottom: ${({ noBorder }) => (noBorder ? "none" : "1px solid black")};
+   border-bottom: ${({ $noBorder }) => ($noBorder ? "none" : "1px solid black")};
 
 `;
 
