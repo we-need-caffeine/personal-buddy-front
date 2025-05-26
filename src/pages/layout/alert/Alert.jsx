@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import S from './style';
 import { HeaderContext } from '../../../context/HeaderContext';
+import DisplayDate from '../../../utils/DisplayDate/DisplayDate';
 
 const Alert = ({memberId, handleAlertModal}) => {
 
@@ -8,8 +9,13 @@ const Alert = ({memberId, handleAlertModal}) => {
     const [alertInfo, setAlertInfo] = useState([]);
     // 알림 타입 정보
     const [alertType, setAlertType] = useState("");
-    // 헤더 이벤트 콘텍스트
-    const { setHeaderScroll } = useContext(HeaderContext);
+    // 헤더 스크롤을 막는 상태
+    const { lockScroll, unlockScroll } = useContext(HeaderContext);
+
+    useEffect(() => {
+        if (handleAlertModal) lockScroll();
+        return () => unlockScroll();
+    }, [handleAlertModal]);
 
     // 알림을 조회하는 함수
     const getAlerts = async() => {
@@ -55,50 +61,6 @@ const Alert = ({memberId, handleAlertModal}) => {
             })
         .catch(console.error)
     };
-
-    // 현재 시간과 비교하여 표시값을 변환해주는 함수
-    function getDisplayDate(dateString) {
-        const date = new Date(dateString);
-        const now = new Date();
-        const diffMs = now - date;
-        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-        // 오늘
-        if (diffDays === 0) {
-            const hours = date.getHours();
-            const minutes = date.getMinutes().toString().padStart(2, '0');
-            const ampm = hours < 12 ? '오전' : '오후';
-            const displayHour = hours % 12 === 0 ? 12 : hours % 12;
-            return `${ampm} ${displayHour}:${minutes}`;
-        }
-        // 어제
-        else if (diffDays === 1) {
-            return '어제';
-        }
-        // 2~6일 전
-        else if (diffDays < 7) {
-            return `${diffDays}일 전`;
-        }
-        // 일주일 이상은 날짜로 표기
-        else {
-            return date
-            .toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })
-            .replace(/\. /g, '.')
-            .replace(/\.$/, '');
-        }
-    }
-
-    // 모달이 활성화 될때, 외부요소의 스크롤을 막는다.
-    useEffect(() => {
-        if (handleAlertModal) {
-            document.body.style.overflow = 'hidden';
-            setHeaderScroll(false)
-        }
-        return () => {
-            document.body.style.overflow = 'auto';
-            setHeaderScroll(true)
-        };
-    }, [handleAlertModal, setHeaderScroll]);
 
     // 알림을 최초 조회하고, 알림 타입이 바뀔 때 마다 재조회
     useEffect(() => {
@@ -152,7 +114,7 @@ const Alert = ({memberId, handleAlertModal}) => {
                                     <S.Message>{info.alertMessage}</S.Message>
                                 </S.Content>
                                 <S.Meta>
-                                    <S.Time>{getDisplayDate(info.alertCreateTime)}</S.Time>
+                                    <S.Time>{DisplayDate(info.alertCreateTime)}</S.Time>
                                     <S.Delete onClick={() => deleteOneAlert(info.id)}>삭제</S.Delete>
                                 </S.Meta>
                             </S.ListItem>

@@ -6,8 +6,8 @@ import ProfileCard from '../profile/ProfileCard';
 
 const FollowerModal = ({ memberId, profileMemberId, handleFollowerList, onCancel }) => {
 
-  // 헤더 이벤트 콘텍스트
-  const { setHeaderScroll } = useContext(HeaderContext);
+  // 헤더 스크롤을 막는 상태값
+  const { lockScroll, unlockScroll } = useContext(HeaderContext);
   // 프로필 카드 상태
   const [showProfileCard, setShowProfileCard] = useState(false);
   // 프로필 카드 콘텍스트
@@ -18,17 +18,17 @@ const FollowerModal = ({ memberId, profileMemberId, handleFollowerList, onCancel
   const [inputText, setInputText] = useState("");
   // 팔로워 리스트
   const [followerList, setFollowerList] = useState([]);
-
+  
   // 텍스트에리어에서 값을 입력할 때 마다 잡아서 상태변경
   const handleTextareaChange = (e) => {
-      setInputText(e.target.value);
+    setInputText(e.target.value);
   };
-
+  
   // 프로필 카드를 열고 닫는 함수
   const handleProfileCard = (state) => {
-      setShowProfileCard(state)
+    setShowProfileCard(state)
   }
-
+  
   //팔로워 리스트를 가져오는 함수
   useEffect(() => {
     let url = "http://localhost:10000/follows/api/follower/list";
@@ -46,18 +46,11 @@ const FollowerModal = ({ memberId, profileMemberId, handleFollowerList, onCancel
     getFollower()
   }, [followFilter, inputText, profileMemberId])
 
-  // 외부 요소 스크롤을 막는 함수
   useEffect(() => {
-      if (handleFollowerList) {
-          document.body.style.overflow = 'hidden';
-          setHeaderScroll(false)
-      }
-      return () => {
-          document.body.style.overflow = 'auto';
-          setHeaderScroll(true)
-      };
-  }, [handleFollowerList, setHeaderScroll]);
-
+      if (handleFollowerList) lockScroll();
+      return () => unlockScroll();
+  }, [handleFollowerList]);
+  
   return (
     <>
       <S.Backdrop onClick={onCancel}>
