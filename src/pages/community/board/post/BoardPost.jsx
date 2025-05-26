@@ -77,7 +77,6 @@ const BoardPost = () => {
       boardCommentContent: commentText,
     };
 
-
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/write`, {
         method: 'POST',
@@ -97,6 +96,8 @@ const BoardPost = () => {
     } catch (err) {
       console.error('댓글 등록 에러!', err);
     }
+
+    
   };
 
   // 댓글 좋아요
@@ -143,6 +144,13 @@ const checkLiked = async () => {
     const result = await res.json();
     setIsLiked(result === 1); // 1이면 좋아요 누른 것
   };
+
+   // 좋아요 여부 확인
+  useEffect(() => {
+    if(post.id) {
+      checkLiked(); // 로그인한 사용자가 이미 좋아요를 눌렀는지 
+    }
+  },[post.id])
   
   // 게시글 좋아요 추가
   const likePost = async () => {
@@ -182,9 +190,20 @@ const checkLiked = async () => {
       // 좋아요 상태
       setIsLiked((c) => !c);
     } catch (err) {
-      console.error("게시글 좋아요 처리 실패", err);
+      console.error("좋아요 처리 실패", err)
     }
   };
+
+  // 조회수 증가
+  useEffect(() => {
+    if (id) {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/increase/${id}`, {
+        method: 'PATCH',
+      })
+        .then(() => console.log('조회수 증가 완료'))
+        .catch(err => console.error('조회수 증가 실패 ', err));
+      }
+    }, [id]);
 
   if(isLoading) return <div>로딩중... 😅</div>
   if(isError) return <div>알 수 없는 오류 발생... 😥</div>

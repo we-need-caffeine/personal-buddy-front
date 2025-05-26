@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import S from './style';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import FormatDate from '../../../../utils/formatDate/FormatDate';
 
 const BoardBannerContainer = ({ hot }) => {
@@ -29,6 +29,7 @@ const BoardBannerContainer = ({ hot }) => {
       setHotPosts(hot);
     }
   }, [hot]);
+
   
   return (
     <S.HotWrapper>
@@ -52,7 +53,7 @@ const BoardBannerContainer = ({ hot }) => {
             {hotPosts.map((post, index) => (
               <S.HotContent key={post.id}>
                 <Link to={`post/${post.id}`}>
-                  {/* 게시글 썸네일 이미지 */}
+                  {/* 썸네일 이미지 */}
                   <S.HotImageBox>
                     <img
                       className="img"
@@ -70,13 +71,13 @@ const BoardBannerContainer = ({ hot }) => {
                     <S.NumberBox>{index + 1}</S.NumberBox>
                   </S.HotImageBox>
 
-                  {/* 게시글 해시태그 */}
+                  {/* 해시태그 */}
                   <S.HotTag>{post.boardHashtag}</S.HotTag>
 
-                  {/* 게시글 제목 */}
+                  {/* 제목 */}
                   <S.HotTitle>{post.boardTitle}</S.HotTitle>
 
-                  {/* 작성자 프로필 + 닉네임 */}
+                  {/* 유저 정보 */}
                   <S.HotUserBox>
                     <S.UserProfile
                       src={
@@ -95,7 +96,7 @@ const BoardBannerContainer = ({ hot }) => {
                   {/* 게시일 */}
                   <S.HotDate>{FormatDate(post.boardContentCreateDate)}</S.HotDate>
 
-                  {/* 좋아요/조회수/댓글수 */}
+                  {/* 좋아요 / 조회수 / 댓글 */}
                   <S.HotMetaBox>
                     <span>
                       <img src="/assets/images/board/icon/like-icon.png" className="icon" alt="like" />
