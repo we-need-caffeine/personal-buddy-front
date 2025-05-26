@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import S from './style';
 import { useSelector } from 'react-redux';
+import Sticker from './display/Sticker';
 
 const MyTreeContainer = () => {
   
@@ -13,72 +14,70 @@ const MyTreeContainer = () => {
     // 로그인된 유저의 아이디
     const memberId = currentUser.id;
 
-    const backgroundRef = useRef(null);
-    const stickerRef = useRef([]);
-    const isDragging = useRef(false);
-    const startOffset = useRef({ x: 0, y: 0 });
-    const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+    // const backgroundRef = useRef(null);
+    // const stickerRef = useRef([]);
+    // const isDragging = useRef(false);
+    // const startOffset = useRef({ x: 0, y: 0 });
+    // const [startPos, setStartPos] = useState({ x: 0, y: 0 });
 
-    // 서버에 요청한 회원의 나무 적용 정보
+  //   // 서버에 요청한 회원의 나무 적용 정보
     const [memberAppliedItemBackground, setMemberAppliedItemBackground] = useState({});
     const [memberAppliedItemTree, setMemberAppliedItemTree] = useState({});
-    const [memberAppliedItemsSticker, setMemberAppliedItemSticker] = useState([{}]);
+    const [memberAppliedItemsSticker, setMemberAppliedItemSticker] = useState([]);
 
-    const handleMouseDown = (e) => {
-        const backgroundRect = backgroundRef.current.getBoundingClientRect();
+    // const handleMouseDown = (e) => {
+    //     const backgroundRect = backgroundRef.current.getBoundingClientRect();
         
-        startOffset.current.x = e.clientX - backgroundRect.left - startPos.x;
-        startOffset.current.y = e.clientY - backgroundRect.top - startPos.y;
+    //     startOffset.current.x = e.clientX - backgroundRect.left - startPos.x;
+    //     startOffset.current.y = e.clientY - backgroundRect.top - startPos.y;
         
-        isDragging.current = true;
-    };
+    //     isDragging.current = true;
+    // };
 
     
-    useEffect(() => {
-      const handleMouseMove = (e, i) => {
-          if (!isDragging.current) return;
-          const backgroundRect = backgroundRef.current.getBoundingClientRect();
-          const stickerRect = stickerRef.current[i].getBoundingClientRect();
+    // useEffect(() => {
+    //   const handleMouseMove = (e, i) => {
+    //       if (!isDragging.current) return;
+    //       const backgroundRect = backgroundRef.current.getBoundingClientRect();
+    //       const stickerRect = stickerRef.current[i].getBoundingClientRect();
 
-          const newX = e.clientX - backgroundRect.left - startOffset.current.x;
-          const newY = e.clientY - backgroundRect.top - startOffset.current.y;
+    //       const newX = e.clientX - backgroundRect.left - startOffset.current.x;
+    //       const newY = e.clientY - backgroundRect.top - startOffset.current.y;
           
-          const clampedX = Math.max(0, Math.min(newX, backgroundRect.width - stickerRect.width));
-          const clampedY = Math.max(0, Math.min(newY, backgroundRect.height - stickerRect.height));
+    //       const clampedX = Math.max(0, Math.min(newX, backgroundRect.width - stickerRect.width));
+    //       const clampedY = Math.max(0, Math.min(newY, backgroundRect.height - stickerRect.height));
 
-          // 리렌더 없이 스타일만 조작
-          if (stickerRef.current[i]) {
-              stickerRef.current[i].style.left = `${clampedX}px`;
-              stickerRef.current[i].style.top = `${clampedY}px`;
-          }
-      };
+    //       // 리렌더 없이 스타일만 조작
+    //       if (stickerRef.current[i]) {
+    //           stickerRef.current[i].style.left = `${clampedX}px`;
+    //           stickerRef.current[i].style.top = `${clampedY}px`;
+    //       }
+    //   };
 
-      const handleMouseUp = (e) => {
-        const backgroundRect = backgroundRef.current.getBoundingClientRect();
-        console.log(stickerRect);
-        const stickerRect = stickerRef.current[e].getBoundingClientRect();
+    //   const handleMouseUp = (e) => {
+    //     const backgroundRect = backgroundRef.current.getBoundingClientRect();
+    //     console.log(stickerRect);
+    //     const stickerRect = stickerRef.current[e].getBoundingClientRect();
 
-        const finalX = stickerRect.left - backgroundRect.left;
-        const finalY = stickerRect.top - backgroundRect.top;
+    //     const finalX = stickerRect.left - backgroundRect.left;
+    //     const finalY = stickerRect.top - backgroundRect.top;
 
-        // 최종 위치 적용
-        setStartPos({ x: finalX, y: finalY });
+    //     // 최종 위치 적용
+    //     setStartPos({ x: finalX, y: finalY });
 
-        startOffset.current.x = 0;
-        startOffset.current.y = 0;
-        isDragging.current = false;
+    //     startOffset.current.x = 0;
+    //     startOffset.current.y = 0;
+    //     isDragging.current = false;
 
-      };
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleMouseUp);
+    //   };
+    //   window.addEventListener("mousemove", handleMouseMove);
+    //   window.addEventListener("mouseup", handleMouseUp);
 
-      return () => {
-          window.removeEventListener("mousemove", handleMouseMove);
-          window.removeEventListener("mouseup", handleMouseUp);
-      }
-
-      
-    }, [])
+    //   return () => {
+    //       window.removeEventListener("mousemove", handleMouseMove);
+    //       window.removeEventListener("mouseup", handleMouseUp);
+    //   }
+    // }, [])
 
   const getSeleted = (pathName) => {
     if(pathName == "/main/contents/mytree") {
@@ -127,6 +126,9 @@ const MyTreeContainer = () => {
     getAppliedItems();
   }, [memberId])
 
+
+  console.log("사용자의 스티커 목록", memberAppliedItemsSticker)
+
   return (
     <div>
       <S.SubTitle>언젠가는 아름다워질 나의 나무 ✨</S.SubTitle>
@@ -134,16 +136,14 @@ const MyTreeContainer = () => {
       <S.MyTreeWrapper>
         <S.MyTreeBackGround 
           url={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${memberAppliedItemBackground.itemImgPath}&fileName=${memberAppliedItemBackground.itemImgName}`} 
-          ref={backgroundRef}
           >
           {
-            memberAppliedItemsSticker.map((sticker, i) => (
-                <S.MyTreeItemStickerIcon 
-                ref={stickerRef.current[i]}
-                url={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${sticker.itemImgPath}&fileName=${sticker.itemImgName}`}
-                onMouseDown={(e, i) => handleMouseDown(e, i)}
-                xLocation={sticker.treeCustomizingPositionX}
-                yLocation={sticker.treeCustomizingPositionX}/>
+            memberAppliedItemsSticker.map((sticker, index) => (
+              <Sticker 
+                index={index} key={index} sticker={sticker}
+                memberAppliedItemsSticker={memberAppliedItemsSticker}
+                setMemberAppliedItemSticker={setMemberAppliedItemSticker}
+              />
               )
             )
           }
