@@ -77,7 +77,6 @@ const BoardPost = () => {
       boardCommentContent: commentText,
     };
 
-
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/write`, {
         method: 'POST',
@@ -143,6 +142,13 @@ const checkLiked = async () => {
     const result = await res.json();
     setIsLiked(result === 1); // 1이면 좋아요 누른 것
   };
+
+   // 좋아요 여부 확인
+  useEffect(() => {
+    if(post.id) {
+      checkLiked(); // 로그인한 사용자가 이미 좋아요를 눌렀는지 
+    }
+  },[post.id])
   
   // 게시글 좋아요 추가
   const likePost = async () => {
