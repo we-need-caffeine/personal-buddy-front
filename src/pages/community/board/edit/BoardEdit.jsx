@@ -179,7 +179,7 @@ const BoardEdit = () => {
           id="file-upload"
           type="file"
           multiple
-          onChange={handleFileChange}
+          onChange={handleFileChange}teb
         />
       </S.FileInputWrapper>
 

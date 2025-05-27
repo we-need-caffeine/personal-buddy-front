@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { fontSizeH4, fontSizeH8, fontWeightBold, fontWeightRegular,  } from '../../../../globals/common';
+import { flexCenter, fontSizeH4, fontSizeH8, fontWeightBold, fontWeightRegular,  } from '../../../../globals/common';
 
 const S = {};
 
@@ -24,19 +24,19 @@ S.MainTitle = styled.div`
 `;
 
 S.PostListWrapper = styled.div`
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
     gap: 36px 28px;
-    justify-content: flex-start;
 `;
 
 S.PostCard = styled.div`
-    width: 440px;
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    background-color: #fff;
-    overflow: hidden;
+  width: 440px; 
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  background-color: #fff;
+  overflow: hidden;
 `;
+
 
 S.ImageBox = styled.div`
     position: relative;

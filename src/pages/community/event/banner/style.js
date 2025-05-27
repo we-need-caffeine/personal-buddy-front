@@ -38,6 +38,8 @@ S.MainTitle = styled.div`
 
 // Swiper 전체 wrapper
 S.BannerSliderWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
   width: 100%;
   overflow: hidden;
 
@@ -63,23 +65,5 @@ S.BannerCard = styled.div`
   }
 `;
 
-// 배너 이미지 위 텍스트 영역 (옵션: 제목/설명 등)
-S.BannerTextBox = styled.div`
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  color: white;
-  z-index: 2;
-`;
-
-S.BannerTitle = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-`;
-
-S.BannerSub = styled.div`
-  font-size: 14px;
-  margin-top: 5px;
-`;
 
 export default S;
