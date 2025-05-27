@@ -40,6 +40,27 @@ const BoardPost = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState(null);
 
+  const handleDeletePost = async () => {
+  const confirmDelete = window.confirm("게시글을 삭제하시겠습니까?");
+  if (!confirmDelete) return;
+
+  try {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/delete/${id}`, {
+      method: 'DELETE',
+    });
+      if (res.ok) {
+        alert('게시글이 삭제되었습니다.');
+        Navigate('/main/community/board'); // 삭제 후 게시판 리스트로 이동
+      } else {
+        alert('게시글 삭제에 실패했습니다.');
+      }
+    } catch (err) {
+      console.error('게시글 삭제 에러:', err);
+      alert('서버 오류로 게시글 삭제에 실패했습니다.');
+    }
+  };
+
+
   const handleAskDeleteComment = (id) => {
     setDeleteTargetId(id);
     setShowDeleteModal(true);
@@ -77,6 +98,7 @@ const BoardPost = () => {
     const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/comment/delete/${deleteTargetId}`, {
       method: "DELETE"
     });
+      
       if (res.ok) {
         setShowDeleteModal(false);
         setDeleteTargetId(null);
@@ -268,7 +290,9 @@ const checkLiked = async () => {
       fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/increase/${id}`, {
         method: 'PATCH',
       })
-        .then(() => console.log('조회수 증가 완료'))
+        .then(() => 
+          console.log('조회수 증가 완료')
+      )
         .catch(err => console.error('조회수 증가 실패 ', err));
       }
     }, [id]);
@@ -285,7 +309,9 @@ const checkLiked = async () => {
           <S.EditDeleteBox>
             <S.EditButton to={`/main/community/board/edit/${post.id}`}>수정</S.EditButton>
             <S.Separator>|</S.Separator>
-            <S.DeleteButton onClick={() => handleAskDeleteComment(post.id)}> 삭제</S.DeleteButton>
+            {post.memberId === memberId && (
+            <S.DeleteButton onClick={handleDeletePost}>삭제</S.DeleteButton>
+          )}
 
           </S.EditDeleteBox>
         )}
@@ -315,7 +341,7 @@ const checkLiked = async () => {
       </S.TopInfoBox>
 
       {/* 본문 이미지 */}
-      {post.boardImgPath && post.boardImgName && (
+      {/* {post.boardImgPath && post.boardImgName && (
         <S.Image
           src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.boardImgPath)}&fileName=${encodeURIComponent(post.boardImgName)}`}
           alt="본문 이미지"
@@ -323,7 +349,20 @@ const checkLiked = async () => {
             e.target.src = ''; // 깨진 이미지도 표시되지 않게
           }}
         />
-      )}
+      )} */}
+
+      {/* 본문 이미지 (여러 장 ) */}
+      {post.boardImages && post.boardImages.length > 0 && post.boardImages.map((img, i) => (
+        console.log(post),
+        <S.Image
+          key={i}
+          src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(img.boardImgPath)}&fileName=${encodeURIComponent(img.boardImgName)}`}
+          alt={`본문 이미지 ${i + 1}`}
+          onError={(e) => {
+            e.target.src = ''; // 깨진 이미지 숨기기
+          }}
+        />
+      ))}
 
       <S.Content>{post.boardContent}</S.Content>
 
@@ -445,7 +484,7 @@ const checkLiked = async () => {
                     수정
                   </S.CommentEditButton>
                   <S.CommentSeparator>|</S.CommentSeparator>
-                  <S.CommentDeleteButton onClick={() => handleAskDeleteComment(c.id)}>
+                  <S.CommentDeleteButton onClick={() => handleAskDeleteComment}>
                     삭제
                   </S.CommentDeleteButton>
                 </S.EditDeleteBox>

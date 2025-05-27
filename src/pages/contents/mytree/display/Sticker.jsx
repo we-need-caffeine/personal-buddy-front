@@ -114,6 +114,8 @@ const Sticker = (
       onMouseDown={handleMouseDown}
       xLocation={position.x}
       yLocation={position.y}
+      width={sticker.itemSizeWidth}
+      height={sticker.itemSizeHeight}
       ref={stickerRef}
     />
   );

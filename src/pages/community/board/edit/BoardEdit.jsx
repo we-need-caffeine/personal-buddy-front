@@ -20,27 +20,52 @@ const BoardEdit = () => {
   const [removedImages, setRemovedImages] = useState([]);
   const [newFiles, setNewFiles] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
-
+  const [files, setFiles] = useState([]); // 사용자가 업로드한 이미지 파일들을 배열 형태로 저장
+  
   // 게시글 데이터 로드
   useEffect(() => {
     const fetchPost = async () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/${id}`);
       const data = await response.json();
       const post = data.board;
+      const postImages = post.boardImages;
 
       setTitle(post.boardTitle);
       setContent(post.boardContent);
       setCategory(categoryOptions.find(opt => opt.value === post.boardHashtag));
 
-      if (post.boardImgName) {
-        const names = Array.isArray(post.boardImgName) ? post.boardImgName : [post.boardImgName];
-        const path = post.boardImgPath;
-        const imgs = names.map(name => ({
-          name,
-          url: `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(path)}&fileName=${encodeURIComponent(name)}`
-        }));
+      if(postImages.length > 0){
+        const imgs = postImages.map(postImage => ({
+          name: postImage.boardImgName,
+          url: `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(postImage.boardImgPath)}&fileName=${encodeURIComponent(postImage.boardImgName)}`
+        }))
         setExistingImages(imgs);
       }
+
+    const uploadImages = async () => {
+      const formData = new FormData();
+      files.forEach((file) => formData.append('imgFiles', file));
+      formData.append('dataType', 'board');
+
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/files/api/files-upload`, {
+        method: 'POST',
+        body: formData
+      });
+      return await res.json(); // { filePath, fileNames }
+    };
+      
+    
+      
+  
+      // if (post.boardImgName) {
+      //   const names = Array.isArray(post.boardImgName) ? post.boardImgName : [post.boardImgName];
+      //   const path = post.boardImgPath;
+      //   const imgs = names.map(name => ({
+      //     name,
+      //     url: `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(path)}&fileName=${encodeURIComponent(name)}`
+      //   }));
+      //   setExistingImages(imgs);
+      // }
     };
 
     fetchPost();
