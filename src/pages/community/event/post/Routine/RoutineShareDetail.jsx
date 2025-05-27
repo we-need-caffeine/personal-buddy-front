@@ -47,14 +47,6 @@ const RoutineShareDetail = () => {
 
   return (
     <S.Container>
-      {/* 이벤트 이미지 */}
-      {/* <S.ImageBox>
-        <img
-          src="/assets/images/event/routine.png"
-          alt="나만의 루틴 공유 이벤트"
-        />
-      </S.ImageBox> */}
-
       <S.ImageWrapper>
         <img src="/assets/images/event/routine.png" alt="루틴 이벤트" />
         

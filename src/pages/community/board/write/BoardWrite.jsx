@@ -85,6 +85,7 @@ const BoardWrite = () => {
 
     // 게시글 등록 
     // const memberId = localStorage.getItem('memberId');
+
     const postRes = await fetch( `${process.env.REACT_APP_BACKEND_URL}/boards/api/write`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
