@@ -47,14 +47,14 @@ const EventBannerContainer = () => {
         >
 
           {banners.map((event, i) => { 
-            console.log(event);
+            // console.log(event);
             const filePath = event.eventImgPath; 
             const fileName = event.eventImgName;
             const imageUrl = `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${ filePath}&fileName=${(fileName)}`;
             
             return (
             <SwiperSlide key={i}>
-              <Link to={`/main/community/event/post/${event.id}/routine`}>
+              <Link to={`/main/community/event/post/${event.id}`}>
                 <S.BannerCard>
                   <img src={encodeURI(imageUrl)} alt="이벤트 배너" />
 

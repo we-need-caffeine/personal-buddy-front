@@ -30,11 +30,11 @@ S.PostListWrapper = styled.div`
 `;
 
 S.PostCard = styled.div`
-  width: 440px; 
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  background-color: #fff;
-  overflow: hidden;
+    width: 440px; 
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    background-color: #fff;
+    overflow: hidden;
 `;
 
 

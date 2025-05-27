@@ -15,7 +15,7 @@ const S = {};
 // 전체 HOT 슬라이드 영역을 감싸는 최상위 래퍼
 S.HotWrapper = styled.div`
   width: 1400px;
-  margin: auto;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
 `;
