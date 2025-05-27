@@ -1,44 +1,37 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
-import S from "./style";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import CalendarForm from "./CalendarForm";
 import { CalendarContext } from "../../../../context/CalendarContext";
-import { useParams } from "react-router-dom";
 
 const CalendarSave = () => {
-  const { memberId, calendarId } = useParams();
-  const [calendarName, setCalendarName] = useState("퍼스널 버디");
+  const navigate = useNavigate();
+  const { memberId, calendarId } = useParams(); // calendarId는 돌아갈 경로 용도
   const { actions } = useContext(CalendarContext);
   const { getCalendarsAll } = actions;
-  const { state } = useContext(CalendarContext);
+
   const [allMembers, setAllMembers] = useState([]);
-  const [invitedMembers, setInvitedMembers] = useState([]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
 
-  const toggleInvite = (member) => {
-    if (!invitedMembers.some((m) => m.id === member.id)) {
-      setInvitedMembers((prev) => [...prev, member]);
-    }
-  };
-
-  const getMutualFollowings = async () => {
+  //  초대 가능한 멤버 조회
+  const fetchMutualFollowings = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/${memberId}/followings`,
-        { method: "GET" }
+        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/${memberId}/followings`
       );
-      const datas = await response.json();
-      setAllMembers(datas);
+      const data = await response.json();
+      setAllMembers(data);
     } catch (error) {
-      console.error("캘린더 초대 멤버 조회 실패", error);
+      console.error("초대 가능한 멤버 조회 실패", error);
     }
   };
 
   useEffect(() => {
-    getMutualFollowings();
-  }, [calendarId]);
+    fetchMutualFollowings();
+  }, [memberId]);
 
-  const registerCalendar = async () => {
+  // 저장 처리 함수
+  const handleSave = async ({ calendarName, invitedMembers }) => {
     try {
+      // 1. 캘린더 등록
       const res = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/calendars/api/register`,
         {
@@ -52,128 +45,57 @@ const CalendarSave = () => {
         }
       );
       const data = await res.json();
-      return data.calendarId;
-    } catch (error) {
-      console.error("캘린더 등록 실패", error);
-      return null;
-    }
-  };
+      const newCalendarId = data.calendarId;
 
-  const inviteMembers = async (calendarId) => {
-    try {
-      const invites = invitedMembers.map((member) => ({
-        calendarInviteInvitedMemberId: member.id,
-        calendarInviteHostId: Number(memberId),
-        calendarInviteIsApproved: 0,
-        calendarId: calendarId,
-      }));
+      // 2. 초대 멤버 등록
+      if (invitedMembers.length > 0) {
+        const invites = invitedMembers.map((member) => ({
+          calendarInviteInvitedMemberId: member.id,
+          calendarInviteHostId: Number(memberId),
+          calendarInviteIsApproved: 0,
+          calendarId: newCalendarId,
+        }));
 
-      await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/invites`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(invites),
-        }
-      );
-    } catch (error) {
-      console.error("초대 멤버 등록 실패", error);
-    }
-  };
-
-  const handleSave = async () => {
-    const calendarId = await registerCalendar();
-    if (calendarId) {
-      await inviteMembers(calendarId);
-      await getCalendarsAll(); // 새로 등록된 캘린더 반영
-      alert("캘린더가 저장되었습니다.");
-      // 필요한 경우 페이지 이동:
-      // navigate(`/main/${memberId}/${calendarId}`);
-    }
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setIsDropdownOpen(false);
+        await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/calendars/api/invites`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(invites),
+          }
+        );
       }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+
+      // 3. 캘린더 전역 상태 최신화
+      await getCalendarsAll();
+
+      alert("캘린더가 저장되었습니다.");
+      navigate(`/main/${memberId}/${newCalendarId}`);
+    } catch (error) {
+      console.error("캘린더 저장 실패", error);
+      alert("저장 중 오류가 발생했습니다.");
+    }
+  };
 
   return (
-    <S.Container>
-      <S.TitleContainer>
-        <S.Title>캘린더 설정</S.Title>
-      </S.TitleContainer>
-
-      <S.RowContainer $noBorder>
-        <S.Row>
-          <S.Label>캘린더 이름</S.Label>
-          <S.Input
-            value={calendarName}
-            onChange={(e) => setCalendarName(e.target.value)}
-            maxLength={10}
-          />
-        </S.Row>
-      </S.RowContainer>
-
-      <S.RowContainer>
-        <S.Row>
-          <S.Label>초대</S.Label>
-          <S.InviteSection ref={dropdownRef}>
-            <S.SearchBox
-              placeholder="검색"
-              onFocus={() => setIsDropdownOpen(true)}
-            />
-            {isDropdownOpen && (
-              <S.Dropdown>
-                {allMembers.map((member) => {
-                  const isInvited = invitedMembers.some(
-                    (m) => m.id === member.id
-                  );
-                  // console.log(member.id, isInvited);
-                  // console.log("allMembers:", allMembers);
-                  return (
-                    <S.DropdownItem key={member.id}>
-                      <S.Left>
-                        <S.ProfileIcon />
-                        <S.DropdownName>{member.memberName}</S.DropdownName>
-                      </S.Left>
-                      <S.InviteButton
-                        onClick={() => toggleInvite(member)}
-                        disabled={isInvited}
-                      >
-                        {isInvited ? "초대됨" : "초대"}
-                      </S.InviteButton>
-                    </S.DropdownItem>
-                  );
-                })}
-              </S.Dropdown>
-            )}
-          </S.InviteSection>
-        </S.Row>
-      </S.RowContainer>
-
-      <S.ContentContainer>
-        <S.MemberList>
-          <S.MemberListTitle>
-            멤버 리스트 ({invitedMembers.length}/8)
-          </S.MemberListTitle>
-          {invitedMembers.map((m) => (
-            <S.MemberItem key={m.id}>
-              <S.ProfileIcon />
-              <S.MemberName>{m.memberName}</S.MemberName>
-            </S.MemberItem>
-          ))}
-        </S.MemberList>
-        <S.ButtonGroup>
-          <S.SaveButton onClick={handleSave}>저장</S.SaveButton>
-          <S.CancelButton>취소</S.CancelButton>
-        </S.ButtonGroup>
-      </S.ContentContainer>
-    </S.Container>
+    <CalendarForm
+      initialName="퍼스널 버디"
+      allMembers={allMembers}
+      onCancel={() => navigate(`/main/${memberId}/${calendarId}`)}
+      showInviteSection={true}
+      buttons={[
+        {
+          label: "저장",
+          type: "primary",
+          onClick: handleSave,
+        },
+        {
+          label: "취소",
+          type: "default",
+          onClick: () => navigate(`/main/${memberId}/${calendarId}`),
+        },
+      ]}
+    />
   );
 };
 

@@ -22,6 +22,17 @@ const sharedDropdownBoxStyle = `
   ${fontSizeH8};
 `;
 
+S.Message = styled.div`
+  position: absolute;
+    top: 110%;
+    left: 110px;
+    color:red;
+    font-size: 14px;
+    margin-top: 4px;
+    white-space: nowrap;
+`;
+
+
 // 전체 캘린더 저장 화면 컨테이너
 S.Container = styled.div`
   box-sizing: border-box;

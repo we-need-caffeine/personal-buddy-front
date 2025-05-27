@@ -6,10 +6,9 @@ import {
   fontWeightLight,
 } from "../../../../globals/common";
 
-
 const S = {};
 
-// 공통 드롭다운 박스 스타일
+// 공통 인풋 박스 스타일
 const sharedDropdownBoxStyle = `
   width: 191px;
   height: 37px;
@@ -44,7 +43,6 @@ S.ContentContainer = styled.div`
   height: 558px;
 `;
 
-
 S.TitleContainer = styled.div`
   box-sizing: border-box;
   display: flex;
@@ -78,11 +76,11 @@ S.Row = styled.div`
 `;
 
 S.Label = styled.div`
-  ${fontWeightRegular}
+  ${fontWeightRegular};
 `;
 
 S.Input = styled.input`
-  ${sharedDropdownBoxStyle}
+  ${sharedDropdownBoxStyle};
 `;
 
 S.InviteSection = styled.div`
@@ -90,7 +88,7 @@ S.InviteSection = styled.div`
 `;
 
 S.SearchBox = styled.input`
-  ${sharedDropdownBoxStyle}
+  ${sharedDropdownBoxStyle};
 `;
 
 S.Dropdown = styled.div`
@@ -104,6 +102,7 @@ S.Dropdown = styled.div`
   border-radius: 12px;
   max-height: 250px;
   z-index: 10;
+  overflow-y: auto;
 `;
 
 S.DropdownItem = styled.div`
@@ -116,6 +115,7 @@ S.DropdownItem = styled.div`
     background: #f9f9f9;
   }
 `;
+
 S.Left = styled.div`
   display: flex;
   align-items: center;
@@ -132,8 +132,6 @@ S.ProfileIcon = styled.div`
   background-color: #e0e0e0;
   margin-right: 12px;
 `;
-
-S.DropdownName = styled.div``;
 
 S.InviteButton = styled.div`
   color: #00c851;
@@ -156,7 +154,6 @@ S.MemberListTitle = styled.div`
 
 S.MemberItem = styled.div`
   display: flex;
-
   align-items: center;
 `;
 
@@ -176,34 +173,31 @@ S.ButtonGroup = styled.div`
   bottom: 37px;
   align-items: end;
   justify-content: space-between;
-  width: 222px;
-  height: 37px;
+  gap: 8px;
   background-color: white;
 `;
 
-S.SaveButton = styled.button`
+// 공통 버튼 (저장, 삭제, 취소 모두 여기로 통합)
+S.ActionButton = styled.button`
+  width: 102px;
+  height: 37px;
+  border-radius: 10px;
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 102px;
-  height: 37px;
   border: none;
-  color: white;
-  border-radius: 10px;
-  background-color: #01cd74;
-`;
+  cursor: pointer;
 
-S.CancelButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 102px;
-  height: 37px;
-  border: none;
-  color: #bbbbbb;
-  border: 1px solid #bbbbbb;
-  border-radius: 10px;
-  background-color: white;
+  background-color: ${({ $type }) =>
+    $type === "danger" ? "#ff4d4f" :
+    $type === "primary" ? "#01cd74" : "white"};
+
+  color: ${({ $type }) =>
+    $type === "danger" || $type === "primary" ? "white" : "#bbbbbb"};
+
+  border: ${({ $type }) =>
+    $type === "default" || !$type ? "1px solid #bbbbbb" : "none"};
 `;
 
 export default S;

@@ -224,6 +224,7 @@ const ScheduleSave = () => {
   // - 날짜/시간 입력 필드 상태(setStartAndEndFromDate)에 반영하고,
   // - 전체 선택 범위 상태(selectedRange)에도 저장한다.
   // start, end로 날짜 상태 세팅
+
   useEffect(() => {
     if (start && end) {
       const isoStart =
@@ -251,6 +252,13 @@ const ScheduleSave = () => {
       }));
     }
   }, [color]);
+
+  useEffect(() => {
+    if (hasConflict && !invalidTimeRange) {
+      setSelectedRange(null);
+    }
+  }, [hasConflict, invalidTimeRange]);
+
   //#region 외부 클릭 감지 추가 (드롭바 체크 해제)
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -384,14 +392,10 @@ const ScheduleSave = () => {
               </S.TimeDropdownContainer>
 
               {hasConflict && !invalidTimeRange && (
-                <div style={errorMessageStyle}>
-                  이미 해당 시간에 일정이 존재합니다.
-                </div>
+                <S.Message>이미 해당 시간에 일정이 존재합니다.</S.Message>
               )}
               {invalidTimeRange && (
-                <div style={errorMessageStyle}>
-                  시작 시간이 종료 시간보다 늦습니다.
-                </div>
+                <S.message>시작 시간이 종료 시간보다 늦습니다.</S.message>
               )}
             </S.DateInputWrapper>
           </S.DateSection>
@@ -574,17 +578,6 @@ const ScheduleSave = () => {
       </S.ContentContainer>
     </S.Container>
   );
-
-  // 에러 메시지 스타일 공통 변수
-  const errorMessageStyle = {
-    position: "absolute",
-    top: "110%",
-    left: "110px",
-    color: "red",
-    fontSize: "14px",
-    marginTop: "4px",
-    whiteSpace: "nowrap",
-  };
 };
 
 export default ScheduleSave;

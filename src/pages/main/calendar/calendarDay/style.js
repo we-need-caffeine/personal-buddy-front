@@ -124,7 +124,6 @@ S.CalendarWrapper = styled.div`
     align-items: center;
   }
 
-  
   .fc-event {
     margin: 0 !important;
     left: 0 !important;
