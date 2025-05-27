@@ -1,8 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';  // Redux에서 currentUser 가져오기
 import { SurveyContext } from '../../../context/SurveyContext';
 import S from './style';
 
+// 카테고리 한글 ↔ 영문 매핑
 const categoryMap = {
   '음식': 'food',
   '운동': 'health',
@@ -13,40 +15,43 @@ const categoryMap = {
   '여행': 'travel',
 };
 
-const categories = Object.keys(categoryMap);
+const categories = Object.keys(categoryMap); // 한글 리스트로 구성
 
 const SurveyType = () => {
   const { actions } = useContext(SurveyContext);
-  const { insert, insertConfirm } = actions;
+  const { insert, insertConfirm, setCurrentUser } = actions; // setCurrentUser 추가
   const [selectedCategories, setSelectedCategories] = useState([]);
   const navigate = useNavigate();
 
-  const handleClickTag = (tag) => {
-    if (selectedCategories.includes(tag)) {
-      setSelectedCategories(selectedCategories.filter(item => item !== tag));
-    } else {
-      setSelectedCategories([...selectedCategories, tag]);
+  const { currentUser } = useSelector((state) => state.member);  // Redux에서 currentUser 가져오기
+
+  useEffect(() => {
+    // Redux의 currentUser가 있으면 Context에도 저장
+    if (currentUser && currentUser.id) {
+      setCurrentUser(currentUser);
     }
+  }, [currentUser, setCurrentUser]);
+
+  const handleClickTag = (tag) => {
+    setSelectedCategories((prev) =>
+      prev.includes(tag) ? prev.filter(item => item !== tag) : [...prev, tag]
+    );
   };
 
   const handleNext = () => {
-    if (selectedCategories.length < 2) {
-      alert('관심사를 최소 2개 이상 선택해주세요.');
+    if (selectedCategories.length < 3) {
+      alert('관심사를 최소 3개 이상 선택해주세요.');
       return;
     }
 
-    insert(selectedCategories);
-    insertConfirm(selectedCategories[0]);
-
     const englishCategories = selectedCategories.map(tag => categoryMap[tag]);
 
-    // localStorage에 선택 카테고리 배열 저장 (JSON.stringify)
-    try {
-      localStorage.setItem('selectedCategories', JSON.stringify(englishCategories));
-    } catch (err) {
-      console.error('로컬스토리지 저장 실패:', err);
-    }
+    // Context 및 localStorage에 카테고리 저장
+    insert(englishCategories);
+    insertConfirm(englishCategories[0]); // 첫 번째 카테고리 확정
+    localStorage.setItem('selectedCategories', JSON.stringify(englishCategories));
 
+    // 첫 번째 카테고리로 이동
     navigate(`/survey/${englishCategories[0]}`);
   };
 
@@ -65,7 +70,7 @@ const SurveyType = () => {
         <S.RightWrapper>
           <div>
             <S.MainTitle>0. 관심사를 선택해 주세요</S.MainTitle>
-            <S.SubTitle><span>*필수 </span>최소 2개 이상</S.SubTitle>
+            <S.SubTitle><span>*필수 </span>최소 3개 이상</S.SubTitle>
 
             <S.Tags>
               {categories.map((tag, idx) => (
