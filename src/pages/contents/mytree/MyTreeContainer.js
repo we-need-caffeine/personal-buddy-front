@@ -113,7 +113,7 @@ const MyTreeContainer = () => {
       <S.MyTreeWrapper>
         <S.MyTreeBackGround 
           url={
-            memberAppliedItemBackground.itemImgPath && memberAppliedItemBackground.itemImgName ? 
+            memberAppliedItemBackground && memberAppliedItemBackground.itemImgPath && memberAppliedItemBackground.itemImgName ? 
             `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${memberAppliedItemBackground.itemImgPath}&fileName=${memberAppliedItemBackground.itemImgName}`
             :
             `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=images/tree/background&fileName=default-background.png`
@@ -135,7 +135,7 @@ const MyTreeContainer = () => {
           }
           <S.MyTreeItemTreeIcon 
             url={ 
-                memberAppliedItemTree.itemImgPath && memberAppliedItemTree.itemImgName  ? 
+                memberAppliedItemTree && memberAppliedItemTree.itemImgPath && memberAppliedItemTree.itemImgName  ? 
                 `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${memberAppliedItemTree.itemImgPath}&fileName=${memberAppliedItemTree.itemImgName}`
                 :
                 `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=images/tree/tree&fileName=default.png`
@@ -144,7 +144,7 @@ const MyTreeContainer = () => {
         </S.MyTreeBackGround>
         <S.ButtonWrapper>
           <S.SaveButton onClick={() => handleConfirmModal(!showConfirmModal)}>저장</S.SaveButton>
-          <S.CancelButton>취소</S.CancelButton>
+          <S.CancelButton onClick={() => window.location.reload()}>취소</S.CancelButton>
         </S.ButtonWrapper>
       </S.MyTreeWrapper>
       <S.SubTitle>아이템을 직접 적용 시켜봐요 😎</S.SubTitle>

@@ -19,7 +19,6 @@ const Achievement = () => {
 
             const datas = await response.json();
             setAchievements(datas);
-            console.log(datas)
             return datas;
         }
 
