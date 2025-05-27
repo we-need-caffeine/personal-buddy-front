@@ -98,6 +98,7 @@ const BoardPost = () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/${id}`)
       if(!response.ok) throw new Error(`getPosts Error : ${response.status}`)
       const datas = await response.json();
+      console.log(datas)
       setPost(datas.board); // 게시글 저장
       setLikeCount(datas.board.boardLikeCount);  // 좋아요 수 저장
       setIsLoading(false);
