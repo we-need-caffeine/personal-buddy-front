@@ -161,7 +161,7 @@ const MyPageSidebar = () => {
                     <S.MyPageButtonContainer>
                         <S.FollowBtn 
                             $isFollow={ownerInfo.isFollow}
-                            onClick={() => handleFollow()}
+                            onClick={() => handleFollow(myId, ownerId)}
                         >
                             팔로우
                         </S.FollowBtn>
