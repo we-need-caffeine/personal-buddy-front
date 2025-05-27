@@ -4,8 +4,10 @@ import styled from 'styled-components';
 import {
   blackColor, flexCenter, fontSizeH7, fontSizeH8,
   fontWeightBold, gray3Color, gray4Color,
+  pointRedColor,
   subBlueColor, whiteColor
 } from '../../../../globals/common';
+import { Link } from 'react-router-dom';
 
 const S = {};
 
@@ -16,12 +18,13 @@ S.Container = styled.div`
     padding: 0 16px;
 `;
 
-// 게시글 제목
+// 제목
 S.Title = styled.h2`
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
 `;
+
 
 // 작성자 정보
 S.TopInfoBox = styled.div`
@@ -323,5 +326,89 @@ S.CommentContents = styled.p`
     white-space: pre-wrap;
     word-break: break-word;
 `;
+
+// 제목 + 수정/삭제 한 줄 정렬
+S.TitleRow = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+`;
+
+// 수정/삭제 박스
+S.EditDeleteBox = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 6px;
+`;
+
+// 구분선 |
+S.Separator = styled.span`
+    color: #ccc;
+    font-size: 13px;
+`;
+
+// 수정 버튼
+S.EditButton = styled(Link)`
+    font-size: 13px;
+    ${pointRedColor};
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        font-weight: 500;
+    }
+`;
+
+// 삭제 버튼
+S.DeleteButton = styled.button`
+    font-size: 13px;
+    ${pointRedColor};
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+
+    &:hover {
+        font-weight: 500;
+    }
+`;
+
+// 댓글 수정 버튼 
+S.CommentEditButton = styled.button`
+    font-size: 13px;
+    ${pointRedColor};
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+`;
+
+// 댓글 삭제 버튼
+S.CommentDeleteButton = styled.button`
+    font-size: 13px;
+    ${pointRedColor};
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+`;
+
+// 댓글 구분선
+S.CommentSeparator = styled.span`
+  font-size: 13px;
+  color: #ccc;
+  margin: 0 4px;
+`;
+
+
 
 export default S;

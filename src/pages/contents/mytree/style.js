@@ -44,8 +44,11 @@ S.MyTreeBackGround = styled.div`
     height: 600px;
     margin-bottom: 10px;
     border-radius: 20px;
-    background-image: url("/assets/images/contents/tree/item/background/default-background.png");
-    z-index: 0;
+    background-image: url(${({url}) => url});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1;
 `;
 
 S.MyTreeItemTreeIcon = styled.div`
@@ -55,7 +58,7 @@ S.MyTreeItemTreeIcon = styled.div`
     bottom: 55px;
     left: 50%;
     transform: translateX(-50%);
-    background-image: url("/assets/images/contents/tree/item/tree/default-tree.png");
+    background-image: url(${({url}) => url});
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -74,8 +77,8 @@ S.MyTreeItemStickerIcon = styled.div`
     left: ${({xLocation}) => 
         `${xLocation}px`
     };
-    background-image: url("/assets/images/contents/tree/item/sticker/minipin.png");
-    background-size: cover;
+    background-image: url(${({url}) => url});
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     border: dashed 1px transparent;
