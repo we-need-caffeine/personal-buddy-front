@@ -56,8 +56,7 @@ const BoardEdit = () => {
       
     
       
-      
-
+  
       // if (post.boardImgName) {
       //   const names = Array.isArray(post.boardImgName) ? post.boardImgName : [post.boardImgName];
       //   const path = post.boardImgPath;
