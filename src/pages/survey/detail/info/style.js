@@ -8,7 +8,7 @@ import {
   flexCenter,
   flexCenterColumn,
   pointRedColor,
-} from '../../../globals/common';
+} from '../../../../globals/common';
 
 const S = {};
 
@@ -120,12 +120,16 @@ S.Tag = styled.span`
   }
 `;
 
+
+
 S.NextBtnWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
   gap: 28px;
 `;
+
+
 
 S.NextBtn = styled.button`
   background-color: ${({ theme }) => theme.PALLETE.primary.subGreen};
