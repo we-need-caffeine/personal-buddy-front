@@ -18,6 +18,7 @@ const BoardContainer = () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/board?order=${order}&boardHashtag=${boardHashtag}&searchKeyword=${searchKeyword}`);
         const datas = await response.json();
+        // console.log(datas);
         const { boards, hot } = await datas;
 
         // console.log("hot", hot)
