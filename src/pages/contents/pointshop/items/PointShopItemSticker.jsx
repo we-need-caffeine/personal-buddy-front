@@ -1,10 +1,10 @@
 import React from 'react';
+import S from '../style';
 
 const PointShopItemSticker = () => {
     return (
-        <div>
-            포인트샵 스티커
-        </div>
+        <S.ItemCardListBox>
+        </S.ItemCardListBox>
     );
 };
 

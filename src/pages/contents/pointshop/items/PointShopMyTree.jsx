@@ -1,10 +1,10 @@
 import React from 'react';
+import S from '../style';
 
 const PointShopMyTree = () => {
     return (
-        <div>
-            포인트샵 나무
-        </div>
+        <S.ItemCardListBox>
+        </S.ItemCardListBox>
     );
 };
 

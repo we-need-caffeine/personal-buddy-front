@@ -1,10 +1,10 @@
 import React from 'react';
+import S from '../style';
 
 const PointShopItemBackground = () => {
   return (
-    <div>
-     포인트샵 배경 컴포넌트
-    </div>
+    <S.ItemCardListBox>
+    </S.ItemCardListBox>
   );
 };
 

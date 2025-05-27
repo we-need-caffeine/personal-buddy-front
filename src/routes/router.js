@@ -165,7 +165,7 @@ const router = createBrowserRouter([
                     element: <PointShopContainer />, // 포인트샵 페이지
                     children: [
                       {
-                        path: "all",
+                        path: "",
                         element: <PointShopItemsAll />, // 포인트샵 - 전체 /main/contents/point-shop
                       },
                       {

@@ -69,8 +69,12 @@ S.MyTreeItemTreeIcon = styled.div`
 S.MyTreeItemStickerIcon = styled.div`
     position: absolute;
     display: inline;
-    width: 60px;
-    height: 60px;
+    width: ${({width}) => 
+        `${width}px`
+    };
+    height: ${({height}) => 
+        `${height}px`
+    };
     top: ${({yLocation}) => 
         `${yLocation}px`
     };
