@@ -67,10 +67,9 @@ import LayoutWithoutBanner from "../pages/layout/LayoutWithoutBanner";
 import WakeUpDetail from "../pages/community/event/post/wakeup/WakeUpDetail";
 import RoutineShareDetail from "../pages/community/event/post/Routine/RoutineShareDetail";
 import HealingDayDetail from "../pages/community/event/post/Healing/HealingDayDetail";
-import SurveyDetail from "../pages/survey/detail/SurveyDetail";
-import SurveyDetailInfo from "../pages/survey/detail/SurveyDetailInfo";
-import SurveyDetailPlace from "../pages/survey/detail/SurveyDetailPlace";
-import SurveyDetailShopping from "../pages/survey/detail/SurveyDetailShopping";
+import SurveyDetailInfo from "../pages/survey/detail/info/SurveyDetailInfo";
+import SurveyDetailPlace from "../pages/survey/detail/place/SurveyDetailPlace";
+import SurveyDetailShopping from "../pages/survey/detail/shopping/SurveyDetailShopping";
 
 const router = createBrowserRouter([
     {
