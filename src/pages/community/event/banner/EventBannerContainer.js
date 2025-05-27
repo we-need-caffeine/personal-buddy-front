@@ -37,7 +37,7 @@ const EventBannerContainer = () => {
           coverflowEffect={{
             rotate: 0,
             stretch: 0,
-            depth: 350,
+            depth: 300,
             modifier: 1,
             slideShadows: false,
           }}
@@ -51,23 +51,26 @@ const EventBannerContainer = () => {
             const filePath = event.eventImgPath; 
             const fileName = event.eventImgName;
             const imageUrl = `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${ filePath}&fileName=${(fileName)}`;
-            
+            const getEventType = (title) => {
+            if (title.includes('기상') || title.includes('wake')) return 'wake-up';
+            if (title.includes('루틴') || title.includes('routine')) return 'routine';
+            if (title.includes('힐링') || title.includes('healing')) return 'healing-day';
+            return 'routine'; 
+          };
+          const eventType = getEventType(event.eventTitle);
             return (
             <SwiperSlide key={i}>
-              <Link to={`/main/community/event/post/${event.id}`}>
+              <Link to={`/main/community/event/post/${event.id}/${eventType}`}>
                 <S.BannerCard>
                   <img src={encodeURI(imageUrl)} alt="이벤트 배너" />
 
                 </S.BannerCard>
               </Link>
             </SwiperSlide>
-
           )})}
         </Swiper>
       </S.BannerSliderWrapper>
     </S.EventWrapper>
-
-
   );
 };
 
