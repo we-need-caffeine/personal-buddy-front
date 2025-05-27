@@ -22,39 +22,43 @@ const LoginLayout = () => {
 
   const navigate = useNavigate();
 
-  // console.log(localJwtToken)
-
   useEffect(() => {
     // 만약 쿼리스트링에 토큰이 있다면, 로컬스토리지에 저장
-    if(jwtToken) {
+    if (jwtToken) {
       localStorage.setItem("jwtToken", jwtToken);
-      navigate("/main", {replace : true});
-    }
+      
+      // 쿼리스트링 제거해서 새로고침 시 무한 navigate 방지
+      window.history.replaceState({}, document.title, window.location.pathname);
 
+      // 메인으로 이동
+      navigate("/main", { replace: true });
+    }
+  }, [jwtToken]);  // 의존성: jwtToken
+
+  useEffect(() => {
     // 토큰이 있다면 그 토큰으로 사용자의 정보를 요청
-    if(localJwtToken){
+    if (localJwtToken) {
       const getUserDatas = async () => {
         const response = await fetch("http://localhost:10000/members/api/profile", {
-          method : "POST",
-          headers : {
-            "Authorization" : `Bearer ${localJwtToken}`
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${localJwtToken}`
           }
         });
 
         // // 토큰으로 데이터를 못가져오면
-        if(!response.ok) {
+        if (!response.ok) {
           // 리덕스를 초기화
           dispatch(setUser({
-            id : 0,
-            memberEmail : "",
-            memberName : "",
-            memberNickName : "",
-            memberProvider : "",
+            id: 0,
+            memberEmail: "",
+            memberName: "",
+            memberNickName: "",
+            memberProvider: "",
           }));
           dispatch(setUserStatus(false));
 
           // 로컬스토리지 토큰 삭제
-          // localStorage.removeItem("jwtToken")
           localStorage.clear();
           return;
         }
@@ -73,16 +77,14 @@ const LoginLayout = () => {
         const surveyCheckRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/surveys/api/check?memberId=${datas.currentUser.id}`);
         const isInterestExist = await surveyCheckRes.json();
 
-        if(isInterestExist){
-          navigate('/main', { replace: true });
-        } else {
+        if (!isInterestExist) {
           navigate('/survey/intro', { replace: true });
         }
+        // 주의: isInterestExist가 true라도 여기서 navigate('/main') 하면 현재 경로 무시하므로 제거
       };
       getUserDatas();
     }
-
-  }, [localJwtToken]);
+  }, [localJwtToken, dispatch, actions, navigate]);
 
   // 리덕스에 유저를 추가하는 코드
   // console.log("layout 리덕스 유저", currentUser)
