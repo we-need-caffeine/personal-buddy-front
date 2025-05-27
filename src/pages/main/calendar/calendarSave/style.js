@@ -5,6 +5,8 @@ import {
   fontWeightRegular,
   fontWeightLight,
 } from "../../../../globals/common";
+
+
 const S = {};
 
 // 공통 드롭다운 박스 스타일
@@ -35,9 +37,13 @@ S.Container = styled.div`
 `;
 
 S.ContentContainer = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  position: relative;
   width: 476px;
-  height: 484px;
+  height: 558px;
 `;
+
 
 S.TitleContainer = styled.div`
   box-sizing: border-box;
@@ -54,12 +60,12 @@ S.Title = styled.div`
 S.RowContainer = styled.div`
   display: flex;
   justify-content: center;
+  box-sizing: border-box;
   align-items: center;
   width: 560px;
   height: 73px;
   border-top: 1px solid black;
-   border-bottom: ${({ $noBorder }) => ($noBorder ? "none" : "1px solid black")};
-
+  border-bottom: ${({ $noBorder }) => ($noBorder ? "none" : "1px solid black")};
 `;
 
 S.Row = styled.div`
@@ -165,6 +171,9 @@ S.HostBadge = styled.div`
 
 S.ButtonGroup = styled.div`
   display: flex;
+  position: absolute;
+  right: 0px;
+  bottom: 37px;
   align-items: end;
   justify-content: space-between;
   width: 222px;
@@ -196,4 +205,5 @@ S.CancelButton = styled.button`
   border-radius: 10px;
   background-color: white;
 `;
+
 export default S;

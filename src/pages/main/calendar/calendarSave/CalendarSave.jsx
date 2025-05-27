@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 const CalendarSave = () => {
   const { memberId, calendarId } = useParams();
   const [calendarName, setCalendarName] = useState("퍼스널 버디");
+  const { actions } = useContext(CalendarContext);
+  const { getCalendarsAll } = actions;
   const { state } = useContext(CalendarContext);
   const [allMembers, setAllMembers] = useState([]);
   const [invitedMembers, setInvitedMembers] = useState([]);
@@ -26,7 +28,6 @@ const CalendarSave = () => {
       );
       const datas = await response.json();
       setAllMembers(datas);
-
     } catch (error) {
       console.error("캘린더 초대 멤버 조회 실패", error);
     }
@@ -84,8 +85,10 @@ const CalendarSave = () => {
     const calendarId = await registerCalendar();
     if (calendarId) {
       await inviteMembers(calendarId);
+      await getCalendarsAll(); // 새로 등록된 캘린더 반영
       alert("캘린더가 저장되었습니다.");
-      // navigate('/calendars'); 등 이동 처리 가능
+      // 필요한 경우 페이지 이동:
+      // navigate(`/main/${memberId}/${calendarId}`);
     }
   };
 
@@ -111,6 +114,7 @@ const CalendarSave = () => {
           <S.Input
             value={calendarName}
             onChange={(e) => setCalendarName(e.target.value)}
+            maxLength={10}
           />
         </S.Row>
       </S.RowContainer>
@@ -164,12 +168,11 @@ const CalendarSave = () => {
             </S.MemberItem>
           ))}
         </S.MemberList>
+        <S.ButtonGroup>
+          <S.SaveButton onClick={handleSave}>저장</S.SaveButton>
+          <S.CancelButton>취소</S.CancelButton>
+        </S.ButtonGroup>
       </S.ContentContainer>
-
-      <S.ButtonGroup>
-        <S.SaveButton onClick={handleSave}>저장</S.SaveButton>
-        <S.CancelButton>취소</S.CancelButton>
-      </S.ButtonGroup>
     </S.Container>
   );
 };

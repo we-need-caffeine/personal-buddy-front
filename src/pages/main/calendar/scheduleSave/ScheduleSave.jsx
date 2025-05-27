@@ -1,36 +1,33 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import S from "./style";
+import { useOutletContext } from "react-router-dom";
 import { useScheduleForm } from "../../../../hooks/calendar/useScheduleForm";
 import { useLocation, useParams } from "react-router-dom";
 import { CalendarContext } from "../../../../context/CalendarContext";
 import { useNavigate } from "react-router-dom";
 
 const ScheduleSave = () => {
-  const navigate = useNavigate();
-  const { memberId, calendarId } = useParams();
-  const { state, actions } = useContext(CalendarContext);
+  const navigate = useNavigate(); // 페이지 이동
+  const location = useLocation(); // 이전 페이지에서 넘어온 state 확인
+  const { memberId, calendarId } = useParams(); // URL 파라미터
+  const { start, end } = location.state || {}; // 선택된 일정 시간
+
+  // 캘린더 컨텍스트
+  const { selectedRange, setSelectedRange, calendarRef } = useOutletContext(); // Outlet에서 받은 선택 범위
+  const { state, actions } = useContext(CalendarContext); // 전역 캘린더 상태 및 액션
   const { calendars, colors, categories } = state;
-  const { getCalendarsAll } = actions;
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [calendarMembers, setCalendarMembers] = useState([]);
-  const [mainCategory, setMainCategory] = useState("");
-  const [subCategory, setSubCategory] = useState("");
-  const [mainOpen, setMainOpen] = useState(false);
-  const [subOpen, setSubOpen] = useState(false);
-  const [color, setColor] = useState("");
-  const [selectedMembers, setSelectedMembers] = useState([]);
-  const [repeat, setRepeat] = useState("");
-  const [repeatDropdownOpen, setRepeatDropdownOpen] = useState(false);
-  const repeatRef = useRef(null);
-  const [memberDropdownOpen, setMemberDropdownOpen] = useState(false);
-  const [colorDropdownOpen, setColorDropdownOpen] = useState(false);
-  const location = useLocation();
-  const [openStartTime, setOpenStartTime] = useState(false);
-  const [openEndTime, setOpenEndTime] = useState(false);
-  const endTimeRef = useRef(null);
-  const timeRef = useRef(null);
-  const { start, end } = location.state || {};
+  const { getCalendarsAll } = actions; // 전체 캘린더 다시 불러오기
+
+  //#region 상태변수
+  // 일정 정보 상태
+  const [title, setTitle] = useState(""); // 일정 제목
+  const [content, setContent] = useState(""); // 일정 내용
+  const [color, setColor] = useState("#01CD74"); // 일정 색상
+  const [mainCategory, setMainCategory] = useState(""); // 상위 카테고리
+  const [subCategory, setSubCategory] = useState(""); // 하위 카테고리
+  const [repeat, setRepeat] = useState(""); // 반복 주기
+
+  // 시간 및 날짜 (useScheduleForm 커스텀 훅)
   const {
     startDate,
     startTime,
@@ -41,12 +38,35 @@ const ScheduleSave = () => {
     setEndDate,
     setEndTime,
     setStartAndEndFromDate,
-  } = useScheduleForm();
+  } = useScheduleForm(); // 날짜/시간 관리
 
-  const colorRef = useRef(null);
-  const memberRef = useRef(null);
-  const mainRef = useRef(null);
-  const subRef = useRef(null);
+  // 유효성 검사 상태
+  const [invalidTimeRange, setInvalidTimeRange] = useState(false); // 시작 > 종료 시간 여부
+  const [hasConflict, setHasConflict] = useState(false); // 일정 겹침 여부
+
+  // 멤버 관련 상태
+  const [calendarMembers, setCalendarMembers] = useState([]); // 캘린더 공유 멤버 목록
+  const [selectedMembers, setSelectedMembers] = useState([]); // 선택된 멤버들
+
+  // 드롭다운 열림 상태
+  const [mainOpen, setMainOpen] = useState(false); // 상위 카테고리 드롭다운
+  const [subOpen, setSubOpen] = useState(false); // 하위 카테고리 드롭다운
+  const [colorDropdownOpen, setColorDropdownOpen] = useState(false); // 색상 드롭다운
+  const [memberDropdownOpen, setMemberDropdownOpen] = useState(false); // 멤버 드롭다운
+  const [repeatDropdownOpen, setRepeatDropdownOpen] = useState(false); // 반복 드롭다운
+  const [openStartTime, setOpenStartTime] = useState(false); // 시작 시간 드롭다운
+  const [openEndTime, setOpenEndTime] = useState(false); // 종료 시간 드롭다운
+  //#endregion
+
+  // 외부 클릭 감지를 위한 ref
+  const colorRef = useRef(null); // 색상 드롭다운
+  const memberRef = useRef(null); // 멤버 드롭다운
+  const mainRef = useRef(null); // 상위 카테고리 드롭다운
+  const subRef = useRef(null); // 하위 카테고리 드롭다운
+  const repeatRef = useRef(null); // 반복 드롭다운
+  const timeRef = useRef(null); // 시작 시간 드롭다운
+  const endTimeRef = useRef(null); // 종료 시간 드롭다운
+
   const mainCategories = categories;
   const subCategories = {
     운동: ["헬스", "수영", "등산"],
@@ -58,8 +78,14 @@ const ScheduleSave = () => {
     여행: ["국내여행", "해외여행", "당일치기", "캠핑"],
     건강: ["병원방문", "건강검진", "약복용"],
   };
-
   const repeatOptions = ["없음", "매일", "매주", "선택한 날짜의 요일"];
+
+  // 캘린더에서 선택된 날짜 범위를 컴포넌트 내부의 날짜/시간 입력 필드 상태에 반영
+  useEffect(() => {
+    if (selectedRange?.start && selectedRange?.end) {
+      setStartAndEndFromDate(selectedRange.start, selectedRange.end);
+    }
+  }, [selectedRange]);
 
   const toggleMember = (member) => {
     setSelectedMembers((prev) => {
@@ -70,9 +96,37 @@ const ScheduleSave = () => {
     });
   };
 
+  // A일정이 B일정에 겹치는지 판단
+  const isOverlapping = (startA, endA, startB, endB) => {
+    return (
+      new Date(startA) < new Date(endB) && new Date(endA) > new Date(startB)
+    );
+  };
+
+  // 중복 + 시간 순서 검사
+  useEffect(() => {
+    if (!startDate || !endDate || !startTime || !endTime) return;
+
+    const newStart = new Date(`${startDate}T${startTime}:00`);
+    const newEnd = new Date(`${endDate}T${endTime}:00`);
+
+    // 시간 순서 검사
+    setInvalidTimeRange(newEnd <= newStart);
+
+    // 일정 겹침 검사
+    const currentCalendar = calendars.find((c) => c.id === Number(calendarId));
+    const hasOverlap = currentCalendar?.scheduleLists?.some((schedule) => {
+      const existingStart = new Date(schedule.scheduleStartDate);
+      const existingEnd = new Date(schedule.scheduleEndDate);
+      return isOverlapping(newStart, newEnd, existingStart, existingEnd);
+    });
+
+    setHasConflict(hasOverlap);
+  }, [startDate, endDate, startTime, endTime, calendars, calendarId]);
+
+  // Context에서 받은 calendar로 캘린더 가져오기
   useEffect(() => {
     const members = [];
-
     calendars.forEach((calendar) => {
       if (calendar.id === Number(calendarId)) {
         calendar.sharedMemberLists.forEach((member) => {
@@ -89,6 +143,7 @@ const ScheduleSave = () => {
     setCalendarMembers(members);
   }, [calendarId, calendars]);
 
+  //#region 일정 등록
   const saveSchedule = async () => {
     const payload = {
       calendarId: Number(calendarId),
@@ -121,7 +176,9 @@ const ScheduleSave = () => {
       console.error("일정 등록 에러", error);
     }
   };
+  //#endregion
 
+  // DB에서 받은 색 코드 이름으로 매핑
   const getColorName = (code) => {
     const map = {
       "#01CD74": "초록",
@@ -133,6 +190,7 @@ const ScheduleSave = () => {
     return map[code] ?? code;
   };
 
+  //#region 시간 드롭다운
   const timeOptions = [
     "00:00",
     "01:00",
@@ -159,22 +217,46 @@ const ScheduleSave = () => {
     "22:00",
     "23:00",
   ];
+  //#endregion
 
+  // 캘린더에서 선택한 시간(start, end)을 일정 등록 페이지에 반영하기 위한 useEffect.
+  // 문자열 또는 Date 객체 형태의 값을 ISO 문자열로 통일한 후,
+  // - 날짜/시간 입력 필드 상태(setStartAndEndFromDate)에 반영하고,
+  // - 전체 선택 범위 상태(selectedRange)에도 저장한다.
+  // start, end로 날짜 상태 세팅
   useEffect(() => {
     if (start && end) {
       const isoStart =
         typeof start === "string" ? start : new Date(start).toISOString();
       const isoEnd =
         typeof end === "string" ? end : new Date(end).toISOString();
+
       setStartAndEndFromDate(isoStart, isoEnd);
+
+      setSelectedRange((prev) => ({
+        ...prev,
+        start: isoStart,
+        end: isoEnd,
+        color: prev?.color ?? "#01CD74",
+      }));
     }
   }, [start, end]);
 
-  // 외부 클릭 감지 추가
+  // 색상만 반영
+  useEffect(() => {
+    if (color && selectedRange?.start && selectedRange?.end) {
+      setSelectedRange((prev) => ({
+        ...prev,
+        color,
+      }));
+    }
+  }, [color]);
+  //#region 외부 클릭 감지 추가 (드롭바 체크 해제)
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (colorRef.current && !colorRef.current.contains(e.target)) {
         setColorDropdownOpen(false);
+        //setColor("#01CD74");
       }
       if (memberRef.current && !memberRef.current.contains(e.target)) {
         setMemberDropdownOpen(false);
@@ -200,7 +282,7 @@ const ScheduleSave = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  //#endregion
   return (
     <S.Container>
       <S.TitleInputContainer>
@@ -216,14 +298,11 @@ const ScheduleSave = () => {
           <S.DateSection>
             <S.DateTextLabel>시작</S.DateTextLabel>
             <S.DateInputWrapper>
-              {/* 날짜 선택 */}
               <S.DateInput
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
               />
-
-              {/* 시간 선택 드롭다운 */}
               <S.TimeDropdownContainer ref={timeRef}>
                 <S.TimeBox onClick={() => setOpenStartTime((prev) => !prev)}>
                   {startTime}
@@ -236,6 +315,14 @@ const ScheduleSave = () => {
                         onClick={() => {
                           setStartTime(time);
                           setOpenStartTime(false);
+                          if (!startDate || !endDate || !endTime) return;
+                          const startISO = `${startDate}T${time}:00`;
+                          const endISO = `${endDate}T${endTime}:00`;
+                          setSelectedRange((prev) => ({
+                            ...prev,
+                            start: startISO,
+                            end: endISO,
+                          }));
                         }}
                       >
                         {time}
@@ -246,37 +333,66 @@ const ScheduleSave = () => {
               </S.TimeDropdownContainer>
             </S.DateInputWrapper>
           </S.DateSection>
+
           <S.DateSection>
             <S.DateTextLabel>종료</S.DateTextLabel>
             <S.DateInputWrapper>
-              {/* 날짜 선택 */}
               <S.DateInput
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
               />
-
-              {/* 시간 선택 드롭다운 */}
               <S.TimeDropdownContainer ref={endTimeRef}>
                 <S.TimeBox onClick={() => setOpenEndTime((prev) => !prev)}>
                   {endTime}
                 </S.TimeBox>
                 {openEndTime && (
                   <S.TimeList>
-                    {timeOptions.map((time) => (
-                      <S.TimeItem
-                        key={time}
-                        onClick={() => {
-                          setEndTime(time);
-                          setOpenEndTime(false);
-                        }}
-                      >
-                        {time}
-                      </S.TimeItem>
-                    ))}
+                    {timeOptions.map((time) => {
+                      const selectedEnd = new Date(`${endDate}T${time}:00`);
+                      const selectedStart = new Date(
+                        `${startDate}T${startTime}:00`
+                      );
+                      const isInvalidEnd = selectedEnd <= selectedStart;
+                      return (
+                        <S.TimeItem
+                          key={time}
+                          onClick={() => {
+                            if (isInvalidEnd) return;
+                            setEndTime(time);
+                            setOpenEndTime(false);
+                            if (!startDate || !startTime || !endDate) return;
+                            const startISO = `${startDate}T${startTime}:00`;
+                            const endISO = `${endDate}T${time}:00`;
+                            setSelectedRange((prev) => ({
+                              ...prev,
+                              start: startISO,
+                              end: endISO,
+                            }));
+                          }}
+                          style={{
+                            color: isInvalidEnd ? "#ccc" : "black",
+                            cursor: isInvalidEnd ? "not-allowed" : "pointer",
+                          }}
+                        >
+                          {time}
+                        </S.TimeItem>
+                      );
+                    })}
                   </S.TimeList>
                 )}
               </S.TimeDropdownContainer>
+
+              {hasConflict && !invalidTimeRange && (
+                <div style={errorMessageStyle}>
+                  이미 해당 시간에 일정이 존재합니다.
+                </div>
+              )}
+              {invalidTimeRange && (
+                <div style={errorMessageStyle}>
+                  시작 시간이 종료 시간보다 늦습니다.
+                </div>
+              )}
             </S.DateInputWrapper>
           </S.DateSection>
         </S.DateSectionGroup>
@@ -285,7 +401,6 @@ const ScheduleSave = () => {
       <S.ContentContainer>
         <S.ContentWrapper>
           <S.ContentFormGroup>
-            {/* 색상 드롭다운 */}
             <S.ContentRow>
               색
               <S.MemberDropdownContainer ref={colorRef}>
@@ -302,14 +417,16 @@ const ScheduleSave = () => {
                         key={c}
                         onClick={() => {
                           setColor(c);
-                          setColorDropdownOpen(false);
+                          setSelectedRange((prev) => ({
+                            ...prev,
+                            color: c,
+                          }));
                         }}
                       >
                         <S.MemberWrapper>
                           <S.ColorCircle color={c} />
                           <S.MemberName>{getColorName(c)}</S.MemberName>
                         </S.MemberWrapper>
-                        <S.CheckIcon checked={color === c} />
                       </S.MemberItem>
                     ))}
                   </S.MemberDropdownList>
@@ -317,7 +434,6 @@ const ScheduleSave = () => {
               </S.MemberDropdownContainer>
             </S.ContentRow>
 
-            {/* 멤버 드롭다운 */}
             <S.ContentRow>
               멤버
               <S.MemberDropdownContainer ref={memberRef}>
@@ -329,10 +445,7 @@ const ScheduleSave = () => {
                 {memberDropdownOpen && (
                   <S.MemberDropdownList>
                     {calendarMembers.map((m) => (
-                      <S.MemberItem
-                        key={m.id}
-                        onClick={() => toggleMember(m)}
-                      >
+                      <S.MemberItem key={m.id} onClick={() => toggleMember(m)}>
                         <S.MemberWrapper>
                           <S.ProfileIcon src={m.imgPath} alt={m.name} />
                           <S.MemberName>{m.name}</S.MemberName>
@@ -349,7 +462,6 @@ const ScheduleSave = () => {
               </S.MemberDropdownContainer>
             </S.ContentRow>
 
-            {/* 카테고리 드롭다운 */}
             <S.ContentRow>
               카테고리
               <S.ContentCategoryWrapper>
@@ -405,14 +517,11 @@ const ScheduleSave = () => {
               </S.ContentCategoryWrapper>
             </S.ContentRow>
 
-            {/* 장소 */}
             <S.ContentRow>
               장소
               <S.ContentRowInput />
             </S.ContentRow>
 
-            {/* 반복 */}
-            {/* 반복 */}
             <S.ContentRow>
               반복
               <S.MemberDropdownContainer ref={repeatRef}>
@@ -432,7 +541,6 @@ const ScheduleSave = () => {
                         }}
                       >
                         <S.MemberName>{option}</S.MemberName>
-                        <S.CheckIcon checked={repeat === option} />
                       </S.MemberItem>
                     ))}
                   </S.MemberDropdownList>
@@ -440,7 +548,6 @@ const ScheduleSave = () => {
               </S.MemberDropdownContainer>
             </S.ContentRow>
 
-            {/* 내용 */}
             <S.ContentRowTextArea>
               내용
               <S.ContentRowTextInput
@@ -451,7 +558,12 @@ const ScheduleSave = () => {
           </S.ContentFormGroup>
 
           <S.ButtonGroup>
-            <S.SaveButton onClick={saveSchedule}>저장</S.SaveButton>
+            <S.SaveButton
+              onClick={saveSchedule}
+              disabled={hasConflict || invalidTimeRange}
+            >
+              저장
+            </S.SaveButton>
             <S.CancelButton
               onClick={() => navigate(`/main/${memberId}/${calendarId}`)}
             >
@@ -462,6 +574,17 @@ const ScheduleSave = () => {
       </S.ContentContainer>
     </S.Container>
   );
+
+  // 에러 메시지 스타일 공통 변수
+  const errorMessageStyle = {
+    position: "absolute",
+    top: "110%",
+    left: "110px",
+    color: "red",
+    fontSize: "14px",
+    marginTop: "4px",
+    whiteSpace: "nowrap",
+  };
 };
 
 export default ScheduleSave;
