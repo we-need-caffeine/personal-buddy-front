@@ -25,6 +25,8 @@ export const ChatProvider  = ({ children }) => {
   const [followFilter, setFollowFilter] = useState("");
   // 컴포넌트가 리렌더링되어도 값이 초기화 되지 않도록 참조 객체를 생성
   const stompClient = useRef(null);
+  // 메세지를 받을때마다 변하는 스위치
+  const [isNewMessage, setIsNewMessage] = useState(false)
 
   // 텍스트에리어에서 값을 입력할 때 마다 잡아서 상태변경
   const handleChatChange = (e) => {
@@ -75,6 +77,7 @@ export const ChatProvider  = ({ children }) => {
         stompClient.current.subscribe(`/sub/chatroom/${chatRoom.chatRoomId}`, (message) => {
           const newMessage = JSON.parse(message.body);
           setChatList(prev => [...prev, newMessage]);
+          setIsNewMessage(prev => !prev)
         });
       });
     });
@@ -111,7 +114,8 @@ export const ChatProvider  = ({ children }) => {
       showChat, handleChat,
       chatRoomId, setChatRoomId,
       userNickName, setUserNickName,
-      chatList, getChatList
+      chatList, getChatList,
+      isNewMessage
     }}>
       {children}
     </ChatContext.Provider>
