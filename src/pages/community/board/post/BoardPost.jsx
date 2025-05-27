@@ -341,7 +341,7 @@ const checkLiked = async () => {
       </S.TopInfoBox>
 
       {/* 본문 이미지 */}
-      {post.boardImgPath && post.boardImgName && (
+      {/* {post.boardImgPath && post.boardImgName && (
         <S.Image
           src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.boardImgPath)}&fileName=${encodeURIComponent(post.boardImgName)}`}
           alt="본문 이미지"
@@ -349,7 +349,20 @@ const checkLiked = async () => {
             e.target.src = ''; // 깨진 이미지도 표시되지 않게
           }}
         />
-      )}
+      )} */}
+
+      {/* 본문 이미지 (여러 장 ) */}
+      {post.boardImages && post.boardImages.length > 0 && post.boardImages.map((img, i) => (
+        console.log(post),
+        <S.Image
+          key={i}
+          src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(img.boardImgPath)}&fileName=${encodeURIComponent(img.boardImgName)}`}
+          alt={`본문 이미지 ${i + 1}`}
+          onError={(e) => {
+            e.target.src = ''; // 깨진 이미지 숨기기
+          }}
+        />
+      ))}
 
       <S.Content>{post.boardContent}</S.Content>
 
