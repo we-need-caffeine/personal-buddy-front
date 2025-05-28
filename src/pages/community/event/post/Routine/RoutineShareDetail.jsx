@@ -1,3 +1,4 @@
+// RoutineShareDetail 정리된 구조
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -24,7 +25,7 @@ const RoutineShareDetail = () => {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const [detailRes, likeCheckRes, likeCountRes, joinCheckRes, commentRes ,bestRes] = await Promise.all([
+        const [detailRes, likeCheckRes, likeCountRes, joinCheckRes, commentRes, bestRes] = await Promise.all([
           fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/detail/${id}`),
           fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/like-check`, {
             method: 'POST',
@@ -35,7 +36,6 @@ const RoutineShareDetail = () => {
           fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/join-check?eventId=${id}&memberId=${memberId}`),
           fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/list?eventId=${id}`),
           fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/best/${id}`)
-
         ]);
 
         const detailData = await detailRes.json();
@@ -59,48 +59,45 @@ const RoutineShareDetail = () => {
     fetchInitialData();
   }, [id]);
 
-  const handleCommentSubmit = async () => {
-  if (!commentText.trim()) return;
-
-  // 댓글 중복 확인
-  const isDuplicated = await checkAlreadyCommented();
-  if (isDuplicated) {
-    alert('이미 참여한 이벤트입니다.');
-    setJoined(true);
-    return;
-  }
-
-  // 정상 등록 로직
-  try {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/write`, {
+  const checkAlreadyCommented = async () => {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/check`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ eventId: Number(id), memberId, eventCommentDescription: commentText })
+      body: JSON.stringify({ eventId: Number(id), memberId })
     });
+    return res.json();
+  };
 
-    if (response.ok) {
-      setCommentText('');
+  const handleCommentSubmit = async () => {
+    if (!commentText.trim()) return;
+
+    const isDuplicated = await checkAlreadyCommented();
+    if (isDuplicated) {
+      alert('이미 참여한 이벤트입니다.');
       setJoined(true);
-
-      const refreshed = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/list?eventId=${id}`);
-      const data = await refreshed.json();
-      setComments(data);
-    } else {
-      alert('댓글 등록 실패');
+      return;
     }
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/write`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eventId: Number(id), memberId, eventCommentDescription: commentText })
+      });
+
+      if (response.ok) {
+        setCommentText('');
+        setJoined(true);
+        const refreshed = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/list?eventId=${id}`);
+        const data = await refreshed.json();
+        setComments(data);
+      } else {
+        alert('댓글 등록 실패');
+      }
     } catch (err) {
       console.error('댓글 등록 에러', err);
       alert('오류 발생');
     }
-  };
-
-  const checkAlreadyCommented = async () => {
-  const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/check`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ eventId: Number(id), memberId }),
-    });
-    return res.json(); // true 또는 false
   };
 
   const handleCommentLike = async (commentId) => {
@@ -126,21 +123,17 @@ const RoutineShareDetail = () => {
 
   const handlePostLike = async () => {
     try {
-      if (isLiked) {
-        await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/un-like`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ eventId: id, memberId })
-        });
-        setLikeCount((c) => c - 1);
-      } else {
-        await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/like`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ eventId: id, memberId })
-        });
-        setLikeCount((c) => c + 1);
-      }
+      const url = isLiked
+        ? `${process.env.REACT_APP_BACKEND_URL}/events/api/un-like`
+        : `${process.env.REACT_APP_BACKEND_URL}/events/api/like`;
+
+      await fetch(url, {
+        method: isLiked ? 'DELETE' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eventId: id, memberId })
+      });
+
+      setLikeCount((c) => isLiked ? c - 1 : c + 1);
       setIsLiked(!isLiked);
     } catch (err) {
       console.error('이벤트 좋아요 처리 실패', err);
@@ -155,26 +148,24 @@ const RoutineShareDetail = () => {
           <S.Date>2025.04.20 게시</S.Date>
         </S.TitleRow>
       </S.MetaBox>
-        <S.MetaBottom>
-          <S.Author>
-            <S.ProfileImg src="/assets/images/header/default-member-img.png" alt="운영자" />
-            <span>운영자</span>
-          </S.Author>
-          <S.StatBox>
-            조회수 <strong>{views}</strong> | 좋아요 <strong>{likeCount}</strong> | 댓글 <strong>{comments.length}</strong>
-          </S.StatBox>
-        </S.MetaBottom>
+
+      <S.MetaBottom>
+        <S.Author>
+          <S.ProfileImg src="/assets/images/header/default-member-img.png" alt="운영자" />
+          <span>운영자</span>
+        </S.Author>
+        <S.StatBox>
+          조회수 <strong>{views}</strong> | 좋아요 <strong>{likeCount}</strong> | 댓글 <strong>{comments.length}</strong>
+        </S.StatBox>
+      </S.MetaBottom>
+
       <S.ImageWrapper>
         <img src="/assets/images/event/routine.png" alt="루틴 이벤트" />
         <S.IsSuccess $joined={joined || commentText.trim().length > 0}>
-        {joined
-          ? '미션 컴플리트!'
-          : commentText.trim().length > 0
-          ? '이벤트 도전중...'
-          : '성공시 1000P 획득!'}
-      </S.IsSuccess>
-
+          {joined ? '미션 컴플리트!' : commentText.trim().length > 0 ? '이벤트 도전중...' : '성공시 1000P 획득!'}
+        </S.IsSuccess>
       </S.ImageWrapper>
+
       <S.CommentInputBox>
         <S.Textarea
           placeholder="댓글을 입력해주세요"
@@ -229,11 +220,7 @@ const RoutineShareDetail = () => {
         ))}
       </S.CommentList>
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(comments.length / 7)}
-        onPageChange={setCurrentPage}
-      />
+      <Pagination currentPage={currentPage} totalPages={Math.ceil(comments.length / 7)} onPageChange={setCurrentPage} />
     </S.Container>
   );
 };

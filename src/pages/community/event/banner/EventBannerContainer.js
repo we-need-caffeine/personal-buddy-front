@@ -32,12 +32,12 @@ const EventBannerContainer = () => {
           autoplay={{ delay: 3000, disableOnInteraction: false }}
           effect={'coverflow'}
           centeredSlides={true}
-          // slidesPerView={'auto'}
-          slidesPerView={3}
+          slidesPerView={'auto'}
+          // slidesPerView={2}
           coverflowEffect={{
             rotate: 0,
             stretch: 0,
-            depth: 300,
+            depth: 250,
             modifier: 1,
             slideShadows: false,
           }}
