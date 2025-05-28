@@ -1,21 +1,20 @@
-import React, { useContext } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import React, { useRef } from 'react';
+import { Outlet, useOutletContext } from 'react-router-dom';
 import CalendarDay from './CalendarDay';
-import { useSelector } from 'react-redux';
-import { CalendarContext } from '../../../../context/CalendarContext';
 
 const CalendarDayContainer = () => {
-  const { currentUser } = useSelector((state) => state.member)
-  const { state, action } = useContext(CalendarContext)
-  const {calendars} = state;
-  const { memberId, calendarId } = useParams();
-
-  const calendar = calendars.filter(({id}) => id === Number(calendarId))[0];
+  const calendarRef = useRef(null);
+  const { selectedRange, setSelectedRange, handleCreateSchedule } = useOutletContext();
 
   return (
-    <div style={{display:"flex"}}>
-      <CalendarDay />
-      <Outlet />
+    <div style={{ display: "flex" }}>
+      <CalendarDay
+        calendarRef={calendarRef}
+        selectedRange={selectedRange}
+        onSelectRange={setSelectedRange} // 상위에서 내려온 setSelectedRange 사용
+        onCreateSchedule={handleCreateSchedule} // 상위에서 내려온 일정 생성 핸들러 사용
+      />
+      <Outlet context={{ selectedRange, setSelectedRange, handleCreateSchedule,calendarRef }} />
     </div>
   );
 };
