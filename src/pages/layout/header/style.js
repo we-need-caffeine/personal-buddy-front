@@ -25,7 +25,7 @@ S.Main = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 1400px;
+  min-width: 1400px;
 `;
 
 // 왼쪽 영역 (아이콘 + 메뉴 링크)
@@ -101,14 +101,14 @@ S.MemberProfile = styled.img`
   cursor: pointer;
 `
 
-S.ChatModalContainer = styled.div`
-  position: fixed;
-  z-index: 10002;
-`
-
 S.AlertModalContainer = styled.div`
   position: fixed;
   z-index: 10003;
+`
+
+S.ChatIconContainer = styled.div`
+  position: relative;
+  display: inline-block;
 `
 
 S.AlertIconContainer = styled.div`
@@ -116,10 +116,29 @@ S.AlertIconContainer = styled.div`
   display: inline-block;
 `;
 
+S.ChatImg = styled.img`
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+`
+
 S.AlertImg = styled.img`
   width: 30px;
   height: 30px;
   cursor: pointer;
+`
+
+S.NotReadChatCount = styled.div`
+  position: absolute;
+  background-color: ${({ theme }) => theme.PALLETE.pointRed};
+  border-radius: 50px;
+  padding: 5px;
+  top: -7px;
+  right: 11px;
+  transform: translateX(100%);
+  ${fontWeightBold}
+  ${fontSizeH10}
+  ${whiteColor}
 `
 
 S.NotReadAlertCount = styled.div`
