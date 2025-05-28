@@ -2,6 +2,12 @@ import styled from 'styled-components';
 
 const S = {};
 
+S.ContentWrapper = styled.div`
+    width: 1400px;
+    margin: 0 auto;
+    height: 100%;
+`
+
 S.RecommendWrapper = styled.div`
     width: 100%;
     max-width: 1400px;
