@@ -1,6 +1,6 @@
   import React, { useContext, useEffect, useState } from 'react';
   import { NavLink } from 'react-router-dom';
-  import Alert from '../alert/Alert'; // 경로에 맞게 수정해줘!
+  import Alert from '../alert/Alert';
   import S from './style';
   import ProfileCard from '../profile/ProfileCard';
   import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,6 @@
   import { HeaderContext } from '../../../context/HeaderContext';
   import ChatRoom from '../chatting/ChatRoom';
   import { ChatContext } from '../../../context/ChatContext';
-  import Chat from '../chatting/Chat';
 
   const Header = () => {
     // 로그인된 유저정보
@@ -32,11 +31,21 @@
     // 읽지 않은 알림 수
     const [notReadAlertCount, setNotReadAlertCount] = useState(0);
     // 채팅 콘텍스트
-    const { connect, disconnect, chatRoomList, getChatRoomList, showChatRoom, handleChatRoom, showChat, handleChat, chatRoomId, userNickName } = useContext(ChatContext)
+    const { 
+      connect, 
+      disconnect,
+      showChat,
+      showChatRoom, 
+      handleChatRoom, 
+      chatRoomList,
+      getNotReadChatting,
+      chatNotReadCount,
+      isNewMessage
+    } = useContext(ChatContext);
     // 리덕스 사용
     const dispatch = useDispatch();
     
-    // 채팅을 열고 닫는 함수
+    // 프로필 카드를 열고 닫는 함수
     const handleProfileCard = (state) => {
         setShowProfileCard(state)
     }
@@ -46,22 +55,23 @@
       setShowAlertModal(state);
     }
 
-    // 채팅룸을 최초로 조회하는 함수
+    // 채팅룸의 알림을 조회하는 함수
     useEffect(() => {
-      getChatRoomList(memberId);
-    }, [memberId, showChat]);
+      getNotReadChatting(memberId)
+      console.log(chatNotReadCount);
+      
+    }, [memberId, isNewMessage, showChat])
 
-    // 채팅룸이 켜질 때 transition 없이 바로 보여주기
+    // 채팅룸이 켜질 때 헤더 스크롤 밀림 방지
     useEffect(() => {
       if (showChatRoom) {
-        setNoTransition(true); // 트랜지션 끄기
-        setShowHeader(true);   // 바로 보여주기
-        // 한 번 렌더 후 다시 transition 켜주기 (부드럽게 복원)
+        setNoTransition(true);
+        setShowHeader(true);
         setTimeout(() => setNoTransition(false), 30);
       }
     }, [showChatRoom]);
 
-    // chatRoomList가 변경될 때마다 connect
+    // 웹소켓 연결
     useEffect(() => {
       if (chatRoomList.length > 0) {
         connect(chatRoomList);
@@ -173,13 +183,20 @@
               {/* 로그인시 보이는 영역 */}
               {/* 소셜 영역 */}
               <S.SocialBox>
-                <img 
-                  src="/assets/images/header/message.png" 
-                  alt="메세지 아이콘" 
-                  onClick={() => {
-                    handleChatRoom(true)
-                  }}
-                />
+                <S.ChatIconContainer>
+                  <S.ChatImg 
+                    src="/assets/images/header/message.png" 
+                    alt="메세지 아이콘" 
+                    onClick={() => {
+                      handleChatRoom(true)
+                    }}
+                  />
+                  {chatNotReadCount > 0 && (
+                    <S.NotReadChatCount>
+                      {chatNotReadCount > 99 ? "99+" : chatNotReadCount}
+                    </S.NotReadChatCount>
+                  )}
+                </S.ChatIconContainer>
                 <S.AlertIconContainer>
                   <S.AlertImg
                     src="/assets/images/header/alert.png"
@@ -244,36 +261,25 @@
             handleChatRoom={showChatRoom}
             onCancel={() => {
               handleChatRoom(false)
-              handleChat(false)
             }}
-          />
-        )}
-
-        {/* 채팅 */}
-        {showChat && (
-          <Chat
-            memberId={memberId}
-            chatRoomId={chatRoomId}
-            userNickName={userNickName}
-            onCancel={() => {handleChat(false)}}
           />
         )}
 
         {/* 알림창 */}
         {showAlertModal && (
-          <S.AlertModalContainer
-            style={{ top: alertDropdownPos.y, left: alertDropdownPos.x }}
-          >
-            <Alert
-              memberId={memberId}
-              handleAlertModal={handleAlertModal}
+          <>
+            <S.AlertModalContainer
+              style={{ top: alertDropdownPos.y, left: alertDropdownPos.x }}
+            >
+              <Alert
+                memberId={memberId}
+                handleAlertModal={handleAlertModal}
+              />
+            </S.AlertModalContainer>
+            <S.CardBG
+              onClick={() => {handleAlertModal(false)}}
             />
-          </S.AlertModalContainer>
-        )}
-        {showAlertModal && (
-          <S.CardBG 
-            onClick={() => {handleAlertModal(false)}}
-          />
+          </>
         )}
       </S.Container>
     );

@@ -1,9 +1,21 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { blackColor, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightRegular, gray5Color, mainGreenColor, whiteColor } from "../../../globals/common";
 
 const S = {};
 
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+`;
+
 S.Backdrop = styled.div`
+  animation: ${fadeInUp} 0.1s ease-out;
   position: fixed;
   top: 0; 
   left: 0;
@@ -47,10 +59,13 @@ S.TopContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 20px 25px;
+  margin: 20px 25px 5px 25px;
 `;
 
 S.SelectBox = styled.select`
+  &:focus {
+    outline: none;
+  }
   width: 100px;
   height: 30px;
   padding: 5px;
@@ -95,8 +110,6 @@ S.SearchInput = styled.textarea`
 S.ListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 0 25px;
   height: 350px;
   padding-bottom: 20px;
   overflow-y: auto;
@@ -107,8 +120,15 @@ S.ItemContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 350px;
-  height: 50px;
+  width: 100%;
+  height: 70px;
+  box-sizing: border-box;
+  padding: 0 25px;
+  cursor: pointer;
+  transition: 0.18s;
+  &:hover {
+    background-color: ${({ theme }) => theme.PALLETE.gray.gray2}
+  }
 `
 
 S.MemberInfoContainer = styled.div`
@@ -121,6 +141,10 @@ S.MemberImg = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.2);
+  }
 `
 
 S.MemberInfoTextContainer = styled.div`
@@ -175,12 +199,14 @@ S.UnFollowBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: ${({ theme }) => theme.PALLETE.pointRed};
+  }
 `
 
 S.ProfileCardDropdown = styled.div`
-    position: absolute;
-    top: 40px;
-    left: 0px;
+    position: fixed;
     z-index: 10003;
 `;
 

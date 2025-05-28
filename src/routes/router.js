@@ -128,10 +128,54 @@ const router = createBrowserRouter([
                   {
                     path: "month",
                     element: <CalendarMonthContainer />,
+                    children: [
+                      {
+                        path: "",
+                        element: <CalendarTodo />,
+                      },
+                      {
+                        path: "schedule-view",
+                        element: <ScheduleView />,
+                      },
+                      {
+                        path: "schedule-save",
+                        element: <ScheduleSave />,
+                      },
+                      {
+                        path: "calendar-save",
+                        element: <CalendarSave />,
+                      },
+                      {
+                        path: "calendar-update",
+                        element: <CalendarUpdate />,
+                      },
+                    ],
                   },
                   {
                     path: "week",
                     element: <CalendarWeekContainer />,
+                    children: [
+                      {
+                        path: "",
+                        element: <CalendarTodo />,
+                      },
+                      {
+                        path: "schedule-view",
+                        element: <ScheduleView />,
+                      },
+                      {
+                        path: "schedule-save",
+                        element: <ScheduleSave />,
+                      },
+                      {
+                        path: "calendar-save",
+                        element: <CalendarSave />,
+                      },
+                      {
+                        path: "calendar-update",
+                        element: <CalendarUpdate />,
+                      },
+                    ],
                   },
                 ],
               },
