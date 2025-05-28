@@ -63,12 +63,17 @@ S.ItemWrapper = styled.div`
   // 콘텐츠 렌더링 영역
 `;
 
+S.ModifyButton = styled.img`
+  background-color: white;
+  padding: 4px;
+  border-radius: 4px;
+`;
 S.DailyButtonWrapper = styled.div`
   a {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #01CD74;
+    background-color: #01cd74;
     color: #fff;
     width: 80px;
     height: 30px;
@@ -82,4 +87,33 @@ S.DailyButtonWrapper = styled.div`
     }
   }
 `;
+
+S.DailyViewButton = styled.button`
+  width: 100px;
+  padding: 8px 12px;
+  background: #01CD74;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+`;
+
+S.DropdownMenu = styled.div`
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  z-index: 1000;
+`;
+
+S.DropdownItem = styled.div`
+  padding: 10px 16px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f2f2f2;
+  }
+`;
+
 export default S;

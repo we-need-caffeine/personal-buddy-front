@@ -1,27 +1,58 @@
-import React from "react";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { Outlet, useNavigate, useParams, useLocation } from "react-router-dom";
 import CalendarHeader from "./calendarHeader/CalendarHeader";
 import { useSelector } from "react-redux";
 
 const CalendarContainer = () => {
+  const { currentUser } = useSelector((state) => state.member);
+  const { memberId, calendarId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  // 해당 유저가 로그인 된 이후에 path를 강제로 변경하는 것을 방지
-  const { currentUser } = useSelector((state) => state.member)
-  const { memberId } = useParams();
-  const navigate = useNavigate()
-  
-  if(currentUser.id){
-    if(currentUser.id.toString() !== memberId) {
-      alert('잘못된 접근입니다.')
-      return navigate("/main")
+  const [selectedRange, setSelectedRange] = useState(null);
+
+  // 잘못된 접근 차단
+  if (currentUser.id) {
+    if (currentUser.id.toString() !== memberId) {
+      alert("잘못된 접근입니다.");
+      navigate("/main");
+      return null;
     }
   }
+
+  // 뷰 판단 (week/month/day)
+  const view = location.pathname.includes("/week")
+    ? "week"
+    : location.pathname.includes("/month")
+    ? "month"
+    : "";
+
+  const handleCreateSchedule = (info) => {
+    const range = {
+      start: info.startStr,
+      end: info.endStr,
+      color: selectedRange?.color ?? "#01CD74",
+    };
+    setSelectedRange(range);
+
+    const basePath = `/main/${memberId}/${calendarId}`;
+    const targetPath = view
+      ? `${basePath}/${view}/schedule-save`
+      : `${basePath}/schedule-save`;
+
+    navigate(targetPath);
+  };
 
   return (
     <div>
       <CalendarHeader />
-      <Outlet />
-      {/* 밑에 음식 컴포넌트, 카페 컴포넌트, 의류 */}
+      <Outlet
+        context={{
+          selectedRange,
+          setSelectedRange,
+          handleCreateSchedule,
+        }}
+      />
     </div>
   );
 };

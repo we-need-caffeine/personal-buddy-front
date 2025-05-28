@@ -3,11 +3,12 @@ import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { CalendarContext } from "../../../../context/CalendarContext";
-import S from "./style";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { format } from "date-fns";
+import S from "./style";
 
-const CalendarDay = ({
+const CalendarWeek = ({
+  isNested,
   calendarRef,
   selectedRange,
   onSelectRange,
@@ -18,11 +19,10 @@ const CalendarDay = ({
   const location = useLocation();
   const { state } = useContext(CalendarContext);
   const { calendars } = state;
-
+  const [weekRange, setWeekRange] = useState({ start: null, end: null });
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
 
-  // 겹치는 일정이 있는지 확인
   const isOverlapping = (startA, endA, startB, endB) =>
     new Date(startA) < new Date(endB) && new Date(endA) > new Date(startB);
 
@@ -40,8 +40,7 @@ const CalendarDay = ({
 
   const setEventsFromSchedules = () => {
     const calendar = calendars.find((c) => c.id === Number(calendarId));
-    const schedules =
-      calendar && calendar.scheduleLists ? calendar.scheduleLists : [];
+    const schedules = calendar?.scheduleLists ?? [];
 
     return schedules.map((s) => ({
       id: String(s.id),
@@ -63,18 +62,16 @@ const CalendarDay = ({
         end: range.end,
         backgroundColor: range.color ?? "#01CD74",
         borderColor: range.color ?? "#01CD74",
+        display: "background",
       },
     ]);
   };
 
   useEffect(() => {
-    // 현재 calendarId에 해당하는 scheduleLists를 읽어서
-    // FullCalendar가 인식할 수 있는 events 형태로 변환 후 적용
     setEvents(setEventsFromSchedules());
   }, [calendarId, calendars]);
 
   useEffect(() => {
-    // 다른 캘린더로 이동했을 때 선택된 일정 범위를 초기화함
     onSelectRange(null);
   }, [calendarId]);
 
@@ -82,14 +79,11 @@ const CalendarDay = ({
     const isOnScheduleSave = location.pathname.includes("schedule-save");
 
     if (!selectedRange && !isOnScheduleSave) {
-      // 선택 범위가 없고, 일정 저장 페이지도 아니면
-      // 임시로 보여주던 신규 일정 이벤트 제거
       setEvents((prev) => prev.filter((e) => e.id !== "selected-range"));
       return;
     }
 
     if (selectedRange) {
-      // 일정이 겹친다면 선택 취소 및 임시 이벤트 제거
       if (hasConflict(selectedRange)) {
         calendarRef.current?.getApi().unselect();
         onSelectRange(null);
@@ -97,18 +91,23 @@ const CalendarDay = ({
         return;
       }
 
-      // 충돌이 없다면, 신규 일정 임시 이벤트를 events에 추가
       updateTemporaryEvent(selectedRange);
     }
   }, [selectedRange, calendars, calendarId, location.pathname]);
 
-  // 날짜 이동
   const handlePrev = () => calendarRef.current.getApi().prev();
   const handleNext = () => calendarRef.current.getApi().next();
-  const handleToday = () => calendarRef.current.getApi().today();
+  const handleToday = () => {
+    const calendarApi = calendarRef.current.getApi();
+    calendarApi.today();
+
+    // 오늘 날짜로 수동 업데이트
+    const today = new Date();
+    setCurrentDate(today);
+  };
 
   return (
-    <S.CalendarWrapper>
+    <S.CalendarWrapper isNested={isNested}>
       <S.DateInfoWrapper>
         <S.LeftArrowIcon
           src="/assets/images/main/calendar/arrow.png"
@@ -116,7 +115,12 @@ const CalendarDay = ({
           onClick={handlePrev}
         />
         <S.TodayText onClick={handleToday}>
-          {format(currentDate, "yyyy년 M월 d일")}
+          {weekRange.start && weekRange.end
+            ? `${format(weekRange.start, "yyyy년 M월 d일")} ~ ${format(
+                new Date(weekRange.end.getTime() - 1), // end는 다음 주 첫날이므로 -1ms
+                "yyyy년 M월 d일"
+              )}`
+            : ""}
         </S.TodayText>
         <S.ArrowIcon
           src="/assets/images/main/calendar/arrow.png"
@@ -129,7 +133,7 @@ const CalendarDay = ({
         <FullCalendar
           ref={calendarRef}
           plugins={[timeGridPlugin, interactionPlugin]}
-          initialView="timeGridDay"
+          initialView="timeGridWeek"
           timeZone="local"
           height="100%"
           headerToolbar={false}
@@ -169,18 +173,24 @@ const CalendarDay = ({
               eventId.startsWith("no-id")
             )
               return;
-            navigate("schedule-view", { state: { eventId } });
+            navigate(`/main/${memberId}/${calendarId}/week/schedule-save`, {
+              state: { eventId },
+            });
           }}
           unselect={() => {
             if (!location.pathname.includes("schedule-save")) {
               onSelectRange(null);
             }
           }}
-          datesSet={({ start }) => setCurrentDate(new Date(start))}
+          datesSet={({ start, end }) => {
+            console.log("📆 datesSet called with:", start, end);
+            setCurrentDate(new Date(start));
+            setWeekRange({ start: new Date(start), end: new Date(end) }); // 주 범위 저장
+          }}
         />
       </div>
     </S.CalendarWrapper>
   );
 };
 
-export default CalendarDay;
+export default CalendarWeek;

@@ -22,6 +22,17 @@ const sharedDropdownBoxStyle = `
   ${fontSizeH8};
 `;
 
+S.Message = styled.div`
+  position: absolute;
+    top: 110%;
+    left: 110px;
+    color:red;
+    font-size: 14px;
+    margin-top: 4px;
+    white-space: nowrap;
+`;
+
+
 // 전체 캘린더 저장 화면 컨테이너
 S.Container = styled.div`
   box-sizing: border-box;
@@ -87,6 +98,7 @@ S.DateSection = styled.div`
 `;
 
 S.DateInputWrapper = styled.div`
+  position: relative;
   display: flex;
   width: 320px;
   height: 37px;
@@ -116,14 +128,16 @@ S.DateInputTime = styled.input`
 
 // 내용 작성 영역
 S.ContentContainer = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 476px;
   height: 538px;
 `;
 
 S.ContentWrapper = styled.div`
+  
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -146,6 +160,7 @@ S.ContentFormGroup = styled.div`
 S.ContentRow = styled.div`
   display: flex;
   justify-content: space-between;
+
   align-items: center;
   width: 100%;
   height: 37px;
@@ -223,6 +238,9 @@ S.ContentTextAreaWrapper = styled.div`
 `;
 
 S.ButtonGroup = styled.div`
+  position: absolute;
+  bottom: 37px;
+  right: 0px;
   display: flex;
   align-items: end;
   justify-content: space-between;
@@ -240,7 +258,13 @@ S.SaveButton = styled.button`
   border: none;
   color: white;
   border-radius: 10px;
-  background-color: #01cd74;
+  background-color: ${({ disabled }) => (disabled ? "#ccc" : "#01cd74")};
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: ${({ disabled }) => (disabled ? "#ccc" : "#00b76f")};
+  }
 `;
 
 S.CancelButton = styled.button`
@@ -262,7 +286,7 @@ S.MemberDropdownContainer = styled.div`
 `;
 
 S.MemberSelectBox = styled.div`
- ${sharedDropdownBoxStyle}
+  ${sharedDropdownBoxStyle}
   ${fontWeightLight}
 `;
 

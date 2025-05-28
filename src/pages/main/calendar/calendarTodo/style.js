@@ -24,7 +24,7 @@ S.TodoContainer = styled.div`
   flex-direction: column;
   gap: 8px;
   width: 518px;
-
+  
   height: 50px;
 
 `;
@@ -74,6 +74,7 @@ S.TodoWrapper = styled.div`
 
 S.TodoTextWrapper = styled.span`
     margin-left: 40px;
+    ${({ $done }) => $done && `text-decoration: line-through; color: #999;`}
     ${fontWeightRegular};
     ${fontSizeH8};
 `;
