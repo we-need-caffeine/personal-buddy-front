@@ -32,12 +32,12 @@ const EventBannerContainer = () => {
           autoplay={{ delay: 3000, disableOnInteraction: false }}
           effect={'coverflow'}
           centeredSlides={true}
-          // slidesPerView={'auto'}
-          slidesPerView={3}
+          slidesPerView={'auto'}
+          // slidesPerView={2}
           coverflowEffect={{
             rotate: 0,
             stretch: 0,
-            depth: 350,
+            depth: 250,
             modifier: 1,
             slideShadows: false,
           }}
@@ -47,27 +47,30 @@ const EventBannerContainer = () => {
         >
 
           {banners.map((event, i) => { 
-            console.log(event);
+            // console.log(event);
             const filePath = event.eventImgPath; 
             const fileName = event.eventImgName;
             const imageUrl = `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${ filePath}&fileName=${(fileName)}`;
-            
+            const getEventType = (title) => {
+            if (title.includes('기상') || title.includes('wake')) return 'wake-up';
+            if (title.includes('루틴') || title.includes('routine')) return 'routine';
+            if (title.includes('힐링') || title.includes('healing')) return 'healing-day';
+            return 'routine'; 
+          };
+          const eventType = getEventType(event.eventTitle);
             return (
             <SwiperSlide key={i}>
-              <Link to={`/main/community/event/post/${event.id}/routine`}>
+              <Link to={`/main/community/event/post/${event.id}/${eventType}`}>
                 <S.BannerCard>
                   <img src={encodeURI(imageUrl)} alt="이벤트 배너" />
 
                 </S.BannerCard>
               </Link>
             </SwiperSlide>
-
           )})}
         </Swiper>
       </S.BannerSliderWrapper>
     </S.EventWrapper>
-
-
   );
 };
 

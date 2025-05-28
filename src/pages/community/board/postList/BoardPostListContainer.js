@@ -44,7 +44,7 @@ const BoardPostListContainer = ({
   }
 
   useEffect(() => {
-    // console.log("selectedUser 변경?", selectedUser);
+    console.log("selectedUser 변경?", selectedUser);
 }, [selectedUser]);
 
 

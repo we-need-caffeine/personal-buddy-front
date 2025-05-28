@@ -1,11 +1,16 @@
 import styled from 'styled-components';
-import { flexCenter, fontSizeH4, fontSizeH8, fontWeightBold, fontWeightRegular,  } from '../../../../globals/common';
+import { flexCenter, fontSizeH4, fontSizeH8, fontWeightBold, fontWeightRegular, pointRedColor,  } from '../../../../globals/common';
 
 const S = {};
 
 S.PostSection = styled.div`
     width: 1400px;
     margin: 80px auto;
+    width: 100%;
+    margin: 80px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 S.SubTitle = styled.div`
@@ -26,22 +31,29 @@ S.MainTitle = styled.div`
 S.PostListWrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr); 
-    gap: 36px 28px;
+    gap: 175px 36px;
+    justify-content: center; 
 `;
 
 S.PostCard = styled.div`
-  width: 440px; 
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  background-color: #fff;
-  overflow: hidden;
+    width: 560px; 
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    background-color: #fff;
+    overflow: hidden;
+
+      ${({ isComingSoon }) => isComingSoon && `
+        opacity: 0.6;
+        filter: grayscale(50%);
+        pointer-events: none;
+    `}
 `;
 
 
 S.ImageBox = styled.div`
     position: relative;
     width: 100%;
-    height: 250px;
+    height: 344px;
 
     img {
         width: 100%;
@@ -88,6 +100,23 @@ S.InfoBox = styled.div`
             color: #888;
             font-size: 14px;
     }
+`;
+
+S.ComingSoonOverlay = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(85, 85, 85, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-size: 20px;
+    font-weight: bold;
+    z-index: 2;
+    border-radius: 20px;
 `;
 
 export default S;

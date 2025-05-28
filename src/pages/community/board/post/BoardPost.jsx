@@ -120,7 +120,7 @@ const BoardPost = () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/${id}`)
       if(!response.ok) throw new Error(`getPosts Error : ${response.status}`)
       const datas = await response.json();
-      console.log(datas)
+      // console.log(datas)
       setPost(datas.board); // 게시글 저장
       setLikeCount(datas.board.boardLikeCount);  // 좋아요 수 저장
       setIsLoading(false);
@@ -353,7 +353,7 @@ const checkLiked = async () => {
 
       {/* 본문 이미지 (여러 장 ) */}
       {post.boardImages && post.boardImages.length > 0 && post.boardImages.map((img, i) => (
-        console.log(post),
+        // console.log(post),
         <S.Image
           key={i}
           src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(img.boardImgPath)}&fileName=${encodeURIComponent(img.boardImgName)}`}
