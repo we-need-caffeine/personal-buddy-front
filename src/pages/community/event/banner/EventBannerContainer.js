@@ -27,16 +27,15 @@ const EventBannerContainer = () => {
 
       <S.BannerSliderWrapper>
         <Swiper
-          spaceBetween={0}
-          modules={[EffectCoverflow]}
+          spaceBetween={-323}
+          modules={[EffectCoverflow, Autoplay]}
           autoplay={{ delay: 3000, disableOnInteraction: false }}
           effect={'coverflow'}
-          centeredSlides={true}
-          slidesPerView={'auto'}
-          // slidesPerView={2}
+          centeredSlides={false}
+          slidesPerView={3}
           coverflowEffect={{
             rotate: 0,
-            stretch: 0,
+            stretch: -150,
             depth: 250,
             modifier: 1,
             slideShadows: false,
