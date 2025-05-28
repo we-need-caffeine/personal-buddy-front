@@ -7,8 +7,11 @@ S.MainContainer = styled.div`
 `
 
 S.TitleContainer = styled.div`
-    height: 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     width: 100%;
+    padding-bottom: 20px;
     border-bottom: 1px solid ${({ theme }) => theme.PALLETE.black};
     ${fontSizeH8}
     ${fontWeightLight}
@@ -23,7 +26,6 @@ S.TitleBottomContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 15px;
     ${fontSizeH6}
     ${blackColor}
     ${fontWeightRegular}

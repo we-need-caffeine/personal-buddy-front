@@ -31,7 +31,7 @@ const MyPageSidebar = () => {
     // 팔로우 리스트 상태
     const [showFollowList, setShowFollowList] = useState(false);
     // 채팅 콘텍스트
-    const { handleChatRoom } = useContext(ChatContext)
+    const { handleChatRoom, handleChat, startChatting } = useContext(ChatContext)
 
     // 마이페이지용 프로필 카드를 열고 닫는 함수
     const handleProfileCard = (state) => {
@@ -48,15 +48,6 @@ const MyPageSidebar = () => {
         setShowFollowList(state)
     }
 
-    //메세지를 시작하는 함수
-    const startChatting = async () => {
-        const response = await fetch(`http://localhost:10000/chats/api/chat-room/register?memberId=${myId}&secondMemberId=${ownerId}`, {
-            method: "POST"
-        })
-        const data = await response.json()
-        console.log(data);
-    }
-    
     // 현재 마이페이지 오너의 정보를 가져오는 함수
     useEffect(() => {
         const getOwnerInfo = async () => {
@@ -167,9 +158,10 @@ const MyPageSidebar = () => {
                         </S.FollowBtn>
                         <S.MessageBtn
                             onClick={() => {
-                            startChatting()
-                            handleChatRoom(true)
-                        }}
+                                startChatting(myId, ownerId)
+                                handleChatRoom(true)
+                                handleChat(true)
+                            }}
                         >
                             메세지
                         </S.MessageBtn>

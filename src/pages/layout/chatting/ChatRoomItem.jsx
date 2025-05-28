@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import S from './style';
 import ProfileCard from '../profile/ProfileCard';
 import DisplayDate from '../../../utils/DisplayDate/DisplayDate';
+import Chat from './Chat';
+import { ChatContext } from '../../../context/ChatContext';
 
 
-const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId, setUserNickName, handleChat}) => {
+const ChatRoomItem = ({i, item, memberId, toggleIsNewMessage}) => {
+
+  // 채팅 콘텍스트
+  const { 
+    showChat,
+    handleChat,
+    startChatting,
+    hideChatRoom
+  } = useContext(ChatContext);
 
   // 프로필 카드 상태값
   const [showProfileCard, setShowProfileCard] = useState(false);
@@ -16,16 +26,12 @@ const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId, setUserNickName,
       setShowProfileCard(state)
   }
 
-  console.log(item);
-  
-
   return (
     <>
       <S.ItemContainer 
         onClick={() => {
-          setChatRoomId(item.chatRoomId)
-          setUserNickName(item.memberNickName)
-          handleChat()
+          startChatting(memberId, item.memberId)
+          handleChat(true)
         }}
       >
         <S.MemberInfoContainer>
@@ -43,28 +49,27 @@ const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId, setUserNickName,
             />
             {/* 프로필 카드 영역 */}
             {showProfileCard && (
-              <S.ProfileCardDropdown
-                onClick={e => e.stopPropagation()}
-                style={{ top: dropdownPos.y, left: dropdownPos.x }}
-              >
-                <ProfileCard
+              <>
+                <S.ProfileCardDropdown
+                  onClick={e => e.stopPropagation()}
+                  style={{ top: dropdownPos.y, left: dropdownPos.x }}
+                >
+                  <ProfileCard
                     memberId={memberId}
                     profileCardMemberId={item.memberId}
                     handleProfileCard={showProfileCard}
                     onCancel={() => {
                       handleProfileCard(false)
-                      onCancel();
                     }}
+                  />
+                </S.ProfileCardDropdown>
+                <S.CardBG 
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleProfileCard(false)
+                  }}
                 />
-              </S.ProfileCardDropdown>
-            )}
-            {showProfileCard && (
-              <S.CardBG 
-                onClick={(e) => {
-                  e.stopPropagation()
-                  handleProfileCard(false)
-                }}
-              />
+              </>
             )}
           <S.MemberInfoTextContainer>
             <S.MemberStatusContainer>
@@ -84,9 +89,27 @@ const ChatRoomItem = ({item, memberId, onCancel, setChatRoomId, setUserNickName,
           <S.LastChatDate>
             {DisplayDate(item.chatRoomLastChatTime) || '--'}
           </S.LastChatDate>
-          <S.OutChatRoom>채팅방 나가기</S.OutChatRoom>
+          <S.OutChatRoom
+            onClick={(e) => {
+              e.stopPropagation()
+              hideChatRoom(memberId, item.chatRoomId)
+              toggleIsNewMessage()
+            }}
+          >
+            채팅방 나가기
+          </S.OutChatRoom>
         </S.RightContainer>
       </S.ItemContainer>
+      {/* 채팅 */}
+      {showChat && (
+        <Chat
+          memberId={memberId}
+          handleChat={showChat}
+          onCancel={() => {
+            handleChat(false)
+          }}
+        />
+      )}
     </>
   );
 };
