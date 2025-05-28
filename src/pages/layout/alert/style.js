@@ -1,7 +1,16 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { fontSizeH8, fontSizeH9, fontWeightBold, pointRedColor, whiteColor } from "../../../globals/common";
 
 const S = {};
+
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
 S.AlartContainer = styled.div`
   background-color: ${({ theme }) => theme.PALLETE.white};
@@ -11,6 +20,7 @@ S.AlartContainer = styled.div`
   overflow: hidden;
   ${fontSizeH8}
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  animation: ${fadeInUp} 0.1s ease-out;
 `;
 
 S.TitleContainer = styled.div`
@@ -39,6 +49,9 @@ S.TopContainer = styled.div`
 `;
 
 S.SelectBox = styled.select`
+  &:focus {
+    outline: none;
+  }
   width: 100px;
   height: 30px;
   padding: 5px;

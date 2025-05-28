@@ -1,7 +1,18 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { blackColor, fontSizeH10, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, fontWeightRegular, gray5Color, mainGreenColor, pointRedColor, whiteColor } from "../../../globals/common";
 
 const S = {};
+
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+`;
 
 S.Backdrop = styled.div`
   position: fixed;
@@ -15,12 +26,25 @@ S.Backdrop = styled.div`
   align-items: center;
   z-index: 10001;
 `
+S.BackdropHide = styled.div`
+  position: fixed;
+  left: 0; 
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10001;
+`
 
 S.ChatRoomContainer = styled.div`
+  animation: ${fadeInUp} 0.1s ease-out;
   z-index: 10002;
   background-color: ${({ theme }) => theme.PALLETE.white};
-  width: 400px;
-  height: 480px;
+  min-width: 400px;
+  min-height: 480px;
   border-radius: 20px;
   overflow: hidden;
   ${fontSizeH8}
@@ -53,6 +77,9 @@ S.TopContainer = styled.div`
 `;
 
 S.SelectBox = styled.select`
+  &:focus {
+    outline: none;
+  }
   width: 100px;
   height: 30px;
   padding: 5px;
@@ -126,6 +153,10 @@ S.MemberImg = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.2);
+  }
 `
 
 S.MemberInfoTextContainer = styled.div`
@@ -185,7 +216,11 @@ S.OutChatRoom = styled.span`
   cursor: pointer;
   ${fontSizeH9}
   ${fontWeightBold}
-  ${pointRedColor}
+  ${gray5Color}
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    ${pointRedColor}
+  }
 `
 
 S.ProfileCardDropdown = styled.div`
@@ -208,16 +243,15 @@ S.ChatLogContainer = styled.div`
   gap: 20px;
   padding: 20px 25px 25px 25px;
   height: 295px;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
 `
 
 S.LeftChat = styled.div`
-  max-width: 240px;
-  max-height: 240px;
   display: flex;
   align-items: end;
   justify-content: left;
+  
 `
 
 S.LeftMemberImg = styled.img`
@@ -227,7 +261,12 @@ S.LeftMemberImg = styled.img`
 `
 
 S.LeftTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
   margin-left: 10px;
+  max-width: 240px;
+  max-height: 240px;
 `
 
 S.LeftNickName = styled.div`
@@ -237,6 +276,7 @@ S.LeftNickName = styled.div`
 `
 
 S.LeftContent = styled.div`
+  display: inline-block;
   ${blackColor}
   ${fontSizeH9}
   ${fontWeightRegular}
@@ -249,6 +289,8 @@ S.LeftContent = styled.div`
 S.RightChat = styled.div`
   display: flex;
   justify-content: right;
+  padding-left: 80px;
+  max-width: 240px;
 `
 
 S.RightContent = styled.div`
@@ -259,13 +301,19 @@ S.RightContent = styled.div`
   background-color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
   border-radius: 5px;
   margin-top: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${({ theme }) => theme.PALLETE.primary.subGreen};
+  }
 `
 
 S.LeftChatInfoContainer = styled.div`
+  display: flex;
+  align-items: end;
+  gap: 5px;
   ${gray5Color}
   ${fontSizeH10}
   ${fontWeightLight}
-  padding-left: 5px;
 `
 
 S.RightChatInfoContainer = styled.div`
@@ -321,6 +369,25 @@ S.SendButton = styled.button`
   border: none;
   border-radius: 5px;
   background-color: ${({ theme }) => theme.PALLETE.gray.gray3};
+`
+
+S.ChatModalContainer = styled.button`
+  position: fixed;
+  z-index: 11000;
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid ${({ theme }) => theme.PALLETE.gray.gray4};
+  background-color: ${({ theme }) => theme.PALLETE.white};
+  &:hover {
+    background-color: ${({ theme }) => theme.PALLETE.gray.gray2};
+  }
+`
+
+S.DeleteChatContent = styled.span`
+  ${pointRedColor}
+  ${fontSizeH8}
+  ${fontWeightBold}
 `
 
 export default S;
