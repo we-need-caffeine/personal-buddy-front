@@ -28,7 +28,7 @@ const CalendarUpdate = () => {
           `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/${memberId}/followings`
         );
         const members = await memberRes.json();
-        console.log(calendarData);
+        //console.log(calendarData);
         setAllMembers(members);
       } catch (error) {
         console.error("캘린더/멤버 정보 조회 실패", error);

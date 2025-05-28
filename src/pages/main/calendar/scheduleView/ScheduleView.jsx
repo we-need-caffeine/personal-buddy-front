@@ -16,7 +16,7 @@ const ScheduleView = () => {
           `${process.env.REACT_APP_BACKEND_URL}/schedules/api/${eventId}`
         );
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         setSchedule(data);
       } catch (error) {
         console.error("일정 조회 실패", error);

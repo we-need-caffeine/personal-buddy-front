@@ -29,7 +29,7 @@ const CalendarContainer = () => {
     navigate("schedule-save"); 
   };
 
-console.log(selectedRange);
+//console.log(selectedRange);
   return (
     <div>
       <CalendarHeader />
