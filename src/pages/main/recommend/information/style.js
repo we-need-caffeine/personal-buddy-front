@@ -1,0 +1,60 @@
+import styled from 'styled-components';
+
+const S = {};
+
+S.RecommendWrapper = styled.div`
+    width: 100%;
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    p {
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 35px;
+        margin-bottom: 50px;
+        margin-top: 100px;
+    }
+`
+
+S.RecommendList = styled.div`
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 0;
+`
+
+S.RecommendInfo = styled.div`
+    width: 320px;
+    height: 374px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+
+    a {
+        display: block;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+    span {
+        font-size: 14px;
+        line-height: 28px;
+    }
+`
+
+S.RecommendImg = styled.img `
+    width: 320px;
+    height: 206px;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+`
+
+
+export default S;
