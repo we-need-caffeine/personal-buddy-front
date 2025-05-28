@@ -28,6 +28,7 @@ const CalendarUpdate = () => {
           `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/${memberId}/followings`
         );
         const members = await memberRes.json();
+        console.log(calendarData);
         setAllMembers(members);
       } catch (error) {
         console.error("캘린더/멤버 정보 조회 실패", error);
@@ -76,27 +77,26 @@ const CalendarUpdate = () => {
     }
   };
 
-  // 삭제 핸들러
-  const handleDelete = async () => {
-    if (!window.confirm("정말 이 캘린더를 삭제하시겠습니까?")) return;
-    try {
-      await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/${calendarId}`,
-        {
-          method: "DELETE",
-        }
-      );
-      await getCalendarsAll();
-      alert("삭제 완료");
-      navigate(`/main/${memberId}`);
-    } catch (error) {
-      console.error("삭제 실패", error);
-      alert("삭제 중 오류가 발생했습니다.");
-    }
-  };
-
-  if (!calendar) return <div>로딩 중...</div>;
-
+ // 삭제 핸들러
+const handleDelete = async () => {
+  try {
+    await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/calendars/api/delete/${calendarId}`,
+      {
+        method: "DELETE",
+      }
+    );
+    await getCalendarsAll();
+    alert("삭제 완료");
+    navigate(`/main/${memberId}`);
+  } catch (error) {
+    console.error("삭제 실패", error);
+    alert("삭제 중 오류가 발생했습니다.");
+  }
+};
+if (!calendar) {
+  return <div>Loading...</div>;
+}
   return (
     <CalendarForm
       initialName={calendar.calendarTitle}

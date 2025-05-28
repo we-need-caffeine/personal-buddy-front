@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { CalendarContext } from "../../../../context/CalendarContext";
 import { useSelector } from "react-redux";
 import S from "./style";
 
 const CalendarHeader = () => {
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.member);
   const { state } = useContext(CalendarContext);
   const { calendars } = state;
@@ -35,7 +36,9 @@ const CalendarHeader = () => {
                     }}
                     onClick={(e) => {
                       e.preventDefault(); // 탭 이동 방지
-                      console.log("수정 버튼 클릭");
+                      navigate(
+                        `/main/${currentUser.id}/${calendarId}/calendar-update`
+                      );
                     }}
                   />
                 )}
