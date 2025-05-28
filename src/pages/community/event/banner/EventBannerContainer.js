@@ -3,6 +3,7 @@ import S from './style';
 import SwiperCore from "swiper/core";
 import { Autoplay, EffectCoverflow } from "swiper/modules";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css/effect-coverflow';
 import 'swiper/css';
 import { Link } from 'react-router-dom';
 SwiperCore.use([Autoplay]);
@@ -26,16 +27,16 @@ const EventBannerContainer = () => {
 
       <S.BannerSliderWrapper>
         <Swiper
-          spaceBetween={50}
-          modules={[EffectCoverflow]}
-          autoplay={{ delay: 2000, disableOnInteraction: false }}
+          spaceBetween={-323}
+          modules={[EffectCoverflow, Autoplay]}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
           effect={'coverflow'}
-          centeredSlides={true}
-          slidesPerView={2}
+          centeredSlides={false}
+          slidesPerView={3}
           coverflowEffect={{
             rotate: 0,
-            stretch: 0,
-            depth: 400,
+            stretch: -150,
+            depth: 250,
             modifier: 1,
             slideShadows: false,
           }}
@@ -45,24 +46,30 @@ const EventBannerContainer = () => {
         >
 
           {banners.map((event, i) => { 
+            // console.log(event);
             const filePath = event.eventImgPath; 
             const fileName = event.eventImgName;
             const imageUrl = `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${ filePath}&fileName=${(fileName)}`;
-            
+            const getEventType = (title) => {
+            if (title.includes('기상') || title.includes('wake')) return 'wake-up';
+            if (title.includes('루틴') || title.includes('routine')) return 'routine';
+            if (title.includes('힐링') || title.includes('healing')) return 'healing-day';
+            return 'routine'; 
+          };
+          const eventType = getEventType(event.eventTitle);
             return (
             <SwiperSlide key={i}>
-               <Link to={`/main/community/event/post/${event.id}/routine`}>
-                  <S.BannerCard>
-                    <img src={encodeURI(imageUrl)} alt="이벤트 배너" />
-                  </S.BannerCard>
-                </Link>
+              <Link to={`/main/community/event/post/${event.id}/${eventType}`}>
+                <S.BannerCard>
+                  <img src={encodeURI(imageUrl)} alt="이벤트 배너" />
+
+                </S.BannerCard>
+              </Link>
             </SwiperSlide>
           )})}
         </Swiper>
       </S.BannerSliderWrapper>
     </S.EventWrapper>
-
-
   );
 };
 

@@ -67,12 +67,13 @@ import LayoutWithoutBanner from "../pages/layout/LayoutWithoutBanner";
 import WakeUpDetail from "../pages/community/event/post/wakeup/WakeUpDetail";
 import RoutineShareDetail from "../pages/community/event/post/Routine/RoutineShareDetail";
 import HealingDayDetail from "../pages/community/event/post/Healing/HealingDayDetail";
-import SurveyDetailInfo from "../pages/survey/detail/SurveyDetailInfo";
-import SurveyDetailPlace from "../pages/survey/detail/SurveyDetailPlace";
-import SurveyDetailShopping from "../pages/survey/detail/SurveyDetailShopping";
+import SurveyDetailInfo from "../pages/survey/detail/info/SurveyDetailInfo";
+import SurveyDetailPlace from "../pages/survey/detail/place/SurveyDetailPlace";
+import SurveyDetailShopping from "../pages/survey/detail/shopping/SurveyDetailShopping";
+import CalendarUpdate from "../pages/main/calendar/calendarSave/CalendarUpdate";
 
 const router = createBrowserRouter([
-    {
+  {
     path: "/",
     element: <LayoutWithoutBanner />, // 랜딩 전용 레이아웃
     children: [
@@ -88,47 +89,51 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/main",
-        element: <LoginLayout />, // 로그인 확인 /main 
+        element: <LoginLayout />, // 로그인 확인 /main
         children: [
           {
-            path : "",
+            path: "",
             element: <MainContainer />,
             children: [
               {
-                path : ":memberId/:calendarId",
-                element : <CalendarContainer />,
-                children : [
+                path: ":memberId/:calendarId",
+                element: <CalendarContainer />,
+                children: [
                   {
                     path: "",
-                    element : <CalendarDayContainer />,
-                    children : [
+                    element: <CalendarDayContainer />,
+                    children: [
                       {
-                        path : "",
-                        element : <CalendarTodo />
+                        path: "",
+                        element: <CalendarTodo />,
                       },
                       {
-                        path : "schedule-view",
-                        element : <ScheduleView />
+                        path: "schedule-view",
+                        element: <ScheduleView />,
                       },
                       {
-                        path : "schedule-save",
-                        element : <ScheduleSave />
+                        path: "schedule-save",
+                        element: <ScheduleSave />,
                       },
                       {
-                        path : "calendar-save",
-                        element : <CalendarSave />
+                        path: "calendar-save",
+                        element: <CalendarSave />,
                       },
-                    ]
+                      {
+                        path: "calendar-update",
+                        element: <CalendarUpdate />,
+                      },
+                    ],
                   },
                   {
-                    path : "month",
-                    element : <CalendarMonthContainer />
+                    path: "month",
+                    element: <CalendarMonthContainer />,
                   },
                   {
-                    path : "week",
-                    element : <CalendarWeekContainer />
-                  }
-                ]
+                    path: "week",
+                    element: <CalendarWeekContainer />,
+                  },
+                ],
               },
               {
                 path: "contents",
@@ -165,7 +170,7 @@ const router = createBrowserRouter([
                     element: <PointShopContainer />, // 포인트샵 페이지
                     children: [
                       {
-                        path: "all",
+                        path: "",
                         element: <PointShopItemsAll />, // 포인트샵 - 전체 /main/contents/point-shop
                       },
                       {
@@ -204,15 +209,15 @@ const router = createBrowserRouter([
                 children: [
                   {
                     path: ":id/wake-up",
-                    element: <WakeUpDetail />
+                    element: <WakeUpDetail />,
                   },
                   {
                     path: ":id/routine",
-                    element: <RoutineShareDetail />
+                    element: <RoutineShareDetail />,
                   },
                   {
                     path: ":id/healing-day",
-                    element: <HealingDayDetail />
+                    element: <HealingDayDetail />,
                   },
                 ],
               },
@@ -300,13 +305,13 @@ const router = createBrowserRouter([
             path: "",
             element: <SurveyType />,
           },
-          { 
-            path: ":category", 
+          {
+            path: ":category",
             children: [
               { path: "", element: <SurveyDetailInfo /> },
               { path: "place", element: <SurveyDetailPlace /> },
               { path: "shopping", element: <SurveyDetailShopping /> },
-            ]
+            ],
           },
         ],
       },

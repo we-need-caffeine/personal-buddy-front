@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 // 초기값
 const CalendarContext = createContext({

@@ -404,9 +404,9 @@ S.CommentDeleteButton = styled.button`
 
 // 댓글 구분선
 S.CommentSeparator = styled.span`
-  font-size: 13px;
-  color: #ccc;
-  margin: 0 4px;
+    font-size: 13px;
+    color: #ccc;
+    margin: 0 4px;
 `;
 
 

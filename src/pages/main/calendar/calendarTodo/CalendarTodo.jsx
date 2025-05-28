@@ -19,7 +19,6 @@ const CalendarTodo = () => {
     const todosCompleted = [];
 
     calendars.forEach((calendar) => {
-
       if (calendar.id === Number(calendarId)) {
         calendar.todoLists.forEach((todo) => {
           const formattedTodo = {
@@ -113,9 +112,6 @@ const CalendarTodo = () => {
     }
   };
 
-  useEffect(() => {
-  }, [selectedId, todos]);
-
   const handleRemoveTodo = async (idToRemove) => {
     try {
       const response = await fetch(
@@ -129,7 +125,6 @@ const CalendarTodo = () => {
         throw new Error("서버에서 삭제 실패");
       }
 
-      // 두 목록에서 모두 제거
       setTodos((prev) => prev.filter((todo) => todo.id !== idToRemove));
       setCompletedTodos((prev) =>
         prev.filter((todo) => todo.id !== idToRemove)
@@ -140,15 +135,27 @@ const CalendarTodo = () => {
     setSelectedId(null);
   };
 
+  function getWeightedLength(str) {
+    let length = 0;
+    for (let char of str) {
+      length += /[가-힣]/.test(char) ? 2 : 1;
+    }
+    return length;
+  }
+
   return (
     <S.Container>
       <S.TodoContainer>
-        {/* 입력 영역 */}
         <S.TodoWrapper>
           <S.TodoInput
             placeholder="할 일을 입력하세요"
             value={todoInput}
-            onChange={(e) => setTodoInput(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (getWeightedLength(value) <= 40) {
+                setTodoInput(value);
+              }
+            }}
           />
           <S.CircleIcon
             src="/assets/images/main/calendar/circle.png"
@@ -163,7 +170,6 @@ const CalendarTodo = () => {
       </S.TodoContainer>
 
       <S.ScrollContainer>
-        {/* 할 일 목록 */}
         {todos.map((todo) => (
           <S.TodoWritten
             key={todo.id}
@@ -175,6 +181,7 @@ const CalendarTodo = () => {
               src="/assets/images/main/calendar/circle.png"
               alt="체크 이미지"
               onClick={(e) => {
+                e.stopPropagation();
                 handleToggleTodo(todo, false);
               }}
             />
@@ -184,6 +191,7 @@ const CalendarTodo = () => {
                 src="/assets/images/main/calendar/delete.png"
                 alt="삭제 아이콘"
                 onClick={(e) => {
+                  e.stopPropagation();
                   handleRemoveTodo(todo.id);
                 }}
               />
@@ -203,30 +211,27 @@ const CalendarTodo = () => {
           <S.TodoTextWrapper>완료됨</S.TodoTextWrapper>
         </S.DoneWrapper>
 
-        {/* 완료된 할 일 목록 */}
-        {rotated && (
-          <S.DoneTodoWrapper>
-            {completedTodos.map((todo) => (
-              <S.TodoDone key={todo.id}>
-                <S.CircleIcon
-                  src="/assets/images/main/calendar/check.png"
-                  alt="완료 체크"
-                  onClick={(e) => {
-                    handleToggleTodo(todo, true);
-                  }}
-                />
-                <S.TodoTextWrapper>{todo.text}</S.TodoTextWrapper>
-                <S.DeleteIcon
-                  src="/assets/images/main/calendar/delete.png"
-                  alt="삭제 아이콘"
-                  onClick={(e) => {
-                    handleRemoveTodo(todo.id);
-                  }}
-                />
-              </S.TodoDone>
-            ))}
-          </S.DoneTodoWrapper>
-        )}
+        {/* 완료된 할 일 목록 (화살표 열렸을 때만 보여줌) */}
+        {rotated &&
+          completedTodos.map((todo) => (
+            <S.TodoDone key={todo.id}>
+              <S.CircleIcon
+                src="/assets/images/main/calendar/check.png"
+                alt="완료 체크"
+                onClick={(e) => {
+                  handleToggleTodo(todo, true);
+                }}
+              />
+              <S.TodoTextWrapper $done={true}>{todo.text}</S.TodoTextWrapper>
+              <S.DeleteIcon
+                src="/assets/images/main/calendar/delete.png"
+                alt="삭제 아이콘"
+                onClick={(e) => {
+                  handleRemoveTodo(todo.id);
+                }}
+              />
+            </S.TodoDone>
+          ))}
       </S.ScrollContainer>
     </S.Container>
   );
