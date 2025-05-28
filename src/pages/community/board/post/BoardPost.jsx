@@ -1,5 +1,5 @@
 import React, { useState, useEffect  } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import S from './style';
 import Pagination from '../../../../hooks/pagenation/Pagination';
@@ -39,6 +39,7 @@ const BoardPost = () => {
   // 삭제
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState(null);
+  const navigate = useNavigate();
 
   const handleDeletePost = async () => {
   const confirmDelete = window.confirm("게시글을 삭제하시겠습니까?");
@@ -50,7 +51,7 @@ const BoardPost = () => {
     });
       if (res.ok) {
         alert('게시글이 삭제되었습니다.');
-        Navigate('/main/community/board'); // 삭제 후 게시판 리스트로 이동
+        navigate('/main/community/board'); // 삭제 후 게시판 리스트로 이동
       } else {
         alert('게시글 삭제에 실패했습니다.');
       }
