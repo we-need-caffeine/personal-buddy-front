@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { CalendarContext } from "../../../../context/CalendarContext";
 import { useSelector } from "react-redux";
 import S from "./style";
 
 const CalendarHeader = () => {
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.member);
   const { state } = useContext(CalendarContext);
   const { calendars } = state;
@@ -22,12 +23,31 @@ const CalendarHeader = () => {
             {({ isActive }) => (
               <S.Tab className={isActive ? "selected" : ""}>
                 {calendarTitle}
+                {Number(calendarId) === id && (
+                  <img
+                    src="/assets/images/main/calendar/ModifyDark.png"
+                    alt="수정"
+                    style={{
+                      width: "16px",
+                      height: "16px",
+                      marginLeft: "6px",
+                      verticalAlign: "middle",
+                      cursor: "pointer",
+                    }}
+                    onClick={(e) => {
+                      e.preventDefault(); // 탭 이동 방지
+                      navigate(
+                        `/main/${currentUser.id}/${calendarId}/calendar-update`
+                      );
+                    }}
+                  />
+                )}
               </S.Tab>
             )}
           </NavLink>
         ))}
 
-        {/* + 버튼 탭 */}
+        {/* + 버튼 */}
         <NavLink to={`/main/${currentUser.id}/${calendarId}/calendar-save`}>
           <S.Tab>
             <img

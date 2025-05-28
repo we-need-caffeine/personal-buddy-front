@@ -119,26 +119,36 @@ S.CalendarWrapper = styled.div`
     color: white !important; /* 텍스트 가독성 위해 흰색 */
   }
 
+  .fc-timegrid-event-harness {
+    display: flex;
+    align-items: center;
+  }
+
   .fc-event {
     margin: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    width: 100% !important;
+    width: 770px !important;
+    height: 100% !important; /* 셀에 맞추도록 */
+    padding: 4px 6px !important;
+    box-sizing: border-box;
+
+    font-size: 13px;
+    border-radius: 4px;
   }
 
   .fc-highlight {
-    background-color: #01cd74 !important; // 
+    background-color: #01cd74 !important; //
     opacity: 0.4; // 선택적: 좀 더 연하게
   }
 
-.fc-v-event {
-  
+  .fc-v-event {
     background-color: var(--fc-event-bg-color);
     border: 1px solid var(--fc-event-border-color);
-}
-.fc-v-event {
-  --fc-event-bg-color: transparent;
-}
+  }
+  .fc-v-event {
+    --fc-event-bg-color: transparent;
+  }
 `;
 
 S.DateInfoWrapper = styled.div`

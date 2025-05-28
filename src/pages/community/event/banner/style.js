@@ -1,5 +1,3 @@
-// src/pages/main/community/event/banner/style.js
-
 import styled from 'styled-components';
 import {
   fontSizeH4,
@@ -12,10 +10,7 @@ const S = {};
 
 // 전체 이벤트 배너 영역
 S.EventWrapper = styled.div`
-  width: 1400px;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
+
 `;
 
 // 소제목 (예: BUDDYGROUND)
@@ -38,30 +33,21 @@ S.MainTitle = styled.div`
 
 // Swiper 전체 wrapper
 S.BannerSliderWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  overflow: hidden;
-
-  & .swiper-slide {
-    width: 680px !important;
-    height: 450px !important;
-  }
+  width: 1400px;
+  overflow: visible !important;
 `;
 
 // 배너 카드 1장
 S.BannerCard = styled.div`
-  position: relative;
-  width: 680px;
-  height: 450px;
   border-radius: 20px;
   overflow: hidden;
+  width: 680px !important;
+  height: 450px !important;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
   }
 `;
 

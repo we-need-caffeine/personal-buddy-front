@@ -63,12 +63,17 @@ S.ItemWrapper = styled.div`
   // 콘텐츠 렌더링 영역
 `;
 
+S.ModifyButton = styled.img`
+  background-color: white;
+  padding: 4px;
+  border-radius: 4px;
+`;
 S.DailyButtonWrapper = styled.div`
   a {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #01CD74;
+    background-color: #01cd74;
     color: #fff;
     width: 80px;
     height: 30px;
