@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { blackColor, flexBaseTop, fontSizeH4, fontSizeH6, fontSizeH8, fontWeightBold, fontWeightLight, fontWeightRegular, gray5Color, gray6Color, mainGreenColor, whiteColor } from "../../../globals/common";
-import { Link } from "react-router-dom";
+import { blackColor, fontSizeH4, fontSizeH6, fontSizeH8, fontWeightBold, fontWeightLight, fontWeightRegular, gray5Color, gray6Color, mainGreenColor, pointRedColor, whiteColor } from "../../../globals/common";
 
 const S = {};
 
@@ -84,20 +83,57 @@ S.AchievementListBox = styled.div`
 `;
 
 S.AchievementCard = styled.div`
+  cursor: pointer;
   position: relative;
   display: flex;
-  justify-content: end;
-  align-items: center;  
   flex-direction: column;
+  justify-content: left;
+  align-items: center;  
   width: 200px;
   height: 230px;
   border-radius: 20px;
   box-sizing: border-box;
-  border: solid 1px ${({ theme }) => theme.PALLETE.gray.gray4};
+  background-color: ${({ $isRep, theme }) => $isRep ? theme.PALLETE.primary.lightGreen : theme.PALLETE.white};
+  border: 1px solid ${({ $isRep, theme }) => $isRep ? theme.PALLETE.primary.mainGreen : theme.PALLETE.gray.gray4};
 `
 
 S.AchievementIcon = styled.img`
+  position: absolute;
+  top: -40px;
+`
 
+S.DescriptionTitle = styled.span`
+  text-align: center;
+  width: 163px;
+  padding: 57px 0px 17px 0px;
+  ${fontSizeH6}
+  ${fontWeightBold}
+  border-bottom: 1px solid #B9D2C7;
+`
+
+S.DescriptionListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 17px;
+  gap: 12px;
+`
+
+S.DescriptionContainer = styled.div`
+  width: 163px;
+  gap: 5px;
+  display: flex;
+  justify-content: left;
+`
+
+S.Description = styled.span`
+  ${fontSizeH8}
+  ${fontWeightRegular}
+`
+
+S.DescriptionGetPoint = styled.span`
+  ${fontSizeH8}
+  ${fontWeightBold}
+  ${pointRedColor}
 `
 
 export default S;
