@@ -60,6 +60,11 @@ S.RecommendImg = styled.img `
     object-fit: cover;
     border-radius: 10px;
     display: block;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+    }
 `
 
 

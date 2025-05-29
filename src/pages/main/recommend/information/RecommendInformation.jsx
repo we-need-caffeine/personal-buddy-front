@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 const RecommendInformation = () => {
     const [data, setData] = useState([]);
+    const [selectedType, setSelectedType] = useState('');  // 대분류 상태
     const currentUser = useSelector(state => state.member.currentUser);
     const memberId = currentUser?.id;  // 안전하게 null 체크
 
@@ -21,36 +22,34 @@ const RecommendInformation = () => {
                 return response.json();
             })
             .then(result => {
-                console.log('🔍 API 응답 데이터:', result);
-                const filteredData = result.filter(item => item.interestDataSection === 'info');
-                console.log('🔍 filteredData:', filteredData);
+                // 전체 대분류(INTEREST_DATA_TYPE) 추출
+                const types = [...new Set(result.map(item => item.interestDataType))];
 
-                // Set으로 중복 제거 (item 전체를 JSON 문자열로 변환)
-                const uniqueSet = new Set();
-                const uniqueData = [];
-                filteredData.forEach(item => {
-                    const key = JSON.stringify(item);  // item 전체 내용을 문자열화
-                    if (!uniqueSet.has(key)) {
-                        uniqueSet.add(key);
-                        uniqueData.push(item);
-                    }
-                });
+                // 랜덤으로 대분류 하나 선택
+                const randomType = types[Math.floor(Math.random() * types.length)];
 
-                // 랜덤으로 섞고 4개 선택
-                const shuffledData = uniqueData.sort(() => Math.random() - 0.5);
+                setSelectedType(randomType);
+
+                // 선택된 대분류 + interestDataSection === 'info' 필터링
+                const filteredData = result.filter(item =>
+                    item.interestDataType === randomType &&
+                    item.interestDataSection === 'info'
+                );
+
+                // filteredData에서 랜덤 4개 추출
+                const shuffledData = filteredData.sort(() => Math.random() - 0.5);
                 const selectedData = shuffledData.slice(0, 4);
 
                 setData(selectedData);
             })
-
-                        .catch(error => console.error('데이터 불러오기 실패', error));
-                    }
-                }, [memberId]);
+            .catch(error => console.error('데이터 불러오기 실패', error));
+        }
+    }, [memberId]);
 
     return (
         <S.ContentWrapper>
             <S.RecommendWrapper>
-                <p>오늘 이런 노래 어때요?!!</p>
+                <p>오늘 이런 {selectedType} 어때요?</p>
                 <S.RecommendList>
                     {data.map(item => {
                         const parts = item.interestDataContent.split('|');
@@ -64,11 +63,13 @@ const RecommendInformation = () => {
                                         fontWeight: 500,
                                         fontSize: 14,
                                         display: 'inline-block',
-                                        width: 40  // 너비 고정
+                                        width: 40,  // 너비 고정
+                                        color: '#333333'
                                     }}>{key}</span>: <span style={{
                                         fontWeight: 400,
                                         fontSize: 14,
-                                        marginLeft: 10
+                                        marginLeft: 10,
+                                        color: '#333333'
                                     }}>{value}</span>
                                 </div>
                             );
@@ -76,12 +77,14 @@ const RecommendInformation = () => {
 
                         return (
                             <S.RecommendInfo key={`${item.id}-${item.interestDataContent}`}>
+                                <a href={encodeURI(item.interestDataLink)} target="_blank" rel="noopener noreferrer">
                                 <S.RecommendImg 
                                     src={`${process.env.REACT_APP_BACKEND_URL}/${item.interestDataImgPath}/${item.interestDataImgName}`} 
                                     alt={item.interestDataContent} 
                                     onError={(e) => e.target.src = '/assets/images/error/404ERROR.png'}
                                 />
                                 <div>{items}</div>
+                                </a>
                             </S.RecommendInfo>
                         );
                     })}

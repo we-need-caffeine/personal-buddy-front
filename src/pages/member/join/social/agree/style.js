@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { fontSizeH7 } from '../../../../../globals/common';
+import { fontSizeH7 } from '../../../globals/common';
 
 const S = {}
 

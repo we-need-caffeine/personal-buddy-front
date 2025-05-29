@@ -35,12 +35,12 @@ S.RecommendList = styled.div`
 
 S.RecommendInfo = styled.div`
     width: 320px;
-    height: 374px;
+    height: 400px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     gap: 10px;
-    cursor: pointer;
+    /* cursor: pointer; */
 
     a {
         display: block;
@@ -56,10 +56,17 @@ S.RecommendInfo = styled.div`
 
 S.RecommendImg = styled.img `
     width: 320px;
-    height: 206px;
+    height: 250px;
     object-fit: cover;
     border-radius: 10px;
     display: block;
+    cursor: pointer;
+
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+    }
 `
 
 
