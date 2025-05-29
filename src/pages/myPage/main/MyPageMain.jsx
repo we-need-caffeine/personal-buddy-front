@@ -119,7 +119,7 @@ const MyPageMain = () => {
                     <S.TitleBottomContainer>
                             <span>나의 성장 나무</span>
                         <S.TitleTopLinkText>
-                            <NavLink to="">
+                            <NavLink to="/main/contents/mytree">
                                 <span>나의 성장 나무 꾸미기 &gt;&gt;</span>
                             </NavLink>
                         </S.TitleTopLinkText>
