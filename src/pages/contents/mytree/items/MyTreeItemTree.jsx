@@ -35,9 +35,11 @@ const MyTreeItemTree = () => {
     const addItem =  sameTypeItems.filter((item) => item.itemId === itemId)[0];
     
     addItem.treeCustomizingApply = 1;
-    if(removeItem != null){
+
+    if(removeItem){
       removeItem.treeCustomizingApply = 0;
     }
+
     setMemberAppliedItemTree(addItem);
     setMemberItems(prev =>
       prev.map(item =>
