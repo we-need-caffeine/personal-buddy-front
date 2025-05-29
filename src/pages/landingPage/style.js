@@ -1,20 +1,44 @@
 import styled from 'styled-components';
-import { flexCenter} from '../../globals/common';
+import { flexCenter, flexCenterColumn, fontSizeH1, fontSizeH4, fontWeightBold} from '../../globals/common';
+import { Link } from 'react-router-dom';
 
 const S = {};
 
 S.Container = styled.div`
-    height: 100vh;
-    ${flexCenter};
-    flex-direction: column;
-    background: linear-gradient(to right,rgb(255, 255, 255),rgb(198, 228, 204));
-    cursor: pointer;
-    position: relative;
+    ${flexCenterColumn}
+    width: 100%;
 `;
 
-S.Img = styled.img`
+S.VideoWrapper = styled.div`
+    ${flexCenterColumn}
+    position: relative;
+    border: none;
+    width: 1920px;
+`;
+
+S.Video = styled.video`
+    border: none;
+    width: 100%;
+`
+
+S.LoginLink = styled(Link)`
+    position: absolute;
     ${flexCenter}
-    padding: 30px;
+    width: 200px;
+    height: 100px;
+    border: none;
+    border-radius: 30px;
+    background-color: ${({backgroundColor}) => backgroundColor};
+    color: ${({color}) => color};
+    left: ${({xPosition}) => xPosition};
+    top: ${({yPosition}) => yPosition};
+    ${fontWeightBold}
+    ${fontSizeH4}
+    &:hover{
+        background-color: ${({hoverBackgroundColor}) => hoverBackgroundColor}
+    };
+    z-index: 1000;
+    
 `
 
 S.Title = styled.h1`
@@ -29,12 +53,16 @@ S.Subtitle = styled.p`
 `;
 
 S.MusicInfo = styled.div`
+    position: absolute;
+    left: 1200px;
+    top: 90px;
     margin-top: 20px;
     display: flex;
     gap: 10px;
     align-items: center;
     font-size: 16px;
     color: #444;
+    z-index: 999;
 `;
 
 S.MusicButton = styled.button`
