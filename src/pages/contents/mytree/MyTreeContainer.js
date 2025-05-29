@@ -4,6 +4,8 @@ import S from './style';
 import { useSelector } from 'react-redux';
 import Sticker from './display/Sticker';
 import ConfirmModal from '../../layout/modal/ConfirmModal';
+import 'aos/dist/aos.css';
+import AOS from "aos";
 
 const MyTreeContainer = () => {
   
@@ -39,7 +41,13 @@ const MyTreeContainer = () => {
   }
 
   useEffect(() => {
+    AOS.init({
+      delay: 500,
+      duration: 1000,
+      once: true,
+    })
     window.scrollTo(0, 0);
+
     const getItems = async () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/my-tree/api/tree/list`,{
         method: "POST",
@@ -118,7 +126,7 @@ const MyTreeContainer = () => {
     <div>
       <S.SubTitle>언젠가는 아름다워질 나의 나무 ✨</S.SubTitle>
       <S.MainTitle>나의 성장 나무 🌳</S.MainTitle>
-      <S.MyTreeWrapper>
+      <S.MyTreeWrapper data-aos="zoom-out">
         <S.MyTreeBackGround 
           url={
             memberAppliedItemBackground && memberAppliedItemBackground.itemImgPath && memberAppliedItemBackground.itemImgName ? 
@@ -180,7 +188,8 @@ const MyTreeContainer = () => {
             onCancel={() => handleSaveOkModal(false)}
             cancelBtnMsg={"확인"}
         />
-        <Outlet context={{
+        <Outlet 
+          context={{
             memberId,
             memberItems,
             setMemberItems,
