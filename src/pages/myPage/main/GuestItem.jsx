@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import S from './style';
 import ProfileCard from '../../layout/profile/ProfileCard';
+import FormatDate from '../../../utils/formatDate/FormatDate'
 
 const GuestItem = ({
-  item, memberId, onAskDelete, formatDate
+  item, memberId, onAskDelete
 }) => {
 
     // 프로필 카드 상태
@@ -24,8 +25,8 @@ const GuestItem = ({
                         src={item.memberImgPath || "/assets/images/header/default-member-img.png"}
                         alt='멤버 프로필 이미지'
                         onClick={(e) => {
-                        setDropdownPos({ x: e.clientX, y: e.clientY });
-                        handleProfileCard(true)
+                            setDropdownPos({ x: e.clientX, y: e.clientY });
+                            handleProfileCard(true)
                         }}
                         onError={e => {
                             e.target.src = "/assets/images/header/default-member-img.png";
@@ -67,7 +68,7 @@ const GuestItem = ({
                 <span>{item.guestbookContent}</span>
             </S.GuestBookContent>
             <S.GuestBookCreateTime>
-                <span>{formatDate(item.guestbookCreateTime)}</span>
+                <span>{FormatDate(item.guestbookCreateTime)}</span>
             </S.GuestBookCreateTime>
         </S.GuestBookItemContainer>
     );

@@ -1,7 +1,18 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { blackColor, fontSizeH8, whiteColor } from '../../../globals/common';
 
 const S = {};
+
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+`;
 
 S.Backdrop = styled.div`
   position: fixed;
@@ -17,6 +28,7 @@ S.Backdrop = styled.div`
 `
 
 S.ModalContainer = styled.div`
+  animation: ${fadeInUp} 0.1s ease-out;
   background-color: ${({ theme }) => theme.PALLETE.white};
   width: 400px;
   height: 260px;

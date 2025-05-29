@@ -5,6 +5,7 @@ import ConfirmModal from '../../layout/modal/ConfirmModal';
 import { useSelector } from 'react-redux';
 import GuestItem from './GuestItem';
 import ConfirmDeleteModal from '../../layout/modal/ConfirmDeleteModal';
+import Pagination from '../../../hooks/pagenation/Pagination';
 
 const MyPageMain = () => {
     // 로그인된 유저정보
@@ -23,8 +24,11 @@ const MyPageMain = () => {
     const { id } = useParams();
     // 게스트북 오너 아이디를 저장
     const ownerMemberId = id;
-    // 페이지
-    const page = 1;
+    // 현재 페이지
+    const [currentPage, setCurrentPage] = useState(1);
+    // 페이지당 보여줄 아이템의 갯수
+    const itemsPerPage = 4;
+
 
     // 컨펌 모달 상태를 변경하는 함수
     const handleConfrmModal = (state) => {
@@ -89,7 +93,7 @@ const MyPageMain = () => {
     useEffect(() => {
         // 비동기로 방명록을 페이지로 백엔드에 요청하는 함수
         const getGuestBook = async () => {
-            const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/list?ownerMemberId=${ownerMemberId}&page=${page}`);
+            const response = await fetch(`http://localhost:10000/guestbooks/api/guestbook/list?ownerMemberId=${ownerMemberId}&page=${currentPage}`);
             const guestBooks = await response.json()
             setGuestBooks(guestBooks);
         }
@@ -102,19 +106,7 @@ const MyPageMain = () => {
         }
         getGuestBook()
         getGuestBookCount()
-    }, [ownerMemberId, showConfrmModal, showDeleteModal])
-
-    // 시간값 변환 함수
-    const formatDate = (time) => {
-        const date = new Date(time);
-        const offsetDate = new Date(date.getTime() + (60 * 1000));
-        const yyyy = offsetDate.getFullYear();
-        const mm = String(offsetDate.getMonth() + 1).padStart(2, '0');
-        const dd = String(offsetDate.getDate()).padStart(2, '0');
-        const hh = String(offsetDate.getHours()).padStart(2, '0');
-        const min = String(offsetDate.getMinutes()).padStart(2, '0');
-        return `${yyyy}.${mm}.${dd} ${hh}:${min}`;
-    };
+    }, [ownerMemberId, showConfrmModal, showDeleteModal, currentPage])
 
     return (
         <>
@@ -127,7 +119,7 @@ const MyPageMain = () => {
                     <S.TitleBottomContainer>
                             <span>나의 성장 나무</span>
                         <S.TitleTopLinkText>
-                            <NavLink to="">
+                            <NavLink to="/main/contents/mytree">
                                 <span>나의 성장 나무 꾸미기 &gt;&gt;</span>
                             </NavLink>
                         </S.TitleTopLinkText>
@@ -170,14 +162,6 @@ const MyPageMain = () => {
                         >
                             <span>등록</span>
                         </S.GuestBookInputButton>
-                        {/* 컨펌 모달 */}
-                        <ConfirmModal
-                            handleConfrmModal={showConfrmModal}
-                            title="방명록 등록"
-                            message="방명록을 등록 하시겠습니까?"
-                            onConfirm={handleRegister}
-                            onCancel={() => handleConfrmModal(false)}
-                        />
                     </S.GuestBookInputBottomContainer>
                 </S.GuestBookInputContainer>
                 {/* 게스트북 리스트 영역*/}
@@ -188,10 +172,22 @@ const MyPageMain = () => {
                             item={item}
                             memberId={memberId}
                             onAskDelete={handleAskDelete}
-                            formatDate={formatDate}
                         />
                     ))}
                 </S.GuestBookListContainer>
+                <Pagination 
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(guestBookCount / itemsPerPage)}
+                    onPageChange={setCurrentPage}
+                />
+                {/* 컨펌 모달 */}
+                <ConfirmModal
+                    handleConfrmModal={showConfrmModal}
+                    title="방명록 등록"
+                    message="방명록을 등록 하시겠습니까?"
+                    onConfirm={handleRegister}
+                    onCancel={() => handleConfrmModal(false)}
+                />
                 {/* 삭제 컨펌 모달 */}
                 <ConfirmDeleteModal
                     handleConfrmDeleteModal={showDeleteModal}

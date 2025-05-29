@@ -1,10 +1,21 @@
-import styled from 'styled-components';
-import { fontSizeH8, fontSizeH9, fontWeightBold, fontWeightRegular, gray5Color, mainGreenColor, whiteColor } from '../../../globals/common';
+import styled, { keyframes } from 'styled-components';
+import { fontSizeH10, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, fontWeightRegular, gray4Color, gray5Color, mainGreenColor, pointRedColor, whiteColor } from '../../../globals/common';
 
 const S = {};
 
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 S.CardContainer = styled.div`
-  width: 320px;
+  cursor: default;
+  animation: ${fadeInUp} 0.1s ease-out;
+  width: 340px;
   padding: 20px;  
   border-radius: 10px;
   background-color: ${({ theme }) => theme.PALLETE.white};
@@ -36,7 +47,7 @@ S.MemberInfoTextContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: left;
-  margin-left: 15px;
+  margin-left: 10px;
   gap: 5px;
 `;
 
@@ -51,6 +62,20 @@ S.MemberStatusMessage = styled.div`
   ${gray5Color}
   width: 140px;
 `;
+
+S.MemberPoint = styled.div`
+  display: flex;
+  ${fontSizeH9}
+  ${gray4Color}
+  ${fontWeightRegular}
+`
+
+S.MemberPointInfo = styled.div`
+  padding-left: 5px;
+  ${fontSizeH9}
+  ${pointRedColor}
+  ${fontWeightRegular}
+`
 
 S.FollowInfoContainer = styled.div`
   height: 100%;
@@ -74,8 +99,14 @@ S.FollowBtn = styled.button`
   background-color: ${({ $isFollow, theme }) => 
     $isFollow === 1 ? theme.PALLETE.gray.gray3 : theme.PALLETE.primary.mainGreen
   };
-  
 `
+
+S.CloseButton = styled.img`
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+`
+
 
 S.FollowCountContainer = styled.div`
   display: flex;
@@ -84,9 +115,9 @@ S.FollowCountContainer = styled.div`
   ${fontSizeH8}
   ${fontWeightBold}
   ${gray5Color}
-  gap: 30px;
+  gap: 40px;
   width: 320px;
-  height: 30px;
+  height: 20px;
   margin-top: 10px;
   border-bottom: 1px solid ${({ theme }) => theme.PALLETE.gray.gray2};
 `
@@ -106,9 +137,9 @@ S.FollowCountSubText = styled.span`
 `
 
 S.AcheivementContainer = styled.div`
-  padding: 10px 60px 20px 60px;
+  padding: 10px 70px 20px 70px;
   width: 200px;
-  height: 50px;
+  height: 40px;
   display: flex;
   justify-content: space-between;
 `
@@ -122,7 +153,7 @@ S.AcheivementItems = styled.img`
 S.SocialButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 20px;
+  gap: 30px;
 `
 
 S.MyPageButton = styled.button`
@@ -134,6 +165,10 @@ S.MyPageButton = styled.button`
   ${whiteColor}
   ${fontSizeH8}
   ${fontWeightBold}
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: #00AA88;
+  }
 `
 
 S.MessageButton = styled.button`
@@ -145,6 +180,10 @@ S.MessageButton = styled.button`
   ${whiteColor}
   ${fontSizeH8}
   ${fontWeightBold}
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: #007799;
+  }
 `
 
 export default S;

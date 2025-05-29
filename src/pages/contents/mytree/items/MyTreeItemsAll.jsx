@@ -35,7 +35,7 @@ const MyTreeItemsAll = () => {
       const removeItem = sameTypeItems.filter((item) => item.itemType === itemType && item.treeCustomizingApply === 1)[0];
       const addItem =  sameTypeItems.filter((item) => item.itemId === itemId)[0];
       
-      if(removeItem != null) {
+      if(removeItem) {
         removeItem.treeCustomizingApply = 0;
       }
 
@@ -46,7 +46,7 @@ const MyTreeItemsAll = () => {
           item.itemId === addItem.itemId
           ? { ...item, treeCustomizingApply: 1 }
           :
-          item.treeCustomizingId === removeItem.treeCustomizingId
+          removeItem && item.treeCustomizingId === removeItem.treeCustomizingId
           ? { ...item, treeCustomizingApply: 0 }
           : item
       ));
@@ -74,7 +74,7 @@ const MyTreeItemsAll = () => {
       const addItem =  sameTypeItems.filter((item) => item.itemId === itemId)[0];
       addItem.treeCustomizingApply = 1;
       
-      if(removeItem != null) {
+      if(removeItem) {
         removeItem.treeCustomizingApply = 0;
       }
 
@@ -84,7 +84,7 @@ const MyTreeItemsAll = () => {
           item.itemId === addItem.itemId
           ? { ...item, treeCustomizingApply: 1 }
           :
-          item.treeCustomizingId === removeItem.treeCustomizingId
+          removeItem && item.treeCustomizingId === removeItem.treeCustomizingId
           ? { ...item, treeCustomizingApply: 0 }
           : item
       ));
@@ -168,9 +168,7 @@ const MyTreeItemsAll = () => {
       );
     } else{
       const removeItem = sameTypeItems.filter(item => item.itemId === itemId && item.treeCustomizingApply === 1)[0];
-      removeItem.treeCustomizingApply = 0;
       setMemberAppliedItemSticker(memberAppliedItemsSticker.filter((item) => item.treeCustomizingId !== removeItem.treeCustomizingId));
-
       setMemberCustomizingList(prev =>
         prev.map(item =>
           item.treeCustomizingId === removeItem.treeCustomizingId
