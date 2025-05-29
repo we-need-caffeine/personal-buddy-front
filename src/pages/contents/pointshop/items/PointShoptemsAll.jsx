@@ -5,7 +5,8 @@ import { useOutletContext } from 'react-router-dom';
 
 const PointShopItemsAll = () => {
 
-  const memberId = useOutletContext();
+  const { member } = useOutletContext();
+  const memberId = member.id;
   const [items, setItems] = useState([]);
   const [itemCount, setItemCount] = useState({});
   const [selectedItemCard, setSelectedItemCard] = useState(-1);
@@ -60,7 +61,6 @@ const PointShopItemsAll = () => {
       return;
     }
 
-    window.scrollTo(0, 200);
     const getItemList = async () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/point-shop/api/item/list`, {
         method: "POST",
@@ -84,6 +84,7 @@ const PointShopItemsAll = () => {
         paginatedItems.length !== 0 && paginatedItems.map((item) => (
           <S.ItemCard 
             key={item.itemId} 
+            itemData={item}
             onClick={() => {handleClickItemCard(item.itemId)}}
             selected={(item.itemId === selectedItemCard || (itemCount[item.itemId] || 0) !== 0)}
             isOwned={(item.itemType === "나무" || item.itemType === "배경") && item.itemOwned === 1}
@@ -100,7 +101,7 @@ const PointShopItemsAll = () => {
             <S.ItemDescriptionH8>{item.itemName}</S.ItemDescriptionH8>
             <S.ItemDescriptionH10>가격 : {item.itemPrice} 🪙</S.ItemDescriptionH10>
             {
-                (item.itemId === selectedItemCard || 
+              (item.itemId === selectedItemCard || 
                 (itemCount[item.itemId] || 0) !== 0) &&
                 !((item.itemType === "나무" || item.itemType === "배경") && item.itemOwned === 1) && (
                 <S.ItemInfoWrapper>
