@@ -67,6 +67,15 @@ const LandingPage = () => {
       if (isScrolling) return;
 
       isScrolling = true;
+
+      // 컨페티 자동 발사
+      confetti({
+        particleCount: 120,
+        spread: 100,
+        origin: { y: 0.6 },
+        colors: ['#00bfff', '#ff69b4', '#ffcc00'],
+      });
+
       const direction = e.deltaY > 0 ? 1 : -1;
       const currentScroll = window.scrollY;
       const currentIndex = Math.round(currentScroll / SECTION_HEIGHT);
@@ -154,7 +163,7 @@ const LandingPage = () => {
 
 
   return (
-    <S.Container >
+    <S.Container onClick={(e) => handleClick(e)}>
       {musicStarted && (
         <S.MusicInfo>
           <div>{videoTitle}</div>
@@ -166,6 +175,7 @@ const LandingPage = () => {
       )}
       <S.VideoWrapper>
         <S.LoginLink 
+          onClick={(e) => e.stopPropagation()}
           to={"/member/login"}
           xPosition={'650px'} 
           yPosition={'680px'} 
@@ -186,6 +196,7 @@ const LandingPage = () => {
       </S.VideoWrapper>
       <S.VideoWrapper>
         <S.LoginLink 
+          onClick={(e) => e.stopPropagation()}
           to={"/member/login"}
           xPosition={'300px'} 
           yPosition={'680px'} 
@@ -206,6 +217,7 @@ const LandingPage = () => {
       </S.VideoWrapper>
       <S.VideoWrapper>
         <S.LoginLink 
+          onClick={(e) => e.stopPropagation()}
           to={"/member/login"}
           xPosition={'900px'} 
           yPosition={'315px'} 
@@ -226,6 +238,7 @@ const LandingPage = () => {
       </S.VideoWrapper>
       <S.VideoWrapper>
         <S.LoginLink 
+          onClick={(e) => e.stopPropagation()}
           to={"/member/login"}
           xPosition={'650px'} 
           yPosition={'185px'} 
@@ -246,6 +259,7 @@ const LandingPage = () => {
       </S.VideoWrapper>
       <S.VideoWrapper>
         <S.LoginLink 
+          onClick={(e) => e.stopPropagation()}
           to={"/member/login"}
           xPosition={'380px'} 
           yPosition={'400px'} 
