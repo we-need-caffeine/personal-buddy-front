@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import S from './style';
 import { NavLink, useParams } from 'react-router-dom';
 import FormatDate from '../../../utils/formatDate/FormatDate'
+import Pagination from '../../../hooks/pagenation/Pagination';
 
 const MyPagePosts = () => {
 
@@ -11,6 +12,12 @@ const MyPagePosts = () => {
   const memberId = id;
   // 가져온 나의 포스팅을 조회
   const [myPosts, setMyPosts] = useState([]);
+  // 페이지네이션
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = myPosts.slice(indexOfFirstItem, indexOfLastItem);
 
   useEffect(() => {
     const getMyPosts = async () => {
@@ -35,7 +42,7 @@ const MyPagePosts = () => {
         </S.TitleContainer>
         <S.BodyContainer>
           {/* 아이템 리스트 컨테이너 */}
-          {myPosts.map((item) => (
+          {currentItems.map((item) => (
             <NavLink to={`/main/community/board/post/${item.id}`}>
               <S.ItemContainer key={item.id}>
                 <S.ItemImg
@@ -70,6 +77,11 @@ const MyPagePosts = () => {
               </S.ItemContainer>
             </NavLink>
           ))}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(myPosts.length / itemsPerPage)}
+            onPageChange={setCurrentPage}
+          />
         </S.BodyContainer>
       </S.MainContainer>
     </>

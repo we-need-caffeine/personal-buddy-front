@@ -138,6 +138,7 @@ S.MemberInfoContainer = styled.div`
 `
 
 S.MemberImg = styled.img`
+  object-fit: cover;
   width: 50px;
   height: 50px;
   border-radius: 50%;

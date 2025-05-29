@@ -149,6 +149,7 @@ S.GuestBookMemberInfo = styled.div`
 `
 
 S.GuestBookMemberProfileImg = styled.img`
+    object-fit: cover;
     width: 24px;
     height: 24px;
     border-radius: 36px;

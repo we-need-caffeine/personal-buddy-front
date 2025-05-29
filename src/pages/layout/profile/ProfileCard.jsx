@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import S from './style';
 import { NavLink } from 'react-router-dom';
 import { ProfileCardContext } from '../../../context/ProfileCardContext';
@@ -17,11 +17,25 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard, onCancel
   } = useContext(ChatContext)
   // 헤더 스크롤을 막는 상태
   const { lockScroll, unlockScroll } = useContext(HeaderContext);
+  // 대표 업적을 담는 변수
+  const [achievementRep, setAchievementRep] = useState([]);
 
   // 최초로 프로필 정보를 받는 함수
   useEffect(() => {
     getProfile(memberId, profileCardMemberId)
   }, [memberId, profileCardMemberId])
+  
+  // 대표 업적을 불러오는 함수
+  useEffect(() => {
+    if(!memberId) return;
+    
+    const getMemberAchievementRep = async () => {
+      const response = await fetch(`http://localhost:10000/achievements/api/achievement/displayed/${profileCardMemberId}`)
+      const datas = await response.json();
+      setAchievementRep(datas)
+    }
+    getMemberAchievementRep();
+  },[memberId, profileCardMemberId])
 
   useEffect(() => {
       if (handleProfileCard) lockScroll();
@@ -49,7 +63,7 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard, onCancel
                 {profileCardInfo.memberStatusMessage || '상태메세지 없음'}
               </S.MemberStatusMessage>
               <S.MemberPoint>
-                보유 포인트 :<S.MemberPointInfo>{profileCardInfo.memberPoint} P</S.MemberPointInfo>
+                보유 포인트 :<S.MemberPointInfo>{profileCardInfo.memberPoint} 🪙</S.MemberPointInfo>
               </S.MemberPoint>
             </S.MemberInfoTextContainer>
           </S.MemberInfoContainer>
@@ -108,9 +122,17 @@ const ProfileCard = ({memberId, profileCardMemberId, handleProfileCard, onCancel
           </S.FollowCount>
         </S.FollowCountContainer>
         <S.AcheivementContainer>
-          <S.AcheivementItems src='/assets/images/header/default-achivement-img.png' alt='업적'/>
-          <S.AcheivementItems src='/assets/images/header/default-achivement-img.png' alt='업적'/>
-          <S.AcheivementItems src='/assets/images/header/default-achivement-img.png' alt='업적'/>
+        {achievementRep.map((item) => (
+          <div key={item.id}>
+            <S.AcheivementItems
+              src={`http://localhost:10000/files/api/display?filePath=${item.achievementImgPath}&fileName=${encodeURIComponent(item.achievementImgName)}`}
+              alt='업적 이미지'
+              onError={e => {
+                e.target.src = "/assets/images/header/default-achivement-img.png";
+              }}
+            />
+          </div>
+        ))}
         </S.AcheivementContainer>
         <S.SocialButtonContainer>
           <NavLink to={`/main/mypage/${profileCardInfo.id}`}>
