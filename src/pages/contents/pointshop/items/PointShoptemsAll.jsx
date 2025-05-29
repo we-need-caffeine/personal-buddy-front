@@ -80,10 +80,6 @@ const PointShopItemsAll = () => {
 
   return (
     <S.ItemCardListBox>
-      <S.CartButtonWrapper>
-        <S.CartShowButton>장바구니</S.CartShowButton>
-        <S.CartAddAllButton>모두담기</S.CartAddAllButton>
-      </S.CartButtonWrapper>
       {
         paginatedItems.length !== 0 && paginatedItems.map((item) => (
           <S.ItemCard 

@@ -76,7 +76,7 @@ S.ItemTabLink = styled(Link)`
 S.ItemCardListBox = styled.div`
   display: grid;
   grid-template-columns: repeat(6, minmax(150px, 1fr));
-  grid-template-rows: 40px 1fr 1fr 1fr 1fr 40px;
+  grid-template-rows: 1fr 1fr 1fr 1fr 40px;
   /* grid-template-rows: repeat(4, minmax(234px, 1fr)); */
   gap: 40px 40px; /* row-gap column-gap */
   width: 1400px;
@@ -87,44 +87,6 @@ S.ItemCardListBox = styled.div`
   border: solid 1px ${({ theme }) => theme.PALLETE.primary.mainGreen};
   box-sizing: border-box;
   align-content: start;
-`;
-
-
-S.CartButtonWrapper = styled.div`
-    grid-column: 1 / -1;
-    grid-row: 1;
-    display: flex; 
-    flex-direction: row; 
-    justify-content: end;
-    gap: 5px;
-`;
-
-S.CartShowButton = styled.button`
-    width: 70px;
-    height: 30px;
-    border-radius: 70px;
-    text-align: center;
-    vertical-align: middle;
-    background-color: ${({theme}) => theme.PALLETE.primary.subBlue};
-    ${whiteColor};
-    border: none;
-    &:hover{
-        background-color: ${({theme}) => theme.PALLETE.primary.subBlueHover};
-    }
-`;
-
-S.CartAddAllButton = styled.button`
-    width: 70px;
-    height: 30px;
-    border-radius: 70px;
-    text-align: center;
-    vertical-align: middle;
-    background-color: ${({theme}) => theme.PALLETE.gray.gray4};
-    ${whiteColor};
-    border: none;
-    &:hover{
-        background-color: ${({theme}) => theme.PALLETE.gray.gray6};
-    }
 `;
 
 S.ItemCard = styled.div`
@@ -234,7 +196,7 @@ S.ItemPreviewButton = styled.button`
 S.PaginationWrapper = styled.div`
     ${flexCenter}
     grid-column: 1 / -1;
-    grid-row: 6;
+    grid-row: 5;
 `;
 
 export default S;

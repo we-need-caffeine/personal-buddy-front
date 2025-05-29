@@ -181,7 +181,7 @@ const LandingPage = () => {
           playsInline
           onEnded={(e) => e.target.pause()}
         >
-          <source src='/assets/images/landing/landing1.mp4' type='video/mp4'/>
+          <source src='/assets/images/landing/landing01.mp4' type='video/mp4'/>
         </S.Video>
       </S.VideoWrapper>
       <S.VideoWrapper>
@@ -201,7 +201,7 @@ const LandingPage = () => {
           playsInline
           onEnded={(e) => e.target.pause()}
         >
-          <source src='/assets/images/landing/landing2.mp4' type='video/mp4'/>
+          <source src='/assets/images/landing/landing02.mp4' type='video/mp4'/>
         </S.Video>
       </S.VideoWrapper>
       <S.VideoWrapper>
@@ -221,7 +221,7 @@ const LandingPage = () => {
           playsInline
           onEnded={(e) => e.target.pause()}
         >
-          <source src='/assets/images/landing/landing3.mp4' type='video/mp4'/>
+          <source src='/assets/images/landing/landing03.mp4' type='video/mp4'/>
         </S.Video>
       </S.VideoWrapper>
       <S.VideoWrapper>
@@ -241,7 +241,7 @@ const LandingPage = () => {
           playsInline
           onEnded={(e) => e.target.pause()}
         >
-          <source src='/assets/images/landing/landing4.mp4' type='video/mp4'/>
+          <source src='/assets/images/landing/landing04.mp4' type='video/mp4'/>
         </S.Video>
       </S.VideoWrapper>
       <S.VideoWrapper>
@@ -261,7 +261,7 @@ const LandingPage = () => {
           playsInline
           onEnded={(e) => e.target.pause()}
         >
-          <source src='/assets/images/landing/landing5.mp4' type='video/mp4'/>
+          <source src='/assets/images/landing/landing05.mp4' type='video/mp4'/>
         </S.Video>
       </S.VideoWrapper>
       {/* 유튜브 iframe (숨김) */}
