@@ -166,6 +166,7 @@ const WakeUpDetail = () => {
         </S.MetaBottom>
       <S.ImageWrapper>
         <img src="/assets/images/event/morning.png" alt="루틴 이벤트" />
+          <S.Background>
         <S.IsSuccess $joined={joined || commentText.trim().length > 0}>
         {joined
           ? '600P 획득 성공! 내일 아침에 다시 만나요!'
@@ -173,8 +174,9 @@ const WakeUpDetail = () => {
           ? '이벤트 도전중...'
           : '성공시 600P 획득!'}
       </S.IsSuccess>
-
+      </S.Background>
       </S.ImageWrapper>
+
       <S.CommentInputBox>
         <S.Textarea
           placeholder="댓글을 입력해주세요"
