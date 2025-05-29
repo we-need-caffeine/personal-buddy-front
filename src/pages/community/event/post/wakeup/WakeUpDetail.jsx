@@ -3,8 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import S from './style';
 import Pagination from '../../../../../hooks/pagenation/Pagination';
-// import Aos from 'aos';
-// import 'aos/dist/aos.css';
 
 const WakeUpDetail = () => {
   const { id } = useParams();
@@ -22,13 +20,6 @@ const WakeUpDetail = () => {
   const [bestComments, setBestComments] = useState([]);
 
   const paginatedComments = comments.slice((currentPage - 1) * 7, currentPage * 7);
-
-  //  useEffect(() => {
-  //   Aos.init({
-  //     duration: 1000, 
-  //     once: true, 
-  //   })
-  // }, [])
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -78,7 +69,6 @@ const WakeUpDetail = () => {
     setJoined(true);
     return;
   }
-  
 
   // 정상 등록 로직
   try {
@@ -176,9 +166,8 @@ const WakeUpDetail = () => {
         </S.MetaBottom>
       <S.ImageWrapper>
         <img src="/assets/images/event/morning.png" alt="루틴 이벤트" />
-        
-      <S.Background>
-      <S.IsSuccess $joined={joined || commentText.trim().length > 0}>
+          <S.Background>
+        <S.IsSuccess $joined={joined || commentText.trim().length > 0}>
         {joined
           ? '600P 획득 성공! 내일 아침에 다시 만나요!'
           : commentText.trim().length > 0
@@ -189,7 +178,7 @@ const WakeUpDetail = () => {
       </S.ImageWrapper>
 
       <S.CommentInputBox>
-        <S.Textarea 
+        <S.Textarea
           placeholder="댓글을 입력해주세요"
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
