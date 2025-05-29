@@ -44,6 +44,7 @@ const BoardPost = () => {
   const handleDeletePost = async () => {
   const confirmDelete = window.confirm("게시글을 삭제하시겠습니까?");
   if (!confirmDelete) return;
+  
 
   try {
     const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/delete/${id}`, {
