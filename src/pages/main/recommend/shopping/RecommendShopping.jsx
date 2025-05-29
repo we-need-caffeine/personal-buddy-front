@@ -20,7 +20,10 @@ const RecommendShopping = () => {
                 if (!response.ok) throw new Error('네트워크 오류');
                 return response.json();
             })
-            .then(result => setData(result))
+            .then(result => {
+                const filteredData = result.filter(item => item.interestDataSection === 'shopping');
+                setData(filteredData);
+            })
             .catch(error => console.error('데이터 불러오기 실패', error));
         }
     }, [memberId]);
