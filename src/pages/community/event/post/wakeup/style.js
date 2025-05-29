@@ -345,7 +345,4 @@ S.Refer = styled.div`
   margin-bottom: 100px;
   font-weight: bold;
 `
-
-
-
 export default S;
