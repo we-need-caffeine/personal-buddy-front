@@ -62,7 +62,6 @@ const CalendarWeek = ({
         end: range.end,
         backgroundColor: range.color ?? "#01CD74",
         borderColor: range.color ?? "#01CD74",
-        display: "background",
       },
     ]);
   };
@@ -149,6 +148,12 @@ const CalendarWeek = ({
             hour12: false,
           }}
           events={events}
+          eventContent={(arg) => {
+            const titleEl = document.createElement("div");
+            titleEl.innerText = arg.event.title; //
+            titleEl.className = S.CustomEventTitle.styledComponentId;
+            return { domNodes: [titleEl] };
+          }}
           select={(info) => {
             const range = {
               start: info.startStr,
@@ -183,9 +188,8 @@ const CalendarWeek = ({
             }
           }}
           datesSet={({ start, end }) => {
-            console.log("📆 datesSet called with:", start, end);
             setCurrentDate(new Date(start));
-            setWeekRange({ start: new Date(start), end: new Date(end) }); // 주 범위 저장
+            setWeekRange({ start: new Date(start), end: new Date(end) });
           }}
         />
       </div>

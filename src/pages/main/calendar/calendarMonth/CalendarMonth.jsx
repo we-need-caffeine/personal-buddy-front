@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
-import timeGridPlugin from "@fullcalendar/timegrid";
+import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { CalendarContext } from "../../../../context/CalendarContext";
 import S from "./style";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { format } from "date-fns";
 
-const CalendarDay = ({
+const CalendarMonth = ({
+  isNested,
   calendarRef,
   selectedRange,
   onSelectRange,
@@ -22,21 +23,7 @@ const CalendarDay = ({
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
 
-  // 겹치는 일정이 있는지 확인
-  const isOverlapping = (startA, endA, startB, endB) =>
-    new Date(startA) < new Date(endB) && new Date(endA) > new Date(startB);
-
-  const hasConflict = (range) => {
-    const calendar = calendars.find((c) => c.id === Number(calendarId));
-    return calendar?.scheduleLists?.some((s) =>
-      isOverlapping(
-        range.start,
-        range.end,
-        s.scheduleStartDate,
-        s.scheduleEndDate
-      )
-    );
-  };
+  
 
   const setEventsFromSchedules = () => {
     const calendar = calendars.find((c) => c.id === Number(calendarId));
@@ -53,18 +40,34 @@ const CalendarDay = ({
     }));
   };
 
-  const updateTemporaryEvent = (range) => {
-    setEvents((prev) => [
-      ...prev.filter((e) => e.id !== "selected-range"),
-      {
-        id: "selected-range",
-        title: "신규 일정",
-        start: range.start,
-        end: range.end,
-        backgroundColor: range.color ?? "#01CD74",
-        borderColor: range.color ?? "#01CD74",
+ 
+
+  const handleDateClick = (info) => {
+    const clickedDate = info.dateStr;
+
+    // 현재 캘린더에서 일정 목록 추출
+    const calendar = calendars.find((c) => c.id === Number(calendarId));
+    const schedules = calendar?.scheduleLists || [];
+    const color = calendar?.scheduleLists?.scheduleColorZZ
+    //console.log(schedules);
+    const isSameDay = (day1, day2) =>
+      day1.getFullYear() === day2.getFullYear() &&
+      day1.getMonth() === day2.getMonth() &&
+      day1.getDate() === day2.getDate();
+
+    const filtered = schedules.filter((s) => {
+      const start = new Date(s.scheduleStartDate);
+      const target = new Date(clickedDate);
+      return isSameDay(start, target);
+    });
+    //console.log(filtered);
+    navigate("schedule-list-view", {
+      state: {
+        schedule: filtered,
+        date: clickedDate,
+        //time: 
       },
-    ]);
+    });
   };
 
   useEffect(() => {
@@ -78,47 +81,21 @@ const CalendarDay = ({
     onSelectRange(null);
   }, [calendarId]);
 
-  useEffect(() => {
-    const isOnScheduleSave = location.pathname.includes("schedule-save");
-
-    if (!selectedRange && !isOnScheduleSave) {
-      // 선택 범위가 없고, 일정 저장 페이지도 아니면
-      // 임시로 보여주던 신규 일정 이벤트 제거
-      setEvents((prev) => prev.filter((e) => e.id !== "selected-range"));
-      return;
-    }
-
-    if (selectedRange) {
-      // 일정이 겹친다면 선택 취소 및 임시 이벤트 제거
-      if (hasConflict(selectedRange)) {
-        calendarRef.current?.getApi().unselect();
-        onSelectRange(null);
-        setEvents((prev) => prev.filter((e) => e.id !== "selected-range"));
-        return;
-      }
-
-      // 충돌이 없다면, 신규 일정 임시 이벤트를 events에 추가
-      updateTemporaryEvent(selectedRange);
-    }
-  }, [selectedRange, calendars, calendarId, location.pathname]);
-
   
+
   // 날짜 이동
   const handlePrev = () => calendarRef.current.getApi().prev();
   const handleNext = () => calendarRef.current.getApi().next();
   const handleToday = () => calendarRef.current.getApi().today();
-  
+
   return (
-    <S.CalendarWrapper style={{ "--highlight-color": selectedRange?.color ?? "#01CD74" }}>
+    <S.CalendarWrapper isNested={isNested}>
       <S.DateInfoWrapper>
         <S.LeftArrowIcon
           src="/assets/images/main/calendar/arrow.png"
           alt="이전"
           onClick={handlePrev}
         />
-        <S.TodayText onClick={handleToday}>
-          {format(currentDate, "yyyy년 M월 d일")}
-        </S.TodayText>
         <S.ArrowIcon
           src="/assets/images/main/calendar/arrow.png"
           alt="다음"
@@ -129,8 +106,8 @@ const CalendarDay = ({
       <div style={{ height: "calc(780px - 50px)" }}>
         <FullCalendar
           ref={calendarRef}
-          plugins={[timeGridPlugin, interactionPlugin]}
-          initialView="timeGridDay"
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
           timeZone="local"
           height="100%"
           headerToolbar={false}
@@ -140,6 +117,7 @@ const CalendarDay = ({
           selectMirror
           unselectAuto
           eventDisplay="block"
+          dateClick={handleDateClick}
           slotLabelFormat={{
             hour: "2-digit",
             minute: "2-digit",
@@ -153,36 +131,15 @@ const CalendarDay = ({
               color: selectedRange?.color ?? "#01CD74",
             };
 
-            if (hasConflict(range)) {
-              calendarRef.current?.getApi().unselect();
-              //onSelectRange(null);
-              return;
-            }
+           
 
             onSelectRange(range);
             onCreateSchedule?.(info);
           }}
-          eventClick={(info) => {
-            //console.log(info.eventId);
-            const eventId = info.event.id;
-            if (
-              !eventId ||
-              eventId === "selected-range" ||
-              eventId.startsWith("no-id")
-            )
-              return;
-            navigate("schedule-view", { state: { eventId } });
-          }}
-          unselect={() => {
-            if (!location.pathname.includes("schedule-save")) {
-              onSelectRange(null);
-            }
-          }}
-          datesSet={({ start }) => setCurrentDate(new Date(start))}
         />
       </div>
     </S.CalendarWrapper>
   );
 };
 
-export default CalendarDay;
+export default CalendarMonth;

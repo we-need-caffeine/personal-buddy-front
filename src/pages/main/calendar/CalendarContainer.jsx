@@ -29,7 +29,8 @@ const CalendarContainer = () => {
     : location.pathname.includes("/month")
     ? "month"
     : "";
-
+  // console.log("[DEBUG] location.pathname:", location.pathname);
+  // console.log("[DEBUG] view:", view);
   const handleCreateSchedule = (info) => {
     const range = {
       start: info.startStr,
@@ -39,10 +40,13 @@ const CalendarContainer = () => {
     setSelectedRange(range);
 
     const basePath = `/main/${memberId}/${calendarId}`;
-    const targetPath = view
-      ? `${basePath}/${view}/schedule-save`
-      : `${basePath}/schedule-save`;
 
+    const targetPath =
+      view === "month"
+        ? `${basePath}/${view}/schedule-list-view`
+        : `${basePath}/${view ? `${view}/schedule-save` : "schedule-save"}`;
+
+    console.log("[DEBUG] navigate to:", targetPath);
     navigate(targetPath);
   };
 
