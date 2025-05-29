@@ -6,22 +6,24 @@ import S from './style';
 import Pagination from '../../../../../hooks/pagenation/Pagination';
 
 const RoutineShareDetail = () => {
-  const { id } = useParams();
-  const { currentUser } = useSelector((state) => state.member);
-  const memberId = currentUser?.id || 1;
+  const { id } = useParams(); // URL에서 이벤트 ID 추출
+  const { currentUser } = useSelector((state) => state.member); // 로그인한 유저 정보
+  const memberId = currentUser?.id || 1; // 로그인 안 했을 경우 기본값 1
 
-  const [commentText, setCommentText] = useState('');
-  const [comments, setComments] = useState([]);
-  const [likedCommentIds, setLikedCommentIds] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [joined, setJoined] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-  const [isLiked, setIsLiked] = useState(false);
-  const [views, setViews] = useState(0);
-  const [bestComments, setBestComments] = useState([]);
+  // 상태 관리
+  const [commentText, setCommentText] = useState(''); // 댓글 입력창 텍스트
+  const [comments, setComments] = useState([]); // 전체 댓글 목록
+  const [likedCommentIds, setLikedCommentIds] = useState([]); // 좋아요 누른 댓글 ID 목록
+  const [currentPage, setCurrentPage] = useState(1); // 댓글 페이지네이션 현재 페이지
+  const [joined, setJoined] = useState(false); // 참여 여부 (댓글 작성 여부)
+  const [likeCount, setLikeCount] = useState(0); // 게시글 좋아요 수
+  const [isLiked, setIsLiked] = useState(false); // 현재 사용자가 좋아요 눌렀는지 여부
+  const [views, setViews] = useState(0); // 게시글 조회수
+  const [bestComments, setBestComments] = useState([]); // BEST 댓글 목록
 
-  const paginatedComments = comments.slice((currentPage - 1) * 7, currentPage * 7);
+  const paginatedComments = comments.slice((currentPage - 1) * 7, currentPage * 7); // 페이지네이션 처리
 
+  // 초기 데이터 불러오기 (게시글, 좋아요 여부, 참여 여부, 댓글 등)
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -45,6 +47,7 @@ const RoutineShareDetail = () => {
         const commentData = await commentRes.json();
         const bestData = await bestRes.json();
 
+        // 상태 업데이트
         setViews(detailData.eventViews || 0);
         setIsLiked(isLikedData);
         setLikeCount(likeCountData);
@@ -59,6 +62,7 @@ const RoutineShareDetail = () => {
     fetchInitialData();
   }, [id]);
 
+  // 댓글 중복 작성 체크 API 호출
   const checkAlreadyCommented = async () => {
     const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/check`, {
       method: 'POST',
@@ -68,8 +72,9 @@ const RoutineShareDetail = () => {
     return res.json();
   };
 
+  // 댓글 작성 처리
   const handleCommentSubmit = async () => {
-    if (!commentText.trim()) return;
+    if (!commentText.trim()) return; // 빈 문자열 방지
 
     const isDuplicated = await checkAlreadyCommented();
     if (isDuplicated) {
@@ -100,6 +105,7 @@ const RoutineShareDetail = () => {
     }
   };
 
+  // 댓글 좋아요 처리
   const handleCommentLike = async (commentId) => {
     if (!memberId) return alert('로그인 후 이용해주세요');
 
@@ -121,6 +127,7 @@ const RoutineShareDetail = () => {
     );
   };
 
+  // 게시글 좋아요 처리
   const handlePostLike = async () => {
     try {
       const url = isLiked
@@ -142,6 +149,7 @@ const RoutineShareDetail = () => {
 
   return (
     <S.Container>
+      {/* 제목 및 작성일 */}
       <S.MetaBox>
         <S.TitleRow>
           <S.Title>나의 일정 공유하기</S.Title>
@@ -149,6 +157,7 @@ const RoutineShareDetail = () => {
         </S.TitleRow>
       </S.MetaBox>
 
+      {/* 프로필 및 통계 */}
       <S.MetaBottom>
         <S.Author>
           <S.ProfileImg src="/assets/images/header/default-member-img.png" alt="운영자" />
@@ -159,6 +168,7 @@ const RoutineShareDetail = () => {
         </S.StatBox>
       </S.MetaBottom>
 
+      {/* 이벤트 배너 및 상태 */}
       <S.ImageWrapper>
         <img src="/assets/images/event/routine.png" alt="루틴 이벤트" />
         <S.IsSuccess $joined={joined || commentText.trim().length > 0}>
@@ -166,6 +176,7 @@ const RoutineShareDetail = () => {
         </S.IsSuccess>
       </S.ImageWrapper>
 
+      {/* 댓글 입력창 */}
       <S.CommentInputBox>
         <S.Textarea
           placeholder="댓글을 입력해주세요"
@@ -188,6 +199,7 @@ const RoutineShareDetail = () => {
         </S.InputBottom>
       </S.CommentInputBox>
 
+      {/* BEST 댓글 */}
       <S.BestCommentSection>
         {bestComments.map((c, i) => (
           <S.BestCommentItem key={c.id}>
@@ -203,6 +215,7 @@ const RoutineShareDetail = () => {
         ))}
       </S.BestCommentSection>
 
+      {/* 일반 댓글 리스트 */}
       <S.CommentList>
         {paginatedComments.map((c) => (
           <S.CommentItem key={c.id}>
@@ -220,6 +233,7 @@ const RoutineShareDetail = () => {
         ))}
       </S.CommentList>
 
+      {/* 페이지네이션 */}
       <Pagination currentPage={currentPage} totalPages={Math.ceil(comments.length / 7)} onPageChange={setCurrentPage} />
     </S.Container>
   );

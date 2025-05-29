@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import S from './style';
 import { HeaderContext } from '../../../context/HeaderContext';
 
-const ConfirmModal = ({ handleConfrmModal, title, message, onConfirm, onCancel }) => {
+const ConfirmModal = ({ handleConfrmModal, title, message, onConfirm, onCancel, confirmBtnMsg, cancelBtnMsg }) => {
 
 
     // 외부 요소 스크롤을 막는 함수
@@ -32,8 +32,12 @@ const ConfirmModal = ({ handleConfrmModal, title, message, onConfirm, onCancel }
                     <p>{message}</p>
                 </S.ContentContainer>
                 <S.ButtonContainer>
-                    <S.ConfirmButton onClick={onConfirm}>등록</S.ConfirmButton>
-                    <S.CancelButton onClick={onCancel}>취소</S.CancelButton>
+                    {confirmBtnMsg && (
+                        <S.ConfirmButton onClick={onConfirm}>{confirmBtnMsg}</S.ConfirmButton>
+                    )}
+                    {cancelBtnMsg && (
+                        <S.CancelButton onClick={onCancel}>{cancelBtnMsg}</S.CancelButton>
+                    )}
                 </S.ButtonContainer>
             </S.ModalContainer>
         </S.Backdrop>

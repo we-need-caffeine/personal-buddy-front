@@ -33,9 +33,11 @@ const MyTreeItemBackground = () => {
     const removeItem = sameTypeItems.filter((item) => item.itemType === itemType && item.treeCustomizingApply === 1)[0];
     const addItem =  sameTypeItems.filter((item) => item.itemId === itemId)[0];
     addItem.treeCustomizingApply = 1;
-    if(removeItem != null){
+    
+    if(removeItem){
       removeItem.treeCustomizingApply = 0;
     }
+    
     setMemberAppliedItemBackground(addItem);
     setMemberItems(prev =>
       prev.map(item =>
