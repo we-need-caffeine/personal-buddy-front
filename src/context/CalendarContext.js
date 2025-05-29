@@ -49,7 +49,7 @@ const CalendarProvider = ({ children }) => {
 
   useEffect(() => {
     getCalendarsAll();
-  }, [isUpdate, memberId]);
+  }, [memberId]);
 
   useEffect(() => {
     const getColors = async () => {

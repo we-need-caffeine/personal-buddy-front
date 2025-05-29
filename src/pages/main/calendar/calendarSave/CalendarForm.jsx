@@ -5,6 +5,7 @@ const CalendarForm = ({
   initialName = "",
   initialInvited = [],
   allMembers = [],
+  currentMembers = [],
   showInviteSection = true,
   buttons = [],
 }) => {
@@ -62,6 +63,7 @@ const CalendarForm = ({
               {isDropdownOpen && (
                 <S.Dropdown>
                   {allMembers.map((member) => {
+                    // allMembers 멤버중에 invitedMembers에 존재하면 이미 초대됨
                     const isInvited = invitedMembers.some(
                       (m) => m.id === member.id
                     );
@@ -89,15 +91,15 @@ const CalendarForm = ({
 
       {/* 하단 버튼 및 멤버 리스트 */}
       <S.ContentContainer>
-        {showInviteSection && (
+        {showInviteSection && currentMembers?.length > 0 && (
           <S.MemberList>
             <S.MemberListTitle>
-              멤버 리스트 ({invitedMembers.length}/8)
+              참여 중인 멤버 ({currentMembers.length})
             </S.MemberListTitle>
-            {invitedMembers.map((m) => (
-              <S.MemberItem key={m.id}>
+            {currentMembers.map((member) => (
+              <S.MemberItem key={member.id}>
                 <S.ProfileIcon />
-                <S.MemberName>{m.memberName}</S.MemberName>
+                <S.MemberName>{member.memberName}</S.MemberName>
               </S.MemberItem>
             ))}
           </S.MemberList>
