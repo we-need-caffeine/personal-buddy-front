@@ -152,7 +152,7 @@ const HealingDayDetail = () => {
       <S.MetaBox>
         <S.TitleRow>
           <S.Title>오늘 하루는 힐링 데이</S.Title>
-          <S.Date>2025.04.20 게시</S.Date>
+          {/* <S.Date>2025.04.20 게시</S.Date> */}
         </S.TitleRow>
       </S.MetaBox>
         <S.MetaBottom>
@@ -166,13 +166,17 @@ const HealingDayDetail = () => {
         </S.MetaBottom>
       <S.ImageWrapper>
         <img src="/assets/images/event/healing-day.png" alt="루틴 이벤트" />
-        <S.IsSuccess $joined={joined || commentText.trim().length > 0}>
+        <S.IsSuccess $joined={joined || commentText.length > 0}>
         {joined
-          ? '참여 완료! 800P의 주인공은?'
-          : commentText.trim().length > 0
+          ? '참여 완료! 800🪙의 주인공은?'
+          : commentText.length > 0
           ? '이벤트 도전중...'
-          : '성공시 800P 획득!'}
+          : '성공시 800🪙 획득!'}
       </S.IsSuccess>
+
+      <S.Refer>
+        ※ 이벤트 및 챌린지 댓글은 수정및 삭제가 불가하므로 참고하여 주시기 바랍니다.
+      </S.Refer>
 
       </S.ImageWrapper>
       <S.CommentInputBox>

@@ -215,4 +215,12 @@ S.CommentLikeButton = styled.button`
   }
 `;
 
+S.Refer = styled.div`
+  ${flexCenter};
+  margin-top: 80px;
+  margin-bottom: 100px;
+  font-weight: bold;
+`
+
+
 export default S;
