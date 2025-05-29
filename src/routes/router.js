@@ -71,6 +71,7 @@ import SurveyDetailInfo from "../pages/survey/detail/info/SurveyDetailInfo";
 import SurveyDetailPlace from "../pages/survey/detail/place/SurveyDetailPlace";
 import SurveyDetailShopping from "../pages/survey/detail/shopping/SurveyDetailShopping";
 import CalendarUpdate from "../pages/main/calendar/calendarSave/CalendarUpdate";
+import ScheduleListView from "../pages/main/calendar/scheduleListView/ScheduleListView";
 
 const router = createBrowserRouter([
   {
@@ -134,8 +135,8 @@ const router = createBrowserRouter([
                         element: <CalendarTodo />,
                       },
                       {
-                        path: "schedule-view",
-                        element: <ScheduleView />,
+                        path: "schedule-List-view",
+                        element: <ScheduleListView/>,
                       },
                       {
                         path: "schedule-save",

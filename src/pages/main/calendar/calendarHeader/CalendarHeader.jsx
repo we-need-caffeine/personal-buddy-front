@@ -9,10 +9,64 @@ const CalendarHeader = () => {
   const { currentUser } = useSelector((state) => state.member);
   const { state } = useContext(CalendarContext);
   const { calendars } = state;
-  const { memberId, calendarId } = useParams();
+  const { calendarId } = useParams();
   const location = useLocation();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
+
+  // 위치 및 날씨 상태값
+  const [locationCoords, setLocationCoords] = useState(null);
+  const [locationAddress, setLocationAddress] = useState(null);
+  const [weather, setWeather] = useState(null);
+
+  // 현재 위치 + 주소 받아오기
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        setLocationCoords({ latitude, longitude });
+
+        // 주소 요청 (Nominatim)
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+          );
+          const data = await res.json();
+          setLocationAddress(data.display_name);
+        } catch (err) {
+          console.error("주소 변환 실패:", err);
+        }
+      },
+      (err) => console.warn("위치 오류:", err.message)
+    );
+  }, []);
+
+  // 날씨 정보 요청 (OpenWeatherMap)
+  useEffect(() => {
+    const fetchWeather = async (lat, lon) => {
+      try {
+        const apiKey = "84901855b2c7261d9a761343f6d0c169"; 
+        const res = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=kr`
+        );
+        const data = await res.json();
+        setWeather({
+          temp: data.main.temp,
+          description: data.weather[0].description,
+          icon: data.weather[0].icon,
+        });
+        //console.log("날씨 응답:", data);
+      } catch (err) {
+        console.error("날씨 정보 오류:", err);
+      }
+    };
+
+    if (locationCoords) {
+      fetchWeather(locationCoords.latitude, locationCoords.longitude);
+    }
+  }, [locationCoords]);
 
   // 외부 클릭 시 드롭다운 닫기
   useEffect(() => {
@@ -30,18 +84,22 @@ const CalendarHeader = () => {
     setShowDropdown(false);
   };
 
-  // 현재 뷰 문자열 추출
-  const path = location.pathname.split("/").pop();
-  const viewText =
-    path === "week" ? "주간" : path === "month" ? "월간" : "일간";
+  const viewText = location.pathname.includes("/week")
+    ? "주간"
+    : location.pathname.includes("/month")
+    ? "월간"
+    : "일간";
+
   return (
     <div
       style={{
         display: "flex",
         justifyContent: "space-between",
+        alignItems: "center",
         position: "relative",
       }}
     >
+      {/* 캘린더 탭 */}
       <S.TabContainer>
         {calendars.map(({ id, calendarTitle }) => (
           <NavLink
@@ -86,6 +144,7 @@ const CalendarHeader = () => {
         </NavLink>
       </S.TabContainer>
 
+      {/* 뷰 변경 드롭다운 */}
       <S.DailyButtonWrapper ref={dropdownRef}>
         <S.DailyViewButton onClick={() => setShowDropdown((prev) => !prev)}>
           {viewText}
@@ -104,6 +163,36 @@ const CalendarHeader = () => {
           </S.DropdownMenu>
         )}
       </S.DailyButtonWrapper>
+
+      {/* 현재 위치 주소 + 날씨 출력 */}
+      {(locationAddress || weather) && (
+        <div
+          style={{
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            paddingTop: "6px",
+            fontSize: "12px",
+            color: "#333",
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "300px",
+            gap: "4px",
+          }}
+        >
+          {locationAddress && <div>📍 {locationAddress}</div>}
+          {weather && (
+            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <img
+                src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
+                alt="날씨 아이콘"
+                style={{ width: "24px", height: "24px" }}
+              />
+              {weather.description} / {weather.temp.toFixed(1)}℃
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

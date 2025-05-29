@@ -138,8 +138,8 @@ S.CalendarWrapper = styled.div`
   }
 
   .fc-highlight {
-    background-color: #01cd74 !important; //
-    opacity: 0.4; // 선택적: 좀 더 연하게
+    background-color: var(--highlight-color) !important;
+    opacity: 0.5;
   }
 
   .fc-v-event {
@@ -148,6 +148,13 @@ S.CalendarWrapper = styled.div`
   }
   .fc-v-event {
     --fc-event-bg-color: transparent;
+  }
+
+  .fc-event-mirror {
+    display: none;
+    background-color: #ff6b6b !important;
+    border: none !important;
+    opacity: 0.6;
   }
 `;
 

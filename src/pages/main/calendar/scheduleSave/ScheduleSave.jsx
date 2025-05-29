@@ -46,7 +46,10 @@ const ScheduleSave = () => {
 
   // 멤버 관련 상태
   const [calendarMembers, setCalendarMembers] = useState([]); // 캘린더 공유 멤버 목록
-  const [selectedMembers, setSelectedMembers] = useState([]); // 선택된 멤버들
+  const [selectedMembers, setSelectedMembers] = useState(() => {
+    const id = Number(memberId);
+    return Number.isNaN(id) ? [] : [{ id, name: "나" }];
+  }); // 선택된 멤버들
 
   // 드롭다운 열림 상태
   const [mainOpen, setMainOpen] = useState(false); // 상위 카테고리 드롭다운
@@ -148,14 +151,17 @@ const ScheduleSave = () => {
     const payload = {
       calendarId: Number(calendarId),
       scheduleColor: color,
-      scheduleCreatedDate: new Date().toISOString().replace("Z", "+09:00"),
+      scheduleCreatedDate: new Date().toISOString().slice(0, 19) + "+09:00",
       scheduleStartDate: `${startDate}T${startTime}:00+09:00`,
       scheduleEndDate: `${endDate}T${endTime}:00+09:00`,
       scheduleTitle: title,
       scheduleContent: content,
       scheduleCategory: mainCategory || null,
       scheduleRepeat: repeat === "없음" ? 0 : 1,
+      memberIds: selectedMembers.map((member) => member.id),
     };
+
+    console.log("[DEBUG] payload", payload)
     try {
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/schedules/api/register`,
@@ -171,6 +177,7 @@ const ScheduleSave = () => {
         throw new Error("일정 등록 실패");
       }
       navigate(`/main/${memberId}/${calendarId}`);
+      console.log("payload:", payload);
       getCalendarsAll();
     } catch (error) {
       console.error("일정 등록 에러", error);
@@ -444,7 +451,9 @@ const ScheduleSave = () => {
                 <S.MemberSelectBox
                   onClick={() => setMemberDropdownOpen(!memberDropdownOpen)}
                 >
-                  캘린더 멤버 ({calendarMembers.length})
+                  {selectedMembers.length > 0
+                    ? ` ${selectedMembers.map((m) => m.name).join(", ")}`
+                    : `캘린더 멤버 (${calendarMembers.length})`}
                 </S.MemberSelectBox>
                 {memberDropdownOpen && (
                   <S.MemberDropdownList>

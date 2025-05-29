@@ -111,11 +111,31 @@ S.ContentWrapper = styled.div`
   height: calc(100% - 83px);
   ${fontSizeH8};
 `;
-
-S.CancelButton = styled.button`
-position: absolute;
+S.ButtonGroup = styled.div`
+  position: absolute;
   bottom: 37px;
   right: 0px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  width: 222px;
+  height: 37px;
+  background-color: white;
+`;
+
+S.DeleteButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 102px;
+  height: 37px;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  background-color: #FF3F3F;
+`;
+
+S.CancelButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
