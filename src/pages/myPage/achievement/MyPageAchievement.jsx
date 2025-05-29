@@ -143,7 +143,7 @@ const MyPageAchievement = () => {
           <S.TitleBottomContainer>
               <span>나의 달성한 업적</span>
             <S.TitleTopLinkText>
-              <NavLink to="">
+              <NavLink to="/main/contents">
                 <span>나의 업적 보러 가기 &gt;&gt;</span>
               </NavLink>
             </S.TitleTopLinkText>
