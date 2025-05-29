@@ -11,6 +11,12 @@ S.Container = styled.div`
   padding: 0 16px;
 `;
 
+S.Background = styled.div `
+  width: 1000px;
+  height: 780px;
+  background-color: ${({ theme }) => theme.PALLETE.primary.lightGreen};
+`;
+
 S.ImageWrapper = styled.div`
   position: relative;
   margin-bottom: 24px;
