@@ -33,7 +33,7 @@ const PointShopContainer = () => {
               <S.ItemTabLink selected={getSeleted(pathName) === 'sticker'} to={"sticker"}>스티커</S.ItemTabLink>
               <S.ItemTabLink selected={getSeleted(pathName) === 'tree'} to={"tree"}>나무</S.ItemTabLink>
             </S.ItemTabBox>
-            <Outlet />
+            <Outlet context={member.id}/>
           </div>
         </div>
       );

@@ -17,6 +17,7 @@ const MyTreeContainer = () => {
     const [memberItems, setMemberItems] = useState([]);
     const [memberCustomizingList, setMemberCustomizingList] = useState([]);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [showSaveOkModal, setShowSaveOkModal] = useState(false);
 
   //   // 서버에 요청한 회원의 나무 적용 정보
     const [memberAppliedItemBackground, setMemberAppliedItemBackground] = useState({});
@@ -38,6 +39,7 @@ const MyTreeContainer = () => {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const getItems = async () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/my-tree/api/tree/list`,{
         method: "POST",
@@ -99,11 +101,17 @@ const MyTreeContainer = () => {
 
     const data = await response.json();
     setShowConfirmModal(false);
+    setShowSaveOkModal(true);
   }
 
   // 컨펌 모달 상태를 변경하는 함수
   const handleConfirmModal = (state) => {
       setShowConfirmModal(state)
+  }
+
+  // 컨펌 모달 상태를 변경하는 함수
+  const handleSaveOkModal = (state) => {
+      setShowSaveOkModal(state)
   }
 
   return (
@@ -162,6 +170,15 @@ const MyTreeContainer = () => {
             message="성장나무 변경사항을 저장하시겠습니까?"
             onConfirm={handleSave}
             onCancel={() => handleConfirmModal(false)}
+            confirmBtnMsg={"저장"}
+            cancelBtnMsg={"취소"}
+        />
+        <ConfirmModal
+            handleConfrmModal={showSaveOkModal}
+            title="저장 완료"
+            message="성장나무 변경사항이 저장되었습니다."
+            onCancel={() => handleSaveOkModal(false)}
+            cancelBtnMsg={"확인"}
         />
         <Outlet context={{
             memberId,
