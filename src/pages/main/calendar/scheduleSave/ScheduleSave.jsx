@@ -161,7 +161,7 @@ const ScheduleSave = () => {
       memberIds: selectedMembers.map((member) => member.id),
     };
 
-    console.log("[DEBUG] payload", payload)
+    //console.log("[DEBUG] payload", payload)
     try {
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/schedules/api/register`,
@@ -177,7 +177,7 @@ const ScheduleSave = () => {
         throw new Error("일정 등록 실패");
       }
       navigate(`/main/${memberId}/${calendarId}`);
-      console.log("payload:", payload);
+      //console.log("payload:", payload);
       getCalendarsAll();
     } catch (error) {
       console.error("일정 등록 에러", error);

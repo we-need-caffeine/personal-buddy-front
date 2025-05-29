@@ -46,7 +46,7 @@ const ScheduleListView = () => {
 
       <S.ContentContainer>
         {schedules?.map((schedule) => {
-          console.log(schedule);
+          //console.log(schedule);
           return (
             <S.ScheduleWrapper>
               <S.TitleWrapper>

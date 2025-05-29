@@ -163,7 +163,7 @@ const CalendarDay = ({
             onCreateSchedule?.(info);
           }}
           eventClick={(info) => {
-            console.log(info.eventId);
+            //console.log(info.eventId);
             const eventId = info.event.id;
             if (
               !eventId ||
