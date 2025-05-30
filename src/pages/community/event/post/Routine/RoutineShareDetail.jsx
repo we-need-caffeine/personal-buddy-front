@@ -261,7 +261,7 @@ const handleCommentSubmit = async () => {
           <span>운영자</span>
         </S.Author>
         <S.StatBox>
-          조회수 <strong>{views}</strong> | 좋아요 <strong>{likeCount}</strong> | 댓글 <strong>{comments.length}</strong>
+          조회수 <strong>{views}</strong> | 댓글 <strong>{comments.length}</strong>
         </S.StatBox>
       </S.MetaBottom>
 

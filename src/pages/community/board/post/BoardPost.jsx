@@ -24,6 +24,8 @@ const BoardPost = () => {
     currentPage * 7
   );
 
+  
+
   // 게시글을 업데이트 시키는 상태
   const [isUpdate, setIsUpdate] = useState(true); // 게시글이 업데이트 되었는지 여부
   const [isError, setIsError] = useState(false); // 데이터 로딩 에러 여부
@@ -403,12 +405,13 @@ const checkLiked = async () => {
             />
             <S.Nickname>{c.memberNickName}</S.Nickname>
             <S.LeftCommentWrapper>
-              <S.CommentDate>{c.eventCommentCreateDate}</S.CommentDate>
+              <S.CommentDate>{c.boardCommentCreateDate}</S.CommentDate>
+              <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
+            </S.LeftCommentWrapper>
               <S.CommentLikeCount>
                 <img src="/assets/images/board/icon/like-icon.png" alt="like" />
                 <span>{c.eventCommentLikeCount}</span>
               </S.CommentLikeCount>
-            </S.LeftCommentWrapper>
           </S.CommentUser>
         </S.CommentTop>
         <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
@@ -429,7 +432,8 @@ const checkLiked = async () => {
             />
             <S.Nickname>{c.memberNickName}</S.Nickname>
             <S.LeftCommentWrapper>
-              <S.CommentDate>{c.eventCommentCreateDate}</S.CommentDate>
+              <S.CommentDate>{c.boardCommentCreateDate}</S.CommentDate>
+              <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
               <S.CommentLikeCount>
                 <img src="/assets/images/board/icon/like-icon.png" alt="like" />
                 <span>{c.eventCommentLikeCount}</span>
