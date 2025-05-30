@@ -430,6 +430,7 @@ const checkLiked = async () => {
             <S.Nickname>{c.memberNickName}</S.Nickname>
             <S.LeftCommentWrapper>
               <S.CommentDate>{c.eventCommentCreateDate}</S.CommentDate>
+              <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
               <S.CommentLikeCount>
                 <img src="/assets/images/board/icon/like-icon.png" alt="like" />
                 <span>{c.eventCommentLikeCount}</span>

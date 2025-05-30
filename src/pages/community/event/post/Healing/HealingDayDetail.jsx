@@ -161,7 +161,7 @@ const HealingDayDetail = () => {
             <span>운영자</span>
           </S.Author>
           <S.StatBox>
-            조회수 <strong>{views}</strong> | 좋아요 <strong>{likeCount}</strong> | 댓글 <strong>{comments.length}</strong>
+            조회수 <strong>{views}</strong> | 댓글 <strong>{comments.length}</strong>
           </S.StatBox>
         </S.MetaBottom>
       <S.ImageWrapper>
@@ -192,7 +192,7 @@ const HealingDayDetail = () => {
             <span>/ 500</span>
           </div>
           <S.SubmitButton
-            active={commentText.length > 0 && !joined}
+            $active={commentText.length > 0 && !joined} 
             disabled={commentText.length === 0 || joined}
             onClick={handleCommentSubmit}
           >

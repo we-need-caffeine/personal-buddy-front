@@ -117,15 +117,15 @@ S.CharCount = styled.div`
 `;
 
 S.SubmitButton = styled.button`
-  border: none;
-  border-radius: 50px;
-  padding: 10px 20px;
-  ${whiteColor};
-  ${fontSizeH7};
-  ${fontWeightBold};
-  background-color: ${({ active, theme }) =>
-    active ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
-  cursor: ${({ active }) => (active ? 'pointer' : 'not-allowed')};
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    ${whiteColor};
+    ${fontSizeH7};
+    ${fontWeightBold};
+    background-color: ${({ $active, theme }) =>
+      $active ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
+    cursor: ${({ $active }) => ($active ? 'pointer' : 'not-allowed')};
 `;
 
 S.BestCommentSection = styled.div`
