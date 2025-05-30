@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { fontSizeH7 } from '../../../../../globals/common';
+import { fontSizeH7, gray4Color } from '../../../../../globals/common';
 
 const S = {}
 
@@ -14,21 +14,22 @@ const S = {}
     margin-bottom: 45px;
   `;
 
-  S.Wrapper = styled.div`
+  S.TextWrapper = styled.div`
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
     gap: 5px;
-    margin-bottom: 25px;
     width: 460px;
+    margin: 0 0 25px 0;
 
     span {
       font-size: 20px;
-      font-weight: 500;
+      font-weight: 700;
     }
 
     img {
-      width: 32px;
-      height: 32px;
+      width: 24px;
+      height: 24px;
       cursor: pointer;
       margin-right: 0.5rem;
     }
@@ -41,19 +42,57 @@ const S = {}
       color: #8e8e93;
     }
 
-    p {
-      ${fontSizeH7}
-      font-weight: 300;
-      margin: 0px 18px 0px 32px;
-      width: 395px;
-      max-height: 85px;
-      border: 1px solid #d9d9d9;
-      border-radius: 10px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      line-height: 25px;
-      padding: 15px;
-    }
+  `;
+
+
+  S.SubTextWrapper = styled.div`
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 5px;
+      width: 460px;
+      margin: 0 0 12px 0;
+
+      .point {
+        color: #01cd74;
+      }
+
+      span {
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      img {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        margin-right: 0.5rem;
+      }
+
+      .text-essential {
+        color: #01cd74;
+      }
+
+      .text-optional {
+        color: #8e8e93;
+      }
+
+    `;
+
+    
+  S.TextBox = styled.div`
+    ${fontSizeH7}
+    font-weight: 300;
+    margin: 0px 18px 32px 32px;
+    width: 395px;
+    max-height: 85px;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    line-height: 22px;
+    ${gray4Color};
+    padding: 15px;
   `;
 
   S.NextButton = styled.button`

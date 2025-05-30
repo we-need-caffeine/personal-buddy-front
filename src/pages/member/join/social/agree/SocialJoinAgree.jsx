@@ -19,7 +19,7 @@ const SocialJoinAgree = () => {
 
   useEffect(() => {
     if (agreed) {
-      navigate("/member/join/info");
+      navigate("/member/join/social/info");
     }
   }, [agreed]);
 
