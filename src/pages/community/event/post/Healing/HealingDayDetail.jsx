@@ -117,7 +117,6 @@ const HealingDayDetail = () => {
     const best = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/best/${id}`);
     const bestData = await best.json();
     
-    
 
     setBestComments(bestData);
     setComments(data);
@@ -148,6 +147,8 @@ const HealingDayDetail = () => {
       console.error('이벤트 좋아요 처리 실패', err);
     }
   };
+
+  console.log("야야야 정신차려",  comments);
 
   return (
     <S.Container>
@@ -209,7 +210,17 @@ const HealingDayDetail = () => {
             <S.BestBadge>⭐ BEST {i + 1}</S.BestBadge>
             <S.CommentTop>
               <S.CommentUser>
-                <S.ProfileImg src={c.memberImgPath || '/assets/images/header/default-member-img.png'} />
+                <S.ProfileImg
+                  src={
+                    c.memberImgPath && c.memberImgName
+                      ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
+                      : '/assets/images/header/default-member-img.png'
+                  }
+                  onError={(e) => {
+                    e.target.src = '/assets/images/header/default-member-img.png';
+                  }}
+                  alt="작성자 프로필"
+                />
                 <S.Nickname>{c.memberNickName}</S.Nickname>
               </S.CommentUser>
             </S.CommentTop>
@@ -223,7 +234,17 @@ const HealingDayDetail = () => {
           <S.CommentItem key={c.id}>
             <S.CommentTopRow>
               <S.CommentLeftBox>
-                <S.ProfileImg src={c.memberImgPath || '/assets/images/header/default-member-img.png'} />
+                <S.ProfileImg
+                  src={
+                    c.memberImgPath && c.memberImgName
+                      ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
+                      : '/assets/images/header/default-member-img.png'
+                  }
+                  onError={(e) => {
+                    e.target.src = '/assets/images/header/default-member-img.png';
+                  }}
+                  alt="작성자 프로필"
+                />
                 <S.Nickname>{c.memberNickName}</S.Nickname>
               </S.CommentLeftBox>
               <S.CommentRightBox>
