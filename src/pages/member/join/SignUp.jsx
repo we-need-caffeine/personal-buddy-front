@@ -18,20 +18,19 @@ const SignUp = () => {
 
   useEffect(() => {
     if (isSocial) {
-      setJoinData((prev) => ({
-        ...prev,
-        info: {
-          ...prev.info,
-          memberEmail: email,
-          memberProvider: provider,
-          isSocial: true,
-        },
-      }));
-      if (window.location.pathname === "/member/join") {
-        navigate("/member/join/info", { replace: true });
-      }
+      // 쿼리스트링 값이 있으면 소셜 경로로 이동
+      setJoinData(prev => ({
+      ...prev,
+      info: {
+        ...prev.info,
+        memberEmail: email,
+        memberProvider: provider,
+        isSocial: true,
+      },
+    }));
+      navigate("/member/join/social", { replace: true });
     }
-  }, [provider, email]);
+  }, [isSocial, email, provider, navigate]);
 
   return (
     <JoinContainer>
