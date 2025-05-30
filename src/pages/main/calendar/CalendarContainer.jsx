@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Outlet, useNavigate, useParams, useLocation } from "react-router-dom";
 import CalendarHeader from "./calendarHeader/CalendarHeader";
 import { useSelector } from "react-redux";
+import RecommendInformation from "../recommend/information/RecommendInformation";
+import RecommendPlace from "../recommend/place/RecommendPlace";
+import RecommendShopping from "../recommend/shopping/RecommendShopping";
 
 const CalendarContainer = () => {
   const { currentUser } = useSelector((state) => state.member);
@@ -57,6 +60,9 @@ const CalendarContainer = () => {
           handleCreateSchedule,
         }}
       />
+      <RecommendInformation />
+      <RecommendPlace />
+      <RecommendShopping />
     </div>
   );
 };
