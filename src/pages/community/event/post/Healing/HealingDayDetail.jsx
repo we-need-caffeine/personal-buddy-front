@@ -116,6 +116,8 @@ const HealingDayDetail = () => {
     const data = await updated.json();
     const best = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/best/${id}`);
     const bestData = await best.json();
+    
+    
 
     setBestComments(bestData);
     setComments(data);
@@ -215,20 +217,35 @@ const HealingDayDetail = () => {
           </S.BestCommentItem>
         ))}
       </S.BestCommentSection>
-
+ 
       <S.CommentList>
         {paginatedComments.map((c) => (
           <S.CommentItem key={c.id}>
-            <S.CommentTop>
-              <S.CommentUser>
+            <S.CommentTopRow>
+              <S.CommentLeftBox>
                 <S.ProfileImg src={c.memberImgPath || '/assets/images/header/default-member-img.png'} />
                 <S.Nickname>{c.memberNickName}</S.Nickname>
-              </S.CommentUser>
-              <S.CommentLikeButton liked={likedCommentIds.includes(c.id)} onClick={() => handleCommentLike(c.id)}>
-                ♥ {c.eventCommentLikeCount}
-              </S.CommentLikeButton>
-            </S.CommentTop>
-            <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
+              </S.CommentLeftBox>
+              <S.CommentRightBox>
+                <S.CommentLikeButton
+                  liked={likedCommentIds.includes(c.id)}
+                  onClick={() => handleCommentLike(c.id)}
+                >
+                  ♥
+                </S.CommentLikeButton>
+              </S.CommentRightBox>
+            </S.CommentTopRow>
+
+            <S.CommentBottomRow>
+              <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
+              <S.CommentMetaBox>
+                <S.CommentDate>{c.eventCommentCreateDate}</S.CommentDate>
+                <S.LikeCount>
+                  <img src="/assets/images/board/icon/like-icon.png" alt="like" />
+                  <span>{c.eventCommentLikeCount}</span>
+                </S.LikeCount>
+              </S.CommentMetaBox>
+            </S.CommentBottomRow>
           </S.CommentItem>
         ))}
       </S.CommentList>

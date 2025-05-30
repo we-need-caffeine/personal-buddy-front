@@ -280,6 +280,7 @@ S.CommentDate = styled.span`
 S.CommentLikeCount = styled.span`
     display: flex;
     align-items: center;
+
     gap: 4px;
     font-size: 13px;
     color: ${({ theme }) => theme.PALLETE.gray.gray4};
@@ -294,6 +295,7 @@ S.CommentLikeCount = styled.span`
 S.LeftCommentWrapper = styled.div`
     display: flex;
     align-items: center;
+    
     gap: 12px;
     margin-top: 4px;
     color: ${({ theme }) => theme.PALLETE.gray.gray4};
