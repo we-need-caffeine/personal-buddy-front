@@ -75,6 +75,7 @@ import SocialSignUp from "../pages/member/join/social/SocialSignUp";
 import SocialJoinInfo from "../pages/member/join/social/info/SocialJoinInfo";
 import SocialJoinProfile from "../pages/member/join/social/profile/SocialJoinProfile";
 import SocialJoinAgree from "../pages/member/join/social/agree/SocialJoinAgree";
+import AdminContainer from "../pages/admin/AdminContainer";
 
 const router = createBrowserRouter([
   {
@@ -456,6 +457,10 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "/admin",
+    element: <AdminContainer />
   },
   {
     path: "/privacy-policy",

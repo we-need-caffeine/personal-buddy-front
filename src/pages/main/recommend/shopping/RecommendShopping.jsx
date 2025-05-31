@@ -74,12 +74,14 @@ const RecommendShopping = () => {
 
                         return (
                             <S.RecommendInfo key={`${item.id}-${item.interestDataContent}`}>
+                                <a href={encodeURI(item.interestDataLink)} target="_blank" rel="noopener noreferrer">
                                 <S.RecommendImg 
                                     src={`${process.env.REACT_APP_BACKEND_URL}/${item.interestDataImgPath}/${item.interestDataImgName}`} 
                                     alt={item.interestDataContent} 
                                     onError={(e) => e.target.src = '/assets/images/error/404ERROR.png'}
                                 />
                                 <div>{items}</div>
+                                </a>
                             </S.RecommendInfo>
                         );
                     })}

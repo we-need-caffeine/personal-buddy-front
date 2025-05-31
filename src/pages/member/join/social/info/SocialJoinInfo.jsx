@@ -34,23 +34,27 @@ const SocialJoinInfo = () => {
   }, [showPhoneAuthInput, passwordAuthTimer]);
 
   const handleChangePhone = (e) => {
-    const value = e.target.value;
-    const onlyNumbers = /^[0-9]*$/;
+  const value = e.target.value;
+  const onlyNumbers = /^[0-9]*$/;
 
-    if (!onlyNumbers.test(value)) {
-      setPhoneMessage('※ 숫자만 입력 가능합니다.');
-      setPhone('');
-      return;
-    }
+  if (!onlyNumbers.test(value)) {
+    setPhoneMessage('※ 숫자만 입력 가능합니다.');
+    setPhone('');
+    return;
+  }
 
-    setPhone(value);
+  setPhone(value);
 
-    if (value.length >= 10) {
-      setPhoneMessage('※ 올바른 번호 형식입니다.');
-    } else {
-      setPhoneMessage('');
-    }
-  };
+  if (value.length === 0) {
+    setPhoneMessage(''); // 아무 것도 입력 안 하면 메시지 없음
+  } else if (value.length < 10) {
+    setPhoneMessage('※ 번호는 최소 10자리 이상이어야 합니다.');
+  } else if (/^\d{10,11}$/.test(value)) {
+    setPhoneMessage('※ 올바른 번호 형식입니다.');
+  } else {
+    setPhoneMessage('');
+  }
+};
 
   const handleSendPhoneAuth = async () => {
     const checkUrl = `${process.env.REACT_APP_BACKEND_URL}/members/api/phone/check?phone=${encodeURIComponent(phone)}`;
@@ -211,9 +215,18 @@ const SocialJoinInfo = () => {
               setBirth(date);
               setBirthValid(!!date);
             }}
-            render={({ render, ...props }, ref) => (
-              <S.Input {...props} ref={ref} placeholder="생년월일 선택" required />
-            )}
+            render={({ render, ...props }, ref) => {
+              const { options, value, ...restProps } = props;  // options, value 분리
+              return (
+                <S.Input
+                  {...restProps}
+                  ref={ref}
+                  placeholder="생년월일 선택"
+                  required
+                  defaultValue={value}  // value 대신 defaultValue로 처리
+                />
+              );
+            }}
           />
         </S.BirthInputWrapper>
         {birthValid !== null && (
