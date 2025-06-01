@@ -1,5 +1,5 @@
 import React, { useState, useEffect  } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import S from './style';
 import Pagination from '../../../../hooks/pagenation/Pagination';
@@ -24,6 +24,8 @@ const BoardPost = () => {
     currentPage * 7
   );
 
+  
+
   // 게시글을 업데이트 시키는 상태
   const [isUpdate, setIsUpdate] = useState(true); // 게시글이 업데이트 되었는지 여부
   const [isError, setIsError] = useState(false); // 데이터 로딩 에러 여부
@@ -39,10 +41,12 @@ const BoardPost = () => {
   // 삭제
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState(null);
+  const navigate = useNavigate();
 
   const handleDeletePost = async () => {
   const confirmDelete = window.confirm("게시글을 삭제하시겠습니까?");
   if (!confirmDelete) return;
+  
 
   try {
     const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/boards/api/post/delete/${id}`, {
@@ -50,7 +54,7 @@ const BoardPost = () => {
     });
       if (res.ok) {
         alert('게시글이 삭제되었습니다.');
-        Navigate('/main/community/board'); // 삭제 후 게시판 리스트로 이동
+        navigate('/main/community/board'); // 삭제 후 게시판 리스트로 이동
       } else {
         alert('게시글 삭제에 실패했습니다.');
       }
@@ -340,17 +344,6 @@ const checkLiked = async () => {
         </S.Right>
       </S.TopInfoBox>
 
-      {/* 본문 이미지 */}
-      {/* {post.boardImgPath && post.boardImgName && (
-        <S.Image
-          src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.boardImgPath)}&fileName=${encodeURIComponent(post.boardImgName)}`}
-          alt="본문 이미지"
-           onError={(e) => {
-            e.target.src = ''; // 깨진 이미지도 표시되지 않게
-          }}
-        />
-      )} */}
-
       {/* 본문 이미지 (여러 장 ) */}
       {post.boardImages && post.boardImages.length > 0 && post.boardImages.map((img, i) => (
         // console.log(post),
@@ -398,102 +391,99 @@ const checkLiked = async () => {
         </S.InputBottom>
       </S.CommentInputBox>
 
-      {/* Best댓글  */}
-      <S.BestCommentSection>
-        {bestComments.map((c, index) => (
-          <S.BestCommentItem key={c.id}>
-            <S.BestBadge>⭐ BEST {index + 1}</S.BestBadge>
-            <S.CommentTop>
-              <S.CommentUser>
-                <S.ProfileImg
-                  src={
-                    c.memberImgPath && c.memberImgName
-                      ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
-                      : '/assets/images/header/default-member-img.png'
-                  }
-                  onError={(e) => {
-                    e.target.src = '/assets/images/header/default-member-img.png';
-                  }}
-                  alt="댓글 작성자 프로필"
-                />
-                <S.Nickname>{c.memberNickName}</S.Nickname>
-                <S.LeftCommentWrapper>
-                  <S.CommentDate>{c.boardCommentCreateDate}</S.CommentDate>
-                  <S.CommentLikeCount>
-                    <img src="/assets/images/board/icon/like-icon.png" alt="like" />
-                    <span>{c.boardCommentLikeCount}</span>
-                  </S.CommentLikeCount>
-                </S.LeftCommentWrapper>
-              </S.CommentUser>
-            </S.CommentTop>
-            <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
-          </S.BestCommentItem>
-        ))}
-      </S.BestCommentSection>
+  <S.BestCommentSection>
+    {bestComments.map((c, i) => (
+      <S.BestCommentItem key={c.id}>
+        <S.BestBadge>⭐ BEST {i + 1}</S.BestBadge>
+        <S.CommentTop>
+          <S.CommentUser>
+            <S.ProfileImg
+              src={c.memberImgPath && c.memberImgName
+                ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
+                : '/assets/images/header/default-member-img.png'}
+              alt="프로필"
+            />
+            <S.Nickname>{c.memberNickName}</S.Nickname>
+            <S.LeftCommentWrapper>
+              <S.CommentDate>{c.boardCommentCreateDate}</S.CommentDate>
+              <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
+            </S.LeftCommentWrapper>
+              <S.CommentLikeCount>
+                <img src="/assets/images/board/icon/like-icon.png" alt="like" />
+                <span>{c.eventCommentLikeCount}</span>
+              </S.CommentLikeCount>
+          </S.CommentUser>
+        </S.CommentTop>
+        <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
+      </S.BestCommentItem>
+    ))}
+  </S.BestCommentSection>
+  
+  <S.CommentList>
+    {paginatedComments.map((c) => (
+      <S.CommentItem key={c.id}>
+        <S.CommentTop>
+          <S.CommentUser>
+            <S.ProfileImg
+              src={c.memberImgPath && c.memberImgName
+                ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
+                : '/assets/images/header/default-member-img.png'}
+              alt="프로필"
+            />
+            <S.Nickname>{c.memberNickName}</S.Nickname>
+            <S.LeftCommentWrapper>
+              <S.CommentDate>{c.boardCommentCreateDate}</S.CommentDate>
+              <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
+              <S.CommentLikeCount>
+                <img src="/assets/images/board/icon/like-icon.png" alt="like" />
+                <span>{c.eventCommentLikeCount}</span>
+              </S.CommentLikeCount>
+            </S.LeftCommentWrapper>
+        </S.CommentUser>
 
-      {/* 일반 댓글 */}
-      <S.CommentList>
-        {paginatedComments.map((c) => (
-          <S.CommentItem key={c.id}>
-            <S.CommentTop>
-              <S.CommentUser>
-                <S.ProfileImg
-                  src={c.memberImgPath && c.memberImgName
-                    ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
-                    : '/assets/images/header/default-member-img.png'}
-                  alt="댓글 작성자 프로필"
-                />
-                <S.Nickname>{c.memberNickName}</S.Nickname>
-                <S.LeftCommentWrapper>
-                  <S.CommentDate>{c.boardCommentCreateDate}</S.CommentDate>
-                  <S.CommentLikeCount>
-                    <img src="/assets/images/board/icon/like-icon.png" alt="like" />
-                    <span>{c.boardCommentLikeCount}</span>
-                  </S.CommentLikeCount>
-                </S.LeftCommentWrapper>
-              </S.CommentUser>
+        <S.Right>
+          <S.CommentLikeButton
+            liked={likedCommentIds.includes(c.id)}
+            onClick={() => handleCommentLike(c.id)}>
+            ♥
+          </S.CommentLikeButton>
+        </S.Right>
+      </S.CommentTop>
 
-              <S.Right>
-                <S.CommentLikeButton liked={likedCommentIds.includes(c.id)} onClick={() => handleCommentLike(c.id)}>
-                  ♥
-                </S.CommentLikeButton>
-              </S.Right>
-            </S.CommentTop>
-
-            {editingCommentId === c.id ? (
-              <>
-                <S.Textarea
-                  value={editedCommentText}
-                  onChange={(e) => setEditedCommentText(e.target.value)}
-                  maxLength={500}
-                />
-                <S.InputBottom>
-                  <S.SaveButton onClick={() => handleCommentUpdate(c.id)}>저장</S.SaveButton>
-                  <S.CancelButton onClick={() => setEditingCommentId(null)}>취소</S.CancelButton>
-                </S.InputBottom>
-              </>
-            ) : (
-              <>
-                <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
-                {memberId === c.memberId && (
-                <S.EditDeleteBox>
-                  <S.CommentEditButton onClick={() => {
-                    setEditingCommentId(c.id);
-                    setEditedCommentText(c.boardCommentContent);
-                  }}>
-                    수정
-                  </S.CommentEditButton>
-                  <S.CommentSeparator>|</S.CommentSeparator>
-                  <S.CommentDeleteButton onClick={() => handleAskDeleteComment}>
-                    삭제
-                  </S.CommentDeleteButton>
-                </S.EditDeleteBox>
-              )}
-              </>
-            )}
-          </S.CommentItem>
-        ))}
-      </S.CommentList>
+      {editingCommentId === c.id ? (
+        <>
+          <S.Textarea
+            value={editedCommentText}
+            onChange={(e) => setEditedCommentText(e.target.value)}
+            maxLength={500}
+          />
+          <S.InputBottom>
+            <S.SaveButton onClick={() => handleCommentUpdate(c.id)}>저장</S.SaveButton>
+            <S.CancelButton onClick={() => setEditingCommentId(null)}>취소</S.CancelButton>
+          </S.InputBottom>
+        </>
+      ) : (
+        <>
+          <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
+          {memberId === c.memberId && (
+            <S.EditDeleteBox>
+              <S.CommentEditButton onClick={() => {
+                setEditingCommentId(c.id);
+                setEditedCommentText(c.eventCommentDescription);
+              }}>
+                수정
+              </S.CommentEditButton>
+              <S.CommentSeparator>|</S.CommentSeparator>
+              <S.CommentDeleteButton onClick={() => handleAskDeleteComment(c.id)}>
+                삭제
+              </S.CommentDeleteButton>
+            </S.EditDeleteBox>
+          )}
+        </>
+      )}
+    </S.CommentItem>
+  ))}
+</S.CommentList>
 
       <Pagination
         currentPage={currentPage}

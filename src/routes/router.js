@@ -71,6 +71,11 @@ import SurveyDetailInfo from "../pages/survey/detail/info/SurveyDetailInfo";
 import SurveyDetailPlace from "../pages/survey/detail/place/SurveyDetailPlace";
 import SurveyDetailShopping from "../pages/survey/detail/shopping/SurveyDetailShopping";
 import CalendarUpdate from "../pages/main/calendar/calendarSave/CalendarUpdate";
+import SocialSignUp from "../pages/member/join/social/SocialSignUp";
+import SocialJoinInfo from "../pages/member/join/social/info/SocialJoinInfo";
+import SocialJoinProfile from "../pages/member/join/social/profile/SocialJoinProfile";
+import SocialJoinAgree from "../pages/member/join/social/agree/SocialJoinAgree";
+import AdminContainer from "../pages/admin/AdminContainer";
 
 const router = createBrowserRouter([
   {
@@ -391,6 +396,24 @@ const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: "social",
+            element: <SocialSignUp />,
+            children: [
+              {
+                path: "",
+                element: <SocialJoinAgree />,
+              },
+              {
+                path: "info",
+                element: <SocialJoinInfo />,
+              },
+              {
+                path: "profile",
+                element: <SocialJoinProfile />,
+              },
+            ]
+          },
         ],
       },
       {
@@ -434,6 +457,10 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "/admin",
+    element: <AdminContainer />
   },
   {
     path: "/privacy-policy",

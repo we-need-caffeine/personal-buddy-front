@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useRef, useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_green.css';
 import S from './joinInfoStyle';
-import { data, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useJoin } from './JoinContext';
 
 const JoinInfo = () => {
@@ -50,7 +50,8 @@ const JoinInfo = () => {
   const togglePassword = () => setShowPassword(!showPassword);
   const togglePasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
 
-  const { setJoinData } = useJoin();
+  const { joinData, setJoinData } = useJoin();
+  const isSocial = joinData?.info?.isSocial || false;
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -264,15 +265,12 @@ const JoinInfo = () => {
     };
 
     const isFormValid =
-      isEmailValid === true &&
-      emailAuthCodeValid === true &&
-      isPasswordValid === true &&
-      isNameValid === true &&
-      isGenderValid === true &&
-      birth !== '' &&
-      phoneValidation === true &&
-      phoneAuthCodeValid === true &&
-      isConfirmValid === true;
+    (isSocial || (isEmailValid && emailAuthCodeValid && isPasswordValid && isConfirmValid)) &&
+    isNameValid === true &&
+    isGenderValid === true &&
+    birth !== '' &&
+    phoneValidation === true &&
+    phoneAuthCodeValid === true;
 
   return (
     <S.Container>

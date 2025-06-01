@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Outlet, useNavigate, useParams, useLocation } from "react-router-dom";
 import CalendarHeader from "./calendarHeader/CalendarHeader";
 import { useSelector } from "react-redux";
+import RecommendInformation from "../recommend/information/RecommendInformation";
+import RecommendPlace from "../recommend/place/RecommendPlace";
+import RecommendShopping from "../recommend/shopping/RecommendShopping";
 
 const CalendarContainer = () => {
   const { currentUser } = useSelector((state) => state.member);
@@ -26,7 +29,8 @@ const CalendarContainer = () => {
     : location.pathname.includes("/month")
     ? "month"
     : "";
-
+  // console.log("[DEBUG] location.pathname:", location.pathname);
+  // console.log("[DEBUG] view:", view);
   const handleCreateSchedule = (info) => {
     const range = {
       start: info.startStr,
@@ -36,10 +40,13 @@ const CalendarContainer = () => {
     setSelectedRange(range);
 
     const basePath = `/main/${memberId}/${calendarId}`;
-    const targetPath = view
-      ? `${basePath}/${view}/schedule-save`
-      : `${basePath}/schedule-save`;
 
+    const targetPath =
+      view === "month"
+        ? `${basePath}/${view}/schedule-list-view`
+        : `${basePath}/${view ? `${view}/schedule-save` : "schedule-save"}`;
+
+    console.log("[DEBUG] navigate to:", targetPath);
     navigate(targetPath);
   };
 
@@ -53,6 +60,9 @@ const CalendarContainer = () => {
           handleCreateSchedule,
         }}
       />
+      <RecommendInformation />
+      <RecommendPlace />
+      <RecommendShopping />
     </div>
   );
 };

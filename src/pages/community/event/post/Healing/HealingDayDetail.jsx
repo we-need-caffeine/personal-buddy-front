@@ -116,6 +116,7 @@ const HealingDayDetail = () => {
     const data = await updated.json();
     const best = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/best/${id}`);
     const bestData = await best.json();
+    
 
     setBestComments(bestData);
     setComments(data);
@@ -147,12 +148,14 @@ const HealingDayDetail = () => {
     }
   };
 
+  console.log("야야야 정신차려",  comments);
+
   return (
     <S.Container>
       <S.MetaBox>
         <S.TitleRow>
           <S.Title>오늘 하루는 힐링 데이</S.Title>
-          <S.Date>2025.04.20 게시</S.Date>
+          {/* <S.Date>2025.04.20 게시</S.Date> */}
         </S.TitleRow>
       </S.MetaBox>
         <S.MetaBottom>
@@ -161,18 +164,22 @@ const HealingDayDetail = () => {
             <span>운영자</span>
           </S.Author>
           <S.StatBox>
-            조회수 <strong>{views}</strong> | 좋아요 <strong>{likeCount}</strong> | 댓글 <strong>{comments.length}</strong>
+            조회수 <strong>{views}</strong> | 댓글 <strong>{comments.length}</strong>
           </S.StatBox>
         </S.MetaBottom>
       <S.ImageWrapper>
         <img src="/assets/images/event/healing-day.png" alt="루틴 이벤트" />
-        <S.IsSuccess $joined={joined || commentText.trim().length > 0}>
+        <S.IsSuccess $joined={joined || commentText.length > 0}>
         {joined
-          ? '참여 완료! 800P의 주인공은?'
-          : commentText.trim().length > 0
+          ? '참여 완료! 800🪙의 주인공은?'
+          : commentText.length > 0
           ? '이벤트 도전중...'
-          : '성공시 800P 획득!'}
+          : '성공시 800🪙 획득!'}
       </S.IsSuccess>
+
+      <S.Refer>
+        ※ 이벤트 및 챌린지 댓글은 수정및 삭제가 불가하므로 참고하여 주시기 바랍니다.
+      </S.Refer>
 
       </S.ImageWrapper>
       <S.CommentInputBox>
@@ -188,7 +195,7 @@ const HealingDayDetail = () => {
             <span>/ 500</span>
           </div>
           <S.SubmitButton
-            active={commentText.length > 0 && !joined}
+            $active={commentText.length > 0 && !joined} 
             disabled={commentText.length === 0 || joined}
             onClick={handleCommentSubmit}
           >
@@ -203,7 +210,17 @@ const HealingDayDetail = () => {
             <S.BestBadge>⭐ BEST {i + 1}</S.BestBadge>
             <S.CommentTop>
               <S.CommentUser>
-                <S.ProfileImg src={c.memberImgPath || '/assets/images/header/default-member-img.png'} />
+                <S.ProfileImg
+                  src={
+                    c.memberImgPath && c.memberImgName
+                      ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
+                      : '/assets/images/header/default-member-img.png'
+                  }
+                  onError={(e) => {
+                    e.target.src = '/assets/images/header/default-member-img.png';
+                  }}
+                  alt="작성자 프로필"
+                />
                 <S.Nickname>{c.memberNickName}</S.Nickname>
               </S.CommentUser>
             </S.CommentTop>
@@ -211,20 +228,45 @@ const HealingDayDetail = () => {
           </S.BestCommentItem>
         ))}
       </S.BestCommentSection>
-
+ 
       <S.CommentList>
         {paginatedComments.map((c) => (
           <S.CommentItem key={c.id}>
-            <S.CommentTop>
-              <S.CommentUser>
-                <S.ProfileImg src={c.memberImgPath || '/assets/images/header/default-member-img.png'} />
+            <S.CommentTopRow>
+              <S.CommentLeftBox>
+                <S.ProfileImg
+                  src={
+                    c.memberImgPath && c.memberImgName
+                      ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
+                      : '/assets/images/header/default-member-img.png'
+                  }
+                  onError={(e) => {
+                    e.target.src = '/assets/images/header/default-member-img.png';
+                  }}
+                  alt="작성자 프로필"
+                />
                 <S.Nickname>{c.memberNickName}</S.Nickname>
-              </S.CommentUser>
-              <S.CommentLikeButton liked={likedCommentIds.includes(c.id)} onClick={() => handleCommentLike(c.id)}>
-                ♥ {c.eventCommentLikeCount}
-              </S.CommentLikeButton>
-            </S.CommentTop>
-            <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
+              </S.CommentLeftBox>
+              <S.CommentRightBox>
+                <S.CommentLikeButton
+                  liked={likedCommentIds.includes(c.id)}
+                  onClick={() => handleCommentLike(c.id)}
+                >
+                  ♥
+                </S.CommentLikeButton>
+              </S.CommentRightBox>
+            </S.CommentTopRow>
+
+            <S.CommentBottomRow>
+              <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
+              <S.CommentMetaBox>
+                <S.CommentDate>{c.eventCommentCreateDate}</S.CommentDate>
+                <S.LikeCount>
+                  <img src="/assets/images/board/icon/like-icon.png" alt="like" />
+                  <span>{c.eventCommentLikeCount}</span>
+                </S.LikeCount>
+              </S.CommentMetaBox>
+            </S.CommentBottomRow>
           </S.CommentItem>
         ))}
       </S.CommentList>

@@ -1,21 +1,45 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import S from "./style";
+import { CalendarContext } from "../../../../context/CalendarContext";
 
 const ScheduleView = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { memberId, calendarId } = useParams();
+  const { actions } = useContext(CalendarContext);
+    const { getCalendarsAll } = actions;
   const { eventId } = location.state || {};
 
   const [schedule, setSchedule] = useState(null);
 
+  const deleteSchedule = async () => {
+    
+    try{
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/schedules/api/delete/${eventId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if(!response.ok) {
+        throw new Error("")
+      }
+      await getCalendarsAll();
+      navigate(`/main/${memberId}/${calendarId}`);
+    } catch (error) {
+      console.error("일정 삭제 실패", error);
+    }
+  }
   // 스케줄 상세 조회
   useEffect(() => {
-    const fetchSchedule = async () => {
+    const getSchedule = async () => {
       try {
         const response = await fetch(
           `${process.env.REACT_APP_BACKEND_URL}/schedules/api/${eventId}`
         );
         const data = await response.json();
+        //console.log(eventId);
         //console.log(data);
         setSchedule(data);
       } catch (error) {
@@ -24,7 +48,7 @@ const ScheduleView = () => {
     };
 
     if (eventId) {
-      fetchSchedule();
+      getSchedule();
     }
   }, [eventId]);
 
@@ -33,11 +57,11 @@ const ScheduleView = () => {
   return (
     <S.Container>
       <S.TitleInputContainer>
-        <S.TitleInput value={schedule.scheduleTitle} readOnly />
+        <S.TitleInput value={schedule.scheduleTitle} />
       </S.TitleInputContainer>
 
       <S.MemberListContainer>
-        {/* 멤버 목록 표시 필요시 여기에 */}
+
       </S.MemberListContainer>
 
       <S.DateContainer>
@@ -93,7 +117,12 @@ const ScheduleView = () => {
         <S.ContentWrapper>
           {/* 상세 내용 영역 */}
           내용
-          <S.CancelButton>취소</S.CancelButton>
+          <S.ButtonGroup>
+            <S.DeleteButton onClick={(e) => {
+              deleteSchedule();
+            }}>삭제</S.DeleteButton>
+            <S.CancelButton>취소</S.CancelButton>
+          </S.ButtonGroup>
         </S.ContentWrapper>
       </S.ContentContainer>
     </S.Container>

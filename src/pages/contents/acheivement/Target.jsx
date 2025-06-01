@@ -37,7 +37,7 @@ const Target = ({
                                         <S.Description targetcompleted={dailyTarget.isCompleted}>{dailyTarget.targetType} 일정 등록 ( {dailyTarget.completedCount} / {dailyTarget.standardCount} )</S.Description>
                                     </div>
                                     <div>
-                                        <S.DescriptionGetPoint>{dailyTarget.targetGetPoint} </S.DescriptionGetPoint>
+                                        <S.DescriptionGetPoint>{dailyTarget.targetGetPoint} 🪙 </S.DescriptionGetPoint>
                                         <S.Description style={{margin: '0 105px 0 0'}}>획득</S.Description>
                                     </div>
                                 </S.TargetListItem>
@@ -57,7 +57,7 @@ const Target = ({
                                         <S.Description targetcompleted={weeklyTarget.isCompleted}>{weeklyTarget.targetType}  일정 등록 ( {weeklyTarget.completedCount} / {weeklyTarget.standardCount} )</S.Description>
                                     </div>
                                     <div>
-                                        <S.DescriptionGetPoint>{weeklyTarget.targetGetPoint} </S.DescriptionGetPoint>
+                                        <S.DescriptionGetPoint>{weeklyTarget.targetGetPoint} 🪙 </S.DescriptionGetPoint>
                                         <S.Description style={{margin: '0 105px 0 0'}}>획득</S.Description>
                                     </div>
                                 </S.TargetListItem>
@@ -77,7 +77,7 @@ const Target = ({
                                         <S.Description targetcompleted={monthlyTarget.isCompleted}>{monthlyTarget.targetType} 일정 등록 ( {monthlyTarget.completedCount} / {monthlyTarget.standardCount} )</S.Description>
                                     </div>
                                     <div>
-                                        <S.DescriptionGetPoint>{monthlyTarget.targetGetPoint} </S.DescriptionGetPoint>
+                                        <S.DescriptionGetPoint>{monthlyTarget.targetGetPoint} 🪙 </S.DescriptionGetPoint>
                                         <S.Description style={{margin: '0 105px 0 0'}}>획득</S.Description>
                                     </div>
                                 </S.TargetListItem>

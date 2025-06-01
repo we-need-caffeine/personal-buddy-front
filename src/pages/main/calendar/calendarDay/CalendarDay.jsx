@@ -102,13 +102,14 @@ const CalendarDay = ({
     }
   }, [selectedRange, calendars, calendarId, location.pathname]);
 
+  
   // 날짜 이동
   const handlePrev = () => calendarRef.current.getApi().prev();
   const handleNext = () => calendarRef.current.getApi().next();
   const handleToday = () => calendarRef.current.getApi().today();
-
+  
   return (
-    <S.CalendarWrapper>
+    <S.CalendarWrapper style={{ "--highlight-color": selectedRange?.color ?? "#01CD74" }}>
       <S.DateInfoWrapper>
         <S.LeftArrowIcon
           src="/assets/images/main/calendar/arrow.png"
@@ -154,7 +155,7 @@ const CalendarDay = ({
 
             if (hasConflict(range)) {
               calendarRef.current?.getApi().unselect();
-              onSelectRange(null);
+              //onSelectRange(null);
               return;
             }
 
@@ -162,6 +163,7 @@ const CalendarDay = ({
             onCreateSchedule?.(info);
           }}
           eventClick={(info) => {
+            //console.log(info.eventId);
             const eventId = info.event.id;
             if (
               !eventId ||

@@ -12,21 +12,26 @@ const CalendarSave = () => {
   const [allMembers, setAllMembers] = useState([]);
 
   //  초대 가능한 멤버 조회
-  const fetchMutualFollowings = async () => {
+  const getMutualFollowings = async () => {
     try {
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/${memberId}/followings`
       );
       const data = await response.json();
       setAllMembers(data);
+      //console.log(data);
     } catch (error) {
       console.error("초대 가능한 멤버 조회 실패", error);
     }
   };
 
+  
   useEffect(() => {
-    fetchMutualFollowings();
+    getMutualFollowings();
   }, [memberId]);
+
+
+
 
   // 저장 처리 함수
   const handleSave = async ({ calendarName, invitedMembers }) => {
@@ -65,7 +70,7 @@ const CalendarSave = () => {
           }
         );
       }
-
+      
       // 3. 캘린더 전역 상태 최신화
       await getCalendarsAll();
 

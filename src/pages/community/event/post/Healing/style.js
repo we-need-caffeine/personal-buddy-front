@@ -45,8 +45,6 @@ S.MetaBox = styled.div`
 
 S.TitleRow = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   font-weight: bold;
   font-size: 18px;
 `;
@@ -117,15 +115,15 @@ S.CharCount = styled.div`
 `;
 
 S.SubmitButton = styled.button`
-  border: none;
-  border-radius: 50px;
-  padding: 10px 20px;
-  ${whiteColor};
-  ${fontSizeH7};
-  ${fontWeightBold};
-  background-color: ${({ active, theme }) =>
-    active ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
-  cursor: ${({ active }) => (active ? 'pointer' : 'not-allowed')};
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    ${whiteColor};
+    ${fontSizeH7};
+    ${fontWeightBold};
+    background-color: ${({ $active, theme }) =>
+      $active ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
+    cursor: ${({ $active }) => ($active ? 'pointer' : 'not-allowed')};
 `;
 
 S.BestCommentSection = styled.div`
@@ -214,5 +212,68 @@ S.CommentLikeButton = styled.button`
     background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
   }
 `;
+
+S.Refer = styled.div`
+  ${flexCenter};
+  margin-top: 80px;
+  margin-bottom: 100px;
+  font-weight: bold;
+`
+S.CommentTopRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+S.CommentBottomRow = styled.div`
+  /* display: flex; */
+  /* justify-content: space-between; */
+  /* align-items: flex-end; */
+  margin-top: 6px;
+`;
+
+S.CommentLeftBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+S.CommentRightBox = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+S.CommentMetaBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: ${({ theme }) => theme.PALLETE.gray.gray4};
+`;
+
+S.LikeCount = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
+`;
+
+S.CommentDate = styled.div`
+  font-size: 13px;
+  color: ${({ theme }) => theme.PALLETE.gray.gray4};
+`;
+
+S.CommentContents = styled.p`
+  font-size: 15px;
+  color: ${({ theme }) => theme.PALLETE.black};
+  white-space: pre-wrap;
+  word-break: break-word;
+  flex: 1;
+`;
+
 
 export default S;

@@ -4,6 +4,8 @@ import S from './style';
 import { useSelector } from 'react-redux';
 import Sticker from './display/Sticker';
 import ConfirmModal from '../../layout/modal/ConfirmModal';
+import 'aos/dist/aos.css';
+import AOS from "aos";
 
 const MyTreeContainer = () => {
   
@@ -17,6 +19,7 @@ const MyTreeContainer = () => {
     const [memberItems, setMemberItems] = useState([]);
     const [memberCustomizingList, setMemberCustomizingList] = useState([]);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [showSaveOkModal, setShowSaveOkModal] = useState(false);
 
   //   // 서버에 요청한 회원의 나무 적용 정보
     const [memberAppliedItemBackground, setMemberAppliedItemBackground] = useState({});
@@ -38,6 +41,13 @@ const MyTreeContainer = () => {
   }
 
   useEffect(() => {
+    AOS.init({
+      delay: 500,
+      duration: 1000,
+      once: true,
+    })
+    window.scrollTo(0, 0);
+
     const getItems = async () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/my-tree/api/tree/list`,{
         method: "POST",
@@ -99,6 +109,7 @@ const MyTreeContainer = () => {
 
     const data = await response.json();
     setShowConfirmModal(false);
+    setShowSaveOkModal(true);
   }
 
   // 컨펌 모달 상태를 변경하는 함수
@@ -106,11 +117,16 @@ const MyTreeContainer = () => {
       setShowConfirmModal(state)
   }
 
+  // 컨펌 모달 상태를 변경하는 함수
+  const handleSaveOkModal = (state) => {
+      setShowSaveOkModal(state)
+  }
+
   return (
     <div>
       <S.SubTitle>언젠가는 아름다워질 나의 나무 ✨</S.SubTitle>
       <S.MainTitle>나의 성장 나무 🌳</S.MainTitle>
-      <S.MyTreeWrapper>
+      <S.MyTreeWrapper data-aos="zoom-out">
         <S.MyTreeBackGround 
           url={
             memberAppliedItemBackground && memberAppliedItemBackground.itemImgPath && memberAppliedItemBackground.itemImgName ? 
@@ -162,8 +178,18 @@ const MyTreeContainer = () => {
             message="성장나무 변경사항을 저장하시겠습니까?"
             onConfirm={handleSave}
             onCancel={() => handleConfirmModal(false)}
+            confirmBtnMsg={"저장"}
+            cancelBtnMsg={"취소"}
         />
-        <Outlet context={{
+        <ConfirmModal
+            handleConfrmModal={showSaveOkModal}
+            title="저장 완료"
+            message="성장나무 변경사항이 저장되었습니다."
+            onCancel={() => handleSaveOkModal(false)}
+            cancelBtnMsg={"확인"}
+        />
+        <Outlet 
+          context={{
             memberId,
             memberItems,
             setMemberItems,
