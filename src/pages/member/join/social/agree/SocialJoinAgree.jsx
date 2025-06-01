@@ -57,8 +57,6 @@ const SocialJoinAgree = () => {
   // 필수 항목만 체크
   const isValid = agreements.service && agreements.information && agreements.location;
 
-  console.log(isValid)
-
   const getSrc = (flag) =>
     flag
       ? '/assets/images/member/checkbox-icon-true.png'
@@ -68,13 +66,13 @@ const SocialJoinAgree = () => {
     <S.Container>
       <form onSubmit={handleNext}>
         <S.TextWrapper>
-          <S.HiddenInput name="agreeAll" value={agreements.all ? 1 : 0} />
+          <S.HiddenInput name="agreeAll" defaultValue={agreements.all ? 1 : 0} />
           <S.CheckboxImg src={getSrc(agreements.all)} alt="전체 동의" onClick={() => toggle('all')} />
           <S.TermText onClick={() => toggle('all')}>전체 동의</S.TermText>
         </S.TextWrapper>
 
         <S.SubTextWrapper>
-          <S.HiddenInput name="agreeService" value={agreements.service ? 1 : 0} required />
+          <S.HiddenInput name="agreeService" defaultValue={agreements.service ? 1 : 0} required />
           <S.CheckboxImg src={getSrc(agreements.service)} alt="이용약관" onClick={() => toggle('service')} />
           <S.TermText><span className='point'>[필수]</span> 퍼스널 버디 이용약관</S.TermText>
         </S.SubTextWrapper>
@@ -133,7 +131,7 @@ const SocialJoinAgree = () => {
       
 
         <S.SubTextWrapper>
-          <S.HiddenInput name="agreeInformation" value={agreements.information ? 1 : 0} required />
+          <S.HiddenInput name="agreeInformation" defaultValue={agreements.information ? 1 : 0} required />
           <S.CheckboxImg src={getSrc(agreements.information)} alt="개인정보 수집" onClick={() => toggle('information')} />
           <S.TermText><span className='point'>[필수]</span> 개인정보 수집 및 이용</S.TermText>
         </S.SubTextWrapper>
@@ -161,7 +159,7 @@ const SocialJoinAgree = () => {
         </S.TextBox>
 
         <S.SubTextWrapper>
-          <S.HiddenInput name="agreeLocation" value={agreements.location ? 1 : 0} required />
+          <S.HiddenInput name="agreeLocation" defaultValue={agreements.location ? 1 : 0} required />
           <S.CheckboxImg src={getSrc(agreements.location)} alt="위치기반 서비스" onClick={() => toggle('location')} />
           <S.TermText><span className='point'>[필수]</span> 위치기반 서비스 이용약관</S.TermText>
         </S.SubTextWrapper>
