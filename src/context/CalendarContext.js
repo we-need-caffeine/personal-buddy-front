@@ -39,12 +39,21 @@ const CalendarProvider = ({ children }) => {
       allTodos.push(calendar.todoLists);
     });
 
-    if (datas.calendars.length > 0) {
-      setCalendarIndex(datas.calendars[0].calendarIndex);
-    }
     // 객체 -> 배열로 데이터 값
     const { calendars } = await datas;
     setCalendars(calendars);
+
+    if (calendars.length > 0) {
+      const sorted = calendars.sort(
+        (a, b) => a.calendarIndex - b.calendarIndex
+      );
+
+      setCalendarIndex(sorted[0].calendarIndex);
+      setSelectedCalendarId(sorted[0].id);
+    } else {
+      setCalendarIndex(null);
+      setSelectedCalendarId(null);
+    }
   };
 
   useEffect(() => {

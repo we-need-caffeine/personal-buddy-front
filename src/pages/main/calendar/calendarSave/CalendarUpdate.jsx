@@ -6,35 +6,36 @@ import { CalendarContext } from "../../../../context/CalendarContext";
 const CalendarUpdate = () => {
   const { memberId, calendarId } = useParams();
   const navigate = useNavigate();
-  const { actions } = useContext(CalendarContext);
+  const { state, actions } = useContext(CalendarContext);
+  const { calendars, selectedCalendarId } = state;
   const { getCalendarsAll } = actions;
 
   const [calendar, setCalendar] = useState(null);
   const [availableMembers, setAvailableMembers] = useState([]); // 초대 가능
   const [currentMembers, setCurrentMembers] = useState([]); // 이미 참여 중
+  
+  const getCalendar = async () => {
+    try {
+      // 캘린더 상세
+      const calendarResponse = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/${calendarId}`
+      );
+      const calendarData = await calendarResponse.json();
+      setCalendar(calendarData);
+
+      // 초대 가능 멤버
+      const memberResponse = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/${memberId}/followings/${calendarId}`
+      );
+      const members = await memberResponse.json();
+      setAvailableMembers(members);
+      console.log(members);
+    } catch (error) {
+      console.error("캘린더/멤버 정보 조회 실패", error);
+    }
+  };
 
   useEffect(() => {
-    const getCalendar = async () => {
-      try {
-        // 캘린더 상세
-        const calendarResponse = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/calendars/api/${calendarId}`
-        );
-        const calendarData = await calendarResponse.json();
-        setCalendar(calendarData);
-
-        // 초대 가능 멤버
-        const memberResponse = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/${memberId}/followings/${calendarId}`
-        );
-        const members = await memberResponse.json();
-        //console.log(members);
-        setAvailableMembers(members);
-      } catch (error) {
-        console.error("캘린더/멤버 정보 조회 실패", error);
-      }
-    };
-
     getCalendar();
   }, [calendarId, memberId]);
 
@@ -46,7 +47,7 @@ const CalendarUpdate = () => {
       );
       const data = await response.json();
       setCurrentMembers(data);
-      //console.log(data);
+      console.log(data);
     } catch (error) {
       console.error("캘린더 멤버 조회 실패", error);
     }
@@ -95,6 +96,26 @@ const CalendarUpdate = () => {
     }
   };
 
+  // 멤버 추방 핸들러
+  const removeMember = async (memberIdToRemove) => {
+    try {
+      await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/${calendarId}/remove/${memberIdToRemove}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      // 다시 멤버 리스트 갱신
+      await getCalendarMembers();
+
+      alert("멤버가 추방되었습니다.");
+    } catch (error) {
+      console.error("멤버 추방 실패:", error);
+      alert("멤버 추방 중 오류가 발생했습니다.");
+    }
+  };
+
   const deleteCalendar = async () => {
     try {
       const response = await fetch(
@@ -110,23 +131,32 @@ const CalendarUpdate = () => {
       }
 
       await getCalendarsAll();
+
+      if (selectedCalendarId) {
+        navigate(`/main/${memberId}/${selectedCalendarId}`);
+      } else {
+        navigate(`/main/${memberId}`);
+      }
       alert("삭제 완료");
-      navigate(`/main/${memberId}`);
     } catch (error) {
       console.error("삭제 실패:", error);
       alert("삭제 중 오류가 발생했습니다.");
     }
   };
+
   if (!calendar) {
     return <div>Loading...</div>;
   }
   return (
     <CalendarForm
       initialName={calendar.calendarTitle}
+      calendarId ={calendarId}
       initialInvited={calendar.invitedMembers || []}
       allMembers={availableMembers}
       showInviteSection={true}
       currentMembers={currentMembers}
+      removeMember={removeMember}
+      refreshAvailableMembers={getCalendar}
       buttons={[
         {
           label: "저장",
@@ -137,6 +167,7 @@ const CalendarUpdate = () => {
           label: "삭제",
           onClick: deleteCalendar,
           type: "danger",
+          disabled: calendars.length <= 1, // 1개 이하일 때 비활성화
         },
         {
           label: "취소",

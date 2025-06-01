@@ -24,22 +24,22 @@ const CalendarHeader = () => {
     if (!navigator.geolocation) return;
 
     navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        const { latitude, longitude } = pos.coords;
+      async (position) => {
+        const { latitude, longitude } = position.coords;
         setLocationCoords({ latitude, longitude });
 
         // 주소 요청 (Nominatim)
         try {
-          const res = await fetch(
+          const response = await fetch(
             `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
           );
-          const data = await res.json();
+          const data = await response.json();
           setLocationAddress(data.display_name);
-        } catch (err) {
-          console.error("주소 변환 실패:", err);
+        } catch (error) {
+          console.error("주소 변환 실패:", error);
         }
       },
-      (err) => console.warn("위치 오류:", err.message)
+      (error) => console.warn("위치 오류:", error.message)
     );
   }, []);
 
@@ -47,19 +47,19 @@ const CalendarHeader = () => {
   useEffect(() => {
     const fetchWeather = async (lat, lon) => {
       try {
-        const apiKey = "84901855b2c7261d9a761343f6d0c169"; 
-        const res = await fetch(
+        const apiKey = "84901855b2c7261d9a761343f6d0c169";
+        const response = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=kr`
         );
-        const data = await res.json();
+        const data = await response.json();
         setWeather({
           temp: data.main.temp,
           description: data.weather[0].description,
           icon: data.weather[0].icon,
         });
         //console.log("날씨 응답:", data);
-      } catch (err) {
-        console.error("날씨 정보 오류:", err);
+      } catch (error) {
+        console.error("날씨 정보 오류:", error);
       }
     };
 
@@ -133,15 +133,17 @@ const CalendarHeader = () => {
             )}
           </NavLink>
         ))}
-        <NavLink to={`/main/${currentUser.id}/${calendarId}/calendar-save`}>
-          <S.Tab>
-            <img
-              src="/assets/images/main/calendar/add.png"
-              alt="캘린더 추가"
-              style={{ width: "20px", height: "20px" }}
-            />
-          </S.Tab>
-        </NavLink>
+        {calendars.length < 8 && (
+          <NavLink to={`/main/${currentUser.id}/${calendarId}/calendar-save`}>
+            <S.Tab>
+              <img
+                src="/assets/images/main/calendar/add.png"
+                alt="캘린더 추가"
+                style={{ width: "20px", height: "20px" }}
+              />
+            </S.Tab>
+          </NavLink>
+        )}
       </S.TabContainer>
 
       {/* 뷰 변경 드롭다운 */}

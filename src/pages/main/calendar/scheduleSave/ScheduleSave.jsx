@@ -297,6 +297,8 @@ const ScheduleSave = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  console.log(calendarMembers);
   //#endregion
   return (
     <S.Container>
@@ -402,7 +404,7 @@ const ScheduleSave = () => {
                 <S.Message>이미 해당 시간에 일정이 존재합니다.</S.Message>
               )}
               {invalidTimeRange && (
-                <S.message>시작 시간이 종료 시간보다 늦습니다.</S.message>
+                <S.Message>시작 시간이 종료 시간보다 늦습니다.</S.Message>
               )}
             </S.DateInputWrapper>
           </S.DateSection>
@@ -457,15 +459,18 @@ const ScheduleSave = () => {
                 </S.MemberSelectBox>
                 {memberDropdownOpen && (
                   <S.MemberDropdownList>
-                    {calendarMembers.map((m) => (
-                      <S.MemberItem key={m.id} onClick={() => toggleMember(m)}>
+                    {calendarMembers.map((member) => (
+                      <S.MemberItem key={member.id} onClick={() => toggleMember(member)}>
                         <S.MemberWrapper>
-                          <S.ProfileIcon src={m.imgPath} alt={m.name} />
-                          <S.MemberName>{m.name}</S.MemberName>
+                          <S.MemberImage
+                                          src={`${process.env.REACT_APP_BACKEND_URL}/${member.imgPath}/${member.imgName}`}
+                                          alt={member.memberName}
+                                        />
+                          <S.MemberName>{member.name}</S.MemberName>
                         </S.MemberWrapper>
                         <S.CheckIcon
                           checked={selectedMembers.some(
-                            (s) => s.name === m.name
+                            (s) => s.name === member.name
                           )}
                         />
                       </S.MemberItem>
