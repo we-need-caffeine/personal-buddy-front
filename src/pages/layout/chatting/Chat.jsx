@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import S from './style';
 import { ChatContext } from '../../../context/ChatContext';
 import { HeaderContext } from '../../../context/HeaderContext';
-import DisplayDate from '../../../utils/DisplayDate/DisplayDate';
+import DisplayDate from '../../../utils/displayDate/DisplayDate';
 
 const Chat = ({ memberId, handleChat, onCancel }) => {
   
