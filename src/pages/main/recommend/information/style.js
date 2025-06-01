@@ -35,7 +35,7 @@ S.RecommendList = styled.div`
 
 S.RecommendInfo = styled.div`
     width: 320px;
-    height: 400px;
+    height: 470px;
     display: flex;
     flex-direction: column;
     /* align-items: center; */
@@ -56,7 +56,8 @@ S.RecommendInfo = styled.div`
 
 S.RecommendImg = styled.img `
     width: 320px;
-    height: 250px;
+    height: 320px;
+    margin-bottom: 30px;
     object-fit: cover;
     border-radius: 10px;
     display: block;
