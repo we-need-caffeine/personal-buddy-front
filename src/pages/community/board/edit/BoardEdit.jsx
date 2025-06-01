@@ -54,18 +54,6 @@ const BoardEdit = () => {
       return await res.json(); // { filePath, fileNames }
     };
       
-    
-      
-  
-      // if (post.boardImgName) {
-      //   const names = Array.isArray(post.boardImgName) ? post.boardImgName : [post.boardImgName];
-      //   const path = post.boardImgPath;
-      //   const imgs = names.map(name => ({
-      //     name,
-      //     url: `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(path)}&fileName=${encodeURIComponent(name)}`
-      //   }));
-      //   setExistingImages(imgs);
-      // }
     };
 
     fetchPost();
