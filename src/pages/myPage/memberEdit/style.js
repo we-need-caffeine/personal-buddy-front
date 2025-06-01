@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { blackColor, fontSizeH6, fontSizeH8, fontSizeH9, fontWeightLight, fontWeightMedium, fontWeightRegular, fontWeightThin, gray5Color, gray6Color, mainGreenColor } from "../../../globals/common";
+import { blackColor, fontSizeH6, fontSizeH7, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, fontWeightMedium, fontWeightRegular, fontWeightThin, gray5Color, gray6Color, mainGreenColor, pointRedColor } from "../../../globals/common";
 
 const S = {};
 
@@ -45,8 +45,39 @@ S.BodyContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 20px;
-  padding-top: 20px;
+  gap: 10px;
+  padding-top: 30px;
+`
+
+S.InputTextTitle = styled.div`
+  margin-top: 30px;
+  ${fontSizeH7}
+  ${fontWeightMedium}
+  ${blackColor}
+`
+
+S.MemberInfoInputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 1120px;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 40px;
+  ${fontSizeH7}
+  ${fontWeightRegular}
+  ${blackColor}
+  border: 1px solid black;
+
+  span{
+    ${fontSizeH7}
+    ${pointRedColor}
+    ${fontWeightBold}
+    cursor: pointer;
+  }
+`
+
+S.MemberInfo = styled.div`
 `
 
 export default S;

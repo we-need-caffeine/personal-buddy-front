@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import S from './style';
 import ProfileCard from '../profile/ProfileCard';
-import DisplayDate from '../../../utils/DisplayDate/DisplayDate';
+import DisplayDate from '../../../utils/displayDate/DisplayDate';
 import Chat from './Chat';
 import { ChatContext } from '../../../context/ChatContext';
 

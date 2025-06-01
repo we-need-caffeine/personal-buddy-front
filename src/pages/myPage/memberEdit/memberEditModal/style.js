@@ -158,11 +158,10 @@ S.MemberInfoInput = styled.input`
   transition: all 0.3s ease-in-out;
 `
 
-S.ReSendMessage = styled.div`
+S.Timer = styled.div`
   ${pointRedColor}
   ${fontSizeH9}
   padding-right: 20px;
-  cursor: pointer;
 `
 
 S.ErrorMessage = styled.div`
