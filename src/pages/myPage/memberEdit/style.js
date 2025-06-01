@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { blackColor, fontSizeH6, fontSizeH7, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, fontWeightMedium, fontWeightRegular, fontWeightThin, gray5Color, gray6Color, mainGreenColor, pointRedColor } from "../../../globals/common";
+import { blackColor, fontSizeH6, fontSizeH7, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, fontWeightMedium, fontWeightRegular, fontWeightThin, gray5Color, gray6Color, mainGreenColor, pointRedColor, whiteColor } from "../../../globals/common";
 
 const S = {};
 
@@ -78,6 +78,25 @@ S.MemberInfoInputContainer = styled.div`
 `
 
 S.MemberInfo = styled.div`
+`
+
+S.BtnContainer = styled.div`
+  width: 100%;
+  height: 40px;
+  margin-top: 60px;
+  margin-bottom: 100px;
+  display: flex;
+  justify-content: right;
+`
+
+S.WithdrawBtn = styled.button`
+  padding: 8px 18px;
+  background-color: ${({ theme }) => theme.PALLETE.warningRed};
+  border: none;
+  border-radius: 30px;
+  ${fontWeightBold}
+  ${fontSizeH7}
+  ${whiteColor}
 `
 
 export default S;

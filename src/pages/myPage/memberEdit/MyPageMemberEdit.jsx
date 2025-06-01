@@ -5,19 +5,43 @@ import BirthDate from '../../../utils/birthDate/BirthDate';
 import BrithModal from './memberEditModal/BrithModal';
 import NameModal from './memberEditModal/NameModal';
 import PhoneModal from './memberEditModal/PhoneModal';
+import PasswordModal from './memberEditModal/PasswordModal';
+import ConfirmDeleteModal from '../../layout/modal/ConfirmDeleteModal';
 
 const MyPageMemberEdit = () => {
 
   // 로그인된 유저정보
   const {currentUser} = useSelector((state) => state.member)
-  console.log(currentUser);
-  // memberProvider
   // 이름 변경 모달 상태
   const [viewNameModal, setViewNameModal] = useState(false);
   // 생년월일 변경 모달 상태
   const [viewBirthModal, setViewBirthModal] = useState(false);
   // 전화번호 변경 모달 상태
   const [viewPhoneModal, setViewPhoneModal] = useState(false);
+  // 비밀번호 변경 모달 상태
+  const [viewPasswordModal, setViewPasswordModal] = useState(false);
+  // 회원탈퇴 모달
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  // 회원 탈퇴
+  const handleConfirmDelete = async () => {
+    console.log(currentUser.id);
+    
+    try {
+      const response = await fetch(`http://localhost:10000/members/api/withdraw?memberId=${currentUser.id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        alert("탈퇴가 완료되었습니다.");
+        window.location.href = '/'; 
+      } else {
+        alert("탈퇴 실패");
+      }
+    } catch (error) {
+      console.error("탈퇴 요청 중 에러 발생:", error);
+      alert("에러 발생");
+    }
+  };
 
   return (
     <div>
@@ -45,7 +69,7 @@ const MyPageMemberEdit = () => {
           </S.InputTextTitle>
           <S.MemberInfoInputContainer>
             <S.MemberInfo>------</S.MemberInfo>
-            <span>비밀번호 변경</span>
+            <span onClick={() => setViewPasswordModal(true)}>비밀번호 변경</span>
           </S.MemberInfoInputContainer>
           {/* 이름 */}
           <S.InputTextTitle>
@@ -72,6 +96,11 @@ const MyPageMemberEdit = () => {
             <span onClick={() => setViewPhoneModal(true)}>전화번호 변경</span>
           </S.MemberInfoInputContainer>
         </S.BodyContainer>
+        <S.BtnContainer>
+          <S.WithdrawBtn onClick={() => setShowDeleteModal(true)}>
+            계정 삭제
+          </S.WithdrawBtn>
+        </S.BtnContainer>
       </S.MainContainer>
 
       {/* 생년월일 변경 모달 */}
@@ -98,6 +127,25 @@ const MyPageMemberEdit = () => {
           currentUser={currentUser}
           handlePhoneModal={viewPhoneModal}
           onCancel={() => setViewPhoneModal(false)}
+        />
+      )}
+      
+      {/* 비밀번호 변경 모달 */}
+      {viewPasswordModal && (
+        <PasswordModal
+          currentUser={currentUser}
+          handlePasswordModal={viewPasswordModal}
+          onCancel={() => setViewPasswordModal(false)}
+        />
+      )}
+
+      {showDeleteModal && (
+        <ConfirmDeleteModal
+          handleConfrmDeleteModal={showDeleteModal}
+          onCancel={() => setShowDeleteModal(false)}
+          title="계정 삭제"
+          message="정말로 계정을 삭제하시겠습니까?"
+          onConfirmDelete={handleConfirmDelete}
         />
       )}
 

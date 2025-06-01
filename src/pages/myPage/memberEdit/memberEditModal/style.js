@@ -164,10 +164,46 @@ S.Timer = styled.div`
   padding-right: 20px;
 `
 
+S.SendCodeButton = styled.div`
+  ${pointRedColor}
+  ${fontSizeH9}
+  padding-right: 20px;
+  cursor: pointer;
+`
+
 S.ErrorMessage = styled.div`
+  height: 20px;
   margin-top: 10px;
   ${warningRedColor}
   ${fontSizeH9}
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+`;
+
+S.DoubleModalContainer = styled.div`
+  animation: ${fadeInUp} 0.1s ease-out;
+  background-color: ${({ theme }) => theme.PALLETE.white};
+  width: 400px;
+  height: 380px;
+  border-radius: 20px;
+  overflow: hidden;
+  ${fontSizeH8}
+`
+
+S.DoubleContentContainer = styled.div`
+  padding: 30px 40px;
+  gap: 10px;
+  ${blackColor}
+  display: flex;
+  flex-direction: column;
 `
 
 export default S;
