@@ -128,6 +128,7 @@ S.SubmitButton = styled.button`
   cursor: ${({ active }) => (active ? 'pointer' : 'not-allowed')};
 `;
 
+// BEST 댓글
 S.BestCommentSection = styled.div`
   margin-bottom: 30px;
 `;
@@ -153,6 +154,7 @@ S.BestBadge = styled.div`
   color: white;
 `;
 
+// 일반 댓글 리스트
 S.CommentList = styled.div`
   margin-top: 30px;
   border-top: 1px solid #ccc;
@@ -191,6 +193,11 @@ S.Nickname = styled.span`
   ${blackColor};
 `;
 
+S.CommentDate = styled.span`
+  font-size: 12px;
+  color: ${({ theme }) => theme.PALLETE.gray.gray4};
+`;
+
 S.CommentContents = styled.p`
   font-size: 15px;
   color: ${({ theme }) => theme.PALLETE.black};
@@ -209,10 +216,91 @@ S.CommentLikeButton = styled.button`
   cursor: pointer;
   background-color: ${({ liked, theme }) =>
     liked ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
-
   &:hover {
     background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
   }
 `;
+
+// 수정 삭제
+S.EditDeleteBox = styled.div`
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+`;
+
+S.CommentEditButton = styled.button`
+  font-size: 13px;
+  color: ${({ theme }) => theme.PALLETE.gray.gray4};
+  background: none;
+  border: none;
+  cursor: pointer;
+`;
+
+S.CommentDeleteButton = styled.button`
+  font-size: 13px;
+  color: ${({ theme }) => theme.PALLETE.pointRed};
+  background: none;
+  border: none;
+  cursor: pointer;
+`;
+
+S.CommentSeparator = styled.span`
+  color: #ccc;
+`;
+
+S.SaveButton = styled.button`
+  padding: 6px 12px;
+  background-color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
+S.CancelButton = styled.button`
+  padding: 6px 12px;
+  background-color: ${({ theme }) => theme.PALLETE.gray.gray3};
+  color: black;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 8px;
+`;
+
+// 댓글 날짜 + 좋아요 묶는 Wrapper
+S.LeftCommentWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  color: ${({ theme }) => theme.PALLETE.gray.gray4};
+  font-size: 13px;
+`;
+
+S.CommentLikeCount = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: ${({ theme }) => theme.PALLETE.gray.gray4};
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
+`;
+
+S.Right = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+S.Refer = styled.div`
+  ${flexCenter};
+  margin-top: 80px;
+  margin-bottom: 100px;
+  font-weight: bold;
+`
 
 export default S;
