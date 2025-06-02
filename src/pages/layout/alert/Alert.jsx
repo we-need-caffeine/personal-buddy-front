@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import S from './style';
 import { HeaderContext } from '../../../context/HeaderContext';
-import DisplayDate from '../../../utils/DisplayDate/DisplayDate';
+import ChangeDate from '../../../utils/changeDate/ChangeDate';
 
 const Alert = ({memberId, handleAlertModal}) => {
 
@@ -114,7 +114,7 @@ const Alert = ({memberId, handleAlertModal}) => {
                                     <S.Message>{info.alertMessage}</S.Message>
                                 </S.Content>
                                 <S.Meta>
-                                    <S.Time>{DisplayDate(info.alertCreateTime)}</S.Time>
+                                    <S.Time>{ChangeDate(info.alertCreateTime)}</S.Time>
                                     <S.Delete onClick={() => deleteOneAlert(info.id)}>삭제</S.Delete>
                                 </S.Meta>
                             </S.ListItem>

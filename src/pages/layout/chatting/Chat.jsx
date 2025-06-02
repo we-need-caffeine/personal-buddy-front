@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import S from './style';
 import { ChatContext } from '../../../context/ChatContext';
 import { HeaderContext } from '../../../context/HeaderContext';
-import DisplayDate from '../../../utils/DisplayDate/DisplayDate';
+import ChangeDate from '../../../utils/changeDate/ChangeDate';
 
 const Chat = ({ memberId, handleChat, onCancel }) => {
   
@@ -70,7 +70,7 @@ const Chat = ({ memberId, handleChat, onCancel }) => {
                   <S.LeftNickName>{item.memberNickname}</S.LeftNickName>
                 <S.LeftChatInfoContainer>
                   <S.LeftContent>{item.chatContent}</S.LeftContent>
-                  {DisplayDate(item.chatSendTime)}
+                  {ChangeDate(item.chatSendTime)}
                 </S.LeftChatInfoContainer>
                 </S.LeftTextContainer>
               </S.LeftChat>
@@ -80,7 +80,7 @@ const Chat = ({ memberId, handleChat, onCancel }) => {
                   <S.ChatReadingInfo>
                     {item.chatReading === 0 ? '1' : ''}
                   </S.ChatReadingInfo>
-                  {DisplayDate(item.chatSendTime)}
+                  {ChangeDate(item.chatSendTime)}
                 </S.RightChatInfoContainer>
                 <S.RightContent
                   onClick={(e) => {

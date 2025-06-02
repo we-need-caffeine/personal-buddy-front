@@ -154,6 +154,7 @@ S.MemberImg = styled.img`
   height: 50px;
   border-radius: 50%;
   transition: all 0.2s ease-in-out;
+  object-fit: cover;
   &:hover {
     box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.2);
   }
@@ -255,6 +256,7 @@ S.LeftChat = styled.div`
 `
 
 S.LeftMemberImg = styled.img`
+  object-fit: cover;
   width: 40px;
   height: 40px;
   border-radius: 50%;
