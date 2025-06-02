@@ -317,12 +317,11 @@ S.MemberItem = styled.div`
   }
 `;
 
-S.ProfileIcon = styled.div`
-  width: 24px;
-  height: 24px;
+S.MemberImage = styled.img`
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background-color: #e0e0e0;
-  margin-right: 12px;
+  object-fit: cover;
 `;
 
 S.MemberName = styled.div`

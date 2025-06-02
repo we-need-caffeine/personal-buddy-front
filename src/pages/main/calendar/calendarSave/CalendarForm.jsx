@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import S from "./style"; // calendarSave/style.js 사용
+import S from "./style";
 
 const CalendarForm = ({
   initialName = "",
+  calendarId,
   initialInvited = [],
   allMembers = [],
   currentMembers = [],
   showInviteSection = true,
+  removeMember,
   buttons = [],
+  refreshAvailableMembers,
 }) => {
   const [calendarName, setCalendarName] = useState(initialName);
   const [invitedMembers, setInvitedMembers] = useState(initialInvited);
@@ -32,6 +35,25 @@ const CalendarForm = ({
     }
   };
 
+  const cancelInvite = async (memberId) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/cancel/members/${memberId}/calendars/${calendarId}`,
+        { method: "DELETE" }
+      );
+
+      if (response.ok) {
+        alert("초대 취소 성공");
+        await refreshAvailableMembers(); 
+      } else {
+        alert("초대 취소 실패");
+      }
+    } catch (error) {
+      console.error("초대 취소 오류:", error);
+      alert("초대 취소 중 오류 발생");
+    }
+  };
+
   return (
     <S.Container>
       <S.TitleContainer>
@@ -50,7 +72,7 @@ const CalendarForm = ({
         </S.Row>
       </S.RowContainer>
 
-      {/* 초대 기능 (삭제 시 생략 가능) */}
+      {/* 초대 기능 */}
       {showInviteSection && (
         <S.RowContainer>
           <S.Row>
@@ -63,22 +85,37 @@ const CalendarForm = ({
               {isDropdownOpen && (
                 <S.Dropdown>
                   {allMembers.map((member) => {
-                    // allMembers 멤버중에 invitedMembers에 존재하면 이미 초대됨
+                    const isWaiting = member.inviteStatus === "초대대기중";
                     const isInvited = invitedMembers.some(
-                      (m) => m.id === member.id
-                    );
+                      (m) => m.memberId === member.memberId
+                    ); // 초대한 경우
+
                     return (
-                      <S.DropdownItem key={member.id}>
+                      <S.DropdownItem key={member.memberId}>
                         <S.Left>
-                          <S.ProfileIcon />
+                          <S.MemberImage
+                            src={`${process.env.REACT_APP_BACKEND_URL}/${member.memberImgPath}/${member.memberImgName}`}
+                            alt={member.memberName}
+                          />
                           <S.DropdownName>{member.memberName}</S.DropdownName>
                         </S.Left>
-                        <S.InviteButton
-                          onClick={() => toggleInvite(member)}
-                          disabled={isInvited}
-                        >
-                          {isInvited ? "초대됨" : "초대"}
-                        </S.InviteButton>
+
+                        {/* 버튼 조건 */}
+                        {isWaiting ? (
+                          <S.InviteButton
+                            onClick={() => cancelInvite(member.memberId)}
+                            disabled={false} // 이제 가능
+                          >
+                            초대 취소
+                          </S.InviteButton>
+                        ) : (
+                          <S.InviteButton
+                            onClick={() => toggleInvite(member)}
+                            disabled={isInvited}
+                          >
+                            {isInvited ? "초대됨" : "초대"}
+                          </S.InviteButton>
+                        )}
                       </S.DropdownItem>
                     );
                   })}
@@ -98,8 +135,16 @@ const CalendarForm = ({
             </S.MemberListTitle>
             {currentMembers.map((member) => (
               <S.MemberItem key={member.id}>
-                <S.ProfileIcon />
-                <S.MemberName>{member.memberName}</S.MemberName>
+                <S.MemberInfoContainer>
+                  <S.MemberImage
+                    src={`${process.env.REACT_APP_BACKEND_URL}/${member.memberImgPath}/${member.memberImgName}`}
+                    alt={member.memberName}
+                  />
+                  <S.MemberName>{member.memberName}</S.MemberName>
+                </S.MemberInfoContainer>
+                <S.RemoveButton onClick={() => removeMember(member.id)}>
+                  추방하기
+                </S.RemoveButton>
               </S.MemberItem>
             ))}
           </S.MemberList>
@@ -107,15 +152,19 @@ const CalendarForm = ({
 
         <S.ButtonGroup>
           <S.ButtonGroup>
-            {buttons.map(({ label, onClick, type = "default" }) => (
-              <S.ActionButton
-                key={label}
-                $type={type}
-                onClick={() => onClick({ calendarName, invitedMembers })}
-              >
-                {label}
-              </S.ActionButton>
-            ))}
+            {buttons.map(
+              ({ label, onClick, type = "default", disabled = false }) => (
+                <S.ActionButton
+                  key={label}
+                  $type={type}
+                  onClick={() => onClick({ calendarName, invitedMembers })}
+                  className={`button ${type} ${disabled ? "disabled" : ""}`}
+                  disabled={disabled}
+                >
+                  {label}
+                </S.ActionButton>
+              )
+            )}
           </S.ButtonGroup>
         </S.ButtonGroup>
       </S.ContentContainer>

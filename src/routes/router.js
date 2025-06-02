@@ -76,6 +76,8 @@ import SocialJoinInfo from "../pages/member/join/social/info/SocialJoinInfo";
 import SocialJoinProfile from "../pages/member/join/social/profile/SocialJoinProfile";
 import SocialJoinAgree from "../pages/member/join/social/agree/SocialJoinAgree";
 import AdminContainer from "../pages/admin/AdminContainer";
+import CalendarInvite from "../pages/main/calendar/calendarInvite/CalendarInvite";
+import ScheduleListView from "../pages/main/calendar/scheduleListView/ScheduleListView";
 
 const router = createBrowserRouter([
   {
@@ -139,8 +141,8 @@ const router = createBrowserRouter([
                         element: <CalendarTodo />,
                       },
                       {
-                        path: "schedule-view",
-                        element: <ScheduleView />,
+                        path: "schedule-list-view",
+                        element: <ScheduleListView />,
                       },
                       {
                         path: "schedule-save",
@@ -343,6 +345,10 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "/calendar-invite/:calendarId/:hostId",
+    element: <CalendarInvite />,
+  },
+  {
     path: "/survey",
     element: <SurveyContainer />, // 설문조사 공통 레이아웃
     children: [
@@ -412,7 +418,7 @@ const router = createBrowserRouter([
                 path: "profile",
                 element: <SocialJoinProfile />,
               },
-            ]
+            ],
           },
         ],
       },
@@ -460,7 +466,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminContainer />
+    element: <AdminContainer />,
   },
   {
     path: "/privacy-policy",

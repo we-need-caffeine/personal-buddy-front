@@ -24,22 +24,22 @@ const CalendarHeader = () => {
     if (!navigator.geolocation) return;
 
     navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        const { latitude, longitude } = pos.coords;
+      async (position) => {
+        const { latitude, longitude } = position.coords;
         setLocationCoords({ latitude, longitude });
 
         // 주소 요청 (Nominatim)
         try {
-          const res = await fetch(
+          const response = await fetch(
             `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
           );
-          const data = await res.json();
+          const data = await response.json();
           setLocationAddress(data.display_name);
-        } catch (err) {
-          console.error("주소 변환 실패:", err);
+        } catch (error) {
+          console.error("주소 변환 실패:", error);
         }
       },
-      (err) => console.warn("위치 오류:", err.message)
+      (error) => console.warn("위치 오류:", error.message)
     );
   }, []);
 
@@ -47,19 +47,19 @@ const CalendarHeader = () => {
   useEffect(() => {
     const fetchWeather = async (lat, lon) => {
       try {
-        const apiKey = "84901855b2c7261d9a761343f6d0c169"; 
-        const res = await fetch(
+        const apiKey = "84901855b2c7261d9a761343f6d0c169";
+        const response = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=kr`
         );
-        const data = await res.json();
+        const data = await response.json();
         setWeather({
           temp: data.main.temp,
           description: data.weather[0].description,
           icon: data.weather[0].icon,
         });
         //console.log("날씨 응답:", data);
-      } catch (err) {
-        console.error("날씨 정보 오류:", err);
+      } catch (error) {
+        console.error("날씨 정보 오류:", error);
       }
     };
 
@@ -91,14 +91,44 @@ const CalendarHeader = () => {
     : "일간";
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        position: "relative",
-      }}
-    >
+    <S.Container>
+      {/* 현재 위치 주소 + 날씨 출력 */}
+      {(locationAddress || weather) && (
+        <S.LocationContainer>
+          {locationAddress && <div>{locationAddress}</div>}
+          {weather && (
+            <S.WeatherInfo>
+              <img
+                src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
+                alt="날씨 아이콘"
+              />
+              {weather.description} / {weather.temp.toFixed(1)}℃
+            </S.WeatherInfo>
+          )}
+        </S.LocationContainer>
+      )}
+      {/* 뷰 변경 드롭다운 */}
+      <S.DailyButtonContainer>
+        <S.DailyButtonWrapper ref={dropdownRef}>
+          <S.DailyViewButton onClick={() => setShowDropdown((prev) => !prev)}>
+            {viewText}
+          </S.DailyViewButton>
+          {showDropdown && (
+            <S.DropdownMenu>
+              <S.DropdownItem onClick={() => handleViewChange("")}>
+                일간
+              </S.DropdownItem>
+              <S.DropdownItem onClick={() => handleViewChange("week")}>
+                주간
+              </S.DropdownItem>
+              <S.DropdownItem onClick={() => handleViewChange("month")}>
+                월간
+              </S.DropdownItem>
+            </S.DropdownMenu>
+          )}
+        </S.DailyButtonWrapper>
+      </S.DailyButtonContainer>
+
       {/* 캘린더 탭 */}
       <S.TabContainer>
         {calendars.map(({ id, calendarTitle }) => (
@@ -133,67 +163,19 @@ const CalendarHeader = () => {
             )}
           </NavLink>
         ))}
-        <NavLink to={`/main/${currentUser.id}/${calendarId}/calendar-save`}>
-          <S.Tab>
-            <img
-              src="/assets/images/main/calendar/add.png"
-              alt="캘린더 추가"
-              style={{ width: "20px", height: "20px" }}
-            />
-          </S.Tab>
-        </NavLink>
-      </S.TabContainer>
-
-      {/* 뷰 변경 드롭다운 */}
-      <S.DailyButtonWrapper ref={dropdownRef}>
-        <S.DailyViewButton onClick={() => setShowDropdown((prev) => !prev)}>
-          {viewText}
-        </S.DailyViewButton>
-        {showDropdown && (
-          <S.DropdownMenu>
-            <S.DropdownItem onClick={() => handleViewChange("")}>
-              일간
-            </S.DropdownItem>
-            <S.DropdownItem onClick={() => handleViewChange("week")}>
-              주간
-            </S.DropdownItem>
-            <S.DropdownItem onClick={() => handleViewChange("month")}>
-              월간
-            </S.DropdownItem>
-          </S.DropdownMenu>
-        )}
-      </S.DailyButtonWrapper>
-
-      {/* 현재 위치 주소 + 날씨 출력 */}
-      {(locationAddress || weather) && (
-        <div
-          style={{
-            position: "absolute",
-            top: "100%",
-            left: 0,
-            paddingTop: "6px",
-            fontSize: "12px",
-            color: "#333",
-            display: "flex",
-            flexDirection: "column",
-            maxWidth: "300px",
-            gap: "4px",
-          }}
-        >
-          {locationAddress && <div>📍 {locationAddress}</div>}
-          {weather && (
-            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        {calendars.length < 8 && (
+          <NavLink to={`/main/${currentUser.id}/${calendarId}/calendar-save`}>
+            <S.Tab>
               <img
-                src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
-                alt="날씨 아이콘"
-                style={{ width: "24px", height: "24px" }}
+                src="/assets/images/main/calendar/add.png"
+                alt="캘린더 추가"
+                style={{ width: "20px", height: "20px" }}
               />
-              {weather.description} / {weather.temp.toFixed(1)}℃
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+            </S.Tab>
+          </NavLink>
+        )}
+      </S.TabContainer>
+    </S.Container>
   );
 };
 
