@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import S from './style';
 import { HeaderContext } from '../../../../context/HeaderContext';
 
-const CartViewModal = ({handleConfrmModal, onCancel}) => {
+const CartViewModal = ({handleConfrmModal, memberId, onCancel}) => {
     const columnTitles = ["", "아이템 이름", "아이템 이미지", "개수", "개당 아이템 가격", "아이템 총 가격"]; // 마지막은 스크롤 공간용
     const dataList = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2]; // 임시 데이터
 
@@ -10,6 +10,19 @@ const CartViewModal = ({handleConfrmModal, onCancel}) => {
     
     useEffect(() => {
         if (handleConfrmModal) lockScroll();
+
+        const getCartItems = async () => {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/point-shop/api/cart/item-list/${memberId}`)
+            .then(res => {
+                if(res.ok)
+                    return res;
+            })
+            .then(data => {
+                console.log(data);
+            })
+        }
+
+        getCartItems();
         return () => unlockScroll();
     }, [handleConfrmModal]);
     

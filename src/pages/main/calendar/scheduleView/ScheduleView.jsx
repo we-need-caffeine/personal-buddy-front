@@ -8,29 +8,29 @@ const ScheduleView = () => {
   const navigate = useNavigate();
   const { memberId, calendarId } = useParams();
   const { actions } = useContext(CalendarContext);
-    const { getCalendarsAll } = actions;
+  const { getCalendarsAll } = actions;
   const { eventId } = location.state || {};
 
   const [schedule, setSchedule] = useState(null);
 
   const deleteSchedule = async () => {
-    
-    try{
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/schedules/api/delete/${eventId}`,
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/schedules/api/delete/${eventId}`,
         {
           method: "DELETE",
         }
       );
 
-      if(!response.ok) {
-        throw new Error("")
+      if (!response.ok) {
+        throw new Error("");
       }
       await getCalendarsAll();
       navigate(`/main/${memberId}/${calendarId}`);
     } catch (error) {
       console.error("일정 삭제 실패", error);
     }
-  }
+  };
   // 스케줄 상세 조회
   useEffect(() => {
     const getSchedule = async () => {
@@ -53,17 +53,26 @@ const ScheduleView = () => {
   }, [eventId]);
 
   if (!schedule) return <div>불러오는 중...</div>;
-
   return (
     <S.Container>
       <S.TitleInputContainer>
         <S.TitleInput value={schedule.scheduleTitle} />
       </S.TitleInputContainer>
-
       <S.MemberListContainer>
-
+        {schedule.members && schedule.members.length > 0 ? (
+          schedule.members.map((member) => (
+            <S.MemberItem key={member.id}>
+              <S.MemberImage
+                src={`${process.env.REACT_APP_BACKEND_URL}/${member.memberImgPath}/${member.memberImgName}`}
+                alt={member.memberName}
+              />
+              <S.MemberName>{member.memberName}</S.MemberName>
+            </S.MemberItem>
+          ))
+        ) : (
+          <S.MemberName>참여 멤버 없음</S.MemberName>
+        )}
       </S.MemberListContainer>
-
       <S.DateContainer>
         <S.DateSectionGroup>
           <S.DateSection>
@@ -97,12 +106,7 @@ const ScheduleView = () => {
             </S.DateTextLabel>
           </S.ContentInputWrapper>
 
-          <S.ContentInputWrapper>
-            <S.DateTextLabel>내용</S.DateTextLabel>
-            <S.DateTextLabel>
-              {schedule.scheduleContent || "없음"}
-            </S.DateTextLabel>
-          </S.ContentInputWrapper>
+  
 
           <S.CategoryInputWrapper>
             <S.DateTextLabel>카테고리</S.DateTextLabel>
@@ -116,11 +120,21 @@ const ScheduleView = () => {
       <S.ContentContainer>
         <S.ContentWrapper>
           {/* 상세 내용 영역 */}
-          내용
+           <S.ContentInputWrapper>
+            <S.DateTextLabel>내용</S.DateTextLabel>
+            <S.DateTextLabel>
+              {schedule.scheduleContent || "없음"}
+            </S.DateTextLabel>
+          </S.ContentInputWrapper>
+
           <S.ButtonGroup>
-            <S.DeleteButton onClick={(e) => {
-              deleteSchedule();
-            }}>삭제</S.DeleteButton>
+            <S.DeleteButton
+              onClick={(e) => {
+                deleteSchedule();
+              }}
+            >
+              삭제
+            </S.DeleteButton>
             <S.CancelButton>취소</S.CancelButton>
           </S.ButtonGroup>
         </S.ContentWrapper>

@@ -5,7 +5,7 @@ import { CalendarContext } from "../../../../context/CalendarContext";
 
 const CalendarSave = () => {
   const navigate = useNavigate();
-  const { memberId, calendarId } = useParams(); // calendarId는 돌아갈 경로 용도
+  const { memberId, calendarId } = useParams();
   const { actions } = useContext(CalendarContext);
   const { getCalendarsAll } = actions;
 
@@ -34,10 +34,10 @@ const CalendarSave = () => {
 
 
   // 저장 처리 함수
-  const handleSave = async ({ calendarName, invitedMembers }) => {
+  const registerCalendar = async ({ calendarName, invitedMembers }) => {
     try {
       // 1. 캘린더 등록
-      const res = await fetch(
+      const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/calendars/api/register`,
         {
           method: "POST",
@@ -49,7 +49,7 @@ const CalendarSave = () => {
           }),
         }
       );
-      const data = await res.json();
+      const data = await response.json();
       const newCalendarId = data.calendarId;
 
       // 2. 초대 멤버 등록
@@ -92,7 +92,7 @@ const CalendarSave = () => {
         {
           label: "저장",
           type: "primary",
-          onClick: handleSave,
+          onClick: registerCalendar,
         },
         {
           label: "취소",

@@ -18,7 +18,6 @@ S.ImageWrapper = styled.div`
 
   img {
     width: 100%;
-
   }
 `;
 

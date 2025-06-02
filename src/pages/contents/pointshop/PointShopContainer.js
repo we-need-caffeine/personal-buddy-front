@@ -7,8 +7,9 @@ import CartViewModal from './modal/CartViewModal';
 
 const PointShopContainer = () => {
   // 로그인된 유저정보
-  const {currentUser} = useSelector((state) => state.member)
+  const {currentUser} = useSelector((state) => state.member);
   const member = currentUser;
+  const [selectItems, setSelectItems] = useState([]);
   const [cartShow, setCartShow] = useState(false);
 
   // 컨펌 모달 상태를 변경하는 함수
@@ -33,11 +34,21 @@ const PointShopContainer = () => {
 
     return (
         <div>
-          <PointShop member={member} cartShow={cartShow} setCartShow={setCartShow}/>
+          <PointShop 
+            member={member}
+            cartShow={cartShow} 
+            setCartShow={setCartShow} 
+            selectItems={selectItems} 
+            setSelectItems={setSelectItems}
+          />
           <div>
             {
               cartShow && (
-                <CartViewModal handleConfrmModal={cartShow} onCancel={() => handleConfirmModal(false)} />
+                <CartViewModal 
+                  handleConfrmModal={cartShow}
+                  memberId={member.id}
+                  onCancel={() => handleConfirmModal(false)} 
+                />
               )
             }
             <S.ItemTabBox>
@@ -46,7 +57,7 @@ const PointShopContainer = () => {
               <S.ItemTabLink selected={getSeleted(pathName) === 'sticker'} to={"sticker"}>스티커</S.ItemTabLink>
               <S.ItemTabLink selected={getSeleted(pathName) === 'tree'} to={"tree"}>나무</S.ItemTabLink>
             </S.ItemTabBox>
-            <Outlet context={{member}}/>
+            <Outlet context={{member, selectItems, setSelectItems}}/>
           </div>
         </div>
       );

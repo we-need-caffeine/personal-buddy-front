@@ -125,12 +125,11 @@ S.DropdownName = styled.div`
   margin-left: 8px;
 `;
 
-S.ProfileIcon = styled.div`
-  width: 24px;
-  height: 24px;
+S.MemberImage = styled.img`
+ width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background-color: #e0e0e0;
-  margin-right: 12px;
+  object-fit: cover;
 `;
 
 S.InviteButton = styled.div`
@@ -138,6 +137,10 @@ S.InviteButton = styled.div`
   font-weight: 500;
 `;
 
+S.RemoveButton = styled.div`
+  color: #00c851;
+  font-weight: 500;
+`;
 S.MemberList = styled.div`
   width: 100%;
   height: 400px;
@@ -152,9 +155,15 @@ S.MemberListTitle = styled.div`
   flex-direction: center;
 `;
 
+S.MemberInfoContainer = styled.div`
+  display: flex ;
+  align-items: center;
+`;
+
 S.MemberItem = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 S.MemberName = styled.div`
@@ -189,15 +198,19 @@ S.ActionButton = styled.button`
   border: none;
   cursor: pointer;
 
-  background-color: ${({ $type }) =>
+  background-color: ${({ $type, disabled }) =>
+    disabled ? "#d9d9d9" : 
     $type === "danger" ? "#ff4d4f" :
     $type === "primary" ? "#01cd74" : "white"};
 
-  color: ${({ $type }) =>
+  color: ${({ $type, disabled }) =>
+    disabled ? "white" :
     $type === "danger" || $type === "primary" ? "white" : "#bbbbbb"};
 
-  border: ${({ $type }) =>
+  border: ${({ $type, disabled }) =>
+    disabled ? "none" :
     $type === "default" || !$type ? "1px solid #bbbbbb" : "none"};
-`;
 
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+`;
 export default S;

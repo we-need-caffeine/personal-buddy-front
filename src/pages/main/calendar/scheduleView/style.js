@@ -22,12 +22,17 @@ S.TitleInputContainer = styled.div`
   display: flex;
   width: 100%;
   height: 67px;
+  border-bottom: 1px solid black;
 `;
 
 S.MemberListContainer = styled.div`
-  width: 100%;
-  height: 65px;
-  border-top: 1px solid black;
+  gap: 20px;
+  
+  display: flex;
+  align-items: center;
+  width: 476px;
+  height: 80px;
+
 `;
 
 S.TitleInput = styled.input`
@@ -147,5 +152,21 @@ S.CancelButton = styled.button`
   border-radius: 10px;
   background-color: white;
 `;
+S.MemberItem = styled.div`  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+`;
 
+S.MemberImage = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+S.MemberName = styled.div`
+  font-size: 14px;
+`;
 export default S;
