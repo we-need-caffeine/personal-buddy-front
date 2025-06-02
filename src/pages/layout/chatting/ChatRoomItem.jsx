@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import S from './style';
 import ProfileCard from '../profile/ProfileCard';
-import DisplayDate from '../../../utils/DisplayDate/DisplayDate';
+import ChangeDate from '../../../utils/changeDate/ChangeDate';
 import Chat from './Chat';
 import { ChatContext } from '../../../context/ChatContext';
 
@@ -87,7 +87,7 @@ const ChatRoomItem = ({i, item, memberId, toggleIsNewMessage}) => {
         </S.MemberInfoContainer>
         <S.RightContainer>
           <S.LastChatDate>
-            {DisplayDate(item.chatRoomLastChatTime) || '--'}
+            {ChangeDate(item.chatRoomLastChatTime) || '--'}
           </S.LastChatDate>
           <S.OutChatRoom
             onClick={(e) => {

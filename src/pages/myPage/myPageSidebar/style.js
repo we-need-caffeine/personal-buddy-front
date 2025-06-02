@@ -10,6 +10,7 @@ S.MyPageMemberProfile = styled.div`
 `
 
 S.MyPageMemberProfileImg = styled.img`
+    object-fit: cover;
     width: 200px;
     height: 200px;
 `

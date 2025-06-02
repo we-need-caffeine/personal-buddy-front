@@ -1,4 +1,4 @@
-function DisplayDate(dateString) {
+function ChangeDate(dateString) {
     if (!dateString) return "";
 
     // 파싱
@@ -27,4 +27,4 @@ function DisplayDate(dateString) {
     }
 }
 
-export default DisplayDate;
+export default ChangeDate;

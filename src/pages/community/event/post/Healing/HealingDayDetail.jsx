@@ -45,6 +45,8 @@ const HealingDayDetail = () => {
         const commentData = await commentRes.json();
         const bestData = await bestRes.json();
 
+        console.log("배댓",bestComments);
+
         setViews(detailData.eventViews || 0);
         setIsLiked(isLikedData);
         setLikeCount(likeCountData);
@@ -60,95 +62,83 @@ const HealingDayDetail = () => {
   }, [id]);
 
   const handleCommentSubmit = async () => {
-  if (!commentText.trim()) return;
+    if (!commentText.trim()) return;
 
-  // 댓글 중복 확인
-  const isDuplicated = await checkAlreadyCommented();
-  if (isDuplicated) {
-    alert('이미 참여한 이벤트입니다.');
-    setJoined(true);
-    return;
-  }
-
-  // 정상 등록 로직
-  try {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/write`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ eventId: Number(id), memberId, eventCommentDescription: commentText })
-    });
-
-    if (response.ok) {
-      setCommentText('');
+    // 댓글 중복 확인
+    const isDuplicated = await checkAlreadyCommented();
+    if (isDuplicated) {
+      alert('이미 참여한 이벤트입니다.');
       setJoined(true);
-
-      const refreshed = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/list?eventId=${id}`);
-      const data = await refreshed.json();
-      setComments(data);
-    } else {
-      alert('댓글 등록 실패');
+      return;
     }
-    } catch (err) {
-      console.error('댓글 등록 에러', err);
-      alert('오류 발생');
-    }
-  };
 
-  const checkAlreadyCommented = async () => {
-  const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/check`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ eventId: Number(id), memberId }),
-    });
-    return res.json(); // true 또는 false
-  };
-
-  const handleCommentLike = async (commentId) => {
-    if (!memberId) return alert('로그인 후 이용해주세요');
-
-    await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/like`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ commentId, memberId })
-    });
-
-    const updated = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/list?eventId=${id}`);
-    const data = await updated.json();
-    const best = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/best/${id}`);
-    const bestData = await best.json();
-    
-
-    setBestComments(bestData);
-    setComments(data);
-    setLikedCommentIds((c) =>
-      c.includes(commentId) ? c.filter(id => id !== commentId) : [...c, commentId]
-    );
-  };
-
-  const handlePostLike = async () => {
+    // 정상 등록 로직
     try {
-      if (isLiked) {
-        await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/un-like`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ eventId: id, memberId })
-        });
-        setLikeCount((c) => c - 1);
-      } else {
-        await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/like`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ eventId: id, memberId })
-        });
-        setLikeCount((c) => c + 1);
-      }
-      setIsLiked(!isLiked);
-    } catch (err) {
-      console.error('이벤트 좋아요 처리 실패', err);
-    }
-  };
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/write`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eventId: Number(id), memberId, eventCommentDescription: commentText })
+      });
 
-  console.log("야야야 정신차려",  comments);
+      if (response.ok) {
+        setCommentText('');
+        setJoined(true);
+
+        const refreshed = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/list?eventId=${id}`);
+        const data = await refreshed.json();
+        setComments(data);
+      } else {
+        alert('댓글 등록 실패');
+      }
+      } catch (err) {
+        console.error('댓글 등록 에러', err);
+        alert('오류 발생');
+      }
+    };
+
+    const checkAlreadyCommented = async () => {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/check`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eventId: Number(id), memberId }),
+      });
+      return res.json(); // true 또는 false
+    };
+
+    // 좋아요 버튼 누른 후 → fetch로 최신 데이터 받아오기
+    const handleCommentLike = async (commentId) => {
+      if (!memberId) return alert('로그인 후 이용해주세요');
+
+      const alreadyLiked = likedCommentIds.includes(commentId);
+      const url = alreadyLiked
+        ? `${process.env.REACT_APP_BACKEND_URL}/events/api/comment/un-like`
+        : `${process.env.REACT_APP_BACKEND_URL}/events/api/comment/like`;
+
+      try {
+        await fetch(url, {
+          method: alreadyLiked ? 'DELETE' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ commentId, memberId }),
+        });
+
+        // 최신 댓글 리스트 가져오기
+        const commentRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/list?eventId=${id}`);
+        const commentData = await commentRes.json();
+        setComments(commentData); // 이걸로 최신 likeCount 반영됨
+
+        const bestRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/comment/best/${id}`);
+        const bestData = await bestRes.json();
+        setBestComments(bestData);
+
+        setLikedCommentIds((prev) =>
+          alreadyLiked ? prev.filter((id) => id !== commentId) : [...prev, commentId]
+        );
+      } catch (err) {
+        console.error('댓글 좋아요 실패', err);
+      }
+    };
+
+  // console.log("야야야 정신차려",  comments);
 
   return (
     <S.Container>
@@ -204,30 +194,52 @@ const HealingDayDetail = () => {
         </S.InputBottom>
       </S.CommentInputBox>
 
-      <S.BestCommentSection>
-        {bestComments.map((c, i) => (
-          <S.BestCommentItem key={c.id}>
-            <S.BestBadge>⭐ BEST {i + 1}</S.BestBadge>
-            <S.CommentTop>
-              <S.CommentUser>
-                <S.ProfileImg
-                  src={
-                    c.memberImgPath && c.memberImgName
-                      ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
-                      : '/assets/images/header/default-member-img.png'
-                  }
-                  onError={(e) => {
-                    e.target.src = '/assets/images/header/default-member-img.png';
-                  }}
-                  alt="작성자 프로필"
-                />
-                <S.Nickname>{c.memberNickName}</S.Nickname>
-              </S.CommentUser>
-            </S.CommentTop>
+    <S.BestCommentSection>
+      {bestComments.map((c, i) => (
+        <S.CommentItem key={c.id}>
+          <S.BestBadge>⭐ BEST {i + 1}</S.BestBadge>
+
+          <S.CommentTopRow>
+            <S.CommentLeftBox>
+              <S.ProfileImg
+                src={
+                  c.memberImgPath && c.memberImgName
+                    ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
+                    : '/assets/images/header/default-member-img.png'
+                }
+                onError={(e) => {
+                  e.target.src = '/assets/images/header/default-member-img.png';
+                }}
+                alt="작성자 프로필"
+              />
+              <S.Nickname>{c.memberNickName}</S.Nickname>
+            </S.CommentLeftBox>
+
+            <S.CommentRightBox>
+              <S.CommentLikeButton
+                liked={likedCommentIds.includes(c.id)}
+                onClick={() => handleCommentLike(c.id)}
+              >
+                ♥
+              </S.CommentLikeButton>
+            </S.CommentRightBox>
+          </S.CommentTopRow>
+
+          <S.CommentBottomRow>
             <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
-          </S.BestCommentItem>
-        ))}
-      </S.BestCommentSection>
+            <S.CommentMetaBox>
+              <S.CommentDate>{c.eventCommentCreateDate}</S.CommentDate>
+              <S.LikeCount>
+                <img src="/assets/images/board/icon/like-icon.png" alt="like" />
+                <span>{c.eventCommentLikeCount}</span>
+              </S.LikeCount>
+            </S.CommentMetaBox>
+          </S.CommentBottomRow>
+        </S.CommentItem>
+      ))}
+    </S.BestCommentSection>
+
+
  
       <S.CommentList>
         {paginatedComments.map((c) => (

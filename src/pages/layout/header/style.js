@@ -94,6 +94,7 @@ S.ProfileBox = styled.div`
 `;
 
 S.MemberProfile = styled.img`
+  object-fit: cover;
   width: 40px;
   height: 40px;
   border-radius: 36px;

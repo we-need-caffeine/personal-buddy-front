@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { fontSizeH10, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, fontWeightRegular, gray4Color, gray5Color, mainGreenColor, pointRedColor, whiteColor } from '../../../globals/common';
+import { fontSizeH8, fontSizeH9, fontWeightBold, fontWeightRegular, gray4Color, gray5Color, mainGreenColor, pointRedColor, whiteColor } from '../../../globals/common';
 
 const S = {};
 
@@ -37,6 +37,7 @@ S.MemberInfoContainer = styled.div`
 `;
 
 S.MemberProfile = styled.img`
+  object-fit: cover;
   width: 50px;
   height: 50px;
   border-radius: 50px;
@@ -145,6 +146,7 @@ S.AcheivementContainer = styled.div`
 `
 
 S.AcheivementItems = styled.img`
+  object-fit: cover;
   width: 50px;
   height: 50px;
   border-radius: 50%;

@@ -57,6 +57,7 @@ S.ItemContainer = styled.div`
 `
 
 S.ItemImg = styled.img`
+  object-fit: cover;
   width: 200px;
   height: 110px;
 `

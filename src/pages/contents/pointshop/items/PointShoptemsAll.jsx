@@ -6,6 +6,8 @@ import { useOutletContext } from 'react-router-dom';
 const PointShopItemsAll = () => {
 
   const { member } = useOutletContext();
+  const { selectItems } = useOutletContext();
+  const { setSelectItems } = useOutletContext();
   const memberId = member.id;
   const [items, setItems] = useState([]);
   const [itemCount, setItemCount] = useState({});
@@ -43,7 +45,7 @@ const PointShopItemsAll = () => {
 
   const handleItemCountDecrease = (e, itemId) => {
     e.stopPropagation();
-    
+      
     setItemCount((prev) => {
       if(((prev[itemId] || 0) - 1) < 0){
         return prev;
