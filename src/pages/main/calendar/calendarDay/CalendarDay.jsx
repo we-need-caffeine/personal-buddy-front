@@ -102,14 +102,15 @@ const CalendarDay = ({
     }
   }, [selectedRange, calendars, calendarId, location.pathname]);
 
-  
   // 날짜 이동
   const handlePrev = () => calendarRef.current.getApi().prev();
   const handleNext = () => calendarRef.current.getApi().next();
   const handleToday = () => calendarRef.current.getApi().today();
-  
+
   return (
-    <S.CalendarWrapper style={{ "--highlight-color": selectedRange?.color ?? "#01CD74" }}>
+    <S.CalendarWrapper
+      style={{ "--highlight-color": selectedRange?.color ?? "#01CD74" }}
+    >
       <S.DateInfoWrapper>
         <S.LeftArrowIcon
           src="/assets/images/main/calendar/arrow.png"
@@ -179,6 +180,11 @@ const CalendarDay = ({
             }
           }}
           datesSet={({ start }) => setCurrentDate(new Date(start))}
+          eventContent={(arg) => {
+            return {
+              html: `<div class="fc-event-title">${arg.event.title}</div>`,
+            };
+          }}
         />
       </div>
     </S.CalendarWrapper>
