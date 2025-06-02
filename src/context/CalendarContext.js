@@ -54,7 +54,7 @@ const CalendarProvider = ({ children }) => {
       }
     );
     const datas = await response.json();
-    //console.log(datas);
+    console.log(datas);
     const allTodos = [];
 
     datas.calendars.forEach((calendar) => {
