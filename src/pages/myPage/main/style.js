@@ -46,6 +46,35 @@ S.TreeContainer = styled.div`
     margin-top: 35px;
 `
 
+S.MyTreeBackGround = styled.div`
+    pointer-events: none;
+    position: relative;
+    width: 1160px;
+    height: 600px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    background-image: url(${({url}) => url});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1;
+`;
+
+S.MyTreeItemTreeIcon = styled.div`
+    position: absolute;
+    width: 250px;
+    height: 300px;
+    bottom: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-image: url(${({url}) => url});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 999;
+    box-sizing: border-box;
+`;
+
 S.GuestBookTitleContainer = styled.div`
     display: flex;
     justify-content: left;

@@ -9,7 +9,7 @@ import PasswordModal from './memberEditModal/PasswordModal';
 import ConfirmDeleteModal from '../../layout/modal/ConfirmDeleteModal';
 
 const MyPageMemberEdit = () => {
-
+  
   // 로그인된 유저정보
   const {currentUser} = useSelector((state) => state.member)
   // 이름 변경 모달 상태
@@ -64,13 +64,17 @@ const MyPageMemberEdit = () => {
             <S.MemberInfo style={{color:'#777777'}}>{currentUser.memberEmail}</S.MemberInfo>
           </S.MemberInfoInputContainer>
           {/* 비밀번호 */}
-          <S.InputTextTitle>
-            <h1>비밀번호</h1>
-          </S.InputTextTitle>
-          <S.MemberInfoInputContainer>
-            <S.MemberInfo>------</S.MemberInfo>
-            <span onClick={() => setViewPasswordModal(true)}>비밀번호 변경</span>
-          </S.MemberInfoInputContainer>
+          {currentUser.memberProvider === 'local' && (
+            <>
+              <S.InputTextTitle>
+                <h1>비밀번호</h1>
+              </S.InputTextTitle>
+              <S.MemberInfoInputContainer>
+                <S.MemberInfo>------</S.MemberInfo>
+                <span onClick={() => setViewPasswordModal(true)}>비밀번호 변경</span>
+              </S.MemberInfoInputContainer>
+            </>
+          )}
           {/* 이름 */}
           <S.InputTextTitle>
             <h1>이름</h1>
