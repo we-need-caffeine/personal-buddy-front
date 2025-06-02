@@ -10,7 +10,6 @@ const PointShopItemsAll = () => {
   const { setSelectItems } = useOutletContext();
   const memberId = member.id;
   const [items, setItems] = useState([]);
-  const [itemCount, setItemCount] = useState({});
   const [selectedItemCard, setSelectedItemCard] = useState(-1);
   
   // 아이템 페이지네이션
@@ -29,31 +28,49 @@ const PointShopItemsAll = () => {
     }
   }
 
-  const handleItemCountIncrease = (e, itemId, itemType) => {
+  const handleItemCountIncrease = (e, item) => {
     e.stopPropagation();
-    setItemCount((prev) => {
-      if((itemType === "배경" || itemType === "나무")
-        && (prev[itemId] || 0) + 1 > 1){
+    setSelectItems((prev) => {
+      if((item.itemType === "배경" || item.itemType === "나무")
+        && (prev[item.itemId]?.buyItemCount || 0) + 1 > 1){
           return prev;
       }
+      
       return {
         ...prev,
-        [itemId]: (prev[itemId] || 0) + 1
+        [item.itemId]: {
+          id: null,
+          itemId: item.itemId,
+          memberId: member.id,
+          itemName: item.itemName,
+          itemImgPath: item.itemImgPath,
+          itemImgName: item.itemImgName,
+          buyItemCount: (prev[item.itemId]?.buyItemCount || 0) + 1,
+          itemPrice: item.itemPrice,
+        }
       }
     });
   };
 
-  const handleItemCountDecrease = (e, itemId) => {
+  const handleItemCountDecrease = (e, item) => {
     e.stopPropagation();
-      
-    setItemCount((prev) => {
-      if(((prev[itemId] || 0) - 1) < 0){
-        return prev;
+    setSelectItems((prev) => {
+      if(((prev[item.itemId]?.buyItemCount || 0) - 1) <= 0){
+        return prev.filter(prevItem => prevItem.itemId !== item.itemId);
       }
-
+      
       return {
         ...prev,
-        [itemId]: (prev[itemId] || 0) - 1
+        [item.itemId]: {
+          id: null,
+          itemId: item.itemId,
+          memberId: member.id,
+          itemName: item.itemName,
+          itemImgPath: item.itemImgPath,
+          itemImgName: item.itemImgName,
+          buyItemCount: (prev[item.itemId]?.buyItemCount || 0) - 1,
+          itemPrice: item.itemPrice,
+        }
       }
     });
   };
@@ -73,7 +90,6 @@ const PointShopItemsAll = () => {
         })
       })
       const data = await response.json();
-      console.log("응답 데이터 : ", data);
       setItems(data);
       
     }
@@ -88,7 +104,7 @@ const PointShopItemsAll = () => {
             key={item.itemId} 
             itemData={item}
             onClick={() => {handleClickItemCard(item.itemId)}}
-            selected={(item.itemId === selectedItemCard || (itemCount[item.itemId] || 0) !== 0)}
+            selected={(item.itemId === selectedItemCard || (selectItems[item.itemId]?.buyItemCount || 0) !== 0)}
             isOwned={(item.itemType === "나무" || item.itemType === "배경") && item.itemOwned === 1}
           >
             <S.ItemCardImg 
@@ -104,13 +120,13 @@ const PointShopItemsAll = () => {
             <S.ItemDescriptionH10>가격 : {item.itemPrice} 🪙</S.ItemDescriptionH10>
             {
               (item.itemId === selectedItemCard || 
-                (itemCount[item.itemId] || 0) !== 0) &&
+                (selectItems[item.itemId]?.buyItemCount || 0) !== 0) &&
                 !((item.itemType === "나무" || item.itemType === "배경") && item.itemOwned === 1) && (
                 <S.ItemInfoWrapper>
                   <S.ItemCountWrapper>
-                    <S.ItemCountButton onClick={(e) => handleItemCountDecrease(e, item.itemId)}>-</S.ItemCountButton>
-                    <S.ItemDescriptionH10>{itemCount[item.itemId] || 0}</S.ItemDescriptionH10>
-                    <S.ItemCountButton onClick={(e) => handleItemCountIncrease(e, item.itemId, item.itemType)}>+</S.ItemCountButton>
+                    <S.ItemCountButton onClick={(e) => handleItemCountDecrease(e, item)}>-</S.ItemCountButton>
+                    <S.ItemDescriptionH10>{selectItems[item.itemId]?.buyItemCount || 0}</S.ItemDescriptionH10>
+                    <S.ItemCountButton onClick={(e) => handleItemCountIncrease(e, item)}>+</S.ItemCountButton>
                   </S.ItemCountWrapper>
                   <S.ItemCardButtonWrapper>
                     <S.ItemBuyButton>구매</S.ItemBuyButton>

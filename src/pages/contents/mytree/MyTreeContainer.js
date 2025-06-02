@@ -126,7 +126,9 @@ const MyTreeContainer = () => {
     <div>
       <S.SubTitle data-aos="fade-down-right">언젠가는 아름다워질 나의 나무 ✨</S.SubTitle>
       <S.MainTitle data-aos="fade-down-right">나의 성장 나무 🌳</S.MainTitle>
+      {/* 전체 나무 요소 Wrapper */}
       <S.MyTreeWrapper data-aos="zoom-out">
+        {/* 성장나무 배경요소이며, useRef는 요소 이동 시 렌더링 현상으로 인해 사용 (단순 display 용으론 필요 X) */}
         <S.MyTreeBackGround 
           url={
             memberAppliedItemBackground && memberAppliedItemBackground.itemImgPath && memberAppliedItemBackground.itemImgName ? 
@@ -137,6 +139,10 @@ const MyTreeContainer = () => {
           ref={backgroundRef}
           >
           {
+            // 성장나무 내부에 띄울 스티커 요소
+            // 각 회원이 가지고 있는 아이템 목록의 id를 가져와서, 목록화
+            // 아이템 데이터 자체를 넘겨주어, 
+            // 컴포넌트 내부에서 데이터 처리
             memberAppliedItemsSticker.map((sticker) => (
               <Sticker 
                 key={sticker.treeCustomizingId} sticker={sticker}
@@ -149,6 +155,7 @@ const MyTreeContainer = () => {
               )
             )
           }
+          {/* 성장나무 이미지 */}
           <S.MyTreeItemTreeIcon 
             url={ 
                 memberAppliedItemTree && memberAppliedItemTree.itemImgPath && memberAppliedItemTree.itemImgName  ? 

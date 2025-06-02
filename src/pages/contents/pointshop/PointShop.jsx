@@ -5,8 +5,7 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const PointShop = ({member, cartShow, setCartShow}) => {
-    console.log(member);
+const PointShop = ({member, cartShow, setCartShow, selectItems, setSelectItems}) => {
     return (
         <>
             <S.SubTitle>마음에 드는 아이템을 골라보세요 👁️</S.SubTitle>
@@ -35,14 +34,22 @@ const PointShop = ({member, cartShow, setCartShow}) => {
                             slidesPerView='auto'
                             grabCursor={true}
                         >
-                            <S.SelectItemInfo>
-                                <S.SelectItemCancelButton />
-                                <S.SelectItemCard>
-                                    <img width={'30px'} height={'30px'} src='/assets/images/contents/tree/item/sticker/minipin.png' />
-                                    <S.InfoDescText>미니핀</S.InfoDescText>
-                                </S.SelectItemCard>
-                                <S.SelectItemCount>2</S.SelectItemCount>
-                            </S.SelectItemInfo>
+                            {
+                                selectItems && Object.values(selectItems).map((selectItem) => (
+                                    <S.SelectItemInfo>
+                                        <S.SelectItemCancelButton />
+                                        <S.SelectItemCard>
+                                            <img 
+                                                width={'30px'} 
+                                                height={'30px'} 
+                                                src={`${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${selectItem.itemImgPath}&fileName=${selectItem.itemImgName}`}
+                                            />
+                                            <S.InfoDescText>{selectItem.itemName}</S.InfoDescText>
+                                        </S.SelectItemCard>
+                                        <S.SelectItemCount>{selectItem.buyItemCount}</S.SelectItemCount>
+                                    </S.SelectItemInfo>
+                                ))
+                            }
                         </S.SelectedItemList>
                         <S.NextButton className="custom-next" />
                     </div>

@@ -102,7 +102,10 @@ S.CartAddAllButton = styled.button`
 `;
 
 S.SelectedItemInfoWrapper = styled.div`
-    ${flexCenterColumn}
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: baseline;
     gap: 5px;
     width: 85%;
     height: 150px;
