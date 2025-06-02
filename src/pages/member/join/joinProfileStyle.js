@@ -107,10 +107,10 @@ S.ImagePlusButton = styled.label`
 
 S.ImageMinusButton = styled.div`
   position: absolute;
-  width: 60px;
-  height: 60px;
-  top: calc(50% - 30px);
-  left: calc(50% + 30px);
+  width: 30px;
+  height: 30px;
+  top: calc(18% - 30px);
+  left: calc(50% + 65px);
   border-radius: 30px;
   background-color: #333333;
   opacity: 0.8;
