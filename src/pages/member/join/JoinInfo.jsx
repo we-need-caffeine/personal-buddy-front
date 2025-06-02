@@ -235,7 +235,7 @@ const JoinInfo = () => {
     };
 
     const handleChangePhone = (e) => {
-      const value = e.target.value;
+      const value = e.target.value; 
     
       // 숫자만 허용
       const onlyNumbers = /^[0-9]*$/;

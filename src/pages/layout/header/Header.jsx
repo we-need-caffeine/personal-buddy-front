@@ -231,7 +231,7 @@
                 {/* 프로필 카드 영역 */}
                 {showProfileCard && (
                   <S.ProfileCardDropdown
-                    style={{ top: dropdownPos.y, left: dropdownPos.x }}
+                    style={{ top: dropdownPos.y, left: dropdownPos.x - 100 }}
                   >
                     <ProfileCard
                       memberId={memberId}
@@ -269,7 +269,7 @@
         {showAlertModal && (
           <>
             <S.AlertModalContainer
-              style={{ top: alertDropdownPos.y, left: alertDropdownPos.x }}
+              style={{ top: alertDropdownPos.y, left: alertDropdownPos.x - 100 }}
             >
               <Alert
                 memberId={memberId}

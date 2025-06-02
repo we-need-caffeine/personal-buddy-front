@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import S from './style';
 import { HeaderContext } from '../../../context/HeaderContext';
-import DisplayDate from '../../../utils/DisplayDate/DisplayDate';
+import DisplayDate from '../../../utils/displayDate/DisplayDate';
 
 const Alert = ({memberId, handleAlertModal}) => {
 
