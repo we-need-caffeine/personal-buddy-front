@@ -34,7 +34,13 @@ const PointShopContainer = () => {
 
     return (
         <div>
-          <PointShop member={member} cartShow={cartShow} setCartShow={setCartShow}/>
+          <PointShop 
+            member={member}
+            cartShow={cartShow} 
+            setCartShow={setCartShow} 
+            selectItems={selectItems} 
+            setSelectItems={setSelectItems}
+          />
           <div>
             {
               cartShow && (
