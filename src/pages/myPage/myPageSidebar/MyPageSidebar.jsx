@@ -258,13 +258,13 @@ const MyPageSidebar = () => {
                             <S.MyPageMemberInfoFollow onClick={() => {handleFollowerList(true)}}>
                                 <span>팔로워</span>
                                 <S.MyPageMemberInfoFollowCount>
-                                    <span>{formatKoreanNumber(ownerInfo.followerCount)}</span>
+                                    <span className='point'>{formatKoreanNumber(ownerInfo.followerCount)}</span>
                                 </S.MyPageMemberInfoFollowCount>
                             </S.MyPageMemberInfoFollow>
                             <S.MyPageMemberInfoFollow onClick={() => {handleFollowList(true)}}>
                                 <span>팔로잉</span>
                                 <S.MyPageMemberInfoFollowCount>
-                                    <span>{formatKoreanNumber(ownerInfo.followingCount)}</span>
+                                    <span className='point'>{formatKoreanNumber(ownerInfo.followingCount)}</span>
                                 </S.MyPageMemberInfoFollowCount>
                             </S.MyPageMemberInfoFollow>
                         </S.MyPageMemberInfoFollowContainer>
