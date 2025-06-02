@@ -42,8 +42,8 @@ const MyTreeContainer = () => {
 
   useEffect(() => {
     AOS.init({
-      delay: 500,
-      duration: 1000,
+      delay: 200,
+      duration: 500,
       once: true,
     })
     window.scrollTo(0, 0);
@@ -124,8 +124,8 @@ const MyTreeContainer = () => {
 
   return (
     <div>
-      <S.SubTitle>언젠가는 아름다워질 나의 나무 ✨</S.SubTitle>
-      <S.MainTitle>나의 성장 나무 🌳</S.MainTitle>
+      <S.SubTitle data-aos="fade-down-right">언젠가는 아름다워질 나의 나무 ✨</S.SubTitle>
+      <S.MainTitle data-aos="fade-down-right">나의 성장 나무 🌳</S.MainTitle>
       <S.MyTreeWrapper data-aos="zoom-out">
         <S.MyTreeBackGround 
           url={
