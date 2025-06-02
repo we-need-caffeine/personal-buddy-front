@@ -1,77 +1,42 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import Banner from "../layout/banner/Banner";
 import { useSelector } from "react-redux";
-import {
-  CalendarProvider,
-  CalendarContext,
-} from "../../context/CalendarContext";
+import { CalendarProvider } from "../../context/CalendarContext";
 
 const MainContainer = () => {
   const { currentUser } = useSelector((state) => state.member);
   const pathname = useLocation().pathname;
   const navigate = useNavigate();
 
-  const { state, actions } = useContext(CalendarContext);
-  const {
-    lastApprovedCalendarId,
-    lastApprovedMemberId,
-    selectedCalendarId,
-  } = state;
-
-  const { getInvitesAll, getCalendarsAll } = actions;
-
   useEffect(() => {
-    const checkInvitesAndRedirect = async () => {
-      try {
-        const newInvites = await getInvitesAll();
-
-        // console.log(
-        //   "MainContainer invites 상태 변화:", JSON.stringify(newInvites)
-        // );
-
-        if (newInvites.length > 0) {
-          const firstInvite = newInvites[0];
-          // console.log("이동할 초대:", firstInvite);
-
-          navigate(
-            `/calendar-invite/${firstInvite.calendarId}/${firstInvite.calendarInviteHostId}`,
-            { state: { inviteInfo: firstInvite } }
-          );
-          return;
-        }
-
-        if (lastApprovedCalendarId && lastApprovedMemberId) {
-          navigate(`/main/${lastApprovedMemberId}/${lastApprovedCalendarId}`);
-          return;
-        }
-
-        await getCalendarsAll();
-
-        if (currentUser.id && selectedCalendarId) {
-          if (pathname === "/main") {
-            navigate(`/main/${currentUser.id}/${selectedCalendarId}`);
-          }
-        }
-      } catch (error) {
-        console.error("초대 또는 캘린더 조회 실패:", error);
-      }
+    const getCalendarFisrtIndex = async () => {
+      const response = await fetch(
+        `http://localhost:10000/calendars/api/members/${currentUser.id}/calendars`
+      );
+      const datas = await response.json();
+      return datas;
     };
 
-    if (currentUser?.id) {
-      checkInvitesAndRedirect();
-    }
-  }, [
-    currentUser,
-    pathname,
-    navigate,
-    lastApprovedCalendarId,
-    lastApprovedMemberId,
-    selectedCalendarId,
-  ]);
+    getCalendarFisrtIndex()
+      .then((calenders) => calenders.map(({ calendarIndex }) => calendarIndex))
+      .then((calenderIds) => calenderIds.sort()[0])
+      .then((calenderId) => {
+        // 캘린더 아이디, 로그인한 멤버 아이디가 있으면 이동
+        if (currentUser.id && calenderId) {
+          if (pathname === "/main") {
+            navigate(`/main/${currentUser.id}/${calenderId}`);
+          }
+        }
+      })
+      .catch(console.error);
+  }, [currentUser, pathname, navigate]);
 
   return (
     <div>
-      <Outlet />
+      <CalendarProvider>
+        <Outlet />
+      </CalendarProvider>
     </div>
   );
 };

@@ -89,13 +89,15 @@ const MyPageSidebar = () => {
                 <div>
                     {/* 다른 유저의 마이페이지 프로필 */}
                     <S.MyPageMemberProfile>
-                        <S.MyPageMemberProfileImg 
-                            src={`http://localhost:10000/images/profile/${ownerInfo.memberImgName}`}
-                            alt='멤버 프로필 이미지'
-                            onError={e => {
-                                e.target.src = "/assets/images/header/default-member-img.png";
-                            }}
-                        />
+                        <NavLink to={`/main/mypage/${ownerId}/profile-edit`}>
+                            <S.MyPageMemberProfileImg 
+                                src={`http://localhost:10000/images/profile/${ownerInfo.memberImgName}`}
+                                alt='멤버 프로필 이미지'
+                                onError={e => {
+                                    e.target.src = "/assets/images/header/default-member-img.png";
+                                }}
+                            />
+                        </NavLink>
                     </S.MyPageMemberProfile>
                     <S.MyPageMemberInfoContainer>
                         <S.MyPageMemberInfoNickName
@@ -209,16 +211,18 @@ const MyPageSidebar = () => {
                 <div>
                     {/* 다른 유저의 마이페이지 프로필 */}
                     <S.MyPageMemberProfile>
-                        <S.MyPageMemberProfileImg 
-                            src={`http://localhost:10000/images/profile/${ownerInfo.memberImgName}`}
-                            alt='멤버 프로필 이미지'
-                            onError={e => {
-                                e.target.src = "/assets/images/header/default-member-img.png";
-                            }}
-                        />
+                        <NavLink to={`/main/mypage/${ownerId}/profile-edit`}>
+                            <S.MyPageMemberProfileImg 
+                                src={`http://localhost:10000/images/profile/${ownerInfo.memberImgName}`}
+                                alt='멤버 프로필 이미지'
+                                onError={e => {
+                                    e.target.src = "/assets/images/header/default-member-img.png";
+                                }}
+                            />
+                        </NavLink>
                     </S.MyPageMemberProfile>
                     <S.MyPageMemberInfoContainer>
-                        <S.MyPageMemberInfoNickName 
+                        <S.MyPageMemberInfoNickName
                             onClick={(e) => {
                               setDropdownPos({ x: e.clientX, y: e.clientY });
                               handleProfileCard(true)
