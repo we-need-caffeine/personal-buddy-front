@@ -5,14 +5,13 @@ import 'swiper/css/autoplay';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import S from './style';
-import { Autoplay } from 'swiper/modules';
+import { Autoplay, Pagination } from 'swiper/modules';
 import { Link } from 'react-router-dom';
 
 const Banner = () => {
   const [swiper, setSwiper] = useState('');
   const totalSlides = 3;
   const [activeIndex, setActiveIndex] = useState(0);
-
 
   const handleDotClick = (index) => {
     if (!swiper) return;
@@ -24,14 +23,16 @@ const Banner = () => {
   return (
     <S.BannerWrapper>
       <Swiper
-        modules={[Autoplay]}
+        modules={[Pagination, Autoplay]}
         slidesPerView={1}
         loop={true}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
         onSwiper={(swiper) => setSwiper(swiper)}
         allowTouchMove={true}
         navigation={false}
-        pagination={false}
+        pagination={{ 
+          clickable: true,
+        }}
       >
         <SwiperSlide>
           <img src="/assets/images/banner/banner-blue.png" alt="배너1" />
@@ -64,15 +65,6 @@ const Banner = () => {
         </SwiperSlide>
       </Swiper>
 
-      <S.DotsContainer>
-        {[...Array(totalSlides)].map((_, i) => (
-          <S.Dot
-            key={i}
-            $active={activeIndex === i} 
-            onClick={() => handleDotClick(i)}
-          />
-        ))}
-      </S.DotsContainer>
 
     </S.BannerWrapper>
   );

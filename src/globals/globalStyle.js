@@ -50,11 +50,15 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: 'SpoqaHanSansNeo';
-    /* text-shadow: 0 0 2px rgba(0, 0, 0, 0.05); */
+    /* text-shadow: 0 0 2px rgba(3, 1, 1, 0.05); */
     /* letter-spacing: -0.4px; // 자간  */
     color: #000;
   }
 
+  * {
+    font-family: 'SpoqaHanSansNeo';
+  }
+  
   button {
     cursor: pointer;
   }

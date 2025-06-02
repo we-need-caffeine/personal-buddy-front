@@ -20,9 +20,10 @@ S.Container = styled.div`
 
 // 제목
 S.Title = styled.h2`
-  font-size: 24px;
-  font-weight: bold;
-  margin: 0;
+    font-size: 24px;
+    margin: 0 0 12px 0;
+    font-weight: 500;
+    color: #222;
 `;
 
 
@@ -46,9 +47,16 @@ S.Left = styled.div`
 // 조회수, 좋아요 수, 댓글 수
 S.Right = styled.div`
     display: flex;
-    align-items: center;
     gap: 16px;
+    margin: 0 0 0 auto;
 `;
+
+S.ProfileWrap = styled.div`
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    margin: 0 0 12px 0;
+`
 
 // 프로필 이미지
 S.ProfileImg = styled.img`
@@ -59,9 +67,11 @@ S.ProfileImg = styled.img`
 
 // 작성자 닉네임
 S.Nickname = styled.span`
-    ${fontSizeH8};
-    font-weight: bold;
-    ${blackColor};
+    font-size: 18px;
+    flex-shrink: 0;
+    font-weight: 500;
+    color: #222;
+    margin: 5px 10px 0 6px;
 `;
 
 // 작성일
@@ -71,30 +81,36 @@ S.Date = styled.span`
 
 // 조회수
 S.ViewCount = styled.span`
-    font-size: 13px;
+    font-size: 16px;
+    color: #666;
+    font-weight: 300;
 `;
 
 // 좋아요 수
 S.LikeCount = styled.span`
-    font-size: 13px;
+    font-size: 16px;
+    color: #666;
+    font-weight: 300;
 `;
 
 // 댓글 수
 S.CommentCount = styled.span`
-    font-size: 13px;
+    font-size: 16px;
+    color: #666;
+    font-weight: 300;
 `;
 
 // 게시글 이미지
 S.Image = styled.img`
     width: 100%;
-    max-height: 400px;
     object-fit: contain;
     margin: 30px 0;
 `;
 
 // 게시글 본문
 S.Content = styled.p`
-    font-size: 15px;
+    font-size: 18px;
+    font-weight: 300;
     line-height: 1.7;
     margin-bottom: 50px;
 `;
@@ -116,6 +132,9 @@ S.LikeButton = styled.button`
     justify-content: center;
     align-items: center;
 
+    & p {
+        margin: 0 4px 0 0;
+    }
     // 좋아요 누른 상태면 hover 시 색 안 바뀌게
     ${({ liked, theme }) =>
         !liked &&
@@ -128,7 +147,7 @@ S.LikeButton = styled.button`
 S.CommentTitleBox = styled.div`
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 4px;
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 15px;
@@ -141,7 +160,7 @@ S.CommentCountText = styled.span`
 
 // 댓글 입력창 박스
 S.CommentInputBox = styled.div`
-
+    width: 1000px;
 `;
 
 // 댓글 입력 영역
@@ -149,13 +168,14 @@ S.Textarea = styled.textarea`
     font: inherit;
     resize: none;
     outline: none;
-    width: 100%;
+    width: calc(100% - 42px);
     height: 100px;
     padding: 20px;
     border-radius: 12px;
-    border: 1px solid ${({ theme }) => theme.PALLETE.gray.gray4};
-    ${blackColor};
-    ${fontSizeH7};
+    border: 1px solid #ccc;
+    color: #666;
+    font-weight: 300;
+    font-size: 16px;
 `;
 
 // 댓글 입력창 하단
@@ -169,6 +189,14 @@ S.InputBottom = styled.div`
     ${gray4Color};
     margin-bottom: 58px;
 
+    & span {
+        font-weight: 700;
+        color: #ccc;
+    }
+
+    & p {
+        font-weight: 500;
+    }
     /* .div{
         display: flex;
         align-items: center;
@@ -180,7 +208,8 @@ S.InputBottom = styled.div`
 // 글자 수 표시
 S.CharCount = styled.div`
     color: ${({ theme }) => theme.PALLETE.black};
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 700;
     padding-right: 4px;
 `;
 
@@ -189,8 +218,8 @@ S.SubmitButton = styled.button`
     text-align: center;
     border: none;
     border-radius: 50px;
-    width: 79px;
-    height: 43px;
+    width: 120px;
+    height: 44px;
     ${whiteColor};
     ${fontSizeH7};
     ${fontWeightBold};
@@ -221,15 +250,17 @@ S.BestCommentItem = styled.div`
     gap: 12px;
 `;
 
+S.BestBadgeWrap = styled.div`
+    display: flex;
+`
+
 // BEST 뱃지
 S.BestBadge = styled.div`
     ${flexCenter}
     background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
-    width: 67px;
-    height: 22px;
     font-size: 12px;
     font-weight: bold;
-    padding: 2px 8px;
+    padding: 4px 8px 4px 6px;
     border-radius: 4px;
     margin-bottom: 8px;
     color: white;
@@ -244,7 +275,7 @@ S.CommentList = styled.div`
 // 댓글 1개
 S.CommentItem = styled.div`
     background-color: white;
-    padding: 20px;
+    padding: 40px 20px;
     border-bottom: 1px solid #eee;
     display: flex;
     flex-direction: column;
@@ -262,18 +293,17 @@ S.CommentTop = styled.div`
 // 댓글 작성자 정보
 S.CommentUser = styled.div`
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
     font-size: 14px;
     font-weight: bold;
+    width: 100%;
 `;
 
 // 댓글 작성일
 S.CommentDate = styled.span`
-    display: flex;
-    justify-content: left;
-    font-size: 13px;
-    color: ${({ theme }) => theme.PALLETE.gray.gray4};
+    font-size: 16px;
+    font-weight: 300;
+    color: #999;
 `;
 
 // 댓글 좋아요 수
@@ -285,11 +315,23 @@ S.CommentLikeCount = styled.span`
     font-size: 13px;
     color: ${({ theme }) => theme.PALLETE.gray.gray4};
 
+    p {
+        font-size: 16px;
+        font-weight: 600;
+        color: #666;
+    }
     img {
         width: 14px;
         height: 14px;
     }
 `;
+
+S.LikeWrap = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width : 100%;
+`
 
 // 댓글 작성일 + 좋아요 묶은 것
 S.LeftCommentWrapper = styled.div`
@@ -305,8 +347,7 @@ S.LeftCommentWrapper = styled.div`
 // 댓글 좋아요 버튼
 S.CommentLikeButton = styled.button`
     ${flexCenter};
-    width: 40px;
-    height: 27px;
+    padding: 6px 16px;
     border: none;
     border-radius: 50px;
     font-size: 14px;
@@ -316,6 +357,10 @@ S.CommentLikeButton = styled.button`
     background-color: ${({ liked, theme }) =>
         liked ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
 
+    & span {
+        margin : 0 4px 0 0;
+    }
+
     &:hover {
         background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
     }
@@ -323,11 +368,13 @@ S.CommentLikeButton = styled.button`
 
 // 댓글 내용
 S.CommentContents = styled.p`
-    font-size: 15px;
+    font-size: 18px;
+    font-weight: 300;
     color: ${({ theme }) => theme.PALLETE.black};
     white-space: pre-wrap;
     word-break: break-word;
-`;
+    margin: 5px 0 30px 0;
+    `;
 
 // 제목 + 수정/삭제 한 줄 정렬
 S.TitleRow = styled.div`

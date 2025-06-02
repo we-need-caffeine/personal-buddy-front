@@ -1,4 +1,4 @@
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import S from './style';
 
 const CommunityLayout = () => {
@@ -11,11 +11,11 @@ const CommunityLayout = () => {
         <S.TabContainer>
           <S.TabBtn style={{ transform: isBoard ? 'translateX(0)' : 'translateX(100%)' }} />
           
-          <S.TabText isSelected={isBoard}>
-            <Link to="/main/community/board">BOARD</Link>
+          <S.TabText>
+            <NavLink to="/main/community/board">BOARD</NavLink>
           </S.TabText>
-          <S.TabText isSelected={!isBoard}>
-            <Link to="/main/community/event">EVENT</Link>
+          <S.TabText>
+            <NavLink to="/main/community/event">EVENT</NavLink>
           </S.TabText>
         </S.TabContainer>
       </S.TabBox>

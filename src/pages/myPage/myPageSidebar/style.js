@@ -25,12 +25,17 @@ S.MyPageMemberInfoContainer = styled.div`
 `
 
 S.MyPageMemberInfoNickName = styled.div`
-    ${fontSizeH6}
-    ${fontWeightBold}
+    font-size: 18px;
+    flex-shrink: 0;
+    font-weight: 500;
+    color: #222;
     text-align: center;
     margin-top: 30px;
     width: 140px;
     cursor: pointer;
+    white-space: nowrap;  
+    overflow: hidden;          
+    text-overflow: ellipsis; 
 `
 
 S.MyPageMemberInfoStatusMessage = styled.div`
@@ -40,6 +45,12 @@ S.MyPageMemberInfoStatusMessage = styled.div`
     margin-top: 10px;
     text-align: center;
     width: 140px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.7;
 `
 
 S.MyPageMemberInfoFollowContainer = styled.div`
@@ -54,6 +65,15 @@ S.MyPageMemberInfoFollowContainer = styled.div`
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+
+    & span {
+        font-size: 13px;
+        font-weight: 300;
+    }
+
+    & .point {
+        font-weight: 500;
+    }
 `
 
 S.MyPageMemberInfoFollow = styled.div`
@@ -94,6 +114,14 @@ S.MyPageTitleIcon = styled.div`
 S.MyPageTitle = styled.div`
     display: flex;
     align-items: center;
+
+    & span {
+        font-size: 16px;
+        flex-shrink: 0;
+        font-weight: 500;
+        color: #222;
+    }
+
 `
 
 S.MyPageSubTitle = styled.div`
@@ -102,6 +130,18 @@ S.MyPageSubTitle = styled.div`
     margin: 10px 24px;
     ${fontSizeH8}
     ${fontWeightRegular}
+
+    .active span {
+        color : #01CD74;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    & span {
+        color : #222;
+        font-size: 14px;
+        font-weight: 300;
+    }
 `
 
 S.MyPageButtonContainer = styled.div`

@@ -199,18 +199,16 @@ const MyPageMain = () => {
                     <S.GuestBookTitle>
                         <span>방명록</span>
                     </S.GuestBookTitle>
+                        <span>|</span>
                     <S.GuestBookWriteCount>
                         <span>{guestBookCount}</span>
                     </S.GuestBookWriteCount>
                 </S.GuestBookTitleContainer>
                 {/* 방명록 인풋 영역 */}
                 <S.GuestBookInputContainer>
-                    <S.GuestBookInputTitle>
-                        <span>방명록을 남겨보세요, 바르고 고운말을 사용합시다.</span>
-                    </S.GuestBookInputTitle>
                     <S.GuestBookInput
                         maxLength={500} 
-                        placeholder='방명록을 작성해주세요.'
+                        placeholder='방명록을 남겨보세요, 바르고 고운말을 사용합시다.'
                         onChange={handleTextareaChange}
                         value={guestBookText}
                     >

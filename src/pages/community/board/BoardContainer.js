@@ -39,7 +39,12 @@ const BoardContainer = () => {
     <>
       {/* hot */}
       <BoardBannerContainer hot={hot} />
-      <hr />
+      <hr style={{
+        height : "1px",
+        border: "none",
+        backgroundColor : "#d9d9d9",
+        margin: "0 0 100px 0"
+      }}/>
       <BoardPostListContainer 
         boards={boards} setIsUpdate={setIsUpdate} setOrder={setOrder} isUpdate={isUpdate}
         setBoardHashtag={setBoardHashtag} setSearchKeyword={setSearchKeyword}

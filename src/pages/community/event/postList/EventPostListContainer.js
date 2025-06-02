@@ -83,7 +83,7 @@ const EventPostListContainer = () => {
 
               <S.InfoBox>
                 <div>{event.eventTitle}</div>
-                <div>{FormatDate(event.eventStartDate)}</div>
+                <div>{FormatDate(event.eventStartDate).split(" ")[0].replaceAll(".", "-")}</div>
               </S.InfoBox>
             </div>
           );
