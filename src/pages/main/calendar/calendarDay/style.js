@@ -1,5 +1,9 @@
 import styled from "styled-components";
-
+import {
+  fontSizeH6,
+  fontWeightMedium,
+  fontSizeH7,
+} from "../../../../globals/common";
 const S = {};
 
 S.CalendarWrapper = styled.div`
@@ -114,9 +118,8 @@ S.CalendarWrapper = styled.div`
   }
 
   .fc-event {
-    /* background-color: #01cd74 !important; */
     border: none !important;
-    color: white !important; /* 텍스트 가독성 위해 흰색 */
+    color: white !important;
   }
 
   .fc-timegrid-event-harness {
@@ -167,8 +170,9 @@ S.DateInfoWrapper = styled.div`
 `;
 
 S.TodayText = styled.span`
-  font-size: 16px;
-  font-weight: bold;
+  ${fontSizeH7};
+  ${fontWeightMedium};
+  color: #01cd74;
   cursor: pointer;
 `;
 

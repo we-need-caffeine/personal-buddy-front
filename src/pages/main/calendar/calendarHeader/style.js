@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {
+  fontSizeH6,
   fontSizeH4,
   fontSizeH8,
   fontWeightMedium,
@@ -10,7 +11,42 @@ const S = {};
 S.Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 61px;
+  justify-content: space-between;
+  position: relative;
+  height: 123px;
+`;
+
+S.LocationContainer = styled.div`
+  top: 100%;
+  left: 0;
+  padding-top: 6px;
+  ${fontSizeH6};
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+`;
+
+S.DailyButtonContainer = styled.div`
+display: flex;
+justify-content: end;
+`;
+
+S.WeatherInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+`;
+
+S.TitleWord = styled.div`
+  width: 100%;
+  font-size: 24px;
+  ${fontSizeH4};
 `;
 
 S.TitleWord = styled.div`
@@ -33,8 +69,8 @@ S.TabContainer = styled.div`
 `;
 
 S.Tab = styled.button`
-  display: flex; // 추가
-  align-items: center; // 추가
+  display: flex; 
+  align-items: center; 
   justify-content: center;
   text-align: center;
   line-height: 33px;
@@ -60,7 +96,7 @@ S.Tab = styled.button`
 `;
 
 S.ItemWrapper = styled.div`
-  // 콘텐츠 렌더링 영역
+
 `;
 
 S.ModifyButton = styled.img`
