@@ -23,8 +23,6 @@ const CalendarMonth = ({
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
 
-  
-
   const setEventsFromSchedules = () => {
     const calendar = calendars.find((c) => c.id === Number(calendarId));
     const schedules =
@@ -40,15 +38,13 @@ const CalendarMonth = ({
     }));
   };
 
- 
-
   const handleDateClick = (info) => {
     const clickedDate = info.dateStr;
 
     // 현재 캘린더에서 일정 목록 추출
     const calendar = calendars.find((c) => c.id === Number(calendarId));
     const schedules = calendar?.scheduleLists || [];
-    const color = calendar?.scheduleLists?.scheduleColorZZ
+    const color = calendar?.scheduleLists?.scheduleColorZZ;
     //console.log(schedules);
     const isSameDay = (day1, day2) =>
       day1.getFullYear() === day2.getFullYear() &&
@@ -61,11 +57,11 @@ const CalendarMonth = ({
       return isSameDay(start, target);
     });
     //console.log(filtered);
-    navigate("schedule-list-view", {
+    navigate(`/main/${memberId}/${calendarId}/month/schedule-list-view`, {
       state: {
         schedule: filtered,
         date: clickedDate,
-        //time: 
+        eventId: filtered.length > 0 ? filtered[0].id : null
       },
     });
   };
@@ -80,8 +76,6 @@ const CalendarMonth = ({
     // 다른 캘린더로 이동했을 때 선택된 일정 범위를 초기화함
     onSelectRange(null);
   }, [calendarId]);
-
-  
 
   // 날짜 이동
   const handlePrev = () => calendarRef.current.getApi().prev();
@@ -130,8 +124,6 @@ const CalendarMonth = ({
               end: info.endStr,
               color: selectedRange?.color ?? "#01CD74",
             };
-
-           
 
             onSelectRange(range);
             onCreateSchedule?.(info);

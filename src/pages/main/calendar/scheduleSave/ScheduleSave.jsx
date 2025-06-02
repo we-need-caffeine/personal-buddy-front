@@ -298,7 +298,7 @@ const ScheduleSave = () => {
     };
   }, []);
 
-  console.log(calendarMembers);
+  //console.log(calendarMembers);
   //#endregion
   return (
     <S.Container>

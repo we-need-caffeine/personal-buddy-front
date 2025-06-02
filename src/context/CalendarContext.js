@@ -16,6 +16,31 @@ const CalendarProvider = ({ children }) => {
   const [calendarIndex, setCalendarIndex] = useState(null);
   const memberId = useSelector((state) => state.member.currentUser.id);
   const [selectedCalendarId, setSelectedCalendarId] = useState(null);
+  const [invites, setInvites] = useState([]);
+
+  const [lastApprovedCalendarId, setLastApprovedCalendarId] = useState(null);
+  const [lastApprovedMemberId, setLastApprovedMemberId] = useState(null);
+
+  const getInvitesAll = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/invites/${memberId}`
+      );
+
+      const inviteList = await response.json();
+      setInvites(inviteList);
+      return inviteList; 
+    } catch (error) {
+      console.error("초대 목록 조회 실패", error);
+      return []; 
+    }
+  };
+
+  useEffect(() => {
+    if (memberId) {
+      getInvitesAll();
+    }
+  }, [memberId]);
 
   const getCalendarsAll = async () => {
     const response = await fetch(
@@ -29,7 +54,7 @@ const CalendarProvider = ({ children }) => {
       }
     );
     const datas = await response.json();
-
+    //console.log(datas);
     const allTodos = [];
 
     datas.calendars.forEach((calendar) => {
@@ -39,7 +64,6 @@ const CalendarProvider = ({ children }) => {
       allTodos.push(calendar.todoLists);
     });
 
-    // 객체 -> 배열로 데이터 값
     const { calendars } = await datas;
     setCalendars(calendars);
 
@@ -103,10 +127,15 @@ const CalendarProvider = ({ children }) => {
       selectedCalendarId,
       colors,
       categories,
+      invites,
+      lastApprovedCalendarId,
+      lastApprovedMemberId,
     },
     actions: {
       getCalendarsAll,
-      //  할일, 캘린더, 캘린더 공유, 일정, 일정 공유
+      getInvitesAll,
+      setLastApprovedCalendarId,
+      setLastApprovedMemberId,
     },
   };
 

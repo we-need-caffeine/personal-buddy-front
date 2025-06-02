@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import {
-  fontSizeH4,
+  fontSizeH6,
   fontSizeH8,
-  fontWeightRegular,
+  fontWeightMedium,
   fontWeightLight,
 } from "../../../../globals/common";
 
@@ -149,8 +149,9 @@ S.DateInfoWrapper = styled.div`
 `;
 
 S.TodayText = styled.span`
-  font-size: 16px;
-  font-weight: bold;
+  ${fontSizeH6};
+  ${fontWeightMedium};
+  color:#01cd74;
   cursor: pointer;
 `;
 

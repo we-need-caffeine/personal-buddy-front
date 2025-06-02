@@ -44,7 +44,7 @@ const CalendarForm = ({
 
       if (response.ok) {
         alert("초대 취소 성공");
-        await refreshAvailableMembers(); //
+        await refreshAvailableMembers(); 
       } else {
         alert("초대 취소 실패");
       }

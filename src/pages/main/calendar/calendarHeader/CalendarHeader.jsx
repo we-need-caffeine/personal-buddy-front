@@ -91,14 +91,44 @@ const CalendarHeader = () => {
     : "일간";
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        position: "relative",
-      }}
-    >
+    <S.Container>
+      {/* 현재 위치 주소 + 날씨 출력 */}
+      {(locationAddress || weather) && (
+        <S.LocationContainer>
+          {locationAddress && <div>{locationAddress}</div>}
+          {weather && (
+            <S.WeatherInfo>
+              <img
+                src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
+                alt="날씨 아이콘"
+              />
+              {weather.description} / {weather.temp.toFixed(1)}℃
+            </S.WeatherInfo>
+          )}
+        </S.LocationContainer>
+      )}
+      {/* 뷰 변경 드롭다운 */}
+      <S.DailyButtonContainer>
+        <S.DailyButtonWrapper ref={dropdownRef}>
+          <S.DailyViewButton onClick={() => setShowDropdown((prev) => !prev)}>
+            {viewText}
+          </S.DailyViewButton>
+          {showDropdown && (
+            <S.DropdownMenu>
+              <S.DropdownItem onClick={() => handleViewChange("")}>
+                일간
+              </S.DropdownItem>
+              <S.DropdownItem onClick={() => handleViewChange("week")}>
+                주간
+              </S.DropdownItem>
+              <S.DropdownItem onClick={() => handleViewChange("month")}>
+                월간
+              </S.DropdownItem>
+            </S.DropdownMenu>
+          )}
+        </S.DailyButtonWrapper>
+      </S.DailyButtonContainer>
+
       {/* 캘린더 탭 */}
       <S.TabContainer>
         {calendars.map(({ id, calendarTitle }) => (
@@ -145,57 +175,7 @@ const CalendarHeader = () => {
           </NavLink>
         )}
       </S.TabContainer>
-
-      {/* 뷰 변경 드롭다운 */}
-      <S.DailyButtonWrapper ref={dropdownRef}>
-        <S.DailyViewButton onClick={() => setShowDropdown((prev) => !prev)}>
-          {viewText}
-        </S.DailyViewButton>
-        {showDropdown && (
-          <S.DropdownMenu>
-            <S.DropdownItem onClick={() => handleViewChange("")}>
-              일간
-            </S.DropdownItem>
-            <S.DropdownItem onClick={() => handleViewChange("week")}>
-              주간
-            </S.DropdownItem>
-            <S.DropdownItem onClick={() => handleViewChange("month")}>
-              월간
-            </S.DropdownItem>
-          </S.DropdownMenu>
-        )}
-      </S.DailyButtonWrapper>
-
-      {/* 현재 위치 주소 + 날씨 출력 */}
-      {(locationAddress || weather) && (
-        <div
-          style={{
-            position: "absolute",
-            top: "100%",
-            left: 0,
-            paddingTop: "6px",
-            fontSize: "12px",
-            color: "#333",
-            display: "flex",
-            flexDirection: "column",
-            maxWidth: "300px",
-            gap: "4px",
-          }}
-        >
-          {locationAddress && <div>📍 {locationAddress}</div>}
-          {weather && (
-            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <img
-                src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
-                alt="날씨 아이콘"
-                style={{ width: "24px", height: "24px" }}
-              />
-              {weather.description} / {weather.temp.toFixed(1)}℃
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+    </S.Container>
   );
 };
 

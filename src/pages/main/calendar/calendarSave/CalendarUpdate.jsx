@@ -13,7 +13,7 @@ const CalendarUpdate = () => {
   const [calendar, setCalendar] = useState(null);
   const [availableMembers, setAvailableMembers] = useState([]); // 초대 가능
   const [currentMembers, setCurrentMembers] = useState([]); // 이미 참여 중
-  
+
   const getCalendar = async () => {
     try {
       // 캘린더 상세
@@ -29,7 +29,7 @@ const CalendarUpdate = () => {
       );
       const members = await memberResponse.json();
       setAvailableMembers(members);
-      console.log(members);
+      //console.log(members);
     } catch (error) {
       console.error("캘린더/멤버 정보 조회 실패", error);
     }
@@ -47,7 +47,7 @@ const CalendarUpdate = () => {
       );
       const data = await response.json();
       setCurrentMembers(data);
-      console.log(data);
+      //console.log(data);
     } catch (error) {
       console.error("캘린더 멤버 조회 실패", error);
     }
@@ -100,7 +100,7 @@ const CalendarUpdate = () => {
   const removeMember = async (memberIdToRemove) => {
     try {
       await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/${calendarId}/remove/${memberIdToRemove}`,
+        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/remove/members/${memberIdToRemove}/calendars/${calendarId}`,
         {
           method: "DELETE",
         }
@@ -108,6 +108,7 @@ const CalendarUpdate = () => {
 
       // 다시 멤버 리스트 갱신
       await getCalendarMembers();
+      await getCalendar();
 
       alert("멤버가 추방되었습니다.");
     } catch (error) {
@@ -150,7 +151,7 @@ const CalendarUpdate = () => {
   return (
     <CalendarForm
       initialName={calendar.calendarTitle}
-      calendarId ={calendarId}
+      calendarId={calendarId}
       initialInvited={calendar.invitedMembers || []}
       allMembers={availableMembers}
       showInviteSection={true}
