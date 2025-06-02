@@ -74,7 +74,7 @@ const RoutineShareDetail = () => {
     return res.json();
   };
 
- // 🔍 댓글 조건 유효성 검사 함수
+ // 댓글 조건 유효성 검사 함수
 const validateRoutineComment = (text) => {
   const hasKeyword = /루틴|routine/i.test(text);
   const trimmed = text.trim();
@@ -84,7 +84,7 @@ const validateRoutineComment = (text) => {
   return isLongEnough && containsKeyword && hasKeyword && isMeaningful;
 };
 
-// 💬 댓글 작성 처리
+// 댓글 작성 처리
 const handleCommentSubmit = async () => {
   const trimmed = commentText.trim();
   if (!trimmed) return;
