@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
-import { Outlet, useLocation, useOutletContext } from 'react-router-dom';
-import CalendarMonth from './CalendarMonth';
+import React, { useRef } from "react";
+import { Outlet, useLocation, useOutletContext } from "react-router-dom";
+import CalendarMonth from "./CalendarMonth";
 
 const CalendarMonthContainer = () => {
   const location = useLocation();
@@ -9,11 +9,13 @@ const CalendarMonthContainer = () => {
   const { selectedRange, setSelectedRange, handleCreateSchedule } =
     useOutletContext();
 
-  const isNested = location.pathname.includes("/schedule-list-view"); // 중첩 여부 판별
+  const isNested = ["/schedule-list-view", "/schedule-view"].some((path) =>
+    location.pathname.includes(path)
+  );
   return (
     <div style={{ display: "flex" }}>
       <CalendarMonth
-        isNested = {isNested}
+        isNested={isNested}
         calendarRef={calendarRef}
         selectedRange={selectedRange}
         onSelectRange={setSelectedRange}

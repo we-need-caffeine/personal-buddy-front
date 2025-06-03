@@ -4,6 +4,7 @@ import {
   fontSizeH8,
   fontWeightRegular,
   fontWeightLight,
+  fontSizeH6,
 } from "../../../../globals/common";
 
 const S = {};
@@ -15,19 +16,29 @@ S.Container = styled.div`
   justify-content: center;
   height: 100vh;
   text-align: center;
-  background-color: #f9f9f9;
+  background-color: #eeeeee;
   padding: 20px;
 `;
 
+S.ContentContainer = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+background-color: white;
+width: 560px;
+height: 170px;
+border-radius: 20px;
+gap: 20px;
+`;
+
 S.Title = styled.h2`
-  font-size: 28px;
-  margin-bottom: 16px;
-  font-weight: 700;
+  ${fontSizeH4}
+  ${fontWeightRegular}
 `;
 
 S.Description = styled.p`
-  font-size: 18px;
-  margin-bottom: 32px;
+  ${fontSizeH6}
 `;
 
 S.ButtonContainer = styled.div`
@@ -62,6 +73,13 @@ S.RejectButton = styled.button`
     background-color: #d32f2f;
   }
 `;
+
+S.BuddyLogo = styled.img`
+  transform: scale(0.7);
+
+`;
+
+
 
 S.Message = styled.div`
   display: flex;

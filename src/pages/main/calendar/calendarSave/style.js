@@ -126,7 +126,7 @@ S.DropdownName = styled.div`
 `;
 
 S.MemberImage = styled.img`
- width: 40px;
+  width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
@@ -137,10 +137,14 @@ S.InviteButton = styled.div`
   font-weight: 500;
 `;
 
-S.RemoveButton = styled.div`
-  color: #00c851;
+S.RemoveButton = styled.button`
+  color: #ff4d4f;
   font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
 `;
+
 S.MemberList = styled.div`
   width: 100%;
   height: 400px;
@@ -156,7 +160,7 @@ S.MemberListTitle = styled.div`
 `;
 
 S.MemberInfoContainer = styled.div`
-  display: flex ;
+  display: flex;
   align-items: center;
 `;
 
@@ -179,6 +183,7 @@ S.ButtonGroup = styled.div`
   display: flex;
   position: absolute;
   right: 0px;
+
   bottom: 37px;
   align-items: end;
   justify-content: space-between;
@@ -199,17 +204,27 @@ S.ActionButton = styled.button`
   cursor: pointer;
 
   background-color: ${({ $type, disabled }) =>
-    disabled ? "#d9d9d9" : 
-    $type === "danger" ? "#ff4d4f" :
-    $type === "primary" ? "#01cd74" : "white"};
+    disabled
+      ? "#d9d9d9"
+      : $type === "danger"
+      ? "#ff4d4f"
+      : $type === "primary"
+      ? "#01cd74"
+      : "white"};
 
   color: ${({ $type, disabled }) =>
-    disabled ? "white" :
-    $type === "danger" || $type === "primary" ? "white" : "#bbbbbb"};
+    disabled
+      ? "white"
+      : $type === "danger" || $type === "primary"
+      ? "white"
+      : "#bbbbbb"};
 
   border: ${({ $type, disabled }) =>
-    disabled ? "none" :
-    $type === "default" || !$type ? "1px solid #bbbbbb" : "none"};
+    disabled
+      ? "none"
+      : $type === "default" || !$type
+      ? "1px solid #bbbbbb"
+      : "none"};
 
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 `;

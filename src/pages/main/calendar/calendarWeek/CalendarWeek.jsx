@@ -136,7 +136,7 @@ const CalendarWeek = ({
           timeZone="local"
           height="100%"
           headerToolbar={false}
-          nowIndicator
+          nowIndicator={false}
           allDaySlot={false}
           selectable
           selectMirror
