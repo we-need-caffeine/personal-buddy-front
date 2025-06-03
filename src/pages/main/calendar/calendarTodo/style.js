@@ -8,6 +8,7 @@ import {
 const S = {};
 
 S.Container = styled.div`
+
     display: flex;
     flex-direction: column;
     justify-content: center;

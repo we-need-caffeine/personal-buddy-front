@@ -1,11 +1,5 @@
 import styled from "styled-components";
-import {
-  fontSizeH4,
-  fontSizeH8,
-  fontWeightRegular,
-  fontWeightLight,
-} from "../../../../globals/common";
-
+import {} from "../../../../globals/common";
 
 const S = {};
 S.CustomEventTitle = styled.div`
@@ -18,8 +12,7 @@ S.CustomEventTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-` 
-; 
+`;
 
 S.CalendarWrapper = styled.div`
   width: ${({ isNested }) => (isNested ? "840px" : "1400px")};
@@ -28,10 +21,37 @@ S.CalendarWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
+  
   /* 좌측 시간 라벨 배경 */
   .fc-timegrid-slot-label {
     background-color: #eefff8;
     border: none;
+  }
+  .fc-daygrid-day {
+    height: 120px; /* 원하는 고정 높이로 설정 (px 값은 원하는 대로 조절) */
+  }
+.fc-more-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; /* 정사각형 */
+  height: 24px; /* 정사각형 */
+  background: white;
+  border-radius: 4px; /* 모서리 조금만 둥글게 (원하면 0으로 해도 됨) */
+  border: none; /* 테두리 제거 */
+  outline: none; /* 아웃라인 제거 */
+  color: #333;
+  font-weight: bold;
+  font-size: 13px;
+  text-decoration: none; /* 링크 기본 밑줄 제거 */
+  margin: 2px auto; /* 가운데 정렬 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12); /* 그림자 제거 */
+  cursor: pointer; /* 클릭 가능하게 (원하면 default 로 바꿔도 됨) */
+}
+  .fc-daygrid-day-frame {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   /* 가운데 시간표 배경 */
@@ -43,7 +63,6 @@ S.CalendarWrapper = styled.div`
 
   .fc-timegrid-slot-label {
     background-color: #ffffff;
-    
   }
 
   /* 요일 헤더 제거 */

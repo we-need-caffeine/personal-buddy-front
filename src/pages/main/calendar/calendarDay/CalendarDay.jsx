@@ -135,7 +135,7 @@ const CalendarDay = ({
           timeZone="local"
           height="100%"
           headerToolbar={false}
-          nowIndicator
+          nowIndicator={false}
           allDaySlot={false}
           selectable
           selectMirror
@@ -146,6 +146,7 @@ const CalendarDay = ({
             minute: "2-digit",
             hour12: false,
           }}
+          
           events={events}
           select={(info) => {
             const range = {
