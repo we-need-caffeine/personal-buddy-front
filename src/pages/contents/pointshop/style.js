@@ -180,6 +180,7 @@ S.SelectItemInfo = styled(SwiperSlideCore)`
   width: 80px !important;
   height: 60px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   
@@ -219,7 +220,7 @@ S.SelectItemCancelButton = styled.button`
 `;
 
 S.SelectItemCard = styled.div`
-    ${flexCenterColumn}
+    ${flexCenter}
     gap: 10px;
 `
 

@@ -43,6 +43,7 @@ const PointShopItemsAll = () => {
           itemId: item.itemId,
           memberId: member.id,
           itemName: item.itemName,
+          itemType: item.itemType,
           itemImgPath: item.itemImgPath,
           itemImgName: item.itemImgName,
           buyItemCount: (prev[item.itemId]?.buyItemCount || 0) + 1,
@@ -55,10 +56,15 @@ const PointShopItemsAll = () => {
   const handleItemCountDecrease = (e, item) => {
     e.stopPropagation();
     setSelectItems((prev) => {
-      if(((prev[item.itemId]?.buyItemCount || 0) - 1) <= 0){
-        return prev.filter(prevItem => prevItem.itemId !== item.itemId);
+
+      const currentCount = prev[item.itemId]?.buyItemCount || 0;
+      // 1 감소 시 0 이하면 삭제
+      if ((currentCount - 1) <= 0) {
+        const updated = { ...prev };
+        delete updated[item.itemId];  // 해당 itemId 제거
+        return updated;
       }
-      
+
       return {
         ...prev,
         [item.itemId]: {
@@ -66,6 +72,7 @@ const PointShopItemsAll = () => {
           itemId: item.itemId,
           memberId: member.id,
           itemName: item.itemName,
+          itemType: item.itemType,
           itemImgPath: item.itemImgPath,
           itemImgName: item.itemImgName,
           buyItemCount: (prev[item.itemId]?.buyItemCount || 0) - 1,
