@@ -93,7 +93,6 @@ const ChatRoomItem = ({i, item, memberId, toggleIsNewMessage}) => {
             onClick={(e) => {
               e.stopPropagation()
               hideChatRoom(memberId, item.chatRoomId)
-              toggleIsNewMessage()
             }}
           >
             채팅방 나가기
