@@ -13,9 +13,21 @@ const BoardPost = () => {
 
   const [commentText, setCommentText] = useState(''); // 댓글 입력값
   const [comments, setComments] = useState([]); // 댓글 목록
-  const [likeCount, setLikeCount] = useState(0); // 게시글 좋아요 수
+  const [likeCount, setLikeCount] = useState(); // 게시글 좋아요 수
   const [isLiked, setIsLiked] = useState(false); // 현재 사용자의 좋아요 여부
   const [likedCommentIds, setLikedCommentIds] = useState([]); // 댓글 좋아요
+
+  // 댓글 등록 확인용 모달
+  const [showCommentConfirm, setShowCommentConfirm] = useState(false);
+  const [showCommentCompleted, setShowCommentCompleted] = useState(false);
+
+  // 게시글 좋아요 모달
+  const [showPostLikeConfirm, setShowPostLikeConfirm] = useState(false);
+
+  // 댓글 좋아요 모달
+  const [showCommentLikeConfirm, setShowCommentLikeConfirm] = useState(false);
+  const [pendingCommentLikeId, setPendingCommentLikeId] = useState(null);
+
 
   // 댓글 페이지네이션
   const [currentPage, setCurrentPage] = useState(1);
@@ -360,7 +372,7 @@ const checkLiked = async () => {
       <S.Content>{post.boardContent}</S.Content>
 
       <S.LikeButton liked={isLiked} onClick={handlePostLike}>
-        <p>♥</p>{likeCount}
+        <p>♥</p> {likeCount} 
       </S.LikeButton>
 
       <S.CommentTitleBox>
@@ -418,7 +430,7 @@ const checkLiked = async () => {
                 liked = {likedCommentIds.includes(c.id)}
                 onClick={()=> handleCommentLike(c.id)}
               >
-                <span>♥</span> {c.boardCommentLikeCount}
+                <span>♥</span> {/* {c.boardCommentLikeCount} */}
               </S.CommentLikeButton>
             </S.LikeWrap>
           </S.CommentUser>
@@ -445,7 +457,7 @@ const checkLiked = async () => {
                   liked={likedCommentIds.includes(c.id)}
                   onClick={() => handleCommentLike(c.id)}>
                 <span>♥</span>
-                {c.boardCommentLikeCount}
+                {/* {c.boardCommentLikeCount} */}
                 </S.CommentLikeButton>
               </S.Right>
             </S.ProfileWrap>
