@@ -1,25 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import S from './style';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import FormatDate from '../../../utils/formatDate/FormatDate'
 import Pagination from '../../../hooks/pagenation/Pagination';
 import { useSelector } from 'react-redux';
 
 const MyPagePointLog = () => {
-  // 로그인된 유저정보
-  const {currentUser} = useSelector((state) => state.member)
   // 마이페이지 파람에서 id값을 가져오는 훅함수
   const { id } = useParams();
-  // 게스트북 오너 아이디를 저장
+  // 아이디 값을 저장
   const ownerId = id;
+  // 로그인된 유저정보
+  const {currentUser} = useSelector((state) => state.member)
+  // 로그인된 유저의 아이디
+  const memberId = currentUser.id;
   // 포인트 기록을 저장하는 변수
   const [pointLog, setPointLog] = useState([]);
   // 페이지네이션
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 7;
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = pointLog.slice(indexOfFirstItem, indexOfLastItem);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = pointLog.slice(indexOfFirstItem, indexOfLastItem);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // currentUser가 아직 undefined일 때 렌더 보호
+    if (!currentUser) return;
+    // 타입 통일 (둘 다 string으로)
+    if (String(ownerId) !== String(memberId)) {
+      navigate(`/main/mypage/${ownerId}`, { replace: true });
+    }
+  }, [memberId, navigate, ownerId, currentUser]);
 
   useEffect(() => {
     const getPointLog = async () => {
