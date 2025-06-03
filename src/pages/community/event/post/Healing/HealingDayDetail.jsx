@@ -23,6 +23,14 @@ const HealingDayDetail = () => {
   const paginatedComments = comments.slice((currentPage - 1) * 7, currentPage * 7);
 
   useEffect(() => {
+  const best = [...comments]
+    .sort((a, b) => b.boardCommentLikeCount - a.boardCommentLikeCount)
+    .slice(0, 3);
+  setBestComments(best);
+}, [comments]);
+
+
+  useEffect(() => {
     const fetchInitialData = async () => {
       try {
         const [detailRes, likeCheckRes, likeCountRes, joinCheckRes, commentRes ,bestRes] = await Promise.all([

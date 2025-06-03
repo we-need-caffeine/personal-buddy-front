@@ -413,6 +413,13 @@ const checkLiked = async () => {
               <S.LeftCommentWrapper>
                 <S.CommentDate>{FormatDate(c.boardCommentCreateDate).split(" ").join(" ")}</S.CommentDate>
               </S.LeftCommentWrapper>
+
+              <S.CommentLikeButton
+                liked = {likedCommentIds.includes(c.id)}
+                onClick={()=> handleCommentLike(c.id)}
+              >
+                <span>♥</span> {c.boardCommentLikeCount}
+              </S.CommentLikeButton>
             </S.LikeWrap>
           </S.CommentUser>
         </S.CommentTop>
@@ -435,7 +442,7 @@ const checkLiked = async () => {
               <S.Nickname>{c.memberNickName}</S.Nickname>
               <S.Right>
                 <S.CommentLikeButton
-                  // liked={likedCommentIds.includes(c.id)}
+                  liked={likedCommentIds.includes(c.id)}
                   onClick={() => handleCommentLike(c.id)}>
                 <span>♥</span>
                 {c.boardCommentLikeCount}

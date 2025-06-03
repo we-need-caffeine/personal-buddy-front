@@ -5,11 +5,12 @@ import { Autoplay, EffectCoverflow } from "swiper/modules";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 SwiperCore.use([Autoplay]);
 
 const EventBannerContainer = () => {
   const [banners, setBanners] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
   fetch(`${process.env.REACT_APP_BACKEND_URL}/events/api/current`)
@@ -59,12 +60,23 @@ const EventBannerContainer = () => {
           const eventType = getEventType(event.eventTitle);
             return (
             <SwiperSlide key={i}>
-              <Link to={`/main/community/event/post/${event.id}/${eventType}`}>
-                <S.BannerCard>
-                  <img src={encodeURI(imageUrl)} alt="이벤트 배너" />
+              {/* <Link to={`/main/community/event/post/${event.id}/${eventType}`}> */}
+                 <S.BannerCard
+                  onClick={() => {
+                    const eventType = getEventType(event.eventTitle);
 
+                    if (eventType === 'healing-day') {
+                      alert('진행중인 이벤트가 아닙니다');
+                      navigate('/main/community/event');
+                      return;
+                    }
+                    navigate(`/main/community/event/post/${event.id}/${eventType}`);
+
+                  }}
+                >
+                  <img src={encodeURI(imageUrl)} alt="이벤트 배너" />
                 </S.BannerCard>
-              </Link>
+              {/* </Link> */}
             </SwiperSlide>
           )})}
         </Swiper>

@@ -11,6 +11,7 @@ S.Container = styled.div`
   padding: 0 16px;
 `;
 
+
 S.ImageWrapper = styled.div`
   position: relative;
   margin-bottom: 24px;
@@ -92,39 +93,48 @@ S.Textarea = styled.textarea`
   font: inherit;
   resize: none;
   outline: none;
-  width: 100%;
+  width: calc(100% - 42px);
   height: 100px;
   padding: 20px;
   border-radius: 12px;
-  border: 1px solid ${({ theme }) => theme.PALLETE.gray.gray4};
-  ${blackColor};
-  ${fontSizeH7};
+  border: 1px solid #ccc;
+  color: #666;
+  font-weight: 300;
+  font-size: 16px;
 `;
 
 S.InputBottom = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 15px;
+  gap: 8px;
   ${fontSizeH7};
   ${gray4Color};
+  margin-bottom: 58px;
 `;
 
 S.CharCount = styled.div`
   color: ${({ theme }) => theme.PALLETE.black};
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  padding-right: 4px;
 `;
 
 S.SubmitButton = styled.button`
+  text-align: center;
   border: none;
   border-radius: 50px;
-  padding: 10px 20px;
+  width: 120px;
+  height: 44px;
   ${whiteColor};
   ${fontSizeH7};
   ${fontWeightBold};
-  background-color: ${({ active, theme }) =>
-    active ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
+  background-color: ${({ active, theme }) => active ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
   cursor: ${({ active }) => (active ? 'pointer' : 'not-allowed')};
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 // BEST 댓글
@@ -159,9 +169,10 @@ S.CommentList = styled.div`
   border-top: 1px solid #ccc;
 `;
 
+
 S.CommentItem = styled.div`
   background-color: white;
-  padding: 20px;
+  padding: 40px 20px;
   border-bottom: 1px solid #eee;
   display: flex;
   flex-direction: column;
@@ -172,12 +183,16 @@ S.CommentTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 12px;
 `;
+
 
 S.CommentUser = styled.div`
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  font-size: 14px;
+  font-weight: bold;
+  width: 100%;
 `;
 
 S.ProfileImg = styled.img`
@@ -187,34 +202,48 @@ S.ProfileImg = styled.img`
 `;
 
 S.Nickname = styled.span`
-  ${fontSizeH8};
-  font-weight: bold;
-  ${blackColor};
+  font-size: 18px;
+  flex-shrink: 0;
+  font-weight: 500;
+  color: #222;
+  margin-left: 8px;
 `;
 
+S.ProfileWrap = styled.div`
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    margin: 0 0 12px 0;
+`
+
 S.CommentDate = styled.span`
-  font-size: 12px;
-  color: ${({ theme }) => theme.PALLETE.gray.gray4};
+  font-size: 16px;
+  font-weight: 300;
+  color: #999;
 `;
 
 S.CommentContents = styled.p`
-  font-size: 15px;
+  font-size: 18px;
+  font-weight: 300;
   color: ${({ theme }) => theme.PALLETE.black};
   white-space: pre-wrap;
   word-break: break-word;
+  margin: 5px 0 30px 0;
 `;
 
 S.CommentLikeButton = styled.button`
   ${flexCenter};
-  padding: 6px 12px;
+  padding: 6px 16px;
   border: none;
   border-radius: 50px;
   font-size: 14px;
   font-weight: bold;
   color: white;
   cursor: pointer;
-  background-color: ${({ liked, theme }) =>
-    liked ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
+  background-color: ${({ liked, theme }) => liked ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
+  & span {
+    margin: 0 4px 0 0;
+  }
   &:hover {
     background-color: ${({ theme }) => theme.PALLETE.primary.subBlue};
   }
@@ -282,7 +311,6 @@ S.CommentLikeCount = styled.span`
   gap: 4px;
   font-size: 13px;
   color: ${({ theme }) => theme.PALLETE.gray.gray4};
-
   img {
     width: 14px;
     height: 14px;
