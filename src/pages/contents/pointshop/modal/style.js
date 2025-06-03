@@ -117,6 +117,33 @@ S.GridCell = styled.li`
     border-right: ${isHeader ? "none" : "1px dashed #aaa"};
     border-bottom: ${isHeader ? "none" : "1px dashed #aaa"};
   `}
+  ${fontWeightLight}
+  ${fontSizeH8}
+`;
+
+S.CheckBox = styled.input.attrs({ type: 'checkbox' })`
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid black;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+
+  &:checked {
+    background-color: white;
+  }
+
+  &:checked::after {
+    content: '✔';
+    ${subGreenColor}
+    font-size: 12px;
+    font-weight: bold;
+    position: absolute;
+    top: -2px;
+    left: 2px;
+  }
 `;
 
 S.CartInfoContainer = styled.div`
