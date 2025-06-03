@@ -22,17 +22,18 @@ S.HotWrapper = styled.div`
 
 // 작은 제목 (TOP10)
 S.SubTitle = styled.div`
-  ${fontSizeH8}
-  ${fontWeightRegular}
-  color: #555;
+  font-size: 18px;
+  font-weight: 300;
+  color: #666;
   padding-bottom: 3px;
+  margin: 0 0 6px 0;
 `;
 
 // 메인 제목 (버디들의 HOT)
 S.MainTitle = styled.div`
-  ${fontSizeH4}
-  ${fontWeightBold}
-  color: black;
+  font-size: 30px;
+  font-weight: 700;
+  color: #222;
   margin-top: 1px;
   text-align: left;
   padding-bottom: 55px;
@@ -111,6 +112,7 @@ S.HotImageBox = styled.div`
   display: inline-block;
   background: #e8eaed;
   border-radius: 20px;
+  margin: 0 0 25px 0;
 
   .img {
     width: 320px;
@@ -163,70 +165,83 @@ S.NumberBox = styled.div.attrs(() => ({
 
 // ---------- 게시글 정보 ---------- 
 // 해시태그 
+
+S.HotTagWrap = styled.div`
+  display: flex;
+  margin: 0 0 20px 0;
+`;
+
 S.HotTag = styled.div`
   ${flexCenter}
-  width: 86px;
-  height: 24px;
+  flex : 0 0 auto;
   font-size: 14px;
-  color: #616161;
-  background: #f6f7f8;
-  border-radius: 5px;
+  color: #666;
+  border: 1px solid #ccc;
+  border-radius: 30px;
   text-align: center;
-  margin-top: 15px;
-  padding-top: 4px;
+  padding: 10px 16px 8px 16px;
+  font-weight: 300;
+  letter-spacing: 1px;
 `;
 
 // 게시글 제목
 S.HotTitle = styled.div`
-  font-size: 18px;
-  font-weight: 700;
-  color: #424242;
-  padding: 14px 0 18px 0;
+  font-size: 24px;
+  margin: 0 0 12px 0;
+  font-weight: 500;
+  color: #222;
 `;
 
 // 유저 정보(프로필 이미지 + 닉네임)
 S.HotUserBox = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
-  height: 30px;
-  margin-bottom: 10px;
+  gap: 8px;
+  margin-bottom: 50px;
 `;
 
 // 프로필 이미지
 S.UserProfile = styled.img`
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   object-fit: cover;
 `;
 
 // 닉네임(텍스트)
 S.UserNickname = styled.span`
-  font-size: 14px;
-  font-weight: 500;
-  color: #808080;
+  font-size: 18px;
+  font-weight: 400;
+  color : #666;
 `;
 
 // 게시일
 S.HotDate = styled.div`
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 300;
-  color: #808080;
-  padding-bottom: 5px;
+  margin: 0 0 8px 0;
+  color: #999;
 `;
+
+S.HotMetaBoxWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
 
 // 좋아요, 조회수, 댓글 수 표시 영역
 S.HotMetaBox = styled.div`
-  font-size: 12px;
-  font-weight: 300;
-  color: #808080;
+  font-size: 16px;
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 12px 0;
+  color: #666;
+  font-weight: 300;
 
   .icon {
-    width: 10px;
-    height: 10px;
+    width: 14px;
+    height: 14px;
     margin-right: 3px;
   }
 `;

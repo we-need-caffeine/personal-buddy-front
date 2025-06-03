@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import S from './style';
 import { NavLink, useParams } from 'react-router-dom';
 import ConfirmModal from '../../layout/modal/ConfirmModal';
@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import GuestItem from './GuestItem';
 import ConfirmDeleteModal from '../../layout/modal/ConfirmDeleteModal';
 import Pagination from '../../../hooks/pagenation/Pagination';
+import Sticker from '../../contents/mytree/display/Sticker';
 
 const MyPageMain = () => {
     // 로그인된 유저정보
@@ -28,7 +29,44 @@ const MyPageMain = () => {
     const [currentPage, setCurrentPage] = useState(1);
     // 페이지당 보여줄 아이템의 갯수
     const itemsPerPage = 4;
+    // 나의 나무
+    const backgroundRef = useRef(null);
+    const [memberCustomizingList, setMemberCustomizingList] = useState([]);
+    const [memberAppliedItemBackground, setMemberAppliedItemBackground] = useState({});
+    const [memberAppliedItemTree, setMemberAppliedItemTree] = useState({});
+    const [memberAppliedItemsSticker, setMemberAppliedItemSticker] = useState([]);
 
+    useEffect(() => {
+        const fetchAppliedTreeItems = async () => {
+            try {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/my-tree/api/tree/list/applied/${memberId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+            });
+            const data = await response.json();
+
+            // 초기화
+            setMemberAppliedItemSticker([]); // 초기화 필수!
+
+            data.memberAppliedTrees.forEach(item => {
+                switch (item.itemType) {
+                case "스티커":
+                    setMemberAppliedItemSticker(prev => [...prev, item]);
+                    break;
+                case "배경":
+                    setMemberAppliedItemBackground(item);
+                    break;
+                case "나무":
+                    setMemberAppliedItemTree(item);
+                    break;
+                }
+            });
+            } catch (err) {
+            console.error("트리 아이템 불러오기 실패:", err);
+            }
+        };
+        fetchAppliedTreeItems();
+    }, [memberId]);
 
     // 컨펌 모달 상태를 변경하는 함수
     const handleConfrmModal = (state) => {
@@ -127,25 +165,50 @@ const MyPageMain = () => {
                 </S.TitleContainer>
                 {/* 트리 영역 */}
                 <S.TreeContainer>
-                    <img src='/assets/images/mypage/treeBackground.png' alt='임시 나무배경'/>
+                    <S.MyTreeBackGround
+                        url={
+                            memberAppliedItemBackground && memberAppliedItemBackground.itemImgPath && memberAppliedItemBackground.itemImgName ? 
+                            `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${memberAppliedItemBackground.itemImgPath}&fileName=${memberAppliedItemBackground.itemImgName}`
+                            :
+                            `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=images/tree/background&fileName=default-background.png`
+                            } 
+                        ref={backgroundRef}
+                    >
+                        {memberAppliedItemsSticker.map((sticker) => (
+                            <Sticker
+                                key={sticker.treeCustomizingId} sticker={sticker}
+                                memberAppliedItemsSticker={memberAppliedItemsSticker}
+                                setMemberAppliedItemSticker={setMemberAppliedItemSticker}
+                                memberCustomizingList={memberCustomizingList}
+                                setMemberCustomizingList={setMemberCustomizingList}
+                                backgroundRef={backgroundRef}
+                            />
+                        ))}
+                        <S.MyTreeItemTreeIcon 
+                            url={ 
+                                memberAppliedItemTree && memberAppliedItemTree.itemImgPath && memberAppliedItemTree.itemImgName  ? 
+                                `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${memberAppliedItemTree.itemImgPath}&fileName=${memberAppliedItemTree.itemImgName}`
+                                :
+                                `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=images/tree/tree&fileName=default.png`
+                            }
+                        />
+                    </S.MyTreeBackGround>
                 </S.TreeContainer>
                 {/* 방명록 타이틀 */}
                 <S.GuestBookTitleContainer>
                     <S.GuestBookTitle>
                         <span>방명록</span>
                     </S.GuestBookTitle>
+                        <span>|</span>
                     <S.GuestBookWriteCount>
                         <span>{guestBookCount}</span>
                     </S.GuestBookWriteCount>
                 </S.GuestBookTitleContainer>
                 {/* 방명록 인풋 영역 */}
                 <S.GuestBookInputContainer>
-                    <S.GuestBookInputTitle>
-                        <span>방명록을 남겨보세요, 바르고 고운말을 사용합시다.</span>
-                    </S.GuestBookInputTitle>
                     <S.GuestBookInput
                         maxLength={500} 
-                        placeholder='방명록을 작성해주세요.'
+                        placeholder='방명록을 남겨보세요, 바르고 고운말을 사용합시다.'
                         onChange={handleTextareaChange}
                         value={guestBookText}
                     >
@@ -187,6 +250,8 @@ const MyPageMain = () => {
                     message="방명록을 등록 하시겠습니까?"
                     onConfirm={handleRegister}
                     onCancel={() => handleConfrmModal(false)}
+                    confirmBtnMsg="등록"
+                    cancelBtnMsg="취소"
                 />
                 {/* 삭제 컨펌 모달 */}
                 <ConfirmDeleteModal

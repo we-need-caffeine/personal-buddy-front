@@ -37,6 +37,11 @@ S.TabText = styled.div`
   width: 50%;
   height: 100%;
   z-index: 1;
+  font-weight: 600;
+
+  & .active {
+    color: #222;
+  }
 
   a {
     font-size: 20px;

@@ -170,14 +170,6 @@ const MyPageProfileEdit = () => {
                   e.target.src = "/assets/images/header/default-member-img.png";
                 }}
               />
-              <input
-                type="file"
-                id="imageInput"
-                accept="image/*"
-                {...register('newMemberImageInput')}
-                onChange={handleImageChange}
-                style={{ display: 'none' }}
-              />
             </S.MemberProfile>
             <S.BottomContainer>
               <S.InputTextContainer>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { blackColor, fontSizeH6, fontSizeH8, fontSizeH9, fontWeightBold, fontWeightLight, fontWeightMedium, fontWeightRegular, fontWeightThin, gray5Color, gray6Color, mainGreenColor, pointRedColor } from "../../../globals/common";
+import { blackColor, fontSizeH6, fontSizeH8, fontWeightBold, fontWeightLight, fontWeightRegular, gray5Color, gray6Color, mainGreenColor, pointRedColor } from "../../../globals/common";
 
 const S = {};
 
@@ -90,7 +90,9 @@ S.ListRightContainer = styled.div`
 S.PointAmount = styled.h2`
   ${fontWeightRegular}
   ${fontSizeH8}
-  color: ${({ $isPositive }) => ($isPositive ? 'orangered' : 'dodgerblue')};
+  color: ${({ $isPositive, theme }) => (
+    $isPositive ? theme.PALLETE.pointRed : theme.PALLETE.primary.subBlue
+  )};
   width: 100px;
   text-align: left;
 `;

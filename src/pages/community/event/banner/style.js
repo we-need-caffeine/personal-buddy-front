@@ -15,20 +15,21 @@ S.EventWrapper = styled.div`
 
 // 소제목 (예: BUDDYGROUND)
 S.SubTitle = styled.div`
-  ${fontSizeH8}
-  ${fontWeightRegular}
-  color: #555;
-  padding-bottom: 3px;
+    font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    padding-bottom: 3px;
+    margin: 0 0 6px 0;
 `;
 
 // 메인 타이틀 (예: 진행중인 이벤트)
 S.MainTitle = styled.div`
-  ${fontSizeH4}
-  ${fontWeightBold}
-  color: black;
+  font-size: 30px;
+  font-weight: 700;
+  color: #222;
   margin-top: 1px;
   text-align: left;
-  padding-bottom: 30px;
+  padding-bottom: 55px;
 `;
 
 // Swiper 전체 wrapper

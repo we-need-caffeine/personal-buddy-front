@@ -21,15 +21,20 @@ S.Wrapper = styled.div`
 `;
 
 S.SubLabel = styled.p`
-  font-size: 14px;
-  font-weight: 400;
-  margin-bottom: 4px;
+    font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    padding-bottom: 3px;
+    margin: 0 0 6px 0;
 `;
 
 S.SubTitle = styled.h4`
-  font-size: 24px;
-  font-weight: bold;
-  margin: 0 0 60px;
+  font-size: 30px;
+  font-weight: 700;
+  color: #222;
+  margin-top: 1px;
+  text-align: left;
+  padding-bottom: 55px;
 `;
 
 S.List = styled.ul`
@@ -53,14 +58,14 @@ S.Header = styled.div`
 
 S.Q = styled.span`
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 700;
   color: #01cd74;
 `;
 
 S.Text = styled.span`
-  font-size: 18px;
-  font-weight: 500;
-  flex-grow: 1;
+  font-size: 24px;
+  font-weight: 300;
+  color: #222;
 `;
 
 S.Icon = styled.img`
@@ -71,14 +76,16 @@ S.Icon = styled.img`
 `;
 
 S.Answer = styled.div`
-  padding: 16px 12px;
+  padding: 16px 12px 40px 12px;
   font-size: 14px;
   ${fontSizeH8};
   ${fontWeightThin};
   line-height: 1.6;
   border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
   white-space: pre-line;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.7;
 `;
 
 export default S;

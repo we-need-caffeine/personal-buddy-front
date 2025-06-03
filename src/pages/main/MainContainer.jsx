@@ -8,6 +8,7 @@
 
 import React, { useContext, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import Banner from "../layout/banner/Banner";
 import { useSelector } from "react-redux";
 import { CalendarContext } from "../../context/CalendarContext";
 
@@ -81,7 +82,9 @@ const MainContainer = () => {
   // 자식 라우트 렌더링
   return (
     <div>
-      <Outlet />
+      
+        <Outlet />
+  
     </div>
   );
 };

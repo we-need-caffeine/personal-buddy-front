@@ -63,16 +63,19 @@ const BoardPostListContainer = ({
     
     <S.BoardHeader>
       <S.SearchArea>
-        <S.SearchInput type="text" placeholder="검색어를 입력해주세요." 
-          onChange={(e) => {
-            setSearchKeyword(e.target.value)}
-          }
-          onKeyDown={(e) => {
-            if(e.key === 'Enter'){
-              setIsUpdate(!isUpdate)
+        <S.SearchPositionWrap>
+          <S.SearchInput type="text" placeholder="검색어를 입력해주세요." 
+            onChange={(e) => {
+              setSearchKeyword(e.target.value)}
             }
-          }}
-        />
+            onKeyDown={(e) => {
+              if(e.key === 'Enter'){
+                setIsUpdate(!isUpdate)
+              }
+            }}
+          />
+          <img src="/assets/images/follow/search-icon.png" className="icon" alt="like" />
+        </S.SearchPositionWrap>
         <S.TagArea>
           <S.TagButton onClick={handleHashtag} $active={activeTag === "전체일정"}>#전체 일정</S.TagButton>
           <S.TagButton onClick={handleHashtag} $active={activeTag === "관심일정"}>#관심 일정</S.TagButton>
@@ -110,7 +113,12 @@ const BoardPostListContainer = ({
                 }
                 alt="thumbnail"
               />
-              <S.Tag>{boardHashtag}</S.Tag>
+
+              {/* 해시태그 */}
+              <S.TagWrap>
+                <S.Tag>{boardHashtag}</S.Tag>
+              </S.TagWrap>
+
               <S.Title>{boardTitle}</S.Title>
               <S.UserInfo>
                 <S.ProfileImg 
@@ -135,21 +143,23 @@ const BoardPostListContainer = ({
                 />
                 <S.Nickname>{memberNickname}</S.Nickname>
               </S.UserInfo>
-              <S.Date>{FormatDate(boardContentCreateDate)}</S.Date>
-              <S.MetaInfo>
-                <span>
-                  <img src="/assets/images/board/icon/like-icon.png" className="icon" alt="like" />
-                  {boardLikeCount}
-                </span>
-                <span>
-                  <img src="/assets/images/board/icon/view-icon.png" className="icon" alt="view" />
-                  {boardContentViews}
-                </span>
-                <span>
-                  <img src="/assets/images/board/icon/chat-icon.png" className="icon" alt="chat" />
-                  {boardCommentCount}
-                </span>
-              </S.MetaInfo>
+              <S.MetaBoxWrap>
+                <S.MetaInfo>
+                  <span>
+                    <img src="/assets/images/board/icon/like-icon.png" className="icon" alt="like" />
+                    {boardLikeCount}
+                  </span>
+                  <span>
+                    <img src="/assets/images/board/icon/view-icon.png" className="icon" alt="view" />
+                    {boardContentViews}
+                  </span>
+                  <span>
+                    <img src="/assets/images/board/icon/chat-icon.png" className="icon" alt="chat" />
+                    {boardCommentCount}
+                  </span>
+                </S.MetaInfo>
+                <S.Date>{FormatDate(boardContentCreateDate).split(" ")[0].replaceAll(".", "-")}</S.Date>
+              </S.MetaBoxWrap>
             </S.PostCard>
           </Link>
         ))

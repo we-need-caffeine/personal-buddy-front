@@ -11,7 +11,7 @@ S.TitleContainer = styled.div`
     flex-direction: column;
     gap: 10px;
     width: 100%;
-    padding-bottom: 20px;
+    padding-bottom: 40px;
     border-bottom: 1px solid ${({ theme }) => theme.PALLETE.black};
     ${fontSizeH8}
     ${fontWeightLight}
@@ -20,45 +20,97 @@ S.TitleContainer = styled.div`
 S.TitleTopContainer = styled.div`
     display: flex;
     justify-content: left;
+
+    & span {
+        font-size: 18px;
+        font-weight: 300;
+        color: #666;
+        padding-bottom: 3px;
+        margin: 0 0 6px 0;
+    }
 `
 
 S.TitleBottomContainer = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: end;
     ${fontSizeH6}
     ${blackColor}
     ${fontWeightRegular}
-`
 
-S.TitleTopLinkText = styled.div`
-    ${fontWeightRegular}
-    ${gray6Color}
-    ${fontSizeH8}
-    &:hover {
-        ${mainGreenColor}
+    & > span {
+        font-size: 30px;
+        font-weight: 700;
+        color: #222;
+        margin-top: 1px;
+        text-align: left;
     }
 `
 
+S.TitleTopLinkText = styled.div`
+    &:hover {
+        ${mainGreenColor}
+    }
+    font-size: 16px;
+    font-weight: 300;
+    color: #666;
+    padding-bottom: 3px;
+`
+
 S.TreeContainer = styled.div`
-    width: 100px;
+    width: 100%;
     height: 600px;
     margin-top: 35px;
 `
 
+S.MyTreeBackGround = styled.div`
+    pointer-events: none;
+    position: relative;
+    width: 1160px;
+    height: 600px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    background-image: url(${({url}) => url});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1;
+`;
+
+S.MyTreeItemTreeIcon = styled.div`
+    position: absolute;
+    width: 250px;
+    height: 300px;
+    bottom: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-image: url(${({url}) => url});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 999;
+    box-sizing: border-box;
+`;
+
 S.GuestBookTitleContainer = styled.div`
     display: flex;
-    justify-content: left;
-    margin-top: 80px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid ${({ theme }) => theme.PALLETE.black};
+    align-items: center;
+    margin : 80px 0 15px 0;
     ${fontWeightBold}
 `
 
 S.GuestBookTitle = styled.div`
     padding-right: 10px;
-    border-right: 2px solid ${({ theme }) => theme.PALLETE.black};
     ${blackColor}
+
+
+    & span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 18px;
+        font-weight: 500;
+    }
 `
 
 S.GuestBookWriteCount = styled.div`
@@ -84,8 +136,11 @@ S.GuestBookInput = styled.textarea`
     height: 80px;
     padding: 20px;
     border-radius: 20px;
-    ${blackColor}
     ${fontSizeH7}
+    border: 1px solid #ccc;
+    color: #666;
+    font-weight: 300;
+    font-size: 16px;
 `
 S.GuestBookInputBottomContainer = styled.div`
     display: flex;
@@ -101,11 +156,12 @@ S.GuestBookInputButton = styled.button`
     text-align: center;
     border: none;
     border-radius: 50px;
-    width: 79px;
-    height: 43px;
+    width: 120px;
+    height: 44px;
     margin-left: 10px;
     ${whiteColor}
-    ${fontSizeH7}
+    font-weight: 500;
+    font-size: 16px;
     background-color: ${({ $isActive, theme }) => 
         $isActive ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3};
         

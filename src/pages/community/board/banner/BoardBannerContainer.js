@@ -72,8 +72,10 @@ const BoardBannerContainer = ({ hot }) => {
                   </S.HotImageBox>
 
                   {/* 해시태그 */}
-                  <S.HotTag>{post.boardHashtag}</S.HotTag>
-
+                  <S.HotTagWrap>
+                    <S.HotTag>{post.boardHashtag}</S.HotTag>
+                  </S.HotTagWrap>
+                  
                   {/* 제목 */}
                   <S.HotTitle>{post.boardTitle}</S.HotTitle>
 
@@ -93,25 +95,26 @@ const BoardBannerContainer = ({ hot }) => {
                     <S.UserNickname>{post.memberNickname}</S.UserNickname>
                   </S.HotUserBox>
 
-                  {/* 게시일 */}
-                  <S.HotDate>{FormatDate(post.boardContentCreateDate)}</S.HotDate>
-
-                  {/* 좋아요 / 조회수 / 댓글 */}
-                  <S.HotMetaBox>
-                    <span>
-                      <img src="/assets/images/board/icon/like-icon.png" className="icon" alt="like" />
-                      {post.boardLikeCount}
-                    </span>
-                    <span>
-                      <img src="/assets/images/board/icon/view-icon.png" className="icon" alt="view" />
-                      {post.boardContentViews}
-                    </span>
-                    <span>
-                      <img src="/assets/images/board/icon/chat-icon.png" className="icon" alt="chat" />
-                      {post.boardCommentCount}
-                    </span>
-                  </S.HotMetaBox>
                 </Link>
+                  <S.HotMetaBoxWrap>
+                    {/* 좋아요 / 조회수 / 댓글 */}
+                    <S.HotMetaBox>
+                      <span>
+                        <img src="/assets/images/board/icon/like-icon.png" className="icon" alt="like" />
+                        {post.boardLikeCount}
+                      </span>
+                      <span>
+                        <img src="/assets/images/board/icon/view-icon.png" className="icon" alt="view" />
+                        {post.boardContentViews}
+                      </span>
+                      <span>
+                        <img src="/assets/images/board/icon/chat-icon.png" className="icon" alt="chat" />
+                        {post.boardCommentCount}
+                      </span>
+                    </S.HotMetaBox>
+                    {/* 게시일 */}
+                    <S.HotDate>{FormatDate(post.boardContentCreateDate).split(" ")[0].replaceAll(".", "-")}</S.HotDate>
+                  </S.HotMetaBoxWrap>
               </S.HotContent>
             ))}
           </S.HotSlider>

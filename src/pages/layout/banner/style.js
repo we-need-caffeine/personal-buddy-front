@@ -39,9 +39,11 @@ S.SliderImage = styled.div`
 `
 
 S.bannerTitle = styled.div`
-    font-size: 17px;
-    ${fontWeightRegular}
-    margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 300;
+  color: white;
+  padding-bottom: 3px;
+  margin: 0 0 6px 0;
 `
 
 S.DotsContainer = styled.div`
@@ -66,30 +68,44 @@ S.Dot = styled.span`
 S.Banner1Text = styled.div`
     margin-top: 30px;
     position: absolute;
-    top: 40%;
+    top: 45%;
     left: 10%;
     color: white;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 1.2;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-top: 1px;
+    line-height: 1.4;
+    text-align: left;
+    padding-bottom: 55px;
 `;
 
 S.Banner2Text = styled.div`
-    position: absolute;
     margin-top: 30px;
-    top: 40%;
+    position: absolute;
+    top: 45%;
     left: 10%;
     color: white;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-top: 1px;
+    line-height: 1.4;
+    text-align: left;
+    padding-bottom: 55px;
 `
 S.Banner3Text = styled.div`
+     margin-top: 30px;
     position: absolute;
-    margin-top: 30px;
-    top: 40%;
+    top: 45%;
     left: 10%;
     color: white;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-top: 1px;
+    line-height: 1.4;
+    text-align: left;
+    padding-bottom: 55px;
 `
 export default S;
