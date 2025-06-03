@@ -10,17 +10,17 @@ const CalendarContext = createContext({
 // 제공하는 값
 const CalendarProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
   const [colors, setColors] = useState([]);
   const [calendars, setCalendars] = useState([]);
-  const [isUpdate, setIsUpdate] = useState(false);
   const [calendarIndex, setCalendarIndex] = useState(null);
   const memberId = useSelector((state) => state.member.currentUser.id);
   const [selectedCalendarId, setSelectedCalendarId] = useState(null);
   const [invites, setInvites] = useState([]);
-
   const [lastApprovedCalendarId, setLastApprovedCalendarId] = useState(null);
   const [lastApprovedMemberId, setLastApprovedMemberId] = useState(null);
 
+  // ---- 서버에서 초대 목록 불러오기 ----
   const getInvitesAll = async () => {
     try {
       const response = await fetch(
@@ -29,19 +29,14 @@ const CalendarProvider = ({ children }) => {
 
       const inviteList = await response.json();
       setInvites(inviteList);
-      return inviteList; 
+      return inviteList;
     } catch (error) {
       console.error("초대 목록 조회 실패", error);
-      return []; 
+      return [];
     }
   };
 
-  useEffect(() => {
-    if (memberId) {
-      getInvitesAll();
-    }
-  }, [memberId]);
-
+  // ---- 서버에서 전체 캘린더 목록 불러오기 ----
   const getCalendarsAll = async () => {
     const response = await fetch(
       `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/calendars`,
@@ -54,15 +49,6 @@ const CalendarProvider = ({ children }) => {
       }
     );
     const datas = await response.json();
-    console.log(datas);
-    const allTodos = [];
-
-    datas.calendars.forEach((calendar) => {
-      calendar.todoLists.forEach((todo) => {
-        todo.calendarId = calendar.id;
-      });
-      allTodos.push(calendar.todoLists);
-    });
 
     const { calendars } = await datas;
     setCalendars(calendars);
@@ -80,9 +66,15 @@ const CalendarProvider = ({ children }) => {
     }
   };
 
+  // 로그인 멤버 변경 시 초대 목록 새로고침
   useEffect(() => {
-    getCalendarsAll();
+    if (memberId) {
+      getInvitesAll();
+      getCalendarsAll();
+    }
   }, [memberId]);
+
+  // ---- 일정 색상 목록 불러오기 ----
 
   useEffect(() => {
     const getColors = async () => {
@@ -121,6 +113,17 @@ const CalendarProvider = ({ children }) => {
     getCategories();
   }, [memberId]);
 
+  const getScheduleSubCategories = async (categoryId) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/schedules/api/categories/${categoryId}`
+      );
+      const datas = await response.json();
+      setSubCategories(datas);
+    } catch (error) {
+      console.error("소분류 조회 실패", error);
+    }
+  };
   const value = {
     state: {
       calendars,
@@ -136,6 +139,7 @@ const CalendarProvider = ({ children }) => {
       getInvitesAll,
       setLastApprovedCalendarId,
       setLastApprovedMemberId,
+      getScheduleSubCategories,
     },
   };
 

@@ -15,7 +15,7 @@ const ScheduleSave = () => {
   // 캘린더 컨텍스트
   const { selectedRange, setSelectedRange, calendarRef } = useOutletContext(); // Outlet에서 받은 선택 범위
   const { state, actions } = useContext(CalendarContext); // 전역 캘린더 상태 및 액션
-  const { calendars, colors, categories } = state;
+  const { calendars, colors } = state;
   const { getCalendarsAll } = actions; // 전체 캘린더 다시 불러오기
 
   //#region 상태변수
@@ -23,11 +23,19 @@ const ScheduleSave = () => {
   const [title, setTitle] = useState(""); // 일정 제목
   const [content, setContent] = useState(""); // 일정 내용
   const [color, setColor] = useState("#01CD74"); // 일정 색상
+  const [locationText, setLocationText] = useState(""); // 일정 장소
   const [mainCategory, setMainCategory] = useState(""); // 상위 카테고리
   const [subCategory, setSubCategory] = useState(""); // 하위 카테고리
   const [repeat, setRepeat] = useState(""); // 반복 주기
+  const [mainCategoryId, setMainCategoryId] = useState(null); // 상위 카테고리 id
+  const [mainCategoryTitle, setMainCategoryTitle] = useState(""); // 상위 카테고리 title
 
-  // 시간 및 날짜 (useScheduleForm 커스텀 훅)
+  const [subCategoryId, setSubCategoryId] = useState(null); // 하위 카테고리 id
+  const [subCategoryTitle, setSubCategoryTitle] = useState(""); // 하위 카테고리 title
+
+  const [categories, setCategories] = useState([]); // 상위 카테고리 목록
+  const [subCategories, setSubCategories] = useState([]); // 소분류 목록
+
   const {
     startDate,
     startTime,
@@ -71,16 +79,7 @@ const ScheduleSave = () => {
   const endTimeRef = useRef(null); // 종료 시간 드롭다운
 
   const mainCategories = categories;
-  const subCategories = {
-    운동: ["헬스", "수영", "등산"],
-    공부: ["게임", "음악", "여행"],
-    업무: ["회의", "보고", "개발"],
-    모임: ["가족모임", "친구모임", "직장모임"],
-    여가: ["영화감상", "드라마보기", "산책", "취미활동"],
-    식사: ["아침식사", "점심식사", "저녁식사", "간식", "외식"],
-    여행: ["국내여행", "해외여행", "당일치기", "캠핑"],
-    건강: ["병원방문", "건강검진", "약복용"],
-  };
+
   const repeatOptions = ["없음", "매일", "매주", "선택한 날짜의 요일"];
 
   // 캘린더에서 선택된 날짜 범위를 컴포넌트 내부의 날짜/시간 입력 필드 상태에 반영
@@ -143,9 +142,12 @@ const ScheduleSave = () => {
       }
     });
 
-    setCalendarMembers(members);
+    // 중복 제거 (id 기준으로 고유화)
+    const uniqueMembers = Array.from(
+      new Map(members.map((m) => [m.id, m])).values()
+    );
+    setCalendarMembers(uniqueMembers);
   }, [calendarId, calendars]);
-
   //#region 일정 등록
   const saveSchedule = async () => {
     const payload = {
@@ -156,7 +158,9 @@ const ScheduleSave = () => {
       scheduleEndDate: `${endDate}T${endTime}:00+09:00`,
       scheduleTitle: title,
       scheduleContent: content,
-      scheduleCategory: mainCategory || null,
+      scheduleLocation: locationText,
+      scheduleCategoryId: mainCategoryId || null,
+      scheduleSubCategoryId: subCategoryId || null,
       scheduleRepeat: repeat === "없음" ? 0 : 1,
       memberIds: selectedMembers.map((member) => member.id),
     };
@@ -184,6 +188,38 @@ const ScheduleSave = () => {
     }
   };
   //#endregion
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/schedules/api/categories`
+        );
+        const datas = await response.json();
+        setCategories(datas); // [{ id, scheduleCategoryTitle }]
+      } catch (error) {
+        console.error("카테고리 조회 실패", error);
+      }
+    };
+    getCategories();
+  }, [memberId]);
+
+  useEffect(() => {
+    const getSubCategories = async () => {
+      if (!mainCategoryId) return;
+
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/schedules/api/categories/${mainCategoryId}`
+        );
+        const datas = await response.json();
+        
+        setSubCategories(datas);
+      } catch (error) {
+        console.error("소분류 조회 실패", error);
+      }
+    };
+    getSubCategories();
+  }, [mainCategoryId]);
 
   // DB에서 받은 색 코드 이름으로 매핑
   const getColorName = (code) => {
@@ -271,7 +307,6 @@ const ScheduleSave = () => {
     const handleClickOutside = (e) => {
       if (colorRef.current && !colorRef.current.contains(e.target)) {
         setColorDropdownOpen(false);
-        //setColor("#01CD74");
       }
       if (memberRef.current && !memberRef.current.contains(e.target)) {
         setMemberDropdownOpen(false);
@@ -460,12 +495,15 @@ const ScheduleSave = () => {
                 {memberDropdownOpen && (
                   <S.MemberDropdownList>
                     {calendarMembers.map((member) => (
-                      <S.MemberItem key={member.id} onClick={() => toggleMember(member)}>
+                      <S.MemberItem
+                        key={member.id}
+                        onClick={() => toggleMember(member)}
+                      >
                         <S.MemberWrapper>
                           <S.MemberImage
-                                          src={`${process.env.REACT_APP_BACKEND_URL}/${member.imgPath}/${member.imgName}`}
-                                          alt={member.memberName}
-                                        />
+                            src={`${process.env.REACT_APP_BACKEND_URL}/${member.imgPath}/${member.imgName}`}
+                            alt={member.memberName}
+                          />
                           <S.MemberName>{member.name}</S.MemberName>
                         </S.MemberWrapper>
                         <S.CheckIcon
@@ -487,20 +525,26 @@ const ScheduleSave = () => {
                   <S.CustomDropdownSelectBox
                     onClick={() => setMainOpen((prev) => !prev)}
                   >
-                    {mainCategory || "상위 선택"}
+                    {mainCategoryTitle || "상위 선택"}
                   </S.CustomDropdownSelectBox>
                   {mainOpen && (
                     <S.CustomDropdownList>
-                      {mainCategories.map((item) => (
+                      {categories.map((item) => (
                         <S.CustomDropdownItem
-                          key={item}
+                          key={item.id}
                           onClick={() => {
-                            setMainCategory(item);
-                            setSubCategory("");
+                            console.log(
+                              "[DEBUG] 상위 카테고리 클릭 - id:",
+                              item.id
+                            ); //
+                            setMainCategoryId(item.id);
+                            setMainCategoryTitle(item.scheduleCategoryTitle);
+                            setSubCategoryId(null);
+                            setSubCategoryTitle("");
                             setMainOpen(false);
                           }}
                         >
-                          {item}
+                          {item.scheduleCategoryTitle}
                         </S.CustomDropdownItem>
                       ))}
                     </S.CustomDropdownList>
@@ -510,23 +554,24 @@ const ScheduleSave = () => {
                 <S.CustomDropdownContainer ref={subRef}>
                   <S.CustomDropdownSelectBox
                     onClick={() => {
-                      if (mainCategory) setSubOpen((prev) => !prev);
+                      if (mainCategoryId) setSubOpen((prev) => !prev);
                     }}
-                    disabled={!mainCategory}
+                    disabled={!mainCategoryId}
                   >
-                    {subCategory || "하위 선택"}
+                    {subCategoryTitle || "하위 선택"}
                   </S.CustomDropdownSelectBox>
                   {subOpen && (
                     <S.CustomDropdownList>
-                      {subCategories[mainCategory]?.map((item) => (
+                      {subCategories.map((item) => (
                         <S.CustomDropdownItem
-                          key={`${mainCategory}-${item}`}
+                          key={item.id}
                           onClick={() => {
-                            setSubCategory(item);
+                            setSubCategoryId(item.id);
+                            setSubCategoryTitle(item.scheduleSubCategoryTitle);
                             setSubOpen(false);
                           }}
                         >
-                          {item}
+                          {item.scheduleSubCategoryTitle}
                         </S.CustomDropdownItem>
                       ))}
                     </S.CustomDropdownList>
@@ -537,34 +582,13 @@ const ScheduleSave = () => {
 
             <S.ContentRow>
               장소
-              <S.ContentRowInput />
+              <S.ContentRowInput
+                value={locationText}
+                onChange={(e) => setLocationText(e.target.value)}
+                placeholder="장소를 입력하세요"
+              />
             </S.ContentRow>
 
-            <S.ContentRow>
-              반복
-              <S.MemberDropdownContainer ref={repeatRef}>
-                <S.MemberSelectBox
-                  onClick={() => setRepeatDropdownOpen((prev) => !prev)}
-                >
-                  {repeat || "반복 선택"}
-                </S.MemberSelectBox>
-                {repeatDropdownOpen && (
-                  <S.MemberDropdownList>
-                    {repeatOptions.map((option) => (
-                      <S.MemberItem
-                        key={option}
-                        onClick={() => {
-                          setRepeat(option);
-                          setRepeatDropdownOpen(false);
-                        }}
-                      >
-                        <S.MemberName>{option}</S.MemberName>
-                      </S.MemberItem>
-                    ))}
-                  </S.MemberDropdownList>
-                )}
-              </S.MemberDropdownContainer>
-            </S.ContentRow>
 
             <S.ContentRowTextArea>
               내용

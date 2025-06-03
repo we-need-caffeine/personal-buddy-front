@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import {
-  fontSizeH6,
+  fontSizeH7,
   fontSizeH8,
   fontWeightMedium,
   fontWeightLight,
 } from "../../../../globals/common";
-
 
 const S = {};
 S.CustomEventTitle = styled.div`
@@ -18,8 +17,11 @@ S.CustomEventTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-` 
-; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
 
 S.CalendarWrapper = styled.div`
   width: ${({ isNested }) => (isNested ? "840px" : "1400px")};
@@ -43,7 +45,6 @@ S.CalendarWrapper = styled.div`
 
   .fc-timegrid-slot-label {
     background-color: #ffffff;
-    
   }
 
   /* 요일 헤더 제거 */
@@ -149,9 +150,9 @@ S.DateInfoWrapper = styled.div`
 `;
 
 S.TodayText = styled.span`
-  ${fontSizeH6};
+  ${fontSizeH7};
   ${fontWeightMedium};
-  color:#01cd74;
+  color: #01cd74;
   cursor: pointer;
 `;
 

@@ -61,7 +61,7 @@ const CalendarMonth = ({
       state: {
         schedule: filtered,
         date: clickedDate,
-        eventId: filtered.length > 0 ? filtered[0].id : null
+        eventId: filtered.length > 0 ? filtered[0].id : null,
       },
     });
   };
@@ -118,6 +118,10 @@ const CalendarMonth = ({
             hour12: false,
           }}
           events={events}
+          dayMaxEvents={2}
+          moreLinkContent={(args) => {
+            return `+${args.num}`;
+          }}
           select={(info) => {
             const range = {
               start: info.startStr,

@@ -39,7 +39,7 @@ const ScheduleView = () => {
           `${process.env.REACT_APP_BACKEND_URL}/schedules/api/${eventId}`
         );
         const data = await response.json();
-        //console.log(eventId);
+        
         //console.log(data);
         setSchedule(data);
       } catch (error) {

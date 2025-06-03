@@ -156,6 +156,10 @@ const router = createBrowserRouter([
                         path: "calendar-update",
                         element: <CalendarUpdate />,
                       },
+                      {
+                        path: "schedule-view",
+                        element: <ScheduleView />,
+                      },
                     ],
                   },
                   {

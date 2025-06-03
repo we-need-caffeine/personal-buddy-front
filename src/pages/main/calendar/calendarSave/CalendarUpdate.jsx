@@ -13,7 +13,9 @@ const CalendarUpdate = () => {
   const [calendar, setCalendar] = useState(null);
   const [availableMembers, setAvailableMembers] = useState([]); // 초대 가능
   const [currentMembers, setCurrentMembers] = useState([]); // 이미 참여 중
-
+  const [invitedMembers, setInvitedMembers] = useState(
+    calendar?.invitedMembers || []
+  );
   const getCalendar = async () => {
     try {
       // 캘린더 상세
@@ -29,7 +31,6 @@ const CalendarUpdate = () => {
       );
       const members = await memberResponse.json();
       setAvailableMembers(members);
-      //console.log(members);
     } catch (error) {
       console.error("캘린더/멤버 정보 조회 실패", error);
     }
@@ -72,7 +73,7 @@ const CalendarUpdate = () => {
         }),
       });
       const invites = invitedMembers.map((member) => ({
-        calendarInviteInvitedMemberId: member.id,
+        calendarInviteInvitedMemberId: member.memberId,
         calendarInviteHostId: Number(memberId),
         calendarInviteIsApproved: 0,
         calendarId: Number(calendarId),
@@ -152,12 +153,15 @@ const CalendarUpdate = () => {
     <CalendarForm
       initialName={calendar.calendarTitle}
       calendarId={calendarId}
-      initialInvited={calendar.invitedMembers || []}
+      initialInvited={invitedMembers}
+      setInvitedMembers={setInvitedMembers}
       allMembers={availableMembers}
       showInviteSection={true}
       currentMembers={currentMembers}
       removeMember={removeMember}
       refreshAvailableMembers={getCalendar}
+      isUpdateMode={true}
+      memberId={memberId}
       buttons={[
         {
           label: "저장",
