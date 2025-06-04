@@ -7,7 +7,6 @@ const S = {};
 S.PaginationWrapper = styled.div`
     ${flexCenter};
     gap: 8px;
-    margin-top: 30px;
 `;
 
 // 페이지 번호 버튼

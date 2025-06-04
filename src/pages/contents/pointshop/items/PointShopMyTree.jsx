@@ -183,7 +183,27 @@ const PointShopMyTree = () => {
       showModal: true, 
       modalTitleMsg: "장바구니 담기",
       modalDescriptionMsg: "선택한 아이템을 장바구니에 담겠습니까?",
-      onConfirm: () => itemAddCart(item),
+      onConfirm: async () => {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/point-shop/api/cart/item-list/${memberId}`)
+        const itemList = await response.json();
+
+        const treeOrBgIds = new Set(
+          itemList
+          .filter(item => item.itemType === "나무" || item.itemType === "배경")
+          .map(item => Number(item.itemId))
+        );
+        
+        let isCartAdd = Object.values(selectItems).some(({itemId}) =>
+          treeOrBgIds.has(Number(itemId))
+      );
+      
+      if(isCartAdd){
+        // 가지고 있는 경우
+        alert(`똑같은 배경, 나무는 1개만 가질 수 있습니다.😅`)
+      }else {
+        itemAddCart(item)
+      }
+      },
       modalOkBtnMsg: "담기",
       modalCancelBtnMsg: "취소",
     }))

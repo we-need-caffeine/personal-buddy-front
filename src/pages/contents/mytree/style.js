@@ -6,20 +6,36 @@ const S = {};
 
 // 작은 제목
 S.SubTitle = styled.div`
-    ${fontSizeH8}
-    ${fontWeightRegular}
-    color: #555;
+   font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    display: flex;
+    margin: 0 0 13px 0;
 `;
 
 // 메인 제목
 S.MainTitle = styled.div`
-    ${fontSizeH4}
-    ${fontWeightBold}
-    color: black;
-    margin-top: 3px;
-    text-align: left;
+    display: flex;
+    font-size: 30px;
+    font-weight: 700;
+    color: #222;
+    margin: 0 0 40px 0;
 `;
 
+
+S.ItemTitle = styled.span`
+    font-size: 16px;
+    font-weight: 500;
+    color : #222;
+    margin : 0 0 8px;
+`;
+
+S.ItemAmount = styled.span`
+    font-size: 14px;
+    font-weight: 300;
+    color : #222;
+    margin: 0 0 6px 0;
+`;
 
 S.ItemDescriptionH8 = styled.span`
     ${fontSizeH8}
@@ -27,8 +43,9 @@ S.ItemDescriptionH8 = styled.span`
 `;
 
 S.ItemDescriptionH10 = styled.span`
-    ${fontSizeH10}
-    ${fontWeightRegular}
+    font-size: 10px;
+    color : #222;
+    font-weight: 500;
 `;
 
 S.MyTreeWrapper = styled.div`
@@ -98,6 +115,7 @@ S.ButtonWrapper = styled.div`
     flex-direction: row; 
     justify-content: end; 
     gap: 10px;
+    margin: auto;
 `;
 
 S.SaveButton = styled.button`
@@ -152,14 +170,13 @@ S.ItemTabLink = styled(Link)`
 `;
 
 S.ItemCardListBox = styled.div`
-  display: grid;
-  grid-template-columns: repeat(6, minmax(150px, 1fr));
-  grid-template-rows: 1fr 1fr 1fr 1fr 40px;
-  /* grid-template-rows: repeat(4, minmax(234px, 1fr)); */
+  display: flex;
+  flex-wrap: wrap;
   gap: 40px 40px; /* row-gap column-gap */
   width: 1400px;
-  height: 1300px;
-  padding: 30px 110px 30px 110px;
+  max-height: 1200px;
+  overflow: hidden;
+  padding: 30px 119px;
   margin-top: -1px;
   background-color: ${({ theme }) => theme.PALLETE.primary.lightGreen};
   border: solid 1px ${({ theme }) => theme.PALLETE.primary.mainGreen};
@@ -173,7 +190,6 @@ S.ItemCard = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
     padding: 10px;
     border: ${({selected}) => (
         selected ? `solid 5px #01CD74` : `solid 1px #EFFFF8`
@@ -183,14 +199,14 @@ S.ItemCard = styled.div`
         appliedCount == 0 ? '#EFFFF8' : notAppliedCount == 0 ? '#DDD' : '#24C394'
     )};
     border-radius: 30px;
-    width: 150px;
-    height: 234px;
+    width: 160px;
+    height: 244px;
 `
 
 S.ItemCardImg = styled.div`
-    width: 100px;
-    height: 100px;
-    margin: 10px;
+    width: 90px;
+    height: 90px;
+    margin: 10px 0;
     background-image: url(${({url}) => url});
     background-size: contain;
     background-repeat: no-repeat;
@@ -233,6 +249,7 @@ S.ItemRemoveButton = styled.button`
 `
 
 S.PaginationWrapper = styled.div`
+    flex-basis: 100%;
     ${flexCenter}
     grid-column: 1 / -1;
     grid-row: 5;

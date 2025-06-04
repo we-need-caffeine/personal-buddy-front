@@ -6,18 +6,20 @@ const S = {};
 
 // 작은 제목
 S.SubTitle = styled.div`
-    ${fontSizeH8}
-    ${fontWeightRegular}
-    color: #555;
+    font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    display: flex;
+    margin: 0 0 13px 0;
 `;
 
 // 메인 제목
 S.MainTitle = styled.div`
-    ${fontSizeH4}
-    ${fontWeightBold}
-    color: black;
-    margin-top: 3px;
-    text-align: left;
+    display: flex;
+    font-size: 30px;
+    font-weight: 700;
+    color: #222;
+    margin: 0 0 40px 0;
 `;
 
 S.TargetBox = styled.div`
@@ -37,20 +39,27 @@ S.TargetList = styled.div`
     width: calc(100% / 3);
     height: 240px;
     border-right: ${({location}) => (
-        location == "left" ? 'dashed 1px #000' : 'none'
+        location === "left" ? 'dashed 1px #bbb' : 'none'
     )};
     border-left: ${({location}) => (
-        location == "right" ? 'dashed 1px #000' : 'none'
+        location === "right" ? 'dashed 1px #bbb' : 'none'
     )};
+    padding: 0 60px;
 `;
 
-S.TargetListItem = styled.li`
+S.TargetListUl = styled.ul`
     display: flex;
-    margin-left: 80px;
+    flex-direction: column;
+    white-space: nowrap;
+    gap : 10px;
+    width: 100%;
+`
+
+S.TargetListItem = styled.li`
+    width: 100%;
+    display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 0;
-    font-size: 14px;
 `;
 
 S.TargetListIcon = styled.img`
@@ -58,19 +67,26 @@ S.TargetListIcon = styled.img`
 `;
 
 S.DescriptionTitle = styled.span`
-    ${fontSizeH6}
-    ${fontWeightBold}
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 22px 0;
 `;
 
+S.AchievementDescriptionTitle = styled.span`
+    font-size: 18px;
+    font-weight: 500;
+`;
+
+
 S.Description = styled.span`
-    ${fontSizeH8}
-    ${fontWeightRegular}
+    font-size: 16px;
+    font-weight: 300;
     text-decoration: ${({targetcompleted}) => (
         targetcompleted ? 'line-through' : 'none'
     )};
 
     ${({targetcompleted}) => (
-        targetcompleted ? (subGreenColor) : '#000'
+        targetcompleted ? (subGreenColor) : '#222'
     )};
 `;
 
@@ -119,7 +135,10 @@ S.AchievementCardItem = styled.li`
     justify-content: baseline;
     gap: 5px;
     padding: 6px 0;
+    font-weight: 300;
     font-size: 14px;
+    & span {
+    }
 `;
 
 S.AchievementIcon = styled.img.attrs(props => ({
@@ -132,6 +151,9 @@ S.AchievementIcon = styled.img.attrs(props => ({
 `;
 
 S.Link = styled(Link)`
+    font-size: 16px;
+    color: #666;
+    font-weight: 300;
     text-decoration: none;
     ${blackColor}
     &:hover {

@@ -107,7 +107,7 @@ const MyTreeItemBackground = () => {
                   ""
                 }
               />
-            <S.ItemDescriptionH8>{item.itemName}</S.ItemDescriptionH8>
+            <S.ItemTitle>{item.itemName}</S.ItemTitle>
             {
               item.itemId === selectedItemCard && (
                 <>
@@ -118,7 +118,7 @@ const MyTreeItemBackground = () => {
                       )
                     }
                     {
-                      item.totalCount != item.notAppliedCount && (
+                      item.totalCount !== item.notAppliedCount && (
                         <S.ItemRemoveButton onClick={() => handleRemoveClick(item.itemId, item.itemType)}>제거</S.ItemRemoveButton>
                       )
                     }
