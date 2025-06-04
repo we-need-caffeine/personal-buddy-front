@@ -13,10 +13,8 @@ const PointShop = ({
     setCartShow, 
     selectItems, 
     setSelectItems, 
-    cartAddResultMsg, 
-    setCartAddResultMsg, 
-    showAlertModal, 
-    setShowAlertModal
+    modal,
+    setModal
 }) => {
     const handleCancel = (itemId) => {
         setSelectItems((prev) => {
@@ -32,8 +30,13 @@ const PointShop = ({
 
         if (selectedList.length === 0) {
             resultMsg = "담을 아이템이 없습니다.";
-            setShowAlertModal(true);
-            setCartAddResultMsg(resultMsg);
+            setModal((modal) => ({
+                showModal: true, 
+                modalTitleMsg: "장바구니 담기",
+                modalDescriptionMsg: resultMsg,
+                modalOkBtnMsg: "",
+                modalCancelBtnMsg: "확인",
+            }))
             return;
         }
 
@@ -60,11 +63,19 @@ const PointShop = ({
         } catch (error) {
             resultMsg = error;
         }
-
-        setShowAlertModal(true);
-        setCartAddResultMsg(resultMsg);
+        setModal((modal) => ({
+            showModal: true, 
+            modalTitleMsg: "장바구니 담기",
+            modalDescriptionMsg: resultMsg,
+            modalOkBtnMsg: "",
+            modalCancelBtnMsg: "확인",
+        }))
         setSelectItems({});
     };
+
+    useEffect(() => {
+
+    }, [member])
 
     return (
         <>

@@ -5,7 +5,7 @@ import ConfirmModal from '../../../layout/modal/ConfirmModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser, setUserStatus } from '../../../../modules/member';
 
-const CartViewModal = ({handleConfrmModal, onCancel}) => {
+const CartViewModal = ({handleConfrmModal, onCancel, setConfirmModal}) => {
     const columnTitles = ["", "아이템 이름", "아이템 이미지", "개수", "개당 아이템 가격", "아이템 총 가격"]; // 마지막은 스크롤 공간용
     const [itemList, setItemList] = useState([]);
     const { lockScroll, unlockScroll } = useContext(HeaderContext);
@@ -51,14 +51,14 @@ const CartViewModal = ({handleConfrmModal, onCancel}) => {
         setBuyingPrice(checkedItemList.reduce((sum, item) => sum + item.totalPrice, 0));
         getCartItems();
         return () => unlockScroll();
-    }, [member, handleConfrmModal, itemList, checkedItemList, buyingPrice, isAllChecked]);
+    }, [member, handleConfrmModal, checkedItemList, buyingPrice, isAllChecked]);
     
     if (!handleConfrmModal) return (
         <>
         </>
     );
 
-    const handleDeleteItem = async () => {
+    const deleteItems = async () => {
         checkedItemList.map(async (checkedItem) => {
             const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/point-shop/api/cart/item/delete`, {
                 method: "DELETE",
@@ -72,17 +72,31 @@ const CartViewModal = ({handleConfrmModal, onCancel}) => {
         // 모든 삭제 요청이 완료된 이후에 수행
         await getCartItems(); // cart 갱신
         setCheckedItemList([]); // 체크 초기화
+
+        setConfirmModal((modal) => ({
+            ...modal,
+            showModal: false, 
+        }))
+    }
+
+    const handleDeleteItem = () => {
+        setConfirmModal((modal) => ({
+            showModal: true, 
+            modalTitleMsg: "장바구니 삭제",
+            modalDescriptionMsg: "선택한 아이템을 장바구니에 삭제하시겠습니까?",
+            onConfirm: () => deleteItems(),
+            modalOkBtnMsg: "삭제",
+            modalCancelBtnMsg: "취소",
+        }))
     };
 
     const getCartItems = async () => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/point-shop/api/cart/item-list/${member.id}`)
-        
         const data = await response.json();
         setItemList(data);
     }
 
-    
-    const handleBuyItem = async () => {
+    const buyItems = async () => {
         const totalPrice = checkedItemList.reduce((acc, item) => acc + (item.totalPrice || 0), 0);
 
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/point-shop/api/item/buy`, {
@@ -106,7 +120,23 @@ const CartViewModal = ({handleConfrmModal, onCancel}) => {
         };
         // Redux 상태 업데이트
         dispatch(setUser(updatedMember));
-        onCancel();
+
+        setConfirmModal((modal) => ({
+            ...modal,
+            showModal: false, 
+        }))
+    }
+
+    
+    const handleBuyItem = () => {
+        setConfirmModal((modal) => ({
+            showModal: true, 
+            modalTitleMsg: "장바구니 구매",
+            modalDescriptionMsg: "선택한 아이템을 구매하시겠습니까?",
+            onConfirm: () => buyItems(),
+            modalOkBtnMsg: "구매",
+            modalCancelBtnMsg: "취소",
+        }))
     };
 
     
@@ -151,7 +181,7 @@ const CartViewModal = ({handleConfrmModal, onCancel}) => {
                     </S.GridHeader>
 
                     <S.GridBody>
-                    {itemList.map((item, i) => (
+                    { itemList && itemList.map((item, i) => (
                         <S.GridRow key={i}>
                         {columnTitles.map((column, col) => {
                             switch(column){
@@ -211,7 +241,7 @@ const CartViewModal = ({handleConfrmModal, onCancel}) => {
                         hoverBackground={'#FF4E00'}>
                         선택 아이템 삭제
                     </S.CartButton>
-                    <S.InfoTitleText>총   <S.DescriptionPoint>4 </S.DescriptionPoint> 건</S.InfoTitleText>
+                    <S.InfoTitleText>총   <S.DescriptionPoint>{itemList.length}</S.DescriptionPoint> 건</S.InfoTitleText>
                     <S.PointInfoWrapper>
                         <S.InfoDescText>보유 포인트 : <S.DescriptionPoint>{member.memberPoint}</S.DescriptionPoint> 🪙</S.InfoDescText>
                         <S.InfoDescText>- 총 금액 : <S.DescriptionPoint>{buyingPrice}</S.DescriptionPoint> 🪙</S.InfoDescText>
