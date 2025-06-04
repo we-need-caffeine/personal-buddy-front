@@ -115,8 +115,8 @@ export const ChatProvider  = ({ children }) => {
     stompClient.current.connect({}, () => {
       chatRoomList.forEach((chatRoom) => {
         stompClient.current.subscribe(`/sub/chatroom/${chatRoom.chatRoomId}`, (message) => {
-          const newMessage = JSON.parse(message.body);
-          setChatList(prev => [...prev, newMessage]);
+          // const newMessage = JSON.parse(message.body);
+          // setChatList(prev => [...prev, newMessage]);
           setIsNewMessage(prev => !prev)
         });
       });
