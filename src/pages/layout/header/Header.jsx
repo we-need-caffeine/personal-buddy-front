@@ -85,7 +85,7 @@
         setNotReadAlertCount(data)
       }
       getNotReadAlertCount()
-    }, [memberId])
+    }, [memberId, showAlertModal])
 
     // 알림 버튼 클릭시, 알림을 읽음처리
     const readAlerts = async() => {
