@@ -55,7 +55,7 @@ const MyPagePointLog = () => {
           <S.TitleBottomContainer>
               <span>포인트 이용내역</span>
               <S.TitleMemberPoint>
-                나의 포인트 : <span>{currentUser.memberPoint} 🪙</span>
+                나의 포인트 : <p>{currentUser.memberPoint} 🪙</p>
               </S.TitleMemberPoint>
           </S.TitleBottomContainer>
         </S.TitleContainer>
@@ -71,7 +71,7 @@ const MyPagePointLog = () => {
                 <h3>{item.memberPointReason}</h3>
               </S.ListLeftContainer>
               <S.ListRightContainer>
-                {FormatDate(item.memberPointChangeDate)}
+                {FormatDate(item.memberPointChangeDate).split(" ").join(" ")}
               </S.ListRightContainer>
             </S.ListContainer>
           ))}

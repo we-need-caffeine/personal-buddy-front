@@ -9,9 +9,7 @@ S.MainContainer = styled.div`
 S.TitleContainer = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 10px;
     width: 100%;
-    padding-bottom: 40px;
     border-bottom: 1px solid ${({ theme }) => theme.PALLETE.black};
     ${fontSizeH8}
     ${fontWeightLight}
@@ -25,8 +23,8 @@ S.TitleTopContainer = styled.div`
         font-size: 18px;
         font-weight: 300;
         color: #666;
-        padding-bottom: 3px;
-        margin: 0 0 6px 0;
+        display: flex;
+        margin: 0 0 13px 0;
     }
 `
 
@@ -37,13 +35,13 @@ S.TitleBottomContainer = styled.div`
     ${fontSizeH6}
     ${blackColor}
     ${fontWeightRegular}
+    margin: 0 0 40px 0;
 
     & > span {
+        display: flex;
         font-size: 30px;
         font-weight: 700;
         color: #222;
-        margin-top: 1px;
-        text-align: left;
     }
 `
 
@@ -180,35 +178,39 @@ S.GuestBookInputCount = styled.div`
 S.GuestBookListContainer = styled.div`
     width: 1160px;
     margin-top: 102px;
-    border-top: solid 1px ${({ theme }) => theme.PALLETE.black};
+    border-top: solid 1px #ccc;
+    border-bottom: solid 1px #ccc;
 `
 
 S.GuestBookItemContainer = styled.div`
     width: 100%;
-    border-bottom: solid 1px ${({ theme }) => theme.PALLETE.black};
+    border-bottom: solid 1px #eee;
+    padding: 40px 20px;
 `
 
 S.GuestBookMemberInfoContainer = styled.div`
-    padding: 20px 30px 20px 30px;
     display: flex;
     justify-content: space-between;
 `
 
 S.GuestBookMemberInfo = styled.div`
     display: flex;
-    justify-content: center;
     align-items: center;
-    ${fontSizeH8}
-    ${fontWeightBold}
+    font-size: 18px;
+    flex-shrink: 0;
+    font-weight: 500;
+    color: #222;
+    margin: 5px 10px 0 6px;
     /* 멤버 프로필 카드 고정용 */
     position: relative;
+    margin: 0 0 12px 0;
 `
 
 S.GuestBookMemberProfileImg = styled.img`
     object-fit: cover;
-    width: 24px;
-    height: 24px;
-    border-radius: 36px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
     margin-right: 10px;
     cursor: pointer;
 `
@@ -222,16 +224,21 @@ S.GuestBookDeleteButton = styled.button`
 `
 
 S.GuestBookContent = styled.div`
-    ${fontWeightMedium}
-    ${fontSizeH7}
-    padding-left: 30px;
-    max-width: 800px;
+    font-size: 18px;
+    font-weight: 300;
+    color: #000;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 5px 0 30px 0;
 `
 
 S.GuestBookCreateTime = styled.div`
-    padding: 20px 30px 20px 30px;
-    ${gray4Color}
-    ${fontSizeH9}
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+    color: #999999;
+    font-size: 13px;
 `
 
 //------------------------ [ 드롭다운 스타일 ]

@@ -9,26 +9,32 @@ S.MainContainer = styled.div`
 S.TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
   width: 100%;
-  padding-bottom: 20px;
   border-bottom: 1px solid ${({ theme }) => theme.PALLETE.black};
   ${fontSizeH8}
   ${fontWeightLight}
 `
 
 S.TitleTopContainer = styled.div`
-  display: flex;
-  justify-content: left;
+
+  & span {
+    font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    display: flex;
+    margin: 0 0 13px 0;
+  }
 `
 
 S.TitleBottomContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  ${fontSizeH6}
-  ${blackColor}
-  ${fontWeightRegular}
+
+  & span {
+    display: flex;
+    font-size: 30px;
+    font-weight: 700;
+    color: #222;
+    margin: 0 0 40px 0;
+  }
 `
 
 S.TitleTopLinkText = styled.div`
@@ -45,15 +51,17 @@ S.BodyContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 10px;
   padding-top: 30px;
 `
 
 S.InputTextTitle = styled.div`
-  margin-top: 30px;
-  ${fontSizeH7}
-  ${fontWeightMedium}
-  ${blackColor}
+
+  & h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #222;
+    margin: 0 0 12px 0;
+  }
 `
 
 S.MemberInfoInputContainer = styled.div`
@@ -61,20 +69,21 @@ S.MemberInfoInputContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 1120px;
-  padding-left: 20px;
-  padding-right: 20px;
-  height: 40px;
-  ${fontSizeH7}
-  ${fontWeightRegular}
-  ${blackColor}
-  border: 1px solid black;
+  padding: 20px;
+  font-weight: 500;
+  border: 1px solid #BBBBBB;
 
-  span{
+  font-size: 20px;
+  font-weight: 300;
+  color: #222;
+
+  span {
     ${fontSizeH7}
     ${pointRedColor}
-    ${fontWeightBold}
+    font-weight: 500;
     cursor: pointer;
   }
+  margin: 0 0 40px 0;
 `
 
 S.MemberInfo = styled.div`

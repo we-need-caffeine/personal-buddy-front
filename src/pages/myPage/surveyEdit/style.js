@@ -11,30 +11,40 @@ S.TitleContainer = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  padding-bottom: 20px;
   border-bottom: 1px solid ${({ theme }) => theme.PALLETE.black};
   ${fontSizeH8}
   ${fontWeightLight}
 `
 
 S.TitleTopContainer = styled.div`
-  display: flex;
-  justify-content: left;
+  & span {
+    font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    display: flex;
+    margin: 0 0 13px 0;
+  }
 `
 
 S.TitleBottomContainer = styled.div`
+
   display: flex;
+  align-items: end;
   justify-content: space-between;
-  align-items: center;
-  ${fontSizeH6}
-  ${blackColor}
-  ${fontWeightRegular}
+  margin: 0 0 40px 0;
+
+  span {
+    display: flex;
+    font-size: 30px;
+    font-weight: 700;
+    color: #222;
+  }
 `
 
 S.TitleTopLinkText = styled.div`
-  ${fontWeightRegular}
-  ${gray6Color}
-  ${fontSizeH8}
+    font-size: 16px;
+    color: #222;
+    font-weight: 300;
   &:hover {
     ${mainGreenColor}
   }
@@ -56,9 +66,9 @@ S.CategoryBox = styled.div`
 `
 
 S.CategoryTitle = styled.div`
-  ${fontWeightBold}
-  ${fontSizeH6}
-  ${gray5Color}
+  font-size: 20px;
+  font-weight: 500;
+  color: #666;
   padding-right: 20px;
   border-right: 3px solid ${({ theme }) => theme.PALLETE.gray.gray5};
   margin-right: 20px;
