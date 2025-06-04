@@ -48,7 +48,7 @@ const RecommendShopping = () => {
     return (
         <S.ContentWrapper>
             <S.RecommendWrapper>
-                <p>오늘 이런 {selectedType} 쇼핑 어때요?</p>
+                <p>{selectedType} 필수템, 한눈에 보기</p>
                 <S.RecommendList>
                     {data.map(item => {
                         const parts = item.interestDataContent.split('|');
@@ -63,7 +63,7 @@ const RecommendShopping = () => {
                                         fontSize: 14,
                                         display: 'inline-block',
                                         width: 40
-                                    }}>{key}</span>: <span style={{
+                                    }}>{key}</span> : <span style={{
                                         fontWeight: 400,
                                         fontSize: 14,
                                         marginLeft: 10
