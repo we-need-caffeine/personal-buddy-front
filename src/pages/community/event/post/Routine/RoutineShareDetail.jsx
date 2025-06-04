@@ -313,11 +313,11 @@ const handleCommentSubmit = async () => {
       {/* BEST 댓글 */}
       <S.BestCommentSection>
         {bestComments.map((c, i) => (
-          <S.CommentItem key={c.id}>
-            <S.BestBadge>⭐ BEST {i + 1}</S.BestBadge>
-
+          <S.BestCommentItem key={c.id}>
+            <S.BestBadge>✨ BEST {i + 1}</S.BestBadge>
             <S.CommentTop>
               <S.CommentUser>
+                <S.ProfileWrap>
                 <S.ProfileImg
                   src={
                     c.memberImgPath && c.memberImgName
@@ -330,16 +330,16 @@ const handleCommentSubmit = async () => {
                   alt="작성자 프로필"
                 />
                 <S.Nickname>{c.memberNickName}</S.Nickname>
-
+                </S.ProfileWrap>
                 <S.LeftCommentWrapper>
-                  <S.CommentDate>{c.eventCommentCreateDate}</S.CommentDate>
+                  <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
+                  
                   <S.CommentLikeCount>
-                    <img src="/assets/images/board/icon/like-icon.png" alt="like" />
-                    <span>{c.eventCommentLikeCount}</span>
+                    {/* <img src="/assets/images/board/icon/like-icon.png" alt="like" /> */}
+                    {/* <span>{c.eventCommentLikeCount}</span> */}
                   </S.CommentLikeCount>
                 </S.LeftCommentWrapper>
               </S.CommentUser>
-
               <S.Right>
                 <S.CommentLikeButton
                   liked={likedCommentIds.includes(c.id)}
@@ -349,31 +349,38 @@ const handleCommentSubmit = async () => {
                 </S.CommentLikeButton>
               </S.Right>
             </S.CommentTop>
-
-            <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
-          </S.CommentItem>
+            <S.CommentDate>{c.eventCommentCreateDate}</S.CommentDate>
+          </S.BestCommentItem>
         ))}
       </S.BestCommentSection>
 
-      {/* 일반 댓글 */}
       <S.CommentList>
-
         {paginatedComments.map((c) => (
           <S.CommentItem key={c.id}>
             <S.CommentTop>
               <S.CommentUser>
-                <S.ProfileImg src={c.memberImgPath || '/assets/images/header/default-member-img.png'} />
+                <S.ProfileWrap>
+                <S.ProfileImg
+                  src={
+                    c.memberImgPath && c.memberImgName
+                      ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
+                      : '/assets/images/header/default-member-img.png'
+                  }
+                  onError={(e) => {
+                    e.target.src = '/assets/images/header/default-member-img.png';
+                  }}
+                  alt="작성자 프로필"
+                />
                 <S.Nickname>{c.memberNickName}</S.Nickname>
-        
+                </S.ProfileWrap>
                 <S.LeftCommentWrapper>
                   <S.CommentDate>{c.eventCommentCreateDate}</S.CommentDate>
                   <S.CommentLikeCount>
-                    <img src="/assets/images/board/icon/like-icon.png" alt="like" />
-                    <span>{c.eventCommentLikeCount}</span>
+                    {/* <img src="/assets/images/board/icon/like-icon.png" alt="like" /> */}
+                    {/* <span>{c.eventCommentLikeCount}</span> */}
                   </S.CommentLikeCount>
                 </S.LeftCommentWrapper>
               </S.CommentUser>
-        
               <S.Right>
                 <S.CommentLikeButton
                   liked={likedCommentIds.includes(c.id)}
@@ -383,8 +390,6 @@ const handleCommentSubmit = async () => {
                 </S.CommentLikeButton>
               </S.Right>
             </S.CommentTop>
-        
-            {/* 수정 중일 때는 Textarea, 아닐 때는 본문 보여주기 */}
             {editingCommentId === c.id ? (
               <>
                 <S.Textarea
@@ -398,16 +403,17 @@ const handleCommentSubmit = async () => {
                 </S.InputBottom>
               </>
             ) : (
-              <>
-                <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
-              </>
+              <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
             )}
           </S.CommentItem>
         ))}
       </S.CommentList>
 
-      {/* 페이지네이션 */}
-      <Pagination currentPage={currentPage} totalPages={Math.ceil(comments.length / 7)} onPageChange={setCurrentPage} />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(comments.length / 7)}
+        onPageChange={setCurrentPage}
+      />
     </S.Container>
   );
 };

@@ -24,8 +24,6 @@ const ScheduleListView = () => {
   const schedules = location.state?.schedule || [];
   const clickedDate = location.state?.date;
 
-  
-
   const formatToKoreanTime = (isoString) => {
     const date = new Date(isoString);
     const hours = date.getHours();
@@ -48,7 +46,15 @@ const ScheduleListView = () => {
         {schedules?.map((schedule) => {
           //console.log(schedule);
           return (
-            <S.ScheduleWrapper>
+            <S.ScheduleWrapper
+              key={schedule.id} 
+              onClick={() => {
+                navigate(`/main/${memberId}/${calendarId}/month/schedule-view`, {
+                  state: { eventId: schedule.id }, 
+                });
+              }}
+              style={{ cursor: "pointer" }} 
+            >
               <S.TitleWrapper>
                 <S.Circle color={schedule.scheduleColor}></S.Circle>
 

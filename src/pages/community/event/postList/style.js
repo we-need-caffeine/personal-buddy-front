@@ -14,33 +14,37 @@ S.PostSection = styled.div`
 `;
 
 S.SubTitle = styled.div`
-    ${fontSizeH8}
-    ${fontWeightRegular}
-    color: #555;
-    margin-bottom: 3px;
+    font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    padding-bottom: 3px;
+    margin: 0 0 6px 0;
 `;
 
 S.MainTitle = styled.div`
-    ${fontSizeH4}
-    ${fontWeightBold}
-    color: black;
+    font-size: 30px;
+    font-weight: 700;
+    color: #222;
     margin-top: 1px;
-    padding-bottom: 30px;
+    text-align: left;
 `;
 
 S.PostListWrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr); 
-    gap: 175px 36px;
+    gap: 80px 40px;
     justify-content: center; 
 `;
 
-S.PostCard = styled.div`
+S.PostCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isComingSoon'
+})`
     width: 560px; 
     border-radius: 20px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     background-color: #fff;
     overflow: hidden;
+    margin: 0 0 25px 0;
 
       ${({ isComingSoon }) => isComingSoon && `
         opacity: 0.6;
@@ -87,18 +91,20 @@ S.BadgeComplete = styled.div`
 `;
 
 S.InfoBox = styled.div`
-    padding: 16px;
-    font-size: 15px;
+    padding: 0 0 0 16px;
 
     div:first-child {
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 16px;
+        font-size: 24px;
+        margin: 0 0 50px 0;
+        font-weight: 500;
+        color: #222;
     }
 
     div:last-child {
-            color: #888;
-            font-size: 14px;
+        font-size: 16px;
+        font-weight: 300;
+        margin: 0 0 8px 0;
+        color: #999;
     }
 `;
 

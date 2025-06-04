@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import S from './style';
 import Pagination from '../../../../../hooks/pagenation/Pagination';
+import FormatDate from '../../../../../utils/formatDate/FormatDate';
 
 const HealingDayDetail = () => {
   const { id } = useParams();
@@ -20,6 +21,14 @@ const HealingDayDetail = () => {
   const [bestComments, setBestComments] = useState([]);
 
   const paginatedComments = comments.slice((currentPage - 1) * 7, currentPage * 7);
+
+  useEffect(() => {
+  const best = [...comments]
+    .sort((a, b) => b.boardCommentLikeCount - a.boardCommentLikeCount)
+    .slice(0, 3);
+  setBestComments(best);
+}, [comments]);
+
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -154,7 +163,13 @@ const HealingDayDetail = () => {
             <span>운영자</span>
           </S.Author>
           <S.StatBox>
-            조회수 <strong>{views}</strong> | 댓글 <strong>{comments.length}</strong>
+            <div>
+              <span>조회수</span> <strong>{views}</strong>
+            </div>
+            <div>|</div>
+            <div>
+              <span>댓글</span><strong>{comments.length}</strong>
+            </div>
           </S.StatBox>
         </S.MetaBottom>
       <S.ImageWrapper>
@@ -172,33 +187,35 @@ const HealingDayDetail = () => {
       </S.Refer>
 
       </S.ImageWrapper>
-      <S.CommentInputBox>
-        <S.Textarea
-          placeholder="댓글을 입력해주세요"
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-          maxLength={500}
-        />
-        <S.InputBottom>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <S.CharCount>{commentText.length}</S.CharCount>
-            <span>/ 500</span>
-          </div>
-          <S.SubmitButton
-            $active={commentText.length > 0 && !joined} 
-            disabled={commentText.length === 0 || joined}
-            onClick={handleCommentSubmit}
-          >
-            <span>{joined ? '참여 완료' : '등록'}</span>
-          </S.SubmitButton>
-        </S.InputBottom>
-      </S.CommentInputBox>
+      {/* 댓글 입력창 */}
+        <S.CommentInputBox>
+          <S.Textarea
+            placeholder="댓글을 입력해주세요"
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            maxLength={500}
+          />
+          <S.InputBottom>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <S.CharCount>{commentText.length}</S.CharCount>
+              <span>/ 500</span>
+            </div>
+            <S.SubmitButton
+              active={commentText.length > 0}
+              disabled={commentText.length === 0}
+              onClick={handleCommentSubmit}
+            >
+            <p>등록</p>
+            </S.SubmitButton>
+          </S.InputBottom>
+        </S.CommentInputBox>
 
     <S.BestCommentSection>
       {bestComments.map((c, i) => (
         <S.CommentItem key={c.id}>
-          <S.BestBadge>⭐ BEST {i + 1}</S.BestBadge>
-
+          <S.BestBadgeWrap>
+            <S.BestBadge>✨ BEST</S.BestBadge>
+          </S.BestBadgeWrap>
           <S.CommentTopRow>
             <S.CommentLeftBox>
               <S.ProfileImg
@@ -213,37 +230,30 @@ const HealingDayDetail = () => {
                 alt="작성자 프로필"
               />
               <S.Nickname>{c.memberNickName}</S.Nickname>
+              <S.Right>
+                <S.CommentLikeButton
+                  liked={likedCommentIds.includes(c.id)}
+                  onClick={() => handleCommentLike(c.id)}>
+                <span>♥</span>
+                {c.boardCommentLikeCount}
+                </S.CommentLikeButton>
+              </S.Right>
             </S.CommentLeftBox>
-
-            <S.CommentRightBox>
-              <S.CommentLikeButton
-                liked={likedCommentIds.includes(c.id)}
-                onClick={() => handleCommentLike(c.id)}
-              >
-                ♥
-              </S.CommentLikeButton>
-            </S.CommentRightBox>
+            <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
           </S.CommentTopRow>
 
-          <S.CommentBottomRow>
-            <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
-            <S.CommentMetaBox>
-              <S.CommentDate>{c.eventCommentCreateDate}</S.CommentDate>
-              <S.LikeCount>
-                <img src="/assets/images/board/icon/like-icon.png" alt="like" />
-                <span>{c.eventCommentLikeCount}</span>
-              </S.LikeCount>
-            </S.CommentMetaBox>
-          </S.CommentBottomRow>
+          <S.LikeWrap>
+              <S.LeftCommentWrapper>
+                <S.CommentDate>{FormatDate(c.boardCommentCreateDate).split(" ").join(" ")}</S.CommentDate>
+              </S.LeftCommentWrapper>
+            </S.LikeWrap>
         </S.CommentItem>
       ))}
     </S.BestCommentSection>
-
-
  
       <S.CommentList>
         {paginatedComments.map((c) => (
-          <S.CommentItem key={c.id}>
+            <S.CommentItem key={c.id}>
             <S.CommentTopRow>
               <S.CommentLeftBox>
                 <S.ProfileImg
@@ -258,27 +268,23 @@ const HealingDayDetail = () => {
                   alt="작성자 프로필"
                 />
                 <S.Nickname>{c.memberNickName}</S.Nickname>
+                <S.Right>
+                  <S.CommentLikeButton
+                    liked={likedCommentIds.includes(c.id)}
+                    onClick={() => handleCommentLike(c.id)}>
+                  <span>♥</span>
+                  {c.boardCommentLikeCount}
+                  </S.CommentLikeButton>
+                </S.Right>
               </S.CommentLeftBox>
-              <S.CommentRightBox>
-                <S.CommentLikeButton
-                  liked={likedCommentIds.includes(c.id)}
-                  onClick={() => handleCommentLike(c.id)}
-                >
-                  ♥
-                </S.CommentLikeButton>
-              </S.CommentRightBox>
+              <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
             </S.CommentTopRow>
-
-            <S.CommentBottomRow>
-              <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
-              <S.CommentMetaBox>
-                <S.CommentDate>{c.eventCommentCreateDate}</S.CommentDate>
-                <S.LikeCount>
-                  <img src="/assets/images/board/icon/like-icon.png" alt="like" />
-                  <span>{c.eventCommentLikeCount}</span>
-                </S.LikeCount>
-              </S.CommentMetaBox>
-            </S.CommentBottomRow>
+  
+            <S.LikeWrap>
+                <S.LeftCommentWrapper>
+                  <S.CommentDate>{FormatDate(c.boardCommentCreateDate).split(" ").join(" ")}</S.CommentDate>
+                </S.LeftCommentWrapper>
+              </S.LikeWrap>
           </S.CommentItem>
         ))}
       </S.CommentList>

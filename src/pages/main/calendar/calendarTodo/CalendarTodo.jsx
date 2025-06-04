@@ -24,6 +24,7 @@ const CalendarTodo = () => {
           const formattedTodo = {
             id: todo.id,
             text: todo.todoListContent,
+            calendarId: calendar.id,
           };
 
           if (todo.todoListIsCompleted === 0) {

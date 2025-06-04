@@ -13,4 +13,8 @@ S.MainWrapper = styled.div`
                                           //  화면이 작아도 최소한 이만큼은 차지해서 푸터가 밀려 올라오지 않게 처리
 `;
 
+S.Main = styled.main`
+  overflow: hidden;
+`
+
 export default S;

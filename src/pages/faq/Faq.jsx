@@ -46,7 +46,6 @@ const Faq = () => {
 
   return (
     <S.Section>
-      <S.Title>어떻게 도와드릴까요?</S.Title>
       <S.Wrapper>
         <S.SubLabel>도움말 찾아보기</S.SubLabel>
         <S.SubTitle>자주 묻는 질문</S.SubTitle>

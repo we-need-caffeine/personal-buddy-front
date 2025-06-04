@@ -3,6 +3,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import S from './style';
 import Pagination from '../../../../hooks/pagenation/Pagination';
+import FormatDate from '../../../../utils/formatDate/FormatDate';
 
 
 const BoardPost = () => {
@@ -12,9 +13,21 @@ const BoardPost = () => {
 
   const [commentText, setCommentText] = useState(''); // 댓글 입력값
   const [comments, setComments] = useState([]); // 댓글 목록
-  const [likeCount, setLikeCount] = useState(0); // 게시글 좋아요 수
+  const [likeCount, setLikeCount] = useState(); // 게시글 좋아요 수
   const [isLiked, setIsLiked] = useState(false); // 현재 사용자의 좋아요 여부
   const [likedCommentIds, setLikedCommentIds] = useState([]); // 댓글 좋아요
+
+  // 댓글 등록 확인용 모달
+  const [showCommentConfirm, setShowCommentConfirm] = useState(false);
+  const [showCommentCompleted, setShowCommentCompleted] = useState(false);
+
+  // 게시글 좋아요 모달
+  const [showPostLikeConfirm, setShowPostLikeConfirm] = useState(false);
+
+  // 댓글 좋아요 모달
+  const [showCommentLikeConfirm, setShowCommentLikeConfirm] = useState(false);
+  const [pendingCommentLikeId, setPendingCommentLikeId] = useState(null);
+
 
   // 댓글 페이지네이션
   const [currentPage, setCurrentPage] = useState(1);
@@ -316,7 +329,6 @@ const checkLiked = async () => {
             {post.memberId === memberId && (
             <S.DeleteButton onClick={handleDeletePost}>삭제</S.DeleteButton>
           )}
-
           </S.EditDeleteBox>
         )}
       </S.TitleRow>
@@ -327,7 +339,7 @@ const checkLiked = async () => {
             src={
               post.memberImgPath && post.memberImgName
                 ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(post.memberImgPath)}&fileName=${encodeURIComponent(post.memberImgName)}`
-                : '/assets/images/header/default-member-img.png'
+                : '/assets/images/h1eader/default-member-img.png'
             }
             onError={(e) => {
               e.target.src = '/assets/images/header/default-member-img.png';
@@ -360,7 +372,7 @@ const checkLiked = async () => {
       <S.Content>{post.boardContent}</S.Content>
 
       <S.LikeButton liked={isLiked} onClick={handlePostLike}>
-        ♥{likeCount}
+        <p>♥</p> {likeCount} 
       </S.LikeButton>
 
       <S.CommentTitleBox>
@@ -386,7 +398,7 @@ const checkLiked = async () => {
             disabled={commentText.length === 0}
             onClick={handleCommentSubmit}
           >
-            <span>등록</span>
+          <p>등록</p>
           </S.SubmitButton>
         </S.InputBottom>
       </S.CommentInputBox>
@@ -394,27 +406,35 @@ const checkLiked = async () => {
   <S.BestCommentSection>
     {bestComments.map((c, i) => (
       <S.BestCommentItem key={c.id}>
-        <S.BestBadge>⭐ BEST {i + 1}</S.BestBadge>
+        <S.BestBadgeWrap>
+          <S.BestBadge>✨ BEST</S.BestBadge>
+        </S.BestBadgeWrap>
         <S.CommentTop>
           <S.CommentUser>
-            <S.ProfileImg
-              src={c.memberImgPath && c.memberImgName
-                ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
-                : '/assets/images/header/default-member-img.png'}
-              alt="프로필"
-            />
-            <S.Nickname>{c.memberNickName}</S.Nickname>
-            <S.LeftCommentWrapper>
-              <S.CommentDate>{c.boardCommentCreateDate}</S.CommentDate>
-              <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
-            </S.LeftCommentWrapper>
-              <S.CommentLikeCount>
-                <img src="/assets/images/board/icon/like-icon.png" alt="like" />
-                <span>{c.eventCommentLikeCount}</span>
-              </S.CommentLikeCount>
+            <S.ProfileWrap>
+              <S.ProfileImg
+                src={c.memberImgPath && c.memberImgName
+                  ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
+                  : '/assets/images/header/default-member-img.png'}
+                alt="프로필"
+              />
+              <S.Nickname>{c.memberNickName}</S.Nickname>
+            </S.ProfileWrap>
+            <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
+            <S.LikeWrap>
+              <S.LeftCommentWrapper>
+                <S.CommentDate>{FormatDate(c.boardCommentCreateDate).split(" ").join(" ")}</S.CommentDate>
+              </S.LeftCommentWrapper>
+
+              <S.CommentLikeButton
+                liked = {likedCommentIds.includes(c.id)}
+                onClick={()=> handleCommentLike(c.id)}
+              >
+                <span>♥</span> {/* {c.boardCommentLikeCount} */}
+              </S.CommentLikeButton>
+            </S.LikeWrap>
           </S.CommentUser>
         </S.CommentTop>
-        <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
       </S.BestCommentItem>
     ))}
   </S.BestCommentSection>
@@ -424,32 +444,31 @@ const checkLiked = async () => {
       <S.CommentItem key={c.id}>
         <S.CommentTop>
           <S.CommentUser>
-            <S.ProfileImg
-              src={c.memberImgPath && c.memberImgName
-                ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
-                : '/assets/images/header/default-member-img.png'}
-              alt="프로필"
-            />
-            <S.Nickname>{c.memberNickName}</S.Nickname>
-            <S.LeftCommentWrapper>
-              <S.CommentDate>{c.boardCommentCreateDate}</S.CommentDate>
-              <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
-              <S.CommentLikeCount>
-                <img src="/assets/images/board/icon/like-icon.png" alt="like" />
-                <span>{c.eventCommentLikeCount}</span>
-              </S.CommentLikeCount>
-            </S.LeftCommentWrapper>
-        </S.CommentUser>
-
-        <S.Right>
-          <S.CommentLikeButton
-            liked={likedCommentIds.includes(c.id)}
-            onClick={() => handleCommentLike(c.id)}>
-            ♥
-          </S.CommentLikeButton>
-        </S.Right>
-      </S.CommentTop>
-
+            <S.ProfileWrap>
+              <S.ProfileImg
+                src={c.memberImgPath && c.memberImgName
+                  ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(c.memberImgPath)}&fileName=${encodeURIComponent(c.memberImgName)}`
+                  : '/assets/images/header/default-member-img.png'}
+                alt="프로필"
+              />
+              <S.Nickname>{c.memberNickName}</S.Nickname>
+              <S.Right>
+                <S.CommentLikeButton
+                  liked={likedCommentIds.includes(c.id)}
+                  onClick={() => handleCommentLike(c.id)}>
+                <span>♥</span>
+                {/* {c.boardCommentLikeCount} */}
+                </S.CommentLikeButton>
+              </S.Right>
+            </S.ProfileWrap>
+            <S.CommentContents>{c.boardCommentContent}</S.CommentContents>
+            <S.LikeWrap>
+              <S.LeftCommentWrapper>
+                <S.CommentDate>{FormatDate(c.boardCommentCreateDate).split(" ").join(" ")}</S.CommentDate>
+              </S.LeftCommentWrapper>
+            </S.LikeWrap>
+          </S.CommentUser>
+        </S.CommentTop>
       {editingCommentId === c.id ? (
         <>
           <S.Textarea
@@ -464,7 +483,6 @@ const checkLiked = async () => {
         </>
       ) : (
         <>
-          <S.CommentContents>{c.eventCommentDescription}</S.CommentContents>
           {memberId === c.memberId && (
             <S.EditDeleteBox>
               <S.CommentEditButton onClick={() => {
@@ -481,7 +499,7 @@ const checkLiked = async () => {
           )}
         </>
       )}
-    </S.CommentItem>
+      </S.CommentItem>
   ))}
 </S.CommentList>
 

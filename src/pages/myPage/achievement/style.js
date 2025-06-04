@@ -11,7 +11,6 @@ S.TitleContainer = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  padding-bottom: 20px;
   border-bottom: 1px solid ${({ theme }) => theme.PALLETE.black};
   ${fontSizeH8}
   ${fontWeightLight}
@@ -20,15 +19,29 @@ S.TitleContainer = styled.div`
 S.TitleTopContainer = styled.div`
   display: flex;
   justify-content: left;
+
+  & span {
+    font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    padding-bottom: 3px;
+    margin: 0 0 6px 0;
+  }
 `
 
 S.TitleBottomContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  ${fontSizeH6}
-  ${blackColor}
-  ${fontWeightRegular}
+  align-items: end;
+  padding-bottom: 40px;
+  
+  & span {
+    font-size: 30px;
+    font-weight: 700;
+    color: #222;
+    margin-top: 1px;
+    text-align: left;
+  }
 `
 
 S.TitleTopLinkText = styled.div`
@@ -106,9 +119,13 @@ S.DescriptionTitle = styled.span`
   text-align: center;
   width: 163px;
   padding: 57px 0px 17px 0px;
-  ${fontSizeH6}
-  ${fontWeightBold}
+
   border-bottom: 1px solid #B9D2C7;
+    font-size: 18px;
+    flex-shrink: 0;
+    font-weight: 500;
+    color: #222;
+    text-align: center;
 `
 
 S.DescriptionListContainer = styled.div`
@@ -123,11 +140,18 @@ S.DescriptionContainer = styled.div`
   gap: 5px;
   display: flex;
   justify-content: left;
+
+  & img {
+    width: 14px;
+    height: 14px;
+  }
 `
 
 S.Description = styled.span`
-  ${fontSizeH8}
-  ${fontWeightRegular}
+  font-size: 14px;
+  font-weight: 300;
+  color: #222;
+  padding-bottom: 3px;
 `
 
 S.DescriptionGetPoint = styled.span`

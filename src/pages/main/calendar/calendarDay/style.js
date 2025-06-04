@@ -71,12 +71,12 @@ S.CalendarWrapper = styled.div`
   .fc-scrollgrid-section {
     border-right: none !important;
   }
+  
   /* 시간 구분선 */
   .fc-timegrid-slot {
     border-top: 1px solid #e5e7eb;
   }
 
-  /* 스크롤 기능 유지, 스크롤바 숨기기 */
   .fc-scroller {
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -103,12 +103,10 @@ S.CalendarWrapper = styled.div`
     background-color: #ffffff !important;
   }
 
-  /* 현재 시간 선 (초록색) */
   .fc-timegrid-now-indicator-line {
     border-top: 2px solid #01cd74 !important;
   }
 
-  /* 현재 시간 화살표 (← 방향 초록색) */
   .fc-timegrid-now-indicator-arrow {
     border-left: 6px solid #01cd74 !important;
     border-top: 6px solid transparent !important;
@@ -132,7 +130,7 @@ S.CalendarWrapper = styled.div`
     left: 0 !important;
     right: 0 !important;
     width: 770px !important;
-    height: 100% !important; /* 셀에 맞추도록 */
+    height: 100% !important; 
     padding: 4px 6px !important;
     box-sizing: border-box;
 
