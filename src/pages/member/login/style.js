@@ -17,7 +17,7 @@ const S = {}
 
   S.LoginBox = styled.div`
     background: white;
-    border: solid 1px #ccc;
+    border: solid 1px #bbb;
     border-radius: 30px;
     width: 450px;
     min-height: 380px;
@@ -36,8 +36,8 @@ const S = {}
   `;
 
   S.Tab = styled(NavLink).withConfig({
-  shouldForwardProp: (prop) => prop !== 'right',
-})`
+    shouldForwardProp: (prop) => prop !== 'right',
+  })`
   width: 50%;
   height: 60px;
   display: flex;
@@ -47,8 +47,8 @@ const S = {}
   cursor: pointer;
 
   font-size: 16px;
-  font-weight: 400;
-  color: #333;
+  font-weight: 500;
+  color: #222;
   background-color: #d9d9d9;
 
   border-top-left-radius: ${({ right }) => (!right ? '25px' : '0')};
@@ -56,7 +56,6 @@ const S = {}
 
   &.active {
     background-color: transparent;
-    font-weight: 400;
   }
 `;
 
@@ -87,10 +86,10 @@ const S = {}
   S.SocialButton = styled.button`
     width: 410px;
     height: 52px;
-    padding: 0 16px;
+    padding: 0 24px;
     border: 1px solid #C5CCD2;
     background: none;
-    color: #51555D;
+    color: #222;
     font-size: 16px;
     display: flex;
     align-items: center;
