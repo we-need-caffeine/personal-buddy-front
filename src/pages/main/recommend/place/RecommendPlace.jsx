@@ -112,7 +112,7 @@ const RecommendPlace = () => {
         <S.PlaceRecommend>
             <S.PlaceWrapper>
                 <S.PlaceList>
-                    <S.PlaceTitle1>오늘 이런 {selectedType} 어때요?</S.PlaceTitle1>
+                    <S.PlaceTitle1>{selectedType} 장소 추천 입니다!</S.PlaceTitle1>
                     {data.map((item, index) => {
                         const parts = item.interestDataContent.split('|');
                         const items = [];
@@ -120,12 +120,12 @@ const RecommendPlace = () => {
                             const key = parts[i];
                             const value = parts[i + 1];
                             items.push(
-                                <div key={i}>
+                                <div key={i} style={{marginBottom: '10px'}}>
                                     <span style={{
                                         fontWeight: 500,
                                         fontSize: 14,
                                         display: 'inline-block',
-                                        width: 40,
+                                        width: 65,
                                         color: '#333333'
                                     }}>{key}</span>: <span style={{
                                         fontWeight: 400,
