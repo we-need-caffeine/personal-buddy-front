@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import S from '../style';
 import { useSelector } from 'react-redux';
 import { useOutletContext } from 'react-router-dom';
+import Pagination from '../../../../hooks/pagenation/Pagination';
 
 const MyTreeItemBackground = () => {
   const {
@@ -19,6 +20,14 @@ const MyTreeItemBackground = () => {
   } = useOutletContext();
 
   const [selectedItemCard, setSelectedItemCard] = useState(-1);
+  
+  // 아이템 페이지네이션
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const paginatedItems = memberItems.filter(item => item.itemType === "배경").slice(
+    (currentPage - 1) * 24,
+    currentPage * 24
+  );
 
   const handleClickItemCard = (index) => {
     if(selectedItemCard != index){
@@ -81,8 +90,7 @@ const MyTreeItemBackground = () => {
   return (
     <S.ItemCardListBox>
       {
-        memberItems && memberItems.filter(item => item.itemType === "배경")
-        .map((item) =>  (
+        paginatedItems && paginatedItems.map((item) =>  (
           <S.ItemCard 
             key={item.itemId} 
             onClick={() => {handleClickItemCard(item.itemId)}}
@@ -121,6 +129,13 @@ const MyTreeItemBackground = () => {
           </S.ItemCard>
         ))
       }
+      <S.PaginationWrapper>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(memberItems.filter(item => item.itemType === "배경").length / 24)}
+          onPageChange={setCurrentPage}
+        />
+      </S.PaginationWrapper>
     </S.ItemCardListBox>
   );
 };
