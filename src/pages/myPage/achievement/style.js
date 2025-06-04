@@ -36,11 +36,10 @@ S.TitleBottomContainer = styled.div`
   padding-bottom: 40px;
   
   & span {
+    display: flex;
     font-size: 30px;
     font-weight: 700;
     color: #222;
-    margin-top: 1px;
-    text-align: left;
   }
 `
 
@@ -49,6 +48,19 @@ S.TitleTopLinkText = styled.div`
   ${gray6Color}
   ${fontSizeH8}
   &:hover {
+    ${mainGreenColor}
+  }
+`
+
+S.TitleTopText = styled.div`
+
+  & span {
+    font-size: 16px;
+    color: #666;
+    font-weight: 300;
+  }
+
+  & span:hover {
     ${mainGreenColor}
   }
 `
@@ -155,9 +167,8 @@ S.Description = styled.span`
 `
 
 S.DescriptionGetPoint = styled.span`
-  ${fontSizeH8}
-  ${fontWeightBold}
   ${pointRedColor}
+  font-weight: 600;
 `
 
 export default S;

@@ -430,7 +430,7 @@ const checkLiked = async () => {
                 liked = {likedCommentIds.includes(c.id)}
                 onClick={()=> handleCommentLike(c.id)}
               >
-                <span>♥</span> {/* {c.boardCommentLikeCount} */}
+                <span>♥</span> {c.boardCommentLikeCount}
               </S.CommentLikeButton>
             </S.LikeWrap>
           </S.CommentUser>
@@ -457,7 +457,7 @@ const checkLiked = async () => {
                   liked={likedCommentIds.includes(c.id)}
                   onClick={() => handleCommentLike(c.id)}>
                 <span>♥</span>
-                {/* {c.boardCommentLikeCount} */}
+                {c.boardCommentLikeCount}
                 </S.CommentLikeButton>
               </S.Right>
             </S.ProfileWrap>

@@ -61,16 +61,20 @@ const MyPageComments = () => {
             <NavLink to={`/main/community/board/post/${item.boardId}`}>
               <S.ItemContainer key={item.id}>
                 <S.ItemContentContainer>
-                  <S.ItemCreateTime>{FormatDate(item.boardCommentCreateDate)}</S.ItemCreateTime>
                   <S.ItemTitle>게시글 | {item.boardTitle}</S.ItemTitle>
                   <S.ItemContent>
                     {item.boardCommentContent}
                   </S.ItemContent>
                 </S.ItemContentContainer>
-                <S.ItemInfo>
-                  <S.ItemIconImg src="/assets/images/board/icon/like-icon.png" className="icon" alt="like" />
-                  <S.ItemInfoCount>{item.boardCommentLikeCount}</S.ItemInfoCount>
-                </S.ItemInfo>
+                <S.CreateTimeWrap>
+                    <S.ItemCreateTime>{FormatDate(item.boardCommentCreateDate).split(" ").join(" ")}</S.ItemCreateTime>
+                    <S.ItemInfoContainer>
+                      <S.ItemInfo>
+                        <S.ItemIconImg src="/assets/images/board/icon/like-icon.png" className="icon" alt="like" />
+                        <S.ItemInfoCount>{item.boardCommentLikeCount}</S.ItemInfoCount>
+                      </S.ItemInfo>
+                    </S.ItemInfoContainer>
+                  </S.CreateTimeWrap>
               </S.ItemContainer>
             </NavLink>
           ))}

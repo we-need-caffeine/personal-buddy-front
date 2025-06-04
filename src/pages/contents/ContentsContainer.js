@@ -21,14 +21,14 @@ const ContentsContainer = () => {
       <S.TabBox>
           <S.TabContainer>
             <S.TabBtn style={{ transform: getTransformValue(pathName)}} />
-            <S.TabText isSelected={pathName == "/main/contents"}>
-              <Link to={"/main/contents"}>업적</Link>
+            <S.TabText isSelected={pathName === "/main/contents"}>
+              <Link to={"/main/contents"}>ACHIEVEMENT</Link>
             </S.TabText>
-            <S.TabText isSelected={pathName == "/main/contents/mytree"}>
-              <Link to={"mytree"}>나의 성장나무</Link>
+            <S.TabText isSelected={pathName === "/main/contents/mytree"}>
+              <Link to={"mytree"}>MY TREE</Link>
             </S.TabText>
-            <S.TabText isSelected={pathName == "/main/contents/point-shop"}>
-              <Link to={"point-shop"}>포인트샵</Link>
+            <S.TabText isSelected={pathName === "/main/contents/point-shop"}>
+              <Link to={"point-shop"}>POINT SHOP</Link>
             </S.TabText>
           </S.TabContainer>
         </S.TabBox>
