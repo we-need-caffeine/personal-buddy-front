@@ -312,7 +312,7 @@ const BoardPost = () => {
       if (isLiked) {
         // 이미 좋아요 누른 상태라면 취소
         await unlikePost();
-        setLikeCogit unt((c) => c - 1);
+        setLikeCount((c) => c - 1);
       } else {
         // 좋아요 추가
         await likePost();
