@@ -178,12 +178,13 @@ S.GuestBookInputCount = styled.div`
 S.GuestBookListContainer = styled.div`
     width: 1160px;
     margin-top: 102px;
+    margin-bottom: 50px;
     border-top: solid 1px #ccc;
     border-bottom: solid 1px #ccc;
 `
 
 S.GuestBookItemContainer = styled.div`
-    width: 100%;
+    width: 1118px;
     border-bottom: solid 1px #eee;
     padding: 40px 20px;
 `

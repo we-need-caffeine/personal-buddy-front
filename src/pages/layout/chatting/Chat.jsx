@@ -41,7 +41,7 @@ const Chat = ({ memberId, handleChat, onCancel }) => {
   useEffect(() => {
     getChatList(memberId, chatRoomId)
     setChatEventModal(false)
-  },[isNewMessage, chatRoomId, chatOtherUserInfo])
+  },[isNewMessage, chatRoomId, chatOtherUserInfo, memberId])
   
   useEffect(() => {
       if (handleChat) lockScroll();

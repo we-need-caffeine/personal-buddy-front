@@ -55,6 +55,11 @@ S.MemberInfoTextContainer = styled.div`
 S.MemberNickName = styled.div`
   ${fontWeightBold}
   ${fontSizeH8}
+  width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
 `;
 
 S.MemberStatusMessage = styled.div`
@@ -62,6 +67,10 @@ S.MemberStatusMessage = styled.div`
   ${fontWeightRegular}
   ${gray5Color}
   width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
 `;
 
 S.MemberPoint = styled.div`

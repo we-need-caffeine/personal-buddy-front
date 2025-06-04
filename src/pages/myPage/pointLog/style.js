@@ -29,15 +29,10 @@ S.TitleBottomContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  & span {
-    font-size: 30px;
-    font-weight: 700;
-    color: #222;
-    display: flex;
-    margin: 0 0 40px 0;
-  }
-
+  font-size: 30px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 40px;
 `
 
 S.TitleTopLinkText = styled.div`
@@ -53,7 +48,7 @@ S.TitleMemberPoint = styled.div`
   ${fontWeightRegular}
   ${gray6Color}
   ${fontSizeH8}
-  p {
+  span {
     margin-left: 5px;
     ${pointRedColor}
   }
@@ -62,6 +57,7 @@ S.TitleMemberPoint = styled.div`
 S.BodyContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 50px;
 `
 
 S.ListContainer = styled.div`

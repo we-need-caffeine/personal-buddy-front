@@ -106,8 +106,8 @@ const Alert = ({memberId, handleAlertModal, onCancel}) => {
                             alertInfo.map((info) => (
                                 <S.ListItem key={info.id}>
                                     <S.ProfileImg 
-                                        src={info.memberImgPath || "/assets/images/header/default-member-img.png"}
-                                        alt="멤버 프로필 이미지" 
+                                        src={`http://localhost:10000/images/profile/${info.memberImgName}`}
+                                        alt='멤버 프로필 이미지'
                                         onError={e => {
                                             e.target.src = "/assets/images/header/default-member-img.png";
                                         }}
