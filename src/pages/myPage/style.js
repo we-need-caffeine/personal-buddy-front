@@ -7,6 +7,7 @@ S.MainContainer = styled.div`
     display: flex;
     justify-content: space-between;
     margin-top: 70px;
+    gap: 70px;
 `
 
 S.SideBarContainer = styled.div`

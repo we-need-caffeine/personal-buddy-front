@@ -9,26 +9,35 @@ S.MainContainer = styled.div`
 S.TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
   width: 100%;
-  padding-bottom: 20px;
   border-bottom: 1px solid ${({ theme }) => theme.PALLETE.black};
   ${fontSizeH8}
   ${fontWeightLight}
 `
 
 S.TitleTopContainer = styled.div`
-  display: flex;
-  justify-content: left;
+  span {
+    font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    display: flex;
+    margin: 0 0 13px 0;
+  }
 `
 
 S.TitleBottomContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  ${fontSizeH6}
-  ${blackColor}
-  ${fontWeightRegular}
+
+  & span {
+    font-size: 30px;
+    font-weight: 700;
+    color: #222;
+    display: flex;
+    margin: 0 0 40px 0;
+  }
+
 `
 
 S.TitleTopLinkText = styled.div`
@@ -44,7 +53,7 @@ S.TitleMemberPoint = styled.div`
   ${fontWeightRegular}
   ${gray6Color}
   ${fontSizeH8}
-  span{
+  p {
     margin-left: 5px;
     ${pointRedColor}
   }
@@ -53,38 +62,39 @@ S.TitleMemberPoint = styled.div`
 S.BodyContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-  gap: 20px;
-  padding-top: 20px;
 `
 
 S.ListContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid ${({ theme }) => theme.PALLETE.gray5};
-  padding-bottom: 20px;
+  padding : 30px 20px;
+  border-bottom: 1px solid #eee;
 `
 
 S.ListLeftContainer = styled.div`
   display: flex;
   h1{
-    ${fontSizeH8}
-    ${fontWeightBold}
-    padding-right: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #222;
+    margin-right: 10px;
+  }
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
   }
   h3{
-    ${fontSizeH8}
-    ${fontWeightRegular}
-    ${gray5Color}
+    font-size: 18px;
+    font-weight: 300;
+    color: #222;
   }
 `
 
 S.ListRightContainer = styled.div`
-  ${fontSizeH8}
-  ${fontWeightRegular}
-  ${gray5Color}
+  font-size: 16px;
+  font-weight: 300;
+  color: #999;
 `
 
 S.PointAmount = styled.h2`

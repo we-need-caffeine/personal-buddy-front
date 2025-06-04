@@ -40,7 +40,7 @@ S.TabText = styled.div`
 
   a {
     font-size: 20px;
-    font-weight: ${({ isSelected }) => (isSelected ? `${fontWeightBold}` : `${fontWeightMedium}`)};
+    font-weight: ${({ isSelected }) => (isSelected ? `700` : `500`)};
     color: ${({ isSelected }) => (isSelected ? '#000' : '#999')};
     text-decoration: none;
     transition: color 0.3s ease-in-out;

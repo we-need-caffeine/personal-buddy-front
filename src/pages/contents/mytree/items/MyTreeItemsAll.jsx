@@ -218,11 +218,11 @@ const MyTreeItemsAll = () => {
                   : 
                   ""
               }/>
-            <S.ItemDescriptionH8>{item.itemName}</S.ItemDescriptionH8>
+            <S.ItemTitle>{item.itemName}</S.ItemTitle>
             {
-                item.itemType == "스티커" && (
+                item.itemType === "스티커" && (
                 <>
-                  <S.ItemDescriptionH8>남은 개수 : {item.notAppliedCount}</S.ItemDescriptionH8>
+                  <S.ItemAmount>남은 개수 : {item.notAppliedCount}</S.ItemAmount>
                   <S.ItemDescriptionH10>사이즈 ({item.itemSizeWidth} X {item.itemSizeHeight})</S.ItemDescriptionH10>
                 </>
               )

@@ -28,62 +28,62 @@ const Target = ({
             <S.TargetBox>
                 <S.TargetList location="left">
                     <S.DescriptionTitle>일간 목표</S.DescriptionTitle>
-                    <ul style={{ listStyle: 'none', margin: '20px 0 0 0', width: '100%' }}>
+                    <S.TargetListUl>
                         {
                             filteredDailyTargets.map((dailyTarget, i) => (
                                 <S.TargetListItem key={i}>
-                                    <div style={{display: 'flex', gap: '5px', alignItems: 'center'}}>
+                                    <div>
                                         <S.TargetListIcon src={checkIcon(dailyTarget.isCompleted)} />
                                         <S.Description targetcompleted={dailyTarget.isCompleted}>{dailyTarget.targetType} 일정 등록 ( {dailyTarget.completedCount} / {dailyTarget.standardCount} )</S.Description>
                                     </div>
                                     <div>
                                         <S.DescriptionGetPoint>{dailyTarget.targetGetPoint} 🪙 </S.DescriptionGetPoint>
-                                        <S.Description style={{margin: '0 105px 0 0'}}>획득</S.Description>
+                                        <S.Description>획득</S.Description>
                                     </div>
                                 </S.TargetListItem>
                             ))
                         }
-                    </ul>
+                    </S.TargetListUl>
                 </S.TargetList>
 
                 <S.TargetList>
                     <S.DescriptionTitle>주간 목표</S.DescriptionTitle>
-                    <ul style={{ listStyle: 'none', margin: '20px 0 0 0', width: '100%' }}>
+                    <S.TargetListUl>
                         {
                             filteredWeeklyTargets.map((weeklyTarget, i) => (
                                 <S.TargetListItem key={i}>
-                                    <div style={{display: 'flex', gap: '5px', alignItems: 'center'}}>
+                                    <div>
                                         <S.TargetListIcon src={checkIcon(weeklyTarget.isCompleted)} />
                                         <S.Description targetcompleted={weeklyTarget.isCompleted}>{weeklyTarget.targetType}  일정 등록 ( {weeklyTarget.completedCount} / {weeklyTarget.standardCount} )</S.Description>
                                     </div>
                                     <div>
                                         <S.DescriptionGetPoint>{weeklyTarget.targetGetPoint} 🪙 </S.DescriptionGetPoint>
-                                        <S.Description style={{margin: '0 105px 0 0'}}>획득</S.Description>
+                                        <S.Description>획득</S.Description>
                                     </div>
                                 </S.TargetListItem>
                             ))
                         }
-                    </ul>
+                    </S.TargetListUl>
                 </S.TargetList>
 
                 <S.TargetList location="right">
                     <S.DescriptionTitle>월간 목표</S.DescriptionTitle>
-                    <ul style={{ listStyle: 'none', margin: '20px 0 0 0', width: '100%' }}>
+                    <S.TargetListUl>
                         {
                             filteredMonthlyTargets.map((monthlyTarget, i) => (
                                 <S.TargetListItem key={i}>
-                                    <div style={{display: 'flex', gap: '5px', alignItems: 'center'}}>
+                                    <div>
                                         <S.TargetListIcon src={checkIcon(monthlyTarget.isCompleted)} />
                                         <S.Description targetcompleted={monthlyTarget.isCompleted}>{monthlyTarget.targetType} 일정 등록 ( {monthlyTarget.completedCount} / {monthlyTarget.standardCount} )</S.Description>
                                     </div>
                                     <div>
                                         <S.DescriptionGetPoint>{monthlyTarget.targetGetPoint} 🪙 </S.DescriptionGetPoint>
-                                        <S.Description style={{margin: '0 105px 0 0'}}>획득</S.Description>
+                                        <S.Description>획득</S.Description>
                                     </div>
                                 </S.TargetListItem>
                             ))
                         }
-                    </ul>
+                    </S.TargetListUl>
                 </S.TargetList>
             </S.TargetBox>
         </div>
