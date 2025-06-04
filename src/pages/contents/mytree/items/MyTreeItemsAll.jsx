@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import S from '../style';
 import { useSelector } from 'react-redux';
 import { useOutletContext } from 'react-router-dom';
+import Pagination from '../../../../hooks/pagenation/Pagination';
 
 const MyTreeItemsAll = () => {
   const {
@@ -19,6 +20,14 @@ const MyTreeItemsAll = () => {
   } = useOutletContext();
   
   const [selectedItemCard, setSelectedItemCard] = useState(-1);
+  // 아이템 페이지네이션
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const paginatedItems = memberItems.slice(
+    (currentPage - 1) * 24,
+    currentPage * 24
+  );
+    
   
 
   const handleClickItemCard = (index) => {
@@ -193,7 +202,7 @@ const MyTreeItemsAll = () => {
   return (
     <S.ItemCardListBox>
       {
-        memberItems.map((item) => (
+        paginatedItems && paginatedItems.map((item) => (
           <S.ItemCard 
             key={item.itemId} 
             onClick={() => {handleClickItemCard(item.itemId)}}
@@ -240,6 +249,13 @@ const MyTreeItemsAll = () => {
           </S.ItemCard>
         ))
       }
+      <S.PaginationWrapper>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(memberItems.length / 24)}
+          onPageChange={setCurrentPage}
+        />
+      </S.PaginationWrapper>
     </S.ItemCardListBox>
   );
 };

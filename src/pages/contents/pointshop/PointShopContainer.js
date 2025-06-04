@@ -13,8 +13,14 @@ const PointShopContainer = () => {
   
   const [selectItems, setSelectItems] = useState([]);
   const [cartShow, setCartShow] = useState(false);
-  const [cartAddResultMsg, setCartAddResultMsg] = useState("");
-  const [showAlertModal, setShowAlertModal] = useState();
+  const [modal, setModal] = useState({
+    showModal: false, 
+    modalTitleMsg: "",
+    modalDescriptionMsg: "",
+    modalOkBtnMsg: "",
+    onConfirm: null,
+    modalCancelBtnMsg: "",
+  });
 
   // 컨펌 모달 상태를 변경하는 함수
   const handleConfirmModal = (state) => {
@@ -22,8 +28,15 @@ const PointShopContainer = () => {
   }
 
   // 컨펌 모달 상태를 변경하는 함수
-  const handleAlertModal = (state) => {
-      setShowAlertModal(state)
+  const handleModalState = (state) => {
+      setModal((modal) => ({
+        ...modal,
+        showModal: state, 
+      }))
+  }
+
+  const handleModal = (modal) => {
+    setModal(modal);
   }
 
   const location = useLocation();
@@ -42,7 +55,7 @@ const PointShopContainer = () => {
   }
 
   useEffect(() => {
-    console.log("포인트 변경")
+
   }, [member, memberPoint])
 
   return (
@@ -54,28 +67,33 @@ const PointShopContainer = () => {
           setCartShow={setCartShow} 
           selectItems={selectItems} 
           setSelectItems={setSelectItems}
-          cartAddResultMsg={cartAddResultMsg} 
-          setCartAddResultMsg={setCartAddResultMsg}
-          showAlertModal={showAlertModal} 
-          setShowAlertModal={setShowAlertModal}
+          modal={modal}
+          setModal={setModal}
         />
         <div>
           {
             cartShow && (
               <CartViewModal 
                 handleConfrmModal={cartShow}
-                onCancel={() => handleConfirmModal(false)} 
+                onCancel={() => handleConfirmModal(false)}
+                setConfirmModal={setModal}
               />
             )
           }
           {
-            showAlertModal && (
+            modal.showModal && (
               <ConfirmModal 
-                handleConfrmModal={showAlertModal}
-                title="장바구니 담기"
-                message={cartAddResultMsg}
-                onCancel={() => handleAlertModal(false)}
-                cancelBtnMsg={"확인"}
+                handleConfrmModal={modal.showModal}
+                title={modal.modalTitleMsg}
+                message={modal.modalDescriptionMsg}
+                onConfirm={modal.onConfirm}
+                onCancel={() => setModal((modal) => ({
+                      ...modal,
+                      showModal: false, 
+                    }))
+                }
+                confirmBtnMsg={modal.modalOkBtnMsg}
+                cancelBtnMsg={modal.modalCancelBtnMsg}
               />
             )
           }
@@ -85,7 +103,7 @@ const PointShopContainer = () => {
             <S.ItemTabLink selected={getSeleted(pathName) === 'sticker'} to={"sticker"}>스티커</S.ItemTabLink>
             <S.ItemTabLink selected={getSeleted(pathName) === 'tree'} to={"tree"}>나무</S.ItemTabLink>
           </S.ItemTabBox>
-          <Outlet context={{member, selectItems, setSelectItems}}/>
+          <Outlet context={{member, selectItems, setSelectItems, modal, setModal}}/>
         </div>
       </div>
     );
