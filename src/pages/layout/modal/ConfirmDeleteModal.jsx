@@ -4,18 +4,32 @@ import { HeaderContext } from '../../../context/HeaderContext';
 
 const ConfirmDeleteModal = ({handleConfrmDeleteModal, onCancel, title, message, onConfirmDelete}) => {
 
-  // 헤더 스크롤을 막는 상태
+  // 외부 요소 스크롤을 막는 함수
   const { lockScroll, unlockScroll } = useContext(HeaderContext);
 
   useEffect(() => {
-      if (handleConfrmDeleteModal) lockScroll();
-      return () => unlockScroll();
-  }, [handleConfrmDeleteModal]);
+    if (handleConfrmDeleteModal) lockScroll();
 
-  if (!handleConfrmDeleteModal) return (
-    <>
-    </>
-  );
+    // ESC 키 핸들러
+    const handleEsc = (e) => {
+        if (e.key === 'Escape') {
+            onCancel();
+        }
+    };
+
+    // 모달이 열릴 때만 리스너 등록
+    if (handleConfrmDeleteModal) {
+        window.addEventListener('keydown', handleEsc);
+    }
+
+    // 모달 닫힐 때 리스너 해제
+    return () => {
+        unlockScroll();
+        window.removeEventListener('keydown', handleEsc);
+    };
+  }, [handleConfrmDeleteModal, onCancel]);
+
+  if (!handleConfrmDeleteModal) return null;
 
   return (
     <S.Backdrop onClick={onCancel}>
@@ -38,7 +52,9 @@ const ConfirmDeleteModal = ({handleConfrmDeleteModal, onCancel, title, message, 
           >
             삭제
           </S.ConfirmButton>
-          <S.CancelButton onClick={onCancel}>취소</S.CancelButton>
+          <S.CancelButton onClick={onCancel}>
+            취소
+          </S.CancelButton>
         </S.ButtonContainer>
       </S.ModalContainer>
     </S.Backdrop>

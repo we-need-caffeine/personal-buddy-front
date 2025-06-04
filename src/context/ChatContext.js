@@ -119,10 +119,6 @@ export const ChatProvider  = ({ children }) => {
           setChatList(prev => [...prev, newMessage]);
           setIsNewMessage(prev => !prev)
         });
-        // stompClient.current.subscribe(`/sub/state/${chatRoom.chatRoomId}`, (message) => {
-        //   const newMessage = JSON.parse(message.body);
-        //   getChatList(newMessage.chatWriterMemberId, newMessage.chatRoomId)
-        // });
       });
     });
   };
@@ -147,17 +143,6 @@ export const ChatProvider  = ({ children }) => {
       setInputChat('');
     }
   };
-
-  // 채팅방 입장등의 액션을 잡아서 상태변화
-  // const sendActionState = (memberId, chatRoomId) => {
-  //   if (stompClient.current && stompClient.current.connected) {
-  //     const body = {
-  //       chatWriterMemberId : memberId,
-  //       chatRoomId : chatRoomId,
-  //     };
-  //     stompClient.current.send("/pub/state", {}, JSON.stringify(body));
-  //   }
-  // };
 
   return (
     <ChatContext.Provider value={{

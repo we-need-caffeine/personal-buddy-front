@@ -297,6 +297,8 @@ S.RightChat = styled.div`
 `
 
 S.RightContent = styled.div`
+  min-width: 3px;
+  min-height: 12px;
   ${blackColor}
   ${fontSizeH9}
   ${fontWeightRegular}
@@ -371,7 +373,8 @@ S.SendButton = styled.button`
   ${fontSizeH8}
   border: none;
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.PALLETE.gray.gray3};
+  background: ${({ $active, theme }) => ($active ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3)};
+  cursor: ${({ $active }) => ($active ? 'pointer' : 'not-allowed')};
 `
 
 S.ChatModalContainer = styled.button`
