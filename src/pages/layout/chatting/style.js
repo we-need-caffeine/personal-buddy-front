@@ -26,6 +26,7 @@ S.Backdrop = styled.div`
   align-items: center;
   z-index: 10001;
 `
+
 S.BackdropHide = styled.div`
   position: fixed;
   left: 0; 

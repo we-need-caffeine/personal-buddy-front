@@ -26,8 +26,6 @@
     const [dropdownPos, setDropdownPos] = useState({ x: 0, y: 0 });
     // 알림창 상태
     const [showAlertModal, setShowAlertModal] = useState(false);
-    // 알림창 드롭다운 위치
-    const [alertDropdownPos, setAlertDropdownPos] = useState({ x: 0, y: 0 });
     // 읽지 않은 알림 수
     const [notReadAlertCount, setNotReadAlertCount] = useState(0);
     // 채팅 콘텍스트
@@ -202,7 +200,6 @@
                     src="/assets/images/header/alert.png"
                     alt="알림 아이콘"
                     onClick={(e) => {
-                      setAlertDropdownPos({ x: e.clientX, y: e.clientY });
                       handleAlertModal(true)
                       readAlerts()
                     }}
@@ -267,19 +264,13 @@
 
         {/* 알림창 */}
         {showAlertModal && (
-          <>
-            <S.AlertModalContainer
-              style={{ top: alertDropdownPos.y, left: alertDropdownPos.x - 350 }}
-            >
-              <Alert
-                memberId={memberId}
-                handleAlertModal={handleAlertModal}
-              />
-            </S.AlertModalContainer>
-            <S.CardBG
-              onClick={() => {handleAlertModal(false)}}
-            />
-          </>
+          <Alert
+            memberId={memberId}
+            handleAlertModal={showAlertModal}
+            onCancel={() => {
+              handleAlertModal(false)
+            }}
+          />
         )}
       </S.Container>
     );
