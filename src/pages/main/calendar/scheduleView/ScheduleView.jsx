@@ -78,41 +78,45 @@ const ScheduleView = () => {
           <S.DateSection>
             <S.DateTextLabel>시작</S.DateTextLabel>
             <S.DateInputWrapper>
-              <S.DateTextLabel>
-                {schedule.scheduleStartDate?.split("T")[0]}
-              </S.DateTextLabel>
-              <S.DateTextLabel>
-                {schedule.scheduleStartDate?.split("T")[1]?.slice(0, 5)}
-              </S.DateTextLabel>
+              <div>
+                <S.DateText>
+                  {schedule.scheduleStartDate?.split("T")[0]}
+                </S.DateText>
+                <S.DateText>
+                  {schedule.scheduleStartDate?.split("T")[1]?.slice(0, 5)}
+                </S.DateText>
+              </div>
             </S.DateInputWrapper>
           </S.DateSection>
 
           <S.DateSection>
             <S.DateTextLabel>종료</S.DateTextLabel>
             <S.DateInputWrapper>
-              <S.DateTextLabel>
-                {schedule.scheduleEndDate?.split("T")[0]}
-              </S.DateTextLabel>
-              <S.DateTextLabel>
-                {schedule.scheduleEndDate?.split("T")[1]?.slice(0, 5)}
-              </S.DateTextLabel>
+              <div>
+                <S.DateText>
+                  {schedule.scheduleEndDate?.split("T")[0]}
+                </S.DateText>
+                <S.DateText>
+                  {schedule.scheduleEndDate?.split("T")[1]?.slice(0, 5)}
+                </S.DateText>
+              </div>
             </S.DateInputWrapper>
           </S.DateSection>
 
           <S.ContentInputWrapper>
             <S.DateTextLabel>장소</S.DateTextLabel>
-            <S.DateTextLabel>
+            <S.DateText>
               {schedule.scheduleLocation || "없음"}
-            </S.DateTextLabel>
+            </S.DateText>
           </S.ContentInputWrapper>
 
   
 
           <S.CategoryInputWrapper>
             <S.DateTextLabel>카테고리</S.DateTextLabel>
-            <S.DateTextLabel>
+            <S.DateText>
               {schedule.scheduleCategoryTitle || "없음"}
-            </S.DateTextLabel>
+            </S.DateText>
           </S.CategoryInputWrapper>
         </S.DateSectionGroup>
       </S.DateContainer>
@@ -122,9 +126,9 @@ const ScheduleView = () => {
           {/* 상세 내용 영역 */}
            <S.ContentInputWrapper>
             <S.DateTextLabel>내용</S.DateTextLabel>
-            <S.DateTextLabel>
+            <S.DateText>
               {schedule.scheduleContent || "없음"}
-            </S.DateTextLabel>
+            </S.DateText>
           </S.ContentInputWrapper>
 
           <S.ButtonGroup>
@@ -135,7 +139,11 @@ const ScheduleView = () => {
             >
               삭제
             </S.DeleteButton>
-            <S.CancelButton>취소</S.CancelButton>
+            <S.CancelButton 
+              onClick={(e) => {
+                
+              }}
+            >취소</S.CancelButton>
           </S.ButtonGroup>
         </S.ContentWrapper>
       </S.ContentContainer>

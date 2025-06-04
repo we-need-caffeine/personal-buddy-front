@@ -42,14 +42,15 @@ S.Container = styled.div`
   width: 560px;
   height: 780px;
   background-color: white;
-  border: 1px solid black;
+  border: 1px solid #01CD74;
 `;
 
 // 제목 입력 영역
 S.TitleInputContainer = styled.div`
   display: flex;
   width: 100%;
-  height: 67px;
+  height: 60px;
+  flex-shrink: 0;
   background-color: white;
 `;
 
@@ -59,11 +60,14 @@ S.TitleInput = styled.input`
   margin-left: 32px;
   width: 100%;
   box-sizing: border-box;
-  ${fontSizeH4};
+  font-size: 20px;
+  color: #222;
 `;
 
 S.DateTextLabel = styled.span`
-  ${fontSizeH8};
+  font-size: 16px;
+  font-weight: 500;
+  color: #222;
 `;
 
 // 날짜 입력 영역
@@ -74,7 +78,7 @@ S.DateContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 176px;
-  border: 1px solid black;
+  border: 1px solid #01CD74;
 `;
 
 S.DateSectionGroup = styled.div`
@@ -164,6 +168,12 @@ S.ContentRow = styled.div`
   align-items: center;
   width: 100%;
   height: 37px;
+
+  & span {
+    font-size: 16px;
+    font-weight: 500;
+    color: #222;
+  }
   ${fontWeightLight}
 `;
 
@@ -228,6 +238,11 @@ S.ContentRowTextArea = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 143px;
+
+  & span {
+    font-size: 16px;
+    font-weight: 500;
+  }
   ${fontWeightLight}
 `;
 
