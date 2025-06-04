@@ -32,16 +32,19 @@ S.Container = styled.div`
   width: 560px;
   height: 780px;
   background-color: white;
-  border: 1px solid black;
+  border-top: 1px solid #01CD74;
+  border-right: 1px solid #01CD74;
+  border-bottom: 1px solid #01CD74;
 `;
 
 // 제목 입력 영역
 S.DateInputContainer = styled.div`
   display: flex;
   width: 100%;
-  height: 67px;
+  height: 60px;
+  flex-shrink: 0;
   background-color: white;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #01CD74;
 `;
 
 S.DateInput = styled.input`
@@ -50,7 +53,7 @@ S.DateInput = styled.input`
   margin-left: 39px;
   width: 100%;
   box-sizing: border-box;
-  ${fontSizeH4};
+  font-size: 20px;
 `;
 
 // 내용 작성 영역
