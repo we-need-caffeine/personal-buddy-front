@@ -236,6 +236,8 @@ S.CommentLikeButton = styled.button`
   padding: 6px 16px;
   border: none;
   border-radius: 50px;
+  white-space: nowrap;
+  overflow: hidden;
   font-size: 14px;
   font-weight: bold;
   color: white;

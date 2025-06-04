@@ -64,7 +64,7 @@ const CalendarContainer = () => {
         ? `${basePath}/${view}/schedule-list-view`
         : `${basePath}/${view ? `${view}/schedule-save` : "schedule-save"}`;
 
-    console.log("[DEBUG] navigate to:", targetPath);
+    //console.log("[DEBUG] navigate to:", targetPath);
     navigate(targetPath);
   };
 
