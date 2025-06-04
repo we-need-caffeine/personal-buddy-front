@@ -172,7 +172,7 @@ const CalendarForm = ({
         {showInviteSection && currentMembers?.length > 0 && (
           <S.MemberList>
             <S.MemberListTitle>
-              참여 중인 멤버 ({currentMembers.length-1})
+              참여 중인 멤버 ({currentMembers.length})
             </S.MemberListTitle>
             {currentMembers
               .filter((member) => member.id !== Number(memberId)) 
