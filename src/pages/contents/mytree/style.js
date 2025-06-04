@@ -153,11 +153,13 @@ S.ItemTabLink = styled(Link)`
 
 S.ItemCardListBox = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(6, minmax(150px, 1fr));
+  grid-template-rows: 1fr 1fr 1fr 1fr 40px;
+  /* grid-template-rows: repeat(4, minmax(234px, 1fr)); */
   gap: 40px 40px; /* row-gap column-gap */
   width: 1400px;
   height: 1300px;
-  padding: 90px 110px;
+  padding: 30px 110px 30px 110px;
   margin-top: -1px;
   background-color: ${({ theme }) => theme.PALLETE.primary.lightGreen};
   border: solid 1px ${({ theme }) => theme.PALLETE.primary.mainGreen};
@@ -229,5 +231,11 @@ S.ItemRemoveButton = styled.button`
         background-color: ${({theme}) => theme.PALLETE.gray.gray6};
     }
 `
+
+S.PaginationWrapper = styled.div`
+    ${flexCenter}
+    grid-column: 1 / -1;
+    grid-row: 5;
+`;
 
 export default S;
