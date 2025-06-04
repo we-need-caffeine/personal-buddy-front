@@ -74,15 +74,15 @@ S.RightWrapper = styled.div`
 `;
 
 S.MainTitle = styled.div`
-  ${fontSizeH4}
-  ${fontWeightMedium}
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0 0 12px 0;
 `;
 
 S.SubTitle = styled.div`
   margin-left: 42px;
-  ${fontSizeH6}
-  ${fontWeightMedium}
-  ${gray6Color}
+  font-weight: 400;
+  font-size: 16px;
 
   span {
     ${pointRedColor}
@@ -97,14 +97,15 @@ S.Tags = styled.div`
 `;
 
 S.Tag = styled.span`
-  padding: 8px 16px;
-  border-radius: 50px;
-  background-color: ${({ theme }) => theme.PALLETE.white};
-  ${fontSizeH6}
-  ${fontWeightMedium}
-  margin-top: 11px;
-  margin-right: 11px;
-  cursor: pointer;
+     padding: 8px 16px;
+    border-radius: 50px;
+    background-color: #fff;
+    font-size: 18px;
+    font-weight: 300;
+    margin-top: 11px;
+    margin-right: 11px;
+    cursor: pointer;
+    border: 1px solid #ccc;
 
   &:hover {
     background-color: ${({ theme }) => theme.PALLETE.primary.lightGreen};
@@ -134,7 +135,7 @@ S.NextBtn = styled.button`
   color: ${({ theme }) => theme.PALLETE.white};
   border: none;
   ${fontSizeH6}
-  font-weight: 600;
+  font-weight: 500;
   border-radius: 10px;
   cursor: pointer;
 `;

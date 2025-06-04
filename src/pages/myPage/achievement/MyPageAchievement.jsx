@@ -142,11 +142,11 @@ const MyPageAchievement = () => {
         <S.TitleContainer>
           <S.TitleBottomContainer>
               <span>나의 달성한 업적</span>
-            <S.TitleTopLinkText>
+            <S.TitleTopText>
               <NavLink to="/main/contents">
                 <span>나의 업적 보러 가기 &gt;&gt;</span>
               </NavLink>
-            </S.TitleTopLinkText>
+            </S.TitleTopText>
           </S.TitleBottomContainer>
         </S.TitleContainer>
         {/* 달성한 업적이 없을 때 보여지는 부분 */}

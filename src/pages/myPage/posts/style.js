@@ -4,31 +4,38 @@ import { blackColor, fontSizeH6, fontSizeH8, fontSizeH9, fontWeightLight, fontWe
 const S = {};
 
 S.MainContainer = styled.div`
+
 `
 
 S.TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
   width: 100%;
-  padding-bottom: 20px;
   border-bottom: 1px solid ${({ theme }) => theme.PALLETE.black};
   ${fontSizeH8}
   ${fontWeightLight}
 `
 
 S.TitleTopContainer = styled.div`
-  display: flex;
-  justify-content: left;
+
+    & span {
+      font-size: 18px;
+      font-weight: 300;
+      color: #666;
+      display: flex;
+      margin: 0 0 13px 0;
+    }
 `
 
 S.TitleBottomContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  ${fontSizeH6}
-  ${blackColor}
-  ${fontWeightRegular}
+
+  & span {
+    display: flex;
+    font-size: 30px;
+    font-weight: 700;
+    color: #222;
+    margin: 0 0 40px 0;
+  }
 `
 
 S.TitleTopLinkText = styled.div`
@@ -43,53 +50,59 @@ S.TitleTopLinkText = styled.div`
 S.BodyContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-  gap: 20px;
-  padding-top: 20px;
 `
 
 S.ItemContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  height: 129px;
-  border-bottom: solid 1px ${({ theme }) => theme.PALLETE.gray.gray4};
+  gap : 20px;
+  border-bottom: 1px solid #eee;
+  padding: 30px 0;
+`
+
+S.ImgWrap = styled.div`
+  object-fit: cover;
+  width: 200px;
+  height: 120px;
+  flex-shrink: 0;
+  overflow: hidden;
 `
 
 S.ItemImg = styled.img`
-  object-fit: cover;
-  width: 200px;
-  height: 110px;
+  width: 100%;
 `
 
 S.ItemContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: left;
-  padding-left: 40px;
-  gap: 10px;
-  margin-right: auto;
+  width: 100%;
+  
+`
+
+S.CreateTimeWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
 `
 
 S.ItemCreateTime = styled.span`
-  ${fontWeightRegular}
-  ${gray5Color}
-  ${fontSizeH9}
+  font-size: 16px;
+  font-weight: 300;
+  color: #999;
 `
 
 S.ItemTitle = styled.span`
-  ${fontWeightMedium}
-  ${blackColor}
-  ${fontSizeH6}
+  font-size: 18px;
+  flex-shrink: 0;
+  font-weight: 500;
+  color: #222;
+  margin: 0 0 12px 0;
 `
 
 S.ItemContent = styled.span`
-  ${fontWeightThin}
-  ${blackColor}
-  ${fontSizeH8}
-  line-height: 18px;
-  max-width: 700px;
-  max-height: 55px;
+  font-size: 18px;
+  font-weight: 300;
+  color: #000;
+  flex: 1;
+  margin: 0 0 12px 0;
 `
 
 S.ItemInfoContainer = styled.div`
@@ -98,10 +111,21 @@ S.ItemInfoContainer = styled.div`
 `
 
 S.ItemInfo = styled.div`
+  display: flex;
+  align-items: center;
+  & span {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    color: #666;
+    font-weight: 300;
+  }
 `
 
 S.ItemIconImg = styled.img`
-
+  width: 14px;
+  height: 14px;
+  margin-right: 3px;
 `
 
 S.ItemInfoCount = styled.span`

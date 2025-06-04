@@ -78,7 +78,7 @@ const MyPageMemberEdit = () => {
             <h1>이메일</h1>
           </S.InputTextTitle>
           <S.MemberInfoInputContainer>
-            <S.MemberInfo style={{color:'#777777'}}>{currentUser.memberEmail}</S.MemberInfo>
+            <S.MemberInfo style={{color:'#666'}}>{currentUser.memberEmail}</S.MemberInfo>
           </S.MemberInfoInputContainer>
           {/* 비밀번호 */}
           {currentUser.memberProvider === 'local' && (

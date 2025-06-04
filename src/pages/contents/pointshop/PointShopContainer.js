@@ -22,6 +22,10 @@ const PointShopContainer = () => {
     modalCancelBtnMsg: "",
   });
 
+
+  
+
+
   // 컨펌 모달 상태를 변경하는 함수
   const handleConfirmModal = (state) => {
       setCartShow(state)

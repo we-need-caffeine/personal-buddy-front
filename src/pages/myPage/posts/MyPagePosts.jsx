@@ -61,35 +61,39 @@ const MyPagePosts = () => {
           {currentItems.map((item) => (
             <NavLink to={`/main/community/board/post/${item.id}`}>
               <S.ItemContainer key={item.id}>
-                <S.ItemImg
-                  src={
-                    item.boardImgName && item.boardImgPath
-                    ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(item.boardImgPath.replace("C:/personalbuddy/", ""))}&fileName=${encodeURIComponent(item.boardImgName)}`
-                    : '/assets/images/board/default/default-img.png'
-                  }
-                  alt="thumbnail"
-                />
+                <S.ImgWrap>
+                  <S.ItemImg
+                    src={
+                      item.boardImgName && item.boardImgPath
+                      ? `${process.env.REACT_APP_BACKEND_URL}/files/api/display?filePath=${encodeURIComponent(item.boardImgPath.replace("C:/personalbuddy/", ""))}&fileName=${encodeURIComponent(item.boardImgName)}`
+                      : '/assets/images/board/default/default-img.png'
+                    }
+                    alt="thumbnail"
+                  />
+                </S.ImgWrap>
                 <S.ItemContentContainer>
-                  <S.ItemCreateTime>{FormatDate(item.boardCreateDate)}</S.ItemCreateTime>
                   <S.ItemTitle>{item.boardTitle}</S.ItemTitle>
                   <S.ItemContent>
                     {item.boardContent}
                   </S.ItemContent>
+                  <S.CreateTimeWrap>
+                    <S.ItemCreateTime>{FormatDate(item.boardCreateDate).split(" ").join(" ")}</S.ItemCreateTime>
+                    <S.ItemInfoContainer>
+                      <S.ItemInfo>
+                        <S.ItemIconImg src="/assets/images/board/icon/like-icon.png" className="icon" alt="like" />
+                        <S.ItemInfoCount>{item.boardLikeCount}</S.ItemInfoCount>
+                      </S.ItemInfo>
+                      <S.ItemInfo>
+                        <S.ItemIconImg src="/assets/images/board/icon/view-icon.png" className="icon" alt="view" />
+                        <S.ItemInfoCount>{item.boardContentViews}</S.ItemInfoCount>
+                      </S.ItemInfo>
+                      <S.ItemInfo>
+                        <S.ItemIconImg src="/assets/images/board/icon/chat-icon.png" className="icon" alt="chat" />
+                        <S.ItemInfoCount>{item.boardCommentCount}</S.ItemInfoCount>
+                      </S.ItemInfo>
+                    </S.ItemInfoContainer>
+                  </S.CreateTimeWrap>
                 </S.ItemContentContainer>
-                <S.ItemInfoContainer>
-                  <S.ItemInfo>
-                    <S.ItemIconImg src="/assets/images/board/icon/like-icon.png" className="icon" alt="like" />
-                    <S.ItemInfoCount>{item.boardLikeCount}</S.ItemInfoCount>
-                  </S.ItemInfo>
-                  <S.ItemInfo>
-                    <S.ItemIconImg src="/assets/images/board/icon/view-icon.png" className="icon" alt="view" />
-                    <S.ItemInfoCount>{item.boardContentViews}</S.ItemInfoCount>
-                  </S.ItemInfo>
-                  <S.ItemInfo>
-                    <S.ItemIconImg src="/assets/images/board/icon/chat-icon.png" className="icon" alt="chat" />
-                    <S.ItemInfoCount>{item.boardCommentCount}</S.ItemInfoCount>
-                  </S.ItemInfo>
-                </S.ItemInfoContainer>
               </S.ItemContainer>
             </NavLink>
           ))}

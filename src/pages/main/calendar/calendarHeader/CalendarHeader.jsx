@@ -19,17 +19,9 @@ const CalendarHeader = () => {
   const [locationAddress, setLocationAddress] = useState(null);
   const [weather, setWeather] = useState(null);
   const extractCityDistrict = (displayName) => {
-    const parts = displayName.split(",").map((part) => part.trim());
-
-    if (parts.length >= 7) {
-      const city = parts[6]; // 시
-      const district = parts[5]; // 구
-      const dong = parts[3]; // 동
-
-      return `${city} ${district} ${dong}`; // "서울 강남구 자곡동"
-    } else {
-      return displayName; // fallback
-    }
+    const { address } = displayName;
+    const {city, borough, quarter} = address;
+    return `${city} ${borough} ${quarter}`; // "서울 강남구 자곡동"
   };
 
   // 현재 위치 + 주소 받아오기
@@ -47,8 +39,8 @@ const CalendarHeader = () => {
             `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
           );
           const data = await response.json();
-          const formattedAddress = extractCityDistrict(data.display_name);
-          setLocationAddress(formattedAddress);
+          const formattedAddress = extractCityDistrict(data);
+          setLocationAddress(formattedAddress)
         } catch (error) {
           console.error("주소 변환 실패:", error);
         }
