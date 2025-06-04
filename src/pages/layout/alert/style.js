@@ -12,6 +12,19 @@ const fadeInUp = keyframes`
   }
 `;
 
+S.Backdrop = styled.div`
+  position: fixed;
+  left: 0; 
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10001;
+`
+
 S.AlartContainer = styled.div`
   background-color: ${({ theme }) => theme.PALLETE.white};
   width: 400px;
@@ -21,6 +34,7 @@ S.AlartContainer = styled.div`
   ${fontSizeH8}
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
   animation: ${fadeInUp} 0.1s ease-out;
+  z-index: 10002;
 `;
 
 S.TitleContainer = styled.div`

@@ -144,7 +144,7 @@ const MyTreeContainer = () => {
             // 아이템 데이터 자체를 넘겨주어, 
             // 컴포넌트 내부에서 데이터 처리
             memberAppliedItemsSticker.map((sticker) => (
-              <Sticker 
+              <Sticker
                 key={sticker.treeCustomizingId} sticker={sticker}
                 memberAppliedItemsSticker={memberAppliedItemsSticker}
                 setMemberAppliedItemSticker={setMemberAppliedItemSticker}

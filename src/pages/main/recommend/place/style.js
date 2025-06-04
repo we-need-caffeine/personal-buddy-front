@@ -44,12 +44,11 @@ S.PlaceHover = styled.div`
     height: 70%;
     background: #4CAF50;
     border-radius: 5px;
-    opacity: 0;
+    opacity: 0;  // 기본 숨김
     transition: opacity 0.3s ease-in-out;
 
-    ${S.PlaceItem}:hover &,
     ${S.PlaceItem}.active & {
-        opacity: 1;
+        opacity: 1;  // active 클래스일 때만 보이게
     }
 `;
 
@@ -74,23 +73,16 @@ S.PlaceInfo = styled.div`
 
 S.PlaceDetails = styled.div`
     width: 680px;
-    height: auto;
-    max-height: 520px;
+    height: 520px;
     background-color: #f5f5f5;
     border-radius: 10px;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     position: relative;
     top: 0;
     bottom: 0;
-
-    &.active {
-        display: flex;
-        width: 680px;
-        height: 520px;
-    }
 `;
 
 S.PlaceDetailsImg = styled.img`

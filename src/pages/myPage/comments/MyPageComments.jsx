@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import S from './style';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import FormatDate from '../../../utils/formatDate/FormatDate'
 import Pagination from '../../../hooks/pagenation/Pagination';
+import { useSelector } from 'react-redux';
 
 const MyPageComments = () => {
-
   // 마이페이지 파람에서 id값을 가져오는 훅함수
   const { id } = useParams();
   // 아이디 값을 저장
-  const memberId = id;
+  const ownerId = id;
+  // 로그인된 유저정보
+  const {currentUser} = useSelector((state) => state.member)
+  // 로그인된 유저의 아이디
+  const memberId = currentUser.id;
   // 가져온 나의 포스팅을 조회
   const [myComments, setMyComments] = useState([]);
   // 페이지네이션
@@ -18,7 +22,17 @@ const MyPageComments = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = myComments.slice(indexOfFirstItem, indexOfLastItem);
+  
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    // currentUser가 아직 undefined일 때 렌더 보호
+    if (!currentUser) return;
+    // 타입 통일 (둘 다 string으로)
+    if (String(ownerId) !== String(memberId)) {
+      navigate(`/main/mypage/${ownerId}`, { replace: true });
+    }
+  }, [memberId, navigate, ownerId, currentUser]);
 
   useEffect(() => {
     const getMyCommnets = async () => {

@@ -11,6 +11,7 @@ const EventPostListContainer = () => {
   '매일매일 출석체크',
   '집중력 업! 공부 타임 챌린지',
   '버디들과 일정 나들이',
+  '오늘 하루는 힐링 데이'
   ];
 
   useEffect(() => {

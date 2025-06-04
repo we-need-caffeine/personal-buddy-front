@@ -65,7 +65,7 @@ const RecommendInformation = () => {
                                         display: 'inline-block',
                                         width: 40,  // 너비 고정
                                         color: '#333333'
-                                    }}>{key}</span>: <span style={{
+                                    }}>{key}</span> : <span style={{
                                         fontWeight: 400,
                                         fontSize: 14,
                                         marginLeft: 10,

@@ -2,15 +2,33 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import S from './style';
 import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const MyPageProfileEdit = () => {
 
+  // 마이페이지 파람에서 id값을 가져오는 훅함수
+  const { id } = useParams();
+  // 아이디 값을 저장
+  const ownerId = id;
   // 로그인된 유저정보
   const {currentUser} = useSelector((state) => state.member)
+  // 로그인된 유저의 아이디
+  const memberId = currentUser.id;
 
   const [profileImage, setProfileImage] = useState(``);
 
   const defaultImg = '/assets/images/member/profile-default.png';
+
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    // currentUser가 아직 undefined일 때 렌더 보호
+    if (!currentUser) return;
+    // 타입 통일 (둘 다 string으로)
+    if (String(ownerId) !== String(memberId)) {
+      navigate(`/main/mypage/${ownerId}`, { replace: true });
+    }
+  }, [memberId, navigate, ownerId, currentUser]);
 
   const {
     register,
@@ -157,6 +175,14 @@ const MyPageProfileEdit = () => {
         <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
           <S.BodyContainer>
             <S.MemberProfile>
+              <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                {...register('newMemberImageInput')}
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+              />
               <S.ImagePlusButton htmlFor="imageInput" />
               <S.ImageMinusButton
                 onClick={handleImageDelete}
