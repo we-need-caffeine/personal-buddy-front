@@ -450,7 +450,7 @@ const ScheduleSave = () => {
         <S.ContentWrapper>
           <S.ContentFormGroup>
             <S.ContentRow>
-              색
+              <span>색</span>
               <S.MemberDropdownContainer ref={colorRef}>
                 <S.MemberSelectBox
                   onClick={() => setColorDropdownOpen((prev) => !prev)}
@@ -483,7 +483,7 @@ const ScheduleSave = () => {
             </S.ContentRow>
 
             <S.ContentRow>
-              멤버
+              <span>멤버</span>
               <S.MemberDropdownContainer ref={memberRef}>
                 <S.MemberSelectBox
                   onClick={() => setMemberDropdownOpen(!memberDropdownOpen)}
@@ -519,7 +519,7 @@ const ScheduleSave = () => {
             </S.ContentRow>
 
             <S.ContentRow>
-              카테고리
+              <span>카테고리</span>
               <S.ContentCategoryWrapper>
                 <S.CustomDropdownContainer ref={mainRef}>
                   <S.CustomDropdownSelectBox
@@ -581,7 +581,7 @@ const ScheduleSave = () => {
             </S.ContentRow>
 
             <S.ContentRow>
-              장소
+              <span>장소</span>
               <S.ContentRowInput
                 value={locationText}
                 onChange={(e) => setLocationText(e.target.value)}
@@ -591,7 +591,7 @@ const ScheduleSave = () => {
 
 
             <S.ContentRowTextArea>
-              내용
+              <span>내용</span>
               <S.ContentRowTextInput
                 value={content}
                 onChange={(e) => setContent(e.target.value)}

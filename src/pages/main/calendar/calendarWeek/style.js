@@ -29,6 +29,7 @@ S.CalendarWrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  border: solid 1px #01cd74;
 
   /* 좌측 시간 라벨 배경 */
   .fc-timegrid-slot-label {
@@ -142,11 +143,13 @@ S.CalendarWrapper = styled.div`
 `;
 
 S.DateInfoWrapper = styled.div`
-  height: 50px;
   display: flex;
+  flex-shrink: 0;
+  height: 60px;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #01cd74;
+  border-bottom: 1px solid #01cd74;
+  padding: 0 40px;
 `;
 
 S.TodayText = styled.span`

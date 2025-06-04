@@ -20,7 +20,8 @@ S.LocationContainer = styled.div`
   top: 100%;
   left: 0;
   padding-top: 6px;
-  ${fontSizeH6};
+  font-size: 16px;
+  font-weight: 500;
   color: #333;
   display: flex;
   justify-content: space-between;
@@ -36,6 +37,8 @@ S.WeatherInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+
+  font-weight: 500;
 
   img {
     width: 24px;

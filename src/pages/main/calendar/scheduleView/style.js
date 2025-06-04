@@ -15,14 +15,17 @@ S.Container = styled.div`
   align-items: center;
   width: 560px;
   height: 780px;
-  border: 1px solid black;
+  border-top: 1px solid #01CD74;
+  border-right: 1px solid #01CD74;
+  border-bottom: 1px solid #01CD74;
 `;
 
 S.TitleInputContainer = styled.div`
   display: flex;
   width: 100%;
-  height: 67px;
-  border-bottom: 1px solid black;
+  height: 60px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #01CD74;
 `;
 
 S.MemberListContainer = styled.div`
@@ -41,12 +44,20 @@ S.TitleInput = styled.input`
   margin-left: 32px;
   width: 100%;
   box-sizing: border-box;
-
-  ${fontSizeH4};
+  font-size: 20px;
 `;
 
 S.DateTextLabel = styled.span`
-  ${fontSizeH8};
+  display: flex;
+  flex-shrink: 0;
+  width: 154px;
+  font-size: 16px;
+  font-weight: 500;
+`;
+
+S.DateText = styled.span`
+  font-size: 14px;
+  font-weight: 300;
 `;
 
 S.DateContainer = styled.div`
@@ -56,7 +67,7 @@ S.DateContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 297px;
-  border: 1px solid black;
+  border: 1px solid #01cd74;
 `;
 
 S.DateSectionGroup = styled.div`
@@ -69,36 +80,37 @@ S.DateSectionGroup = styled.div`
 
 S.DateSection = styled.div`
   display: flex;
-  gap: 100px;
   align-items: center;
   width: 100%;
   height: 37px;
   ${fontSizeH8};
   ${fontWeightLight};
+
+  & div {
+    display: flex;
+    width: 200px;
+    justify-content: space-between;
+  }
 `;
 
 S.DateInputWrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 320px;
   height: 37px;
-  gap: 100px;
 `;
 
 S.ContentInputWrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 320px;
+  width: 100%;
   height: 37px;
-  gap: 100px;
 `;
 
 S.CategoryInputWrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 320px;
+  width: 100%;
   height: 37px;
-  gap: 75px;
 `;
 
 S.ContentContainer = styled.div`
