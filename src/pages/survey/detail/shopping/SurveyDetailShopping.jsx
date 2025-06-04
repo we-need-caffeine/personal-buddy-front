@@ -27,7 +27,7 @@ const SurveyDetailShopping = () => {
   const [isLastCategory, setIsLastCategory] = useState(false);
 
   const { currentUser } = useSelector((state) => state.member);
-  const memberId = currentUser?.id;
+  const memberId = currentUser.id;
 
   // Redux의 currentUser를 Context로 동기화
   useEffect(() => {
@@ -83,7 +83,7 @@ const SurveyDetailShopping = () => {
           )
         );
 
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/surveys/api/insert`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/surveys/api/insert/${memberId}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(surveyDetails)
