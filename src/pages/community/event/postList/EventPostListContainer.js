@@ -40,7 +40,7 @@ const EventPostListContainer = () => {
     <>
       <div style={{ marginTop: '150px' }}>
         <S.SubTitle>BUDDYGROUND</S.SubTitle>
-        <S.MainTitle>버디들의 챌린지</S.MainTitle>
+        <S.MainTitle>버디들의 챌린지 🎁</S.MainTitle>
       </div>
     <S.PostSection>
 

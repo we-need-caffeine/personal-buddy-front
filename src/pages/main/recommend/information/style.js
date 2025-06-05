@@ -11,11 +11,10 @@ S.ContentWrapper = styled.div`
 S.RecommendWrapper = styled.div`
     width: 100%;
     max-width: 1400px;
-    margin: 40px auto;
+    margin: 100px auto;
     padding: 20px 0;
     display: flex;
     flex-direction: column;
-    gap: 30px;
 
     p {
         font-size: 24px;
@@ -24,6 +23,22 @@ S.RecommendWrapper = styled.div`
         margin-bottom: 50px;
         margin-top: 100px;
     }
+`
+
+S.SubTitle = styled.span`
+    font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    display: flex;
+    margin: 0 0 13px 0;
+`
+
+S.MainTitle = styled.span`
+    display: flex;
+    font-size: 30px;
+    font-weight: 700;
+    color: #222;
+    margin: 0 0 40px 0;
 `
 
 S.RecommendList = styled.div`
@@ -35,7 +50,6 @@ S.RecommendList = styled.div`
 
 S.RecommendInfo = styled.div`
     width: 320px;
-    height: 470px;
     display: flex;
     flex-direction: column;
     /* align-items: center; */
@@ -47,10 +61,6 @@ S.RecommendInfo = styled.div`
         border-radius: 10px;
         overflow: hidden;
         transition: transform 0.3s ease;
-    }
-    span {
-        font-size: 14px;
-        line-height: 28px;
     }
 `
 
@@ -68,5 +78,22 @@ S.RecommendImg = styled.img `
     }
 `
 
+S.ItemTitleWrap = styled.div`
+    display: flex;
+    margin : 0 0 12px 0;
+    align-items: center;
+`
+
+S.ItemTitle = styled.span`
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 6px 0 0;
+`
+
+S.ItemSubTitle = styled.span`
+    font-size: 18px;
+    font-weight: 300;
+    margin: 0 0 0 6px;
+`
 
 export default S;

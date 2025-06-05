@@ -60,7 +60,7 @@ const MyPageSurveyEdit = () => {
             <span>내가 선택한 추천 정보를 확인해보세요.</span>
           </S.TitleTopContainer>
           <S.TitleBottomContainer>
-            <span>추천 정보 수정</span>
+            <span>추천 정보 수정 🔄</span>
             <NavLink to={'/survey/intro'}>
               <S.TitleTopLinkText>
                 추천 정보 수정하러 가기 &gt;&gt;

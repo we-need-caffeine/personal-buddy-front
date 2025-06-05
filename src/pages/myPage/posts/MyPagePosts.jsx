@@ -53,7 +53,7 @@ const MyPagePosts = () => {
             <span>내가 커뮤니티에 등록한 게시물을 확인할 수 있습니다.</span>
           </S.TitleTopContainer>
           <S.TitleBottomContainer>
-              <span>내 게시물</span>
+              <span>내 게시물 📝</span>
           </S.TitleBottomContainer>
         </S.TitleContainer>
         <S.BodyContainer>

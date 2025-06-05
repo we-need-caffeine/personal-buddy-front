@@ -15,7 +15,6 @@ S.RecommendWrapper = styled.div`
     padding: 20px 0;
     display: flex;
     flex-direction: column;
-    gap: 30px;
 
     p {
         font-size: 24px;
@@ -48,10 +47,6 @@ S.RecommendInfo = styled.div`
         overflow: hidden;
         transition: transform 0.3s ease;
     }
-    span {
-        font-size: 14px;
-        line-height: 28px;
-    }
 `
 
 S.RecommendImg = styled.img `
@@ -61,6 +56,7 @@ S.RecommendImg = styled.img `
     border-radius: 10px;
     display: block;
     cursor: pointer;
+    margin: 0 0 30px 0;
 
     transition: transform 0.3s ease-in-out;
 
@@ -68,6 +64,42 @@ S.RecommendImg = styled.img `
         transform: scale(1.05);
     }
 `
+
+S.SubTitle = styled.span`
+    font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    display: flex;
+    margin: 0 0 13px 0;
+`
+
+S.MainTitle = styled.span`
+    display: flex;
+    font-size: 30px;
+    font-weight: 700;
+    color: #222;
+    margin: 0 0 40px 0;
+`
+
+
+S.ItemTitleWrap = styled.div`
+    display: flex;
+    margin : 0 0 8px 0;
+    align-items: center;
+`
+
+S.ItemTitle = styled.span`
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 12px 0 0;
+`
+
+S.ItemSubTitle = styled.span`
+    font-size: 18px;
+    font-weight: 300;
+    margin: 0 0 0 6px;
+`
+
 
 
 export default S;

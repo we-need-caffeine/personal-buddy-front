@@ -113,6 +113,7 @@ S.TodoDone = styled.div`
 `
 S.AddIcon = styled.img`
     position: absolute;
+    cursor: pointer;
     right: 10px;
 `;
 

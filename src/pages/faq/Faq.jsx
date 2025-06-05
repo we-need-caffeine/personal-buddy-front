@@ -48,7 +48,7 @@ const Faq = () => {
     <S.Section>
       <S.Wrapper>
         <S.SubLabel>도움말 찾아보기</S.SubLabel>
-        <S.SubTitle>자주 묻는 질문</S.SubTitle>
+        <S.SubTitle>자주 묻는 질문 💬</S.SubTitle>
         <S.List>
           {faqList.map((item, i) => (
             <S.Item key={i} className={answer === i ? 'active' : ''}>

@@ -10,7 +10,7 @@ const LandingPage = () => {
   const [isMuted, setIsMuted] = useState(false);
 
   const videoId = "fgBBIpG3ri4"; // 유튜브 영상 ID
-  const videoTitle = "🎵SEVENTEEN - HEY BUDDY 🎵";
+  const videoTitle = "🎵 SEVENTEEN - HEY BUDDY 🎵";
 
   const SECTION_HEIGHT = 1080;
 

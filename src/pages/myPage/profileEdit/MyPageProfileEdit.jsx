@@ -169,7 +169,7 @@ const MyPageProfileEdit = () => {
             <span>프로필 정보를 변경할 수 있습니다.</span>
           </S.TitleTopContainer>
           <S.TitleBottomContainer>
-              <span>프로필 설정</span>
+              <span>프로필 설정 🖼️</span>
           </S.TitleBottomContainer>
         </S.TitleContainer>
         <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
