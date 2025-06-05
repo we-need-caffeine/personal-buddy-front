@@ -112,7 +112,7 @@ const RecommendPlace = () => {
         <S.PlaceRecommend>
             <S.PlaceWrapper>
                 <S.PlaceList>
-                    <S.PlaceTitle1>{selectedType} 장소 추천 입니다!</S.PlaceTitle1>
+                    <S.PlaceTitle1>{selectedType} 장소 추천 입니다! 📍</S.PlaceTitle1>
                     {data.map((item, index) => {
                         const parts = item.interestDataContent.split('|');
                         const items = [];
