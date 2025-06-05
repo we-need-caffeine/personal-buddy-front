@@ -61,7 +61,7 @@ S.MusicInfo = styled.div`
     gap: 10px;
     align-items: center;
     font-size: 16px;
-    color: #444;
+    color: #131313;
     z-index: 999;
 `;
 
@@ -70,11 +70,12 @@ S.MusicButton = styled.button`
     padding: 5px 10px;
     background: none;
     border-radius: 10px;
+    border: solid 2px #131313;
     cursor: pointer;
     transition: 0.5s;
 
     &:hover {
-        background-color: black;
+        background-color: #131313;
         color: white;
     }
 `;
@@ -84,9 +85,10 @@ S.MuteButton = styled.button`
     background: none;
     border-radius: 10px;
     cursor: pointer;
+    border: solid 2px #131313;
 
     &:hover {
-        background-color: black;
+        background-color: #131313;
         color: white;
     }
 

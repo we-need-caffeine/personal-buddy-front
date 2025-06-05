@@ -55,7 +55,8 @@ S.TitleContainer = styled.div`
 `;
 
 S.Title = styled.div`
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 500;
 `;
 
 S.RowContainer = styled.div`

@@ -48,7 +48,8 @@ const RecommendShopping = () => {
     return (
         <S.ContentWrapper>
             <S.RecommendWrapper>
-                <p>{selectedType} 필수템, 한눈에 보기 🛍️</p>
+                <S.SubTitle>한눈에 보는 {selectedType} 확인해보세요</S.SubTitle>
+                <S.MainTitle>{selectedType} 필수템 🛍️</S.MainTitle>
                 <S.RecommendList>
                     {data.map(item => {
                         const parts = item.interestDataContent.split('|');
@@ -57,18 +58,9 @@ const RecommendShopping = () => {
                             const key = parts[i];
                             const value = parts[i + 1];
                             items.push(
-                                <div key={i}>
-                                    <span style={{
-                                        fontWeight: 500,
-                                        fontSize: 14,
-                                        display: 'inline-block',
-                                        width: 40
-                                    }}>{key}</span> : <span style={{
-                                        fontWeight: 400,
-                                        fontSize: 14,
-                                        marginLeft: 10
-                                    }}>{value}</span>
-                                </div>
+                                <S.ItemTitleWrap key={i}>
+                                    <S.ItemTitle>{key}</S.ItemTitle> : <S.ItemSubTitle>{value}</S.ItemSubTitle>
+                                </S.ItemTitleWrap>
                             );
                         }
 

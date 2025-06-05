@@ -52,7 +52,7 @@ const MyPageComments = () => {
             <span>커뮤니티에서 내가 쓴 모든 댓글을 확인할 수 있습니다.</span>
           </S.TitleTopContainer>
           <S.TitleBottomContainer>
-              <span>내가 쓴 댓글</span>
+              <span>내가 쓴 댓글 ✍️</span>
           </S.TitleBottomContainer>
         </S.TitleContainer>
         <S.BodyContainer>

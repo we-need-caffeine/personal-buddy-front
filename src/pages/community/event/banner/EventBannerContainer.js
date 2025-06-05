@@ -24,7 +24,7 @@ const EventBannerContainer = () => {
   return (
     <S.EventWrapper>
       <S.SubTitle>BUDDYGROUND</S.SubTitle>
-      <S.MainTitle>진행중인 이벤트</S.MainTitle>
+      <S.MainTitle>진행중인 이벤트 🎉</S.MainTitle>
 
       <S.BannerSliderWrapper>
         <Swiper

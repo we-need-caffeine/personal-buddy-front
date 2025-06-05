@@ -69,7 +69,7 @@ const MyPageMemberEdit = () => {
             <span>계정 정보를 변경할 수 있습니다.</span>
           </S.TitleTopContainer>
           <S.TitleBottomContainer>
-              <span>계정 설정</span>
+              <span>계정 설정 ⚙️</span>
           </S.TitleBottomContainer>
         </S.TitleContainer>
         <S.BodyContainer>

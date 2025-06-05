@@ -11,7 +11,7 @@ S.PlaceWrapper = styled.div`
 
 S.PlaceRecommend = styled.div`
     width: 1421px;
-    margin: 60px auto 0 auto;
+    margin: 0 0 100px 0;
     display: flex;
     justify-content: space-between;
     gap: 20px;
@@ -99,5 +99,40 @@ S.PlaceTitle1 = styled.h2`
     margin-bottom: 50px;
     margin-top: 100px;
 `;
+
+
+S.SubTitle = styled.span`
+    font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    display: flex;
+    margin: 0 0 13px 0;
+`
+
+S.MainTitle = styled.span`
+    display: flex;
+    font-size: 30px;
+    font-weight: 700;
+    color: #222;
+    margin: 0 0 40px 0;
+`
+
+S.ItemTitleWrap = styled.div`
+    display: flex;
+    align-items: center;
+    margin : 0 0 12px 0;
+`
+
+S.ItemTitle = styled.span`
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 6px 0 0;
+`
+
+S.ItemSubTitle = styled.span`
+    font-size: 16px;
+    font-weight: 300;
+    margin: 0 0 0 6px;
+`
 
 export default S;

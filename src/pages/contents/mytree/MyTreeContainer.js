@@ -124,7 +124,7 @@ const MyTreeContainer = () => {
 
   return (
     <div>
-      <S.SubTitle data-aos="fade-down-right">언젠가는 아름다워질 나의 나무 ✨</S.SubTitle>
+      <S.SubTitle data-aos="fade-down-right">언젠가는 아름다워질 나의 나무</S.SubTitle>
       <S.MainTitle data-aos="fade-down-right">나의 성장 나무 🌳</S.MainTitle>
       {/* 전체 나무 요소 Wrapper */}
       <S.MyTreeWrapper data-aos="zoom-out">

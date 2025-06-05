@@ -87,7 +87,7 @@ const MyPageAchievement = () => {
             <span>도전과제를 달성하고 나만의 업적을 쌓아보세요.</span>
           </S.TitleTopContainer>
           <S.TitleBottomContainer>
-              <span>나의 대표 업적</span>
+              <span>나의 대표 업적 🎖️</span>
               <S.SaveAchievementMainBtn onClick={() => updateAchivementRep()}>
                 등록
               </S.SaveAchievementMainBtn>
@@ -141,7 +141,7 @@ const MyPageAchievement = () => {
         {/* 하단 타이틀 영역 */}
         <S.TitleContainer>
           <S.TitleBottomContainer>
-              <span>나의 달성한 업적</span>
+              <span>나의 달성한 업적 🏆</span>
             <S.TitleTopText>
               <NavLink to="/main/contents">
                 <span>나의 업적 보러 가기 &gt;&gt;</span>

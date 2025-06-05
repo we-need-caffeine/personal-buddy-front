@@ -86,26 +86,7 @@ const LoginLayout = () => {
     }
   }, [localJwtToken, dispatch, actions, navigate]);
 
-  // 리덕스에 유저를 추가하는 코드
-  // console.log("layout 리덕스 유저", currentUser)
-  // console.log("layout 리덕스 유저 상태", isLogin)
-
-  // 토큰 정보를 확인하는 코드
-  // const handleLogout = () => {
-  //   localStorage.clear();
-  //   dispatch(setUser({
-  //     id : 0,
-  //     memberEmail : "",
-  //     memberName : "",
-  //     memberPicture : "",
-  //     memberNickName : "",
-  //     memberProvider : "",
-  //   }));
-  //   dispatch(setUserStatus(false));
-  //   window.location.href = "http://localhost:10000/logout";
-  // }
-
-  if (!isLogin) {
+  if (!localJwtToken) {
     return <Navigate to="/member/login" />;
   }
 

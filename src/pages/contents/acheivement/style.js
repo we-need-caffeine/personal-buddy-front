@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 
 const S = {};
 
+S.TitleWrap = styled.div`
+    margin: 0 0 120px 0;
+`
+
 // 작은 제목
 S.SubTitle = styled.div`
     font-size: 18px;
@@ -19,7 +23,6 @@ S.MainTitle = styled.div`
     font-size: 30px;
     font-weight: 700;
     color: #222;
-    margin: 0 0 40px 0;
 `;
 
 S.TargetBox = styled.div`
@@ -100,8 +103,8 @@ S.AchievementListBox = styled.div`
     width: 1160px;
     ${flexBaseTop}
     flex-wrap: wrap;
-    gap: 40px;
-    padding: 0 120px;
+    gap: 120px 40px;
+    padding: 120px 120px;
 `;
 
 S.AchievementCard = styled.div`
@@ -115,8 +118,6 @@ S.AchievementCard = styled.div`
     border-radius: 20px;
     box-sizing: border-box;
     border: solid 1px #01CD74;
-    vertical-align: baseline;
-    margin-top: 140px;
     background-color: ${({isDisplayed}) => (
         isDisplayed ? '#EFFFF8' : '#FFF'
     )};

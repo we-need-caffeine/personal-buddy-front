@@ -98,7 +98,7 @@ const PointShop = ({
 
     return (
         <>
-            <S.SubTitle>마음에 드는 아이템을 골라보세요 👁️</S.SubTitle>
+            <S.SubTitle>마음에 드는 아이템을 골라보세요</S.SubTitle>
             <S.MainTitle>포인트 샵 💸</S.MainTitle>
             <S.PointShopInfoContainer>
                 <S.MemberInfoWrapper>

@@ -155,7 +155,7 @@ const MyPageMain = () => {
                         <span>자신만의 나무를 꾸며보세요.</span>
                     </S.TitleTopContainer>
                     <S.TitleBottomContainer>
-                            <span>나의 성장 나무</span>
+                            <span>나의 성장 나무 🌳</span>
                         <S.TitleTopLinkText>
                             <NavLink to="/main/contents/mytree">
                                 <span>나의 성장 나무 꾸미기 &gt;&gt;</span>
