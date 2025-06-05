@@ -177,61 +177,61 @@ const JoinInfo = () => {
         return;
       }
     
-      // const sendRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/sms/send`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(phone)
-      // });
-      // const sendData = await sendRes.json();
-      // alert(sendData.message);
-      // setPhoneValidation(true);
-      // setPhoneMessage("※ 인증번호가 발송되었습니다.");
-      // showPhoneAuthInput(true)
-      // setPasswordAuthTimer(180);
-
-      // 프론트 테스트용 처리
-      alert("※ 인증번호 [000000] (테스트용)이 발송되었습니다.");
+      const sendRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/sms/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(phone)
+      });
+      const sendData = await sendRes.json();
+      alert(sendData.message);
       setPhoneValidation(true);
-      setPhoneMessage("※ 인증번호가 발송되었습니다. (000000)");
+      setPhoneMessage("※ 인증번호가 발송되었습니다.");
       setPhoneShowAuthInput(true);
       setPasswordAuthTimer(180);
+
+      // 프론트 테스트용 처리
+      // alert("※ 인증번호 [000000] (테스트용)이 발송되었습니다.");
+      // setPhoneValidation(true);
+      // setPhoneMessage("※ 인증번호가 발송되었습니다. (000000)");
+      // setPhoneShowAuthInput(true);
+      // setPasswordAuthTimer(180);
     };
 
     const handleCheckPhoneCode = async () => {
-      // const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/phone/verify-code`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(phoneAuthCode)
-      // });
-      // const data = await res.json();
-      // if (data.isFlag) {
-      //   setPhoneAuthCodeValid(true);
-      //   setPhoneVerified(true);
-      //   setPhoneVerifyMessage(data.message || "※ 휴대전화번호 인증 완료");
-      //   alert("인증 완료!");
-      //   clearInterval(timerRef.current);
-      // } else {
-      //   setPhoneAuthCodeValid(false);
-      //   setPhoneVerified(false);
-      //   setPhoneVerifyMessage(data.message || "※ 휴대전화번호 인증 실패");
-      //   alert("인증 실패!");
-      // }
-
-      // 프론트 테스트 로직
-      const isCorrect = phoneAuthCode === "000000";
-
-      if (isCorrect) {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sms/api/phone/verify-code`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(phoneAuthCode)
+      });
+      const data = await res.json();
+      if (data.isFlag) {
         setPhoneAuthCodeValid(true);
         setPhoneVerified(true);
-        setPhoneVerifyMessage("※ 휴대전화번호 인증 완료");
+        setPhoneVerifyMessage(data.message || "※ 휴대전화번호 인증 완료");
         alert("인증 완료!");
         clearInterval(timerRef.current);
       } else {
         setPhoneAuthCodeValid(false);
         setPhoneVerified(false);
-        setPhoneVerifyMessage("※ 인증번호 인증 실패");
+        setPhoneVerifyMessage(data.message || "※ 휴대전화번호 인증 실패");
         alert("인증 실패!");
       }
+
+      // 프론트 테스트 로직
+      // const isCorrect = phoneAuthCode === "000000";
+
+      // if (isCorrect) {
+      //   setPhoneAuthCodeValid(true);
+      //   setPhoneVerified(true);
+      //   setPhoneVerifyMessage("※ 휴대전화번호 인증 완료");
+      //   alert("인증 완료!");
+      //   clearInterval(timerRef.current);
+      // } else {
+      //   setPhoneAuthCodeValid(false);
+      //   setPhoneVerified(false);
+      //   setPhoneVerifyMessage("※ 인증번호 인증 실패");
+      //   alert("인증 실패!");
+      // }
     };
 
     const handleChangePhone = (e) => {
