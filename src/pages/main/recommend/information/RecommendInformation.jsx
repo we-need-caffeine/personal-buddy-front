@@ -49,7 +49,7 @@ const RecommendInformation = () => {
     return (
         <S.ContentWrapper>
             <S.RecommendWrapper>
-                <p>오늘 이런 {selectedType} 어때요?</p>
+                <p>오늘 이런 {selectedType} 어때요? 💡</p>
                 <S.RecommendList>
                     {data.map(item => {
                         const parts = item.interestDataContent.split('|');
