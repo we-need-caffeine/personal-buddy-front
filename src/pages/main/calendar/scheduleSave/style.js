@@ -24,14 +24,13 @@ const sharedDropdownBoxStyle = `
 
 S.Message = styled.div`
   position: absolute;
-    top: 110%;
-    left: 110px;
-    color:red;
-    font-size: 14px;
-    margin-top: 4px;
-    white-space: nowrap;
+  top: 110%;
+  left: 110px;
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
+  white-space: nowrap;
 `;
-
 
 // 전체 캘린더 저장 화면 컨테이너
 S.Container = styled.div`
@@ -42,7 +41,9 @@ S.Container = styled.div`
   width: 560px;
   height: 780px;
   background-color: white;
-  border: 1px solid #01CD74;
+  border-top: 1px solid #01cd74;
+  border-right: 1px solid #01cd74;
+  border-bottom: 1px solid #01cd74;
 `;
 
 // 제목 입력 영역
@@ -78,7 +79,7 @@ S.DateContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 176px;
-  border: 1px solid #01CD74;
+  border: 1px solid #01cd74;
 `;
 
 S.DateSectionGroup = styled.div`
@@ -141,7 +142,6 @@ S.ContentContainer = styled.div`
 `;
 
 S.ContentWrapper = styled.div`
-  
   display: flex;
   flex-direction: column;
   justify-content: space-between;

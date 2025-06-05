@@ -31,7 +31,9 @@ S.Container = styled.div`
   width: 560px;
   height: 780px;
   background: white;
-  border: 1px solid #01CD74;
+  border-top: 1px solid #01CD74;
+  border-right: 1px solid #01CD74;
+  border-bottom: 1px solid #01CD74;
   box-sizing: border-box;
 `;
 
@@ -64,7 +66,7 @@ S.RowContainer = styled.div`
   width: 560px;
   height: 73px;
   border-top: 1px solid #01CD74;
-  border-bottom: ${({ $noBorder }) => ($noBorder ? "none" : "1px solid black")};
+  border-bottom: ${({ $noBorder }) => ($noBorder ? "none" : "1px solid #01CD74")};
 `;
 
 S.Row = styled.div`

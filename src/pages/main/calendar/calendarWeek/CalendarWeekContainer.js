@@ -9,11 +9,13 @@ const CalendarWeekContainer = () => {
   const { selectedRange, setSelectedRange, handleCreateSchedule } =
     useOutletContext();
 
-  const isNested = location.pathname.includes("/schedule-save"); // 중첩 여부 판별
+  const isNested =
+    location.pathname.includes("/schedule-save") ||
+    location.pathname.includes("/schedule-view"); // 중첩 여부 판별
   return (
     <div style={{ display: "flex" }}>
       <CalendarWeek
-        isNested = {isNested}
+        isNested={isNested}
         calendarRef={calendarRef}
         selectedRange={selectedRange}
         onSelectRange={setSelectedRange}

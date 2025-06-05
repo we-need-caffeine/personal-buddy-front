@@ -51,7 +51,7 @@ const CalendarSave = () => {
       // 2. 초대 멤버 등록
       if (invitedMembers.length > 0) {
         const invites = invitedMembers.map((member) => ({
-          calendarInviteInvitedMemberId: member.memberId, // 이제 memberId로 통일
+          calendarInviteInvitedMemberId: member.memberId ?? member.id, // 이제 memberId로 통일
           calendarInviteHostId: Number(memberId),
           calendarInviteIsApproved: 0,
           calendarId: newCalendarId,

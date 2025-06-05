@@ -13,6 +13,7 @@ S.CalendarWrapper = styled.div`
   border-top: solid 1px #06c371;
   border-left: solid 1px #06c371;
   border-bottom: solid 1px #06c371;
+  border-right: solid 1px #06c371;
   display: flex;
   flex-direction: column;
   /* 좌측 시간 라벨 배경 */
