@@ -106,7 +106,7 @@ S.SearchIcon = styled.img`
   padding-left: 8px;
 `
 
-S.SearchInput = styled.textarea`
+S.SearchInput = styled.input`
   border: none;
   font: inherit;
   resize: none;
@@ -199,6 +199,11 @@ S.MemberStatusMessage = styled.span`
   ${fontSizeH9}
   ${gray5Color}
   ${fontWeightRegular}
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 180px;
 `
 
 S.RightContainer = styled.div`
@@ -253,7 +258,6 @@ S.LeftChat = styled.div`
   display: flex;
   align-items: end;
   justify-content: left;
-  
 `
 
 S.LeftMemberImg = styled.img`
@@ -264,12 +268,7 @@ S.LeftMemberImg = styled.img`
 `
 
 S.LeftTextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  margin-left: 10px;
-  max-width: 240px;
-  max-height: 240px;
+  padding-left: 10px;
 `
 
 S.LeftNickName = styled.div`
@@ -280,23 +279,30 @@ S.LeftNickName = styled.div`
 
 S.LeftContent = styled.div`
   display: inline-block;
+  min-width: 3px;
+  min-height: 12px;
+  max-width: 200px;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid ${({ theme }) => theme.PALLETE.gray.gray4};
   ${blackColor}
   ${fontSizeH9}
   ${fontWeightRegular}
-  padding: 10px;
-  border: 1px solid ${({ theme }) => theme.PALLETE.gray.gray4};
-  border-radius: 5px;
-  margin-top: 5px;
+  word-break: break-all;
+  white-space: pre-line;
 `
 
 S.RightChat = styled.div`
+  width: 100%;
   display: flex;
   justify-content: right;
-  padding-left: 80px;
-  max-width: 240px;
 `
 
 S.RightContent = styled.div`
+  max-width: 240px;
+  min-width: 3px;
+  min-height: 12px;
   ${blackColor}
   ${fontSizeH9}
   ${fontWeightRegular}
@@ -304,6 +310,8 @@ S.RightContent = styled.div`
   background-color: ${({ theme }) => theme.PALLETE.primary.mainGreen};
   border-radius: 5px;
   margin-top: 5px;
+  word-break: break-all;
+  white-space: pre-line;
   cursor: pointer;
   &:hover {
     background-color: ${({ theme }) => theme.PALLETE.primary.subGreen};
@@ -371,7 +379,8 @@ S.SendButton = styled.button`
   ${fontSizeH8}
   border: none;
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.PALLETE.gray.gray3};
+  background: ${({ $active, theme }) => ($active ? theme.PALLETE.primary.subBlue : theme.PALLETE.gray.gray3)};
+  cursor: ${({ $active }) => ($active ? 'pointer' : 'not-allowed')};
 `
 
 S.ChatModalContainer = styled.button`

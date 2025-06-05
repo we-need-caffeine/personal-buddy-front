@@ -41,7 +41,7 @@ const Chat = ({ memberId, handleChat, onCancel }) => {
   useEffect(() => {
     getChatList(memberId, chatRoomId)
     setChatEventModal(false)
-  },[isNewMessage, chatRoomId, chatOtherUserInfo])
+  },[isNewMessage, chatRoomId, chatOtherUserInfo, memberId])
   
   useEffect(() => {
       if (handleChat) lockScroll();
@@ -107,14 +107,19 @@ const Chat = ({ memberId, handleChat, onCancel }) => {
             onKeyDown={e => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
-                sendMessage(chatRoomId, memberId, inputChat);
+                if (inputChat.trim()) {
+                  sendMessage(chatRoomId, memberId, inputChat);
+                }
               }
             }}
           >
           </S.ChatInput>
-          <S.SendButton 
+          <S.SendButton
+            $active={!!inputChat.trim()}
             onClick={() => {
-              sendMessage(chatRoomId, memberId, inputChat)
+              if (inputChat.trim()) {
+                sendMessage(chatRoomId, memberId, inputChat);
+              }
             }}
           >
             전송

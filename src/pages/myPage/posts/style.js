@@ -50,6 +50,7 @@ S.TitleTopLinkText = styled.div`
 S.BodyContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 50px;
 `
 
 S.ItemContainer = styled.div`
@@ -75,7 +76,6 @@ S.ItemContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  
 `
 
 S.CreateTimeWrap = styled.div`

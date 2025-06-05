@@ -21,8 +21,8 @@ const GuestItem = ({
         <S.GuestBookItemContainer key={item.id}>
             <S.GuestBookMemberInfoContainer>
                 <S.GuestBookMemberInfo>
-                    <S.GuestBookMemberProfileImg 
-                        src={item.memberImgPath || "/assets/images/header/default-member-img.png"}
+                    <S.GuestBookMemberProfileImg
+                        src={`http://localhost:10000/images/profile/${item.memberImgName}`}
                         alt='멤버 프로필 이미지'
                         onClick={(e) => {
                             setDropdownPos({ x: e.clientX, y: e.clientY });

@@ -32,7 +32,7 @@ const MyPageComments = () => {
     if (String(ownerId) !== String(memberId)) {
       navigate(`/main/mypage/${ownerId}`, { replace: true });
     }
-  }, [memberId, navigate, ownerId, currentUser]);
+  }, [memberId, navigate, ownerId]);
 
   useEffect(() => {
     const getMyCommnets = async () => {
@@ -78,12 +78,12 @@ const MyPageComments = () => {
               </S.ItemContainer>
             </NavLink>
           ))}
+        </S.BodyContainer>
           <Pagination 
             currentPage={currentPage}
             totalPages={Math.ceil(myComments.length / itemsPerPage)}
             onPageChange={setCurrentPage}
           />
-        </S.BodyContainer>
       </S.MainContainer>
     </>
   );

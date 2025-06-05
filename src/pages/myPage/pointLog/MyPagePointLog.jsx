@@ -55,7 +55,7 @@ const MyPagePointLog = () => {
           <S.TitleBottomContainer>
               <span>포인트 이용내역</span>
               <S.TitleMemberPoint>
-                나의 포인트 : <p>{currentUser.memberPoint} 🪙</p>
+                나의 포인트 : <span>{currentUser.memberPoint} 🪙</span>
               </S.TitleMemberPoint>
           </S.TitleBottomContainer>
         </S.TitleContainer>
@@ -76,12 +76,12 @@ const MyPagePointLog = () => {
             </S.ListContainer>
           ))}
         </S.BodyContainer>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(pointLog.length / itemsPerPage)}
+          onPageChange={setCurrentPage}
+        />
       </S.MainContainer>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(pointLog.length / itemsPerPage)}
-        onPageChange={setCurrentPage}
-      />
     </div>
   );
 };

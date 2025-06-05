@@ -6,7 +6,7 @@ import Chat from './Chat';
 import { ChatContext } from '../../../context/ChatContext';
 
 
-const ChatRoomItem = ({i, item, memberId, toggleIsNewMessage}) => {
+const ChatRoomItem = ({ item, memberId}) => {
 
   // 채팅 콘텍스트
   const { 

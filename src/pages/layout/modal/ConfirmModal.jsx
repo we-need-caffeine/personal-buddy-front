@@ -4,19 +4,32 @@ import { HeaderContext } from '../../../context/HeaderContext';
 
 const ConfirmModal = ({ handleConfrmModal, title, message, onConfirm, onCancel, confirmBtnMsg, cancelBtnMsg }) => {
 
-
     // 외부 요소 스크롤을 막는 함수
     const { lockScroll, unlockScroll } = useContext(HeaderContext);
 
     useEffect(() => {
         if (handleConfrmModal) lockScroll();
-        return () => unlockScroll();
-    }, [handleConfrmModal]);
-    
-    if (!handleConfrmModal) return (
-        <>
-        </>
-    );
+
+        // ESC 키 핸들러
+        const handleEsc = (e) => {
+            if (e.key === 'Escape') {
+                onCancel();
+            }
+        };
+
+        // 모달이 열릴 때만 리스너 등록
+        if (handleConfrmModal) {
+            window.addEventListener('keydown', handleEsc);
+        }
+
+        // 모달 닫힐 때 리스너 해제
+        return () => {
+            unlockScroll();
+            window.removeEventListener('keydown', handleEsc);
+        };
+    }, [handleConfrmModal, onCancel]);
+
+    if (!handleConfrmModal) return null;
 
     return (
         <S.Backdrop onClick={onCancel}>

@@ -172,7 +172,7 @@ const MyPageSidebar = () => {
                         <S.MyPageTitleContainer>
                             <S.MyPageTitle>
                                 <S.MyPageTitleIcon>
-                                    <img src='/assets/images/mypage/member.png' alt='멤버 아이콘'/>
+                                    <img src='/assets/images/mypage/home-icon.png' alt='홈 아이콘'/>
                                 </S.MyPageTitleIcon>
                                 <span>마이페이지</span>
                             </S.MyPageTitle>
@@ -273,7 +273,7 @@ const MyPageSidebar = () => {
                         <S.MyPageTitleContainer>
                             <S.MyPageTitle>
                                 <S.MyPageTitleIcon>
-                                    <img src='/assets/images/mypage/member.png' alt='멤버 아이콘'/>
+                                    <img src='/assets/images/mypage/home-icon.png' alt='홈 아이콘'/>
                                 </S.MyPageTitleIcon>
                                 <span>마이페이지</span>
                             </S.MyPageTitle>
@@ -293,7 +293,7 @@ const MyPageSidebar = () => {
                         <S.MyPageTitleContainer>
                             <S.MyPageTitle>
                                 <S.MyPageTitleIcon>
-                                    <img src='/assets/images/mypage/members.png' alt='멤버2 아이콘'/>
+                                    <img src='/assets/images/mypage/like-icon.png' alt='커뮤니티 좋아요 아이콘'/>
                                 </S.MyPageTitleIcon>
                                 <span>커뮤니티</span>
                             </S.MyPageTitle>
