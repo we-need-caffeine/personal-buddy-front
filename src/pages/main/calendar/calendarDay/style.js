@@ -10,6 +10,10 @@ S.CalendarWrapper = styled.div`
   width: 840px;
   height: 780px;
   box-sizing: border-box;
+  border-top: solid 1px #06c371;
+  border-left: solid 1px #06c371;
+  border-bottom: solid 1px #06c371;
+  border-right: solid 1px #06c371;
   display: flex;
   flex-direction: column;
   /* 좌측 시간 라벨 배경 */
@@ -160,15 +164,17 @@ S.CalendarWrapper = styled.div`
 `;
 
 S.DateInfoWrapper = styled.div`
-  height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #01cd74;
+  height: 60px;
+  flex-shrink: 0;
+  padding: 0 40px;
+  border-bottom: solid 1px #01CD74;
 `;
 
 S.TodayText = styled.span`
-  ${fontSizeH7};
+  font-size: 18px;
   ${fontWeightMedium};
   color: #01cd74;
   cursor: pointer;

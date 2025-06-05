@@ -21,7 +21,7 @@ const CalendarHeader = () => {
   const extractCityDistrict = (displayName) => {
     const { address } = displayName;
     const {city, borough, quarter} = address;
-    return `${city} ${borough} ${quarter}`; // "서울 강남구 자곡동"
+    return `${city} ${borough} ${quarter ? quarter : ""}`; // "서울 강남구 자곡동"
   };
 
   // 현재 위치 + 주소 받아오기

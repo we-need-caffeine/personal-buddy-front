@@ -31,7 +31,9 @@ S.Container = styled.div`
   width: 560px;
   height: 780px;
   background: white;
-  border: 1px solid black;
+  border-top: 1px solid #01CD74;
+  border-right: 1px solid #01CD74;
+  border-bottom: 1px solid #01CD74;
   box-sizing: border-box;
 `;
 
@@ -48,11 +50,12 @@ S.TitleContainer = styled.div`
   display: flex;
   align-items: center;
   width: 476px;
-  height: 73px;
+  height: 60px;
+  flex-shrink: 0;
 `;
 
 S.Title = styled.div`
-  ${fontSizeH4};
+  font-size: 20px;
 `;
 
 S.RowContainer = styled.div`
@@ -62,8 +65,8 @@ S.RowContainer = styled.div`
   align-items: center;
   width: 560px;
   height: 73px;
-  border-top: 1px solid black;
-  border-bottom: ${({ $noBorder }) => ($noBorder ? "none" : "1px solid black")};
+  border-top: 1px solid #01CD74;
+  border-bottom: ${({ $noBorder }) => ($noBorder ? "none" : "1px solid #01CD74")};
 `;
 
 S.Row = styled.div`
@@ -76,7 +79,8 @@ S.Row = styled.div`
 `;
 
 S.Label = styled.div`
-  ${fontWeightRegular};
+  font-size: 18px;
+  font-weight: 500;
 `;
 
 S.Input = styled.input`
@@ -157,6 +161,11 @@ S.MemberList = styled.div`
 S.MemberListTitle = styled.div`
   display: flex;
   flex-direction: center;
+
+  & span {
+    font-size: 16px;
+    font-weight: 500;
+  }
 `;
 
 S.MemberInfoContainer = styled.div`
@@ -172,6 +181,8 @@ S.MemberItem = styled.div`
 
 S.MemberName = styled.div`
   margin-left: 12px;
+  font-size: 18px;
+  font-weight: 300;
 `;
 
 S.HostBadge = styled.div`

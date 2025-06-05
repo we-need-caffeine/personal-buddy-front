@@ -16,8 +16,7 @@ const CalendarForm = ({
   memberId,
 }) => {
   const [calendarName, setCalendarName] = useState(initialName);
-  const [localInvitedMembers, setLocalInvitedMembers] =
-    useState(initialInvited);
+  const [localInvitedMembers, setLocalInvitedMembers] = useState(initialInvited);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const dropdownRef = useRef(null);
@@ -41,7 +40,7 @@ const CalendarForm = ({
       memberImgPath: member.memberImgPath,
     };
 
-    if (!localInvitedMembers.some((m) => m.memberId === newMember.memberId)) {
+    if (!localInvitedMembers.some((m) => (m.memberId ?? m.id) === newMember.memberId)) {
       try {
         if (isUpdateMode) {
           await fetch(
@@ -71,10 +70,10 @@ const CalendarForm = ({
   };
 
   // 초대 취소 (API 호출)
-  const cancelInvite = async (memberId) => {
+  const cancelInvite = async (inviteMemberId) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/invites/members/${memberId}/calendars/${calendarId}/cancel`,
+        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/invites/members/${inviteMemberId}/calendars/${calendarId}/cancel`,
         { method: "DELETE" }
       );
 
@@ -91,10 +90,12 @@ const CalendarForm = ({
   };
 
   // initialInvited 디버그
+  console.log(currentMembers);
 
   useEffect(() => {
     setLocalInvitedMembers(initialInvited);
   }, [initialInvited]);
+
   return (
     <S.Container>
       <S.TitleContainer>
@@ -126,15 +127,16 @@ const CalendarForm = ({
               {isDropdownOpen && (
                 <S.Dropdown>
                   {allMembers.map((member) => {
+                    const memberKey = member.memberId ?? member.id;
                     const isWaiting = member.inviteStatus === "초대대기중";
 
                     const isInvited =
                       localInvitedMembers.some(
-                        (m) => m.memberId === (member.memberId ?? member.id)
+                        (m) => (m.memberId ?? m.id) === memberKey
                       ) || isWaiting;
 
                     return (
-                      <S.DropdownItem key={member.memberId ?? member.id}>
+                      <S.DropdownItem key={memberKey}>
                         <S.Left>
                           <S.MemberImage
                             src={`${process.env.REACT_APP_BACKEND_URL}/${member.memberImgPath}/${member.memberImgName}`}
@@ -146,7 +148,7 @@ const CalendarForm = ({
                         <S.InviteButton
                           onClick={() =>
                             isWaiting
-                              ? cancelInvite(member.memberId ?? member.id)
+                              ? cancelInvite(memberKey)
                               : toggleInvite(member)
                           }
                           disabled={isWaiting || isInvited}
@@ -172,49 +174,59 @@ const CalendarForm = ({
         {showInviteSection && currentMembers?.length > 0 && (
           <S.MemberList>
             <S.MemberListTitle>
-              참여 중인 멤버 ({currentMembers.length-1})
+              <span>참여 중인 멤버</span> ({currentMembers.length})
             </S.MemberListTitle>
             {currentMembers
-              .filter((member) => member.id !== Number(memberId)) 
-              .map((member) => (
-                <S.MemberItem key={member.id}>
-                  <S.MemberInfoContainer>
-                    <S.MemberImage
-                      src={`${process.env.REACT_APP_BACKEND_URL}/${member.memberImgPath}/${member.memberImgName}`}
-                      alt={member.memberName}
-                    />
-                    <S.MemberName>{member.memberName}</S.MemberName>
-                  </S.MemberInfoContainer>
-                  <S.RemoveButton onClick={() => removeMember(member.id)}>
-                    추방하기
-                  </S.RemoveButton>
-                </S.MemberItem>
-              ))}
+              .filter(
+                (member) => (member.memberId ?? member.id) !== Number(memberId)
+              )
+              .map((member) => {
+                const memberKey = member.memberId ?? member.id;
+
+                return (
+                  <S.MemberItem key={memberKey}>
+                    <S.MemberInfoContainer>
+                      <S.MemberImage
+                        src={`${process.env.REACT_APP_BACKEND_URL}/${member.memberImgPath}/${member.memberImgName}`}
+                        alt={member.memberName}
+                      />
+                      <S.MemberName>{member.memberName}</S.MemberName>
+                    </S.MemberInfoContainer>
+
+                    {/* 호스트가 아닐 때만 추방하기 버튼 노출 */}
+                    {member.calendarMemberIsHost === 0 && (
+                      <S.RemoveButton
+                        onClick={() => removeMember(memberKey)}
+                      >
+                        추방하기
+                      </S.RemoveButton>
+                    )}
+                  </S.MemberItem>
+                );
+              })}
           </S.MemberList>
         )}
 
-      
-          <S.ButtonGroup>
-            {buttons.map(
-              ({ label, onClick, type = "default", disabled = false }) => (
-                <S.ActionButton
-                  key={label}
-                  $type={type}
-                  onClick={() =>
-                    onClick({
-                      calendarName,
-                      invitedMembers: localInvitedMembers,
-                    })
-                  }
-                  className={`button ${type} ${disabled ? "disabled" : ""}`}
-                  disabled={disabled}
-                >
-                  {label}
-                </S.ActionButton>
-              )
-            )}
-          </S.ButtonGroup>
-      
+        <S.ButtonGroup>
+          {buttons.map(
+            ({ label, onClick, type = "default", disabled = false }, index) => (
+              <S.ActionButton
+                key={index}
+                $type={type}
+                onClick={() =>
+                  onClick({
+                    calendarName,
+                    invitedMembers: localInvitedMembers,
+                  })
+                }
+                className={`button ${type} ${disabled ? "disabled" : ""}`}
+                disabled={disabled}
+              >
+                {label}
+              </S.ActionButton>
+            )
+          )}
+        </S.ButtonGroup>
       </S.ContentContainer>
     </S.Container>
   );

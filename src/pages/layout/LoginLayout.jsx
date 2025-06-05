@@ -105,9 +105,9 @@ const LoginLayout = () => {
   //   window.location.href = "http://localhost:10000/logout";
   // }
 
-  // if (!isLogin) {
-  //   return <Navigate to="/member/login" />;
-  // }
+  if (!isLogin) {
+    return <Navigate to="/member/login" />;
+  }
 
   return (
     <div>

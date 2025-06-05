@@ -17,6 +17,10 @@ S.Container = styled.div`
     width: 560px;
     height: 780px;
     background-color: #EEFFF8;
+    box-sizing: border-box;
+    border-top: solid 1px #06c371;
+    border-right: solid 1px #06c371;
+    border-bottom: solid 1px #06c371;
 `;
 
 
