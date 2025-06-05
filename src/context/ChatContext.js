@@ -100,6 +100,7 @@ export const ChatProvider  = ({ children }) => {
     await fetch(`http://localhost:10000/chats/api/chat-room/hide?chatRoomId=${chatRoomId}&memberId=${memberId}`, {
       method: "PUT"
     })
+    getChatRoomList(memberId)
   }
 
   // 채팅을 숨김처리하는 함수
@@ -107,6 +108,7 @@ export const ChatProvider  = ({ children }) => {
     await fetch(`http://localhost:10000/chats/api/chat/hide?chatId=${chatId}&memberId=${memberId}`, {
       method: "PUT"
     })
+    getChatList(memberId, chatRoomId)
   }
 
   // 웹소켓 연결 설정

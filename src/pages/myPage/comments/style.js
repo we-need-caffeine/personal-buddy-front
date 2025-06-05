@@ -50,6 +50,7 @@ S.TitleTopLinkText = styled.div`
 S.BodyContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 50px;
 `
 
 S.ItemContainer = styled.div`

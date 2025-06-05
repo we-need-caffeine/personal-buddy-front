@@ -97,12 +97,12 @@ const MyPagePosts = () => {
               </S.ItemContainer>
             </NavLink>
           ))}
+        </S.BodyContainer>
           <Pagination
             currentPage={currentPage}
             totalPages={Math.ceil(myPosts.length / itemsPerPage)}
             onPageChange={setCurrentPage}
           />
-        </S.BodyContainer>
       </S.MainContainer>
     </>
   );

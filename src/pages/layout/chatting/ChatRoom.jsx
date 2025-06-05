@@ -66,7 +66,6 @@ const ChatRoom = ({ memberId, handleChatRoom, onCancel }) => {
         <S.ListContainer>
           {chatRoomList.map((item, i) => (
             <ChatRoomItem 
-              key={i}
               item={item}
               memberId={memberId}
               onCancel={onCancel}
