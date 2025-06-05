@@ -178,9 +178,7 @@ const CalendarWeek = ({
               eventId.startsWith("no-id")
             )
               return;
-            navigate(`/main/${memberId}/${calendarId}/week/schedule-save`, {
-              state: { eventId },
-            });
+           navigate("schedule-view", { state: { eventId } });
           }}
           unselect={() => {
             if (!location.pathname.includes("schedule-save")) {
