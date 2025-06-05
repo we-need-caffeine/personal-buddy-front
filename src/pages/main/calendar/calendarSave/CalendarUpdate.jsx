@@ -44,7 +44,7 @@ const CalendarUpdate = () => {
   const getCalendarMembers = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/${calendarId}`
+        `${process.env.REACT_APP_BACKEND_URL}/calendars/api/members/calendars/${calendarId}`
       );
       const data = await response.json();
       setCurrentMembers(data);
