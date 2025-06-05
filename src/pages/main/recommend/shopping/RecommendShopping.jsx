@@ -48,7 +48,7 @@ const RecommendShopping = () => {
     return (
         <S.ContentWrapper>
             <S.RecommendWrapper>
-                <p>{selectedType} 필수템, 한눈에 보기</p>
+                <p>{selectedType} 필수템, 한눈에 보기 🛍️</p>
                 <S.RecommendList>
                     {data.map(item => {
                         const parts = item.interestDataContent.split('|');
